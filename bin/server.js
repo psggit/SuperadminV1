@@ -11,18 +11,19 @@ global.__DISABLE_SSR__ = false;  // <----- DISABLES SERVER SIDE RENDERING FOR ER
 global.__DEVELOPMENT__ = process.env.NODE_ENV !== 'production';
 
 if (__DEVELOPMENT__) {
-  if (!require('piping')({
+  if (!require('piping')({ //Fork the process and supervise the child for hot-reloading code
       hook: true,
       ignore: /(\/\.|~$|\.json|\.scss$)/i
     })) {
-    return;
+    return; //The parent process ends, and child process continues from below
   }
 }
 
-// https://github.com/halt-hammerzeit/webpack-isomorphic-tools
 var WebpackIsomorphicTools = require('webpack-isomorphic-tools');
 global.webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webpack-isomorphic-tools'))
   .development(__DEVELOPMENT__)
   .server(rootDir, function() {
     require('../src/server');
   });
+
+require('../src/server');
