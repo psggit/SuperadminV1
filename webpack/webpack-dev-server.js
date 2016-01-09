@@ -4,9 +4,11 @@ var webpack = require('webpack');
 var config = require('../src/config');
 var webpackConfig = require('./dev.config');
 var compiler = webpack(webpackConfig);
+var hasuraConfig = require('../hasuraConfig');
 
-var host = config.host || 'localhost';
-var port = (config.port + 1) || 3001;
+var host = hasuraConfig.hmrHost;
+var port = hasuraConfig.hmrPort;
+
 var serverOptions = {
   contentBase: 'http://' + host + ':' + port,
   quiet: true,

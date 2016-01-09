@@ -1,5 +1,5 @@
 require('babel/polyfill');
-
+var hasuraConfig = require('../hasuraconfig')
 const environment = {
   development: {
     isProduction: false
@@ -9,9 +9,12 @@ const environment = {
   }
 }[process.env.NODE_ENV || 'development'];
 
+var host = hasuraConfig.appHost;
+var port = hasuraConfig.port[process.env.NODE_ENV || 'development'];
+
 module.exports = Object.assign({
-  host: process.env.HOST || 'localhost',
-  port: process.env.PORT,
+  host: host,
+  port: port,
   apiHost: process.env.APIHOST || 'localhost',
   apiPort: process.env.APIPORT,
   app: {
