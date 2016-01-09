@@ -55,7 +55,7 @@ export default class Home extends Component {
             <CounterButton multireducerKey="counter3"/>
           </div>
 
-          <p>Watch me reload like a boss:</p>
+          <p>Watch me reload like a 100 bosses on steroids that have no cancer:</p>
 
           <ul>
             <li>
