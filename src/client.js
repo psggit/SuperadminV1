@@ -2,47 +2,42 @@
  * THIS IS THE ENTRY POINT FOR THE CLIENT, JUST LIKE server.js IS THE ENTRY POINT FOR THE SERVER.
  */
 import 'babel/polyfill';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import createHistory from 'history/lib/createBrowserHistory';
-import useScroll from 'scroll-behavior/lib/useStandardScroll';
-import createStore from './redux/create';
-import ApiClient from './helpers/ApiClient';
-import io from 'socket.io-client';
+
 import {Provider} from 'react-redux';
-import {reduxReactRouter, ReduxRouter} from 'redux-router';
+import {Router, browserHistory, Route} from 'react-router';
+import {syncHistory, routeReducer} from 'redux-simple-router';
+import {compose, createStore, applyMiddleware} from 'redux';
+import createLogger from 'redux-logger';
 
-import getRoutes from './routes';
-import makeRouteHooksSafe from './helpers/makeRouteHooksSafe';
+import { Login } from './components';
 
-const client = new ApiClient();
+import initSocket from './helpers/initSocket';
 
-// Three different types of scroll behavior available.
-// Documented here: https://github.com/rackt/scroll-behavior
-const scrollableHistory = useScroll(createHistory);
+// Create the store
+const DevTools = require('./containers/DevTools/DevTools');
+const reduxSimpleRouterMiddleware = syncHistory(browserHistory);
+const _finalCreateStore = compose(
+    applyMiddleware(reduxSimpleRouterMiddleware, createLogger()),
+    DevTools.instrument(),
+    require('redux-devtools').persistState( window.location.href.match(/[?&]debug_session=([^&]+)\b/))
+  )(createStore);
+const store = _finalCreateStore(routeReducer);
 
-const dest = document.getElementById('content');
-const store = createStore(reduxReactRouter, makeRouteHooksSafe(getRoutes), scrollableHistory, client, window.__data);
-
-function initSocket() {
-  const socket = io('', {path: '/api/ws', transports: ['polling']});
-  socket.on('news', (data) => {
-    console.log(data);
-    socket.emit('my other event', { my: 'data from client' });
-  });
-  socket.on('msg', (data) => {
-    console.log(data);
-  });
-
-  return socket;
-}
+// FIXME: Required for replaying actions from devtools to work
+// reduxSimpleRouterMiddleware.listenForReplays(store);
 
 global.socket = initSocket();
 
 const component = (
-  <ReduxRouter routes={getRoutes(store)} />
+    <Router history={browserHistory}>
+      <Route path="/login" component={Login} />
+    </Router>
 );
 
+const dest = document.getElementById('content');
 ReactDOM.render(
   <Provider store={store} key="provider">
     {component}
@@ -53,20 +48,20 @@ ReactDOM.render(
 if (process.env.NODE_ENV !== 'production') {
   window.React = React; // enable debugger
 
-  if (!dest || !dest.firstChild || !dest.firstChild.attributes || !dest.firstChild.attributes['data-react-checksum']) {
-    console.error('Server-side React render was discarded. Make sure that your initial render does not contain any client-side code.');
-  }
+  // FIXME:
+  // if (!dest || !dest.firstChild || !dest.firstChild.attributes || !dest.firstChild.attributes['data-react-checksum']) {
+  //   console.error('Server-side React render was discarded. Make sure that your initial render does not contain any client-side code.');
+  // }
 }
 
-if (__DEVTOOLS__ && !window.devToolsExtension) {
-  const DevTools = require('./containers/DevTools/DevTools');
-  ReactDOM.render(
-    <Provider store={store} key="provider">
-      <div>
-        {component}
-        <DevTools />
-      </div>
-    </Provider>,
-    dest
-  );
-}
+// if (__DEVTOOLS__ && !window.devToolsExtension) {
+//   ReactDOM.render(
+//     <Provider store={store} key="provider">
+//       <div>
+//         {component}
+//         <DevTools />
+//       </div>
+//     </Provider>,
+//     dest
+//   );
+// }
