@@ -85,6 +85,8 @@
     "babel": "~5.8.29",
     "babel-plugin-typecheck": "^2.0.0",
     "body-parser": "^1.14.1",
+    "deep-freeze": "0.0.1",
+    "expect": "^1.13.4",
     "express": "^4.13.3",
     "express-session": "^1.12.1",
     "file-loader": "^0.8.5",
