@@ -8,6 +8,7 @@
 */
 
 import fetch from 'isomorphic-fetch';
+import { routeActions } from 'redux-simple-router';
 
 const MAKE_REQUEST = 'MAKE_REQUEST';
 const REQUEST_SUCCESS = 'REQUEST_SUCCESS';
@@ -31,11 +32,14 @@ const requestFailed = (data) => ({type: REQUEST_ERROR, data: data});
 const makeRequest = (data) => {
   return (dispatch) => {
     dispatch({ type: MAKE_REQUEST, data });
-    return fetch('//httpbin.org/ipasdf')
+    return fetch('//httpbin.org/ip')
            .then(
              (response) => {
                if (response.ok) {
-                 return dispatch(requestSuccess(response.json()));
+                 return Promise.all([
+                   dispatch(requestSuccess(response.json())),
+                   dispatch(routeActions.push('/'))
+                 ]);
                }
                return dispatch(requestFailed('Error. Try again!'));
              },

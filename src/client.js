@@ -10,13 +10,13 @@ import thunk from 'redux-thunk';
 
 import {Provider} from 'react-redux';
 import {Router, browserHistory, Route} from 'react-router';
-import {syncHistory, routeReducer} from 'redux-simple-router';
-import {compose, createStore, applyMiddleware, combineReducers} from 'redux';
+import {syncHistory} from 'redux-simple-router';
+import {compose, createStore, applyMiddleware} from 'redux';
 
-import { Login } from './components';
-import loginReducer from './components/Login/actions';
+import { Login, Home } from './components';
 
 import initSocket from './helpers/initSocket';
+import reducer from './reducer';
 
 /* ****************************************************************** */
 
@@ -24,21 +24,34 @@ import initSocket from './helpers/initSocket';
 const DevTools = require('./containers/DevTools/DevTools');
 const reduxSimpleRouterMiddleware = syncHistory(browserHistory);
 const _finalCreateStore = compose(
-    applyMiddleware(thunk, reduxSimpleRouterMiddleware, createLogger()),
-    DevTools.instrument(),
-    require('redux-devtools').persistState( window.location.href.match(/[?&]debug_session=([^&]+)\b/))
-  )(createStore);
+  applyMiddleware(thunk, reduxSimpleRouterMiddleware, createLogger()),
+  DevTools.instrument(),
+  require('redux-devtools').persistState( window.location.href.match(/[?&]debug_session=([^&]+)\b/))
+)(createStore);
 
-const reducer = combineReducers({loginState: loginReducer, routing: routeReducer});
 const store = _finalCreateStore(reducer);
 
+
+/* ****************************************************************** */
+
+// Enable hot reloading
+if (__DEVELOPMENT__ && module.hot) {
+  module.hot.accept('./reducer', () => {
+    store.replaceReducer(require('./reducer'));
+  });
+}
 // FIXME: Required for replaying actions from devtools to work
 // reduxSimpleRouterMiddleware.listenForReplays(store);
 
 global.socket = initSocket();
 
-const component = (
+
+/* ****************************************************************** */
+
+// Main routes and rendering
+const main = (
     <Router history={browserHistory}>
+      <Route path="/" component={Home} />
       <Route path="/login" component={Login} />
     </Router>
 );
@@ -46,10 +59,14 @@ const component = (
 const dest = document.getElementById('content');
 ReactDOM.render(
   <Provider store={store} key="provider">
-    {component}
+    {main}
   </Provider>,
   dest
 );
+
+/* ****************************************************************** */
+
+// FIXME: No idea what the hell seems to be going on here.
 
 if (process.env.NODE_ENV !== 'production') {
   window.React = React; // enable debugger
