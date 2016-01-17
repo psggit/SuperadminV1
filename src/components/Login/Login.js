@@ -2,11 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {makeRequest} from './actions';
 
-const Login = ({lastError, ongoingRequest, onLoginSubmit}) => {
+const Login = ({lastError, ongoingRequest, lastSuccess, onLoginSubmit}) => {
   let loginText = 'Login';
 
   if (lastError) {
+    console.log(lastError);
     loginText = lastError;
+  } else if (lastSuccess) {
+    console.log(lastSuccess);
+    loginText = 'Submitted!';
   } else if (ongoingRequest) {
     loginText = 'Submitting...';
   }

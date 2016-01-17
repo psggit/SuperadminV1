@@ -1,17 +1,18 @@
 import expect from 'expect';
-import loginReducer, { makeRequest } from './actions';
+import loginReducer, { makeRequest, requestFailed, requestSuccess } from './actions';
 const deepFreeze = require('deep-freeze');
 
-const testMakeRequest = () => {
+const testRequestFailed = () => {
   const stateBefore = {
-    ongoingRequest: false,
-    lastError: null
+    ongoingRequest: true,
+    lastError: null,
+    lastSuccess: null
   };
-  const action = makeRequest({url: 'http://google.com'});
-
+  const action = requestFailed('failed-test');
   const stateAfter = {
-      ongoingRequest: true,
-      lastError: null
+      ongoingRequest: false,
+      lastError: 'failed-test',
+      lastSuccess: null
     };
 
   deepFreeze(stateBefore);
@@ -22,5 +23,28 @@ const testMakeRequest = () => {
       ).toEqual(stateAfter);
 };
 
-testLogin();
+const testRequestSuccess = () => {
+  const stateBefore = {
+    ongoingRequest: true,
+    lastError: null,
+    lastSuccess: null
+  };
+  const action = requestSuccess('req-success');
+  const stateAfter = {
+      ongoingRequest: false,
+      lastError: null,
+      lastSuccess: 'req-success'
+    };
+
+  deepFreeze(stateBefore);
+  deepFreeze(action);
+
+  expect(
+      loginReducer(stateBefore, action)
+      ).toEqual(stateAfter);
+};
+
+
+testRequestFailed();
+testRequestSuccess();
 console.log("Tests passed");

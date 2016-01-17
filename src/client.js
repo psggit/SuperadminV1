@@ -5,12 +5,13 @@ import 'babel/polyfill';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import createLogger from 'redux-logger';
+import thunk from 'redux-thunk';
 
 import {Provider} from 'react-redux';
 import {Router, browserHistory, Route} from 'react-router';
 import {syncHistory, routeReducer} from 'redux-simple-router';
 import {compose, createStore, applyMiddleware, combineReducers} from 'redux';
-import createLogger from 'redux-logger';
 
 import { Login } from './components';
 import loginReducer from './components/Login/actions';
@@ -23,7 +24,7 @@ import initSocket from './helpers/initSocket';
 const DevTools = require('./containers/DevTools/DevTools');
 const reduxSimpleRouterMiddleware = syncHistory(browserHistory);
 const _finalCreateStore = compose(
-    applyMiddleware(reduxSimpleRouterMiddleware, createLogger()),
+    applyMiddleware(thunk, reduxSimpleRouterMiddleware, createLogger()),
     DevTools.instrument(),
     require('redux-devtools').persistState( window.location.href.match(/[?&]debug_session=([^&]+)\b/))
   )(createStore);
