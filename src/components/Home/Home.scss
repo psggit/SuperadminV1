@@ -1,0 +1,46 @@
+.container {
+  padding: 0;
+}
+
+.header {
+  background: #eee;
+  text-align: center;
+  h3 {
+    margin: 0;
+    padding: 20px;
+    display: inline-block;
+    line-height: 26px;
+  }
+}
+
+.account {
+  float: right;
+  padding: 20px;
+  background: #f0f0f0;
+  line-height: 26px;
+}
+
+.sidebar {
+  padding-top: 20px;
+  height: 100vh;
+  background: #333;
+  color: #bbb;
+  ul {
+    list-style-type: none;
+    padding-left: 7px;
+    li {
+      padding: 7px 0;
+      transition: color 0.5s;
+    }
+    li:hover {
+      padding: 7px 0;
+      color: #eee;
+      transition: color 0.5s;
+      pointer: cursor;
+    }
+   }
+}
+
+.main {
+  padding-top: 20px;
+}
