@@ -4,7 +4,7 @@ var webpack = require('webpack');
 var config = require('../src/config');
 var webpackConfig = require('./dev.config');
 var compiler = webpack(webpackConfig);
-var hasuraConfig = require('../hasuraConfig');
+var hasuraConfig = require('../hasuraconfig');
 
 var host = hasuraConfig.hmrHost;
 var port = hasuraConfig.hmrPort;
