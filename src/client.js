@@ -9,11 +9,11 @@ import createLogger from 'redux-logger';
 import thunk from 'redux-thunk';
 
 import {Provider} from 'react-redux';
-import {Router, browserHistory, Route} from 'react-router';
+import {Router, browserHistory, Route, IndexRedirect} from 'react-router';
 import {syncHistory} from 'redux-simple-router';
 import {compose, createStore, applyMiddleware} from 'redux';
 
-import { Login, Home } from './components';
+import { Login, Home, Users } from './components';
 
 import initSocket from './helpers/initSocket';
 import reducer from './reducer';
@@ -51,8 +51,11 @@ global.socket = initSocket();
 // Main routes and rendering
 const main = (
     <Router history={browserHistory}>
-      <Route path="/" component={Home} />
       <Route path="/login" component={Login} />
+      <Route path="/" component={Home}>
+        <IndexRedirect to="appusers" />
+        <Route path="appusers" component={Users} />
+      </Route>
     </Router>
 );
 

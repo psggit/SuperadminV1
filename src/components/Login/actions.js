@@ -5,6 +5,7 @@
   lastError : null OR <string>
   lastSuccess: null OR <string>
 }
+
 */
 
 import fetch from 'isomorphic-fetch';

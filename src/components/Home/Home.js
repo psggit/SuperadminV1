@@ -1,26 +1,28 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 
 
-const Home = () => {
+const Home = ({children}) => {
   const styles = require('./Home.scss');
   return (
     <div className={styles.container + ' container-fluid'}>
-      <div className={styles.header}>
-        <h3>Hipbar Superadmin</h3>
-        <div className={styles.account}>
-          admin <i className="fa fa-caret-down"></i>
-        </div>
-        <div className="clearfix"></div>
-      </div>
       <div className={styles.sidebar + ' col-md-3'}>
+        <div className={styles.account}>
+          Logged in: <b>admin</b>
+        </div>
+        <hr/>
         <ul>
-          <li>App Users</li>
-          <li>Inventory</li>
+          <li><Link to="/appusers">App Users</Link></li>
+          <li><Link to="/inventory">Inventory</Link></li>
         </ul>
       </div>
       <div className={styles.main + ' col-md-9'}>
-        Main area
+        <div className={styles.header}>
+          <h3>Hipbar Superadmin</h3>
+          <div className="clearfix"></div>
+        </div>
+        {children}
       </div>
     </div>);
 };

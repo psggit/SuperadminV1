@@ -1,0 +1,14 @@
+.filterOptions {
+  height: 50px;
+}
+
+.tableContainer {
+  overflow: scroll;
+}
+
+.table {
+  width: auto;
+  th {
+    min-width: 100px;
+  }
+}

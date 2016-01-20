@@ -2,6 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {makeRequest} from './actions';
 
+/* State this guy needs
+{
+  loginState: {
+    ongoingRequest : false, //true if request is going on
+    lastError : null OR <string>
+    lastSuccess: null OR <string>
+  }
+}
+*/
+
 const Login = ({lastError, ongoingRequest, lastSuccess, onLoginSubmit}) => {
   let loginText = 'Login';
 
@@ -17,7 +27,7 @@ const Login = ({lastError, ongoingRequest, lastSuccess, onLoginSubmit}) => {
   console.log(loginText);
   return (
     <div className="container" id="login">
-      <h1> Login <span style={{color: 'grey'}}>@hipbar</span></h1>
+      <h1> <span style={{color: 'grey'}}>@hipbar</span></h1>
       <hr />
       <form className="form-horizontal" onSubmit={onLoginSubmit}>
         <div className="form-group">
