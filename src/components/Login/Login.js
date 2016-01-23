@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {makeRequest} from './actions';
+import { makeRequest } from './Actions';
 
 /* State this guy needs
 {
@@ -57,23 +57,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onLoginSubmit: (e) => {
       e.preventDefault();
-      dispatch(makeRequest({url: 'http://google.com'})); 
-      /*
-      dispatch({type: MAKE_REQUEST, data: {}});
-      dispatch( (dispatch) => {
-        //emit make_request action
-        dispatch({type: make_request, data: []});
-        //make the ajax call
-        //if successful result, emit the request_success action
-        //if bad result, emit the request_error action
-      */
-      });
-      dispatch:
-        //If my argument is object. Assume that the object is an action. Call the reducer
-        //If my argument is a function. Execute the function, 
-        //          and give that function the ability to dispatch actions
-      //action was emitted. This action must also trigger an AJAX call
-      //At the end of the AJAX call we must emit REQUEST_SUCCESS, REQUEST_ERROR
+      dispatch(makeRequest({url: 'http://google.com'}));
     }
   };
 };

@@ -10,12 +10,11 @@
 */
 
 import fetch from 'isomorphic-fetch';
-import { routeActions } from 'redux-simple-router';
 import defaultState from './State';
 
-const MAKE_REQUEST = 'MAKE_REQUEST';
-const REQUEST_SUCCESS = 'REQUEST_SUCCESS';
-const REQUEST_ERROR = 'REQUEST_ERROR';
+const MAKE_REQUEST = 'Users/MAKE_REQUEST';
+const REQUEST_SUCCESS = 'Users/REQUEST_SUCCESS';
+const REQUEST_ERROR = 'Users/REQUEST_ERROR';
 
 const userReducer = (state = defaultState, action) => {
   switch (action.type) {
@@ -35,17 +34,18 @@ const requestFailed = (data) => ({type: REQUEST_ERROR, data: data});
 const makeRequest = (data) => {
   return (dispatch) => {
     dispatch({ type: MAKE_REQUEST, data });
-    return fetch('//localhost:8080/users')
+    return fetch('//localhost:9999/users')
            .then(
              (response) => {
                if (response.ok) {
-                 return dispatch(requestSuccess(response.json()))
+                 response.json().then( (userData) => {
+                   return dispatch(requestSuccess(userData));
+                 });
                }
                return dispatch(requestFailed('Error. Try again!'));
              },
              (error) => {
-               console.log(error);
-               return dispatch(requestFailed(error.text));
+               return dispatch(requestFailed(error.message));
              });
   };
 };

@@ -21,7 +21,7 @@ import reducer from './reducer';
 /* ****************************************************************** */
 
 // Create the store
-const DevTools = require('./containers/DevTools/DevTools');
+const DevTools = require('./helpers/DevTools/DevTools');
 const reduxSimpleRouterMiddleware = syncHistory(browserHistory);
 const _finalCreateStore = compose(
   applyMiddleware(thunk, reduxSimpleRouterMiddleware, createLogger()),
@@ -52,7 +52,8 @@ global.socket = initSocket();
 const main = (
     <Router history={browserHistory}>
       <Route path="/login" component={Login} />
-      <Route path="/" component={Home}> 
+      <Route path="/" component={Home}>
+        <IndexRedirect to="appusers" />
         <Route path="appusers" component={Users} />
       </Route>
     </Router>

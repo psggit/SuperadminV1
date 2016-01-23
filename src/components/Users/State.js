@@ -1,7 +1,7 @@
 const defaultState = {
-  ongoingRequest: false, 
-  lastError: null, 
-  userColumns:['name', 'age', 'email'], 
+  ongoingRequest: false,
+  lastError: null,
+  userColumns: ['name', 'age', 'email'],
   users: []
 };
 

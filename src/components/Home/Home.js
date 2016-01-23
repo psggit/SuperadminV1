@@ -27,5 +27,4 @@ const Home = ({children}) => {
     </div>);
 };
 
-
 export default connect()(Home);

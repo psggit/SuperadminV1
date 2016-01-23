@@ -11,15 +11,15 @@
 import fetch from 'isomorphic-fetch';
 import { routeActions } from 'redux-simple-router';
 
-const MAKE_REQUEST = 'MAKE_REQUEST';
-const REQUEST_SUCCESS = 'REQUEST_SUCCESS';
-const REQUEST_ERROR = 'REQUEST_ERROR';
+const MAKE_REQUEST = 'Login/MAKE_REQUEST';
+const REQUEST_SUCCESS = 'Login/REQUEST_SUCCESS';
+const REQUEST_ERROR = 'Login/REQUEST_ERROR';
 
-//HTML Component defines what state it needs
-//HTML Component should be able to emit actions
-//When an action happens, the state is modified (using the reducer function)
-//When the state is modified, anybody dependent on the state is asked to update
-//HTML Component is listening to state, hence re-renders
+// HTML Component defines what state it needs
+// HTML Component should be able to emit actions
+// When an action happens, the state is modified (using the reducer function)
+// When the state is modified, anybody dependent on the state is asked to update
+// HTML Component is listening to state, hence re-renders
 
 const loginReducer = (state = {ongoingRequest: false, lastError: null, lastSuccess: null}, action) => {
   switch (action.type) {
@@ -42,7 +42,7 @@ const makeRequest = (data) => {
     return fetch('//httpbin.org/ip')
            .then(
              (response) => {
-               if (response.ok) { //2xx status
+               if (response.ok) { // 2xx status
                  return Promise.all([
                    dispatch(requestSuccess(response.json())),
                    dispatch(routeActions.push('/'))
