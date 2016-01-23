@@ -52,8 +52,7 @@ global.socket = initSocket();
 const main = (
     <Router history={browserHistory}>
       <Route path="/login" component={Login} />
-      <Route path="/" component={Home}>
-        <IndexRedirect to="appusers" />
+      <Route path="/" component={Home}> 
         <Route path="appusers" component={Users} />
       </Route>
     </Router>

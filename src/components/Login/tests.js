@@ -1,5 +1,5 @@
 import expect from 'expect';
-import loginReducer, { makeRequest, requestFailed, requestSuccess } from './actions';
+import loginReducer, { makeRequest, requestFailed, requestSuccess } from './Actions';
 const deepFreeze = require('deep-freeze');
 
 const testRequestFailed = () => {

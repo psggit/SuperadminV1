@@ -1,22 +1,20 @@
 import React from 'react';
 
-const Users = () => {
+/*
+
+  componentDidMount:
+    //Create async function:
+        //Emit fetchData action
+        //Fetch the data
+          //On success: Emit the successData action
+          //On error: Emit the errorData action
+*/
+
+const Users = ({userColumns, users, ongoingRequest, lastError}) => {
   const styles = require('./Users.scss');
   const table = {
-    headings: ['id', 'name', 'age'],
-    rows: [
-      { id: 1, name: 'Tanmai', age: 4},
-      { id: 2, name: 'Tanmai', age: 4},
-      { id: 3, name: 'Tanmai', age: 4},
-      { id: 4, name: 'Tanmai', age: 4},
-      { id: 5, name: 'Tanmai', age: 4},
-      { id: 6, name: 'Tanmai', age: 4},
-      { id: 7, name: 'Tanmai', age: 4},
-      { id: 8, name: 'Tanmai', age: 4},
-      { id: 9, name: 'Tanmai', age: 4},
-      { id: 4, name: 'Tanmai', age: 4},
-      { id: 2, name: 'Tanmai', age: 4}
-    ]
+    headings: userColumns,
+    rows: users
   };
   const tableHeadings = table.headings.map((heading) => (<th>{heading}</th>));
   const tableRows = table.rows.map((row) => (
