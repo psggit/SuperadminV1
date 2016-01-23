@@ -5,6 +5,7 @@ import { Link } from 'react-router';
 
 const Home = ({children}) => {
   const styles = require('./Home.scss');
+  const anImage = require('./logo-big-fs8.png');
   return (
     <div className={styles.container + ' container-fluid'}>
       <div className={styles.sidebar + ' col-md-3'}>
@@ -16,6 +17,7 @@ const Home = ({children}) => {
           <li><Link to="/appusers">App Users</Link></li>
           <li><Link to="/inventory">Inventory</Link></li>
         </ul>
+        <img src={anImage} />
       </div>
       <div className={styles.main + ' col-md-9'}>
         <div className={styles.header}>
