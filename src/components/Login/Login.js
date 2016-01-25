@@ -13,7 +13,7 @@ import Helmet from 'react-helmet';
 }
 */
 
-const Login = ({lastError, ongoingRequest, lastSuccess, onLoginSubmit}) => {
+const Login = ({lastError, ongoingRequest, lastSuccess, dispatch}) => {
   let loginText = 'Login';
 
   if (lastError) {
@@ -26,15 +26,21 @@ const Login = ({lastError, ongoingRequest, lastSuccess, onLoginSubmit}) => {
     loginText = 'Submitting...';
   }
 
+
   return (
     <div className="container" id="login">
       <Helmet title="Login | Hipbar Superadmin" />
       <h1> <span style={{color: 'grey'}}>@hipbar</span></h1>
       <hr />
-      <form className="form-horizontal" onSubmit={onLoginSubmit}>
+      <form className="form-horizontal" onSubmit={(e) => {
+        e.preventDefault();
+        const form = e.target;
+        const username = form.querySelector('[name="username"]').value;
+        dispatch(makeRequest({username}));
+      }}>
         <div className="form-group">
           <div className="col-sm-3">
-            <input type="text" className="form-control" placeholder="username" />
+            <input type="text" name="username" className="form-control" placeholder="username" />
           </div>
         </div>
         <div className="form-group">
@@ -55,13 +61,4 @@ const mapStateToProps = (state) => {
   return {...state.loginState};
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onLoginSubmit: (e) => {
-      e.preventDefault();
-      dispatch(makeRequest({url: 'http://google.com'}));
-    }
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps)(Login);

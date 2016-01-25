@@ -3,14 +3,14 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
 
-const Home = ({children}) => {
+const Home = ({username, children}) => {
   const styles = require('./Home.scss');
   const anImage = require('./logo-big-fs8.png');
   return (
     <div className={styles.container + ' container-fluid'}>
       <div className={styles.sidebar + ' col-md-3'}>
         <div className={styles.account}>
-          Logged in: <b>admin</b>
+          Logged in: <b>{username}</b>
         </div>
         <hr/>
         <ul>
@@ -29,4 +29,8 @@ const Home = ({children}) => {
     </div>);
 };
 
-export default connect()(Home);
+const mapStateToProps = (state) => {
+  return {...state.homeState};
+};
+
+export default connect(mapStateToProps)(Home);

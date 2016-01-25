@@ -10,6 +10,7 @@
 
 import fetch from 'isomorphic-fetch';
 import { routeActions } from 'redux-simple-router';
+import {setUsername} from '../Home/Actions';
 
 const MAKE_REQUEST = 'Login/MAKE_REQUEST';
 const REQUEST_SUCCESS = 'Login/REQUEST_SUCCESS';
@@ -39,6 +40,7 @@ const requestFailed = (data) => ({type: REQUEST_ERROR, data: data});
 const makeRequest = (data) => {
   return (dispatch) => {
     dispatch({ type: MAKE_REQUEST, data });
+    dispatch(setUsername(data.username));
     return fetch('//httpbin.org/ip')
            .then(
              (response) => {
