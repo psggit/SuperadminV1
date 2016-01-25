@@ -15,7 +15,7 @@ import Helmet from 'react-helmet';
 
 const Login = ({lastError, ongoingRequest, lastSuccess, dispatch}) => {
   let loginText = 'Login';
-
+  let username;
   if (lastError) {
     console.log(lastError);
     loginText = lastError;
@@ -34,13 +34,11 @@ const Login = ({lastError, ongoingRequest, lastSuccess, dispatch}) => {
       <hr />
       <form className="form-horizontal" onSubmit={(e) => {
         e.preventDefault();
-        const form = e.target;
-        const username = form.querySelector('[name="username"]').value;
-        dispatch(makeRequest({username}));
+        dispatch(makeRequest({username: username.value}));
       }}>
         <div className="form-group">
           <div className="col-sm-3">
-            <input type="text" name="username" className="form-control" placeholder="username" />
+            <input type="text" ref={(node) => {username = node;}} className="form-control" placeholder="username" />
           </div>
         </div>
         <div className="form-group">
