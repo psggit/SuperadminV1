@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { makeRequest } from './Actions';
+import Helmet from 'react-helmet';
 
 /* State this guy needs
 {
@@ -27,6 +28,7 @@ const Login = ({lastError, ongoingRequest, lastSuccess, onLoginSubmit}) => {
 
   return (
     <div className="container" id="login">
+      <Helmet title="Login | Hipbar Superadmin" />
       <h1> <span style={{color: 'grey'}}>@hipbar</span></h1>
       <hr />
       <form className="form-horizontal" onSubmit={onLoginSubmit}>

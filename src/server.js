@@ -10,6 +10,8 @@ import Html from './helpers/Html';
 import PrettyError from 'pretty-error';
 import http from 'http';
 
+//SSR stuff
+import { match, RoutingContext } from 'react-router'
 global.__DISABLE_SSR__ = true;
 
 //Express middleware
@@ -37,8 +39,6 @@ app.use((req, res) => {
   const assets = webpackIsomorphicTools.assets();
 
   // Initialize the store here
-
-
   function hydrateOnClient() {
     res.send('<!doctype html>\n' +
       ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} />)
@@ -49,7 +49,9 @@ app.use((req, res) => {
     hydrateOnClient();
     return;
   }
+
   // FIXME: Add SSR
+
 });
 
 if (config.port) {

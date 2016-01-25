@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {makeRequest} from './Actions';
 import {connect} from 'react-redux';
+import Helmet from 'react-helmet';
 
 /*
 
@@ -34,6 +35,7 @@ class Users extends Component {
       </tr>));
     return (
       <div className="container-fluid">
+        <Helmet title="Appusers | Hipbar Superadmin" />
         <div className={styles.filterOptions}>
           Ongoing Request: {ongoingRequest ? 'true' : 'false'} <br/>
           Last Error: {lastError ? lastError : ''}
