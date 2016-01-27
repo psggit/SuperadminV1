@@ -15,7 +15,7 @@ const Home = ({username, children}) => {
         <hr/>
         <ul>
           <li><Link to="/appusers">App Users</Link></li>
-          <li><Link to="/inventory">Inventory</Link></li>
+          <li><Link to="/bills">Bills</Link></li>
         </ul>
         <img src={anImage} />
       </div>

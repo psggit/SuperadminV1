@@ -13,7 +13,7 @@ import {Router, browserHistory, Route, IndexRedirect} from 'react-router';
 import {syncHistory} from 'redux-simple-router';
 import {compose, createStore, applyMiddleware} from 'redux';
 
-import { Login, Home, Users } from './components';
+import { Login, Home, Users, Bills} from './components';
 
 import initSocket from './helpers/initSocket';
 import reducer from './reducer';
@@ -55,6 +55,7 @@ const main = (
       <Route path="/" component={Home}>
         <IndexRedirect to="appusers" />
         <Route path="appusers" component={Users} />
+        <Route path="bills" component={Bills} />
       </Route>
     </Router>
 );

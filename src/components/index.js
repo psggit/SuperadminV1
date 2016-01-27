@@ -9,3 +9,4 @@ export App from './App/App';
 export Home from './Home/Home';
 export Login from './Login/Login';
 export Users from './Users/Users';
+export Bills from './Bills/Bills';
