@@ -21,7 +21,7 @@ const Home = ({username, children}) => {
       </div>
       <div className={styles.main + ' col-md-9'}>
         <div className={styles.header}>
-          <h3>Hipbar Superadmin</h3>
+          <h3>HasuraDB</h3>
           <div className="clearfix"></div>
         </div>
         {children}

@@ -13,7 +13,7 @@ import {Router, browserHistory, Route, IndexRedirect} from 'react-router';
 import {syncHistory} from 'redux-simple-router';
 import {compose, createStore, applyMiddleware} from 'redux';
 
-import { Login, Home, Users, Bills} from './components';
+import {Login, Home, Users, ViewTable} from './components'; // eslint-disable-line no-unused-vars
 
 import initSocket from './helpers/initSocket';
 import reducer from './reducer';
@@ -55,7 +55,7 @@ const main = (
       <Route path="/" component={Home}>
         <IndexRedirect to="appusers" />
         <Route path="appusers" component={Users} />
-        <Route path="bills" component={Bills} />
+        <Route path="tables/:table/view" component={ViewTable} />
       </Route>
     </Router>
 );

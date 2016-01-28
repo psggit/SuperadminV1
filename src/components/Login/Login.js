@@ -26,7 +26,6 @@ const Login = ({lastError, ongoingRequest, lastSuccess, dispatch}) => {
     loginText = 'Submitting...';
   }
 
-
   return (
     <div className="container" id="login">
       <Helmet title="Login | Hipbar Superadmin" />

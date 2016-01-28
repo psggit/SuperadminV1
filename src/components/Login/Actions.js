@@ -22,7 +22,9 @@ const REQUEST_ERROR = 'Login/REQUEST_ERROR';
 // When the state is modified, anybody dependent on the state is asked to update
 // HTML Component is listening to state, hence re-renders
 
-const loginReducer = (state = {ongoingRequest: false, lastError: null, lastSuccess: null}, action) => {
+
+const defaultState = {ongoingRequest: false, lastError: null, lastSuccess: null};
+const loginReducer = (state = defaultState, action) => {
   switch (action.type) {
     case MAKE_REQUEST:
       return {ongoingRequest: true, lastSuccess: null, lastError: null};
