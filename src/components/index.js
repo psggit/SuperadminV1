@@ -5,9 +5,7 @@
  *
  */
 
-export App from './App/App';
-export Home from './Home/Home';
+export PageContainer from './PageContainer/PageContainer';
 export Login from './Login/Login';
-export Users from './Users/Users';
-export Bills from './Bills/Bills';
+export Home from './Home/Home';
 export ViewTable from './Bills/ViewTable';

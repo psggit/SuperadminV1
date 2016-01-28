@@ -9,11 +9,11 @@ import createLogger from 'redux-logger';
 import thunk from 'redux-thunk';
 
 import {Provider} from 'react-redux';
-import {Router, browserHistory, Route, IndexRedirect} from 'react-router';
+import {Router, browserHistory, Route, IndexRoute} from 'react-router';
 import {syncHistory} from 'redux-simple-router';
 import {compose, createStore, applyMiddleware} from 'redux';
 
-import {Login, Home, Users, ViewTable} from './components'; // eslint-disable-line no-unused-vars
+import {Login, Home, PageContainer, Users, ViewTable} from './components'; // eslint-disable-line no-unused-vars
 
 import initSocket from './helpers/initSocket';
 import reducer from './reducer';
@@ -51,8 +51,8 @@ global.socket = initSocket();
 const main = (
     <Router history={browserHistory}>
       <Route path="/login" component={Login} />
-      <Route path="/" component={Home}>
-        <IndexRedirect to="/tables/user/view" />
+      <Route path="/" component={PageContainer}>
+        <IndexRoute component={Home} />
         <Route path="tables/:table/view" component={ViewTable} />
       </Route>
     </Router>

@@ -10,7 +10,7 @@
 
 import fetch from 'isomorphic-fetch';
 import { routeActions } from 'redux-simple-router';
-import {setUsername} from '../Home/Actions';
+import {setUsername} from '../PageContainer/Actions';
 
 const MAKE_REQUEST = 'Login/MAKE_REQUEST';
 const REQUEST_SUCCESS = 'Login/REQUEST_SUCCESS';
