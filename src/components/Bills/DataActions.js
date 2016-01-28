@@ -69,6 +69,7 @@ const genHeadingsFromSchema = (tableName, schema) => {
   Object.keys(cols).sort().map((colName) => {
     if (cols[colName].fk_cons.length === 0) {
       headings.push(colName);
+      return;
     }
     // If the column is on an objRel
     const objRels = rels.filter((rel) => ((rel[1].type === 'obj_rel') && (rel[1].lcol === colName)));

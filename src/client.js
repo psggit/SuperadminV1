@@ -31,7 +31,6 @@ const _finalCreateStore = compose(
 
 const store = _finalCreateStore(reducer);
 
-
 /* ****************************************************************** */
 
 // Enable hot reloading
@@ -53,8 +52,7 @@ const main = (
     <Router history={browserHistory}>
       <Route path="/login" component={Login} />
       <Route path="/" component={Home}>
-        <IndexRedirect to="appusers" />
-        <Route path="appusers" component={Users} />
+        <IndexRedirect to="/tables/user/view" />
         <Route path="tables/:table/view" component={ViewTable} />
       </Route>
     </Router>

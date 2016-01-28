@@ -16,6 +16,7 @@ import Helmet from 'react-helmet';
 const Login = ({lastError, ongoingRequest, lastSuccess, dispatch}) => {
   let loginText = 'Login';
   let username;
+  let password;
   if (lastError) {
     console.log(lastError);
     loginText = lastError;
@@ -33,7 +34,7 @@ const Login = ({lastError, ongoingRequest, lastSuccess, dispatch}) => {
       <hr />
       <form className="form-horizontal" onSubmit={(e) => {
         e.preventDefault();
-        dispatch(makeRequest({username: username.value}));
+        dispatch(makeRequest({username: username.value, password: password.value}));
       }}>
         <div className="form-group">
           <div className="col-sm-3">
@@ -42,7 +43,7 @@ const Login = ({lastError, ongoingRequest, lastSuccess, dispatch}) => {
         </div>
         <div className="form-group">
           <div className="col-sm-3">
-            <input type="password" className="form-control" placeholder="password" />
+            <input type="password" ref={(node) => {password = node;}} className="form-control" placeholder="password" />
           </div>
         </div>
         <div className="form-group">

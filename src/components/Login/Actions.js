@@ -39,11 +39,17 @@ const loginReducer = (state = defaultState, action) => {
 const requestSuccess = (data) => ({type: REQUEST_SUCCESS, data: data});
 const requestFailed = (data) => ({type: REQUEST_ERROR, data: data});
 
+const loginEndpoint = 'http://130.211.255.73/auth/login';
 const makeRequest = (data) => {
   return (dispatch) => {
     dispatch({ type: MAKE_REQUEST, data });
     dispatch(setUsername(data.username));
-    return fetch('//httpbin.org/ip')
+    const options = {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: { 'Content-Type': 'application/json' }
+    };
+    return fetch(loginEndpoint, options)
            .then(
              (response) => {
                if (response.ok) { // 2xx status

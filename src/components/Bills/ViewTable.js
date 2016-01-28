@@ -19,7 +19,12 @@ const genHeadings = (headings) => {
               ...(genHeadings(headings.slice(1)))];
     }
     if (heading.type === 'obj_rel') {
-      const subheadings = genHeadings(heading.headings).map(h => (heading.relname + '.' + h));
+      const subheadings = genHeadings(heading.headings).map((h) => {
+        if (typeof(h) === 'string') {
+          return (heading.relname + '.' + h);
+        }
+        return (heading.relname + '.' + h.name);
+      });
       return [...subheadings,
               ...(genHeadings(headings.slice(1)))];
     }
@@ -65,6 +70,15 @@ class ViewTable extends Component {
     dispatch(vMakeRequest());
   }
 
+  componentWillReceiveProps(nextProps) {
+    const dispatch = this.props.dispatch;
+    if (nextProps.tableName !== this.props.tableName) {
+      dispatch(setTable(nextProps.tableName));
+      dispatch(vSetDefaults(nextProps.tableName));
+      dispatch(vMakeRequest());
+    }
+  }
+
   render() {
     const {tableName, headings, query, rows,  // eslint-disable-line no-unused-vars
            ongoingRequest, lastError, lastSuccess, dispatch} = this.props; // eslint-disable-line no-unused-vars
@@ -92,21 +106,26 @@ class ViewTable extends Component {
       </tr>));
 
     return (
-      <div className="container-fluid">
-        <h3>{tableName}</h3>
-        <div className={styles.filterOptions}>
+      <div className={styles.container + ' container-fluid'}>
+        <div className={styles.header}>
+          <h3>{tableName}</h3>
+          <div className="clearfix"></div>
         </div>
-        <div className={styles.tableContainer}>
-          <table className={styles.table + ' table table-bordered table-striped'}>
-            <thead>
-              <tr>
-                {tableHeadings}
-              </tr>
-            </thead>
-            <tbody>
-              {tableRows}
-            </tbody>
-          </table>
+        <div className="container-fluid">
+          <div className={styles.filterOptions}>
+          </div>
+          <div className={styles.tableContainer}>
+            <table className={styles.table + ' table table-bordered table-striped'}>
+              <thead>
+                <tr>
+                  {tableHeadings}
+                </tr>
+              </thead>
+              <tbody>
+                {tableRows}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     );
