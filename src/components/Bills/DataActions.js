@@ -10,7 +10,7 @@
 */
 
 import defaultState, {defaultViewState} from './DataState';
-import Endpoints from '../../Endpoints';
+import Endpoints, {globalCookiePolicy} from '../../Endpoints';
 import requestAction from './requestAction';
 
 
@@ -35,7 +35,7 @@ const V_QUERY_EXPAND = 'ViewTable/V_QUERY_EXPAND';
 const loadSchema = () => {
   return (dispatch) => {
     const p1 = new Promise((resolve, reject) => {
-      fetch(Endpoints.getSchema, {credentials: 'same-origin'}).then(
+      fetch(Endpoints.getSchema, {credentials: globalCookiePolicy}).then(
         (response) => {
           if (response.ok) {
             response.json().then(

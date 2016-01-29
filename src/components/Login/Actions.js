@@ -10,7 +10,7 @@
 
 import fetch from 'isomorphic-fetch';
 import { routeActions } from 'redux-simple-router';
-import Endpoints from '../../Endpoints';
+import Endpoints, {globalCookiePolicy} from '../../Endpoints';
 
 const MAKE_REQUEST = 'Login/MAKE_REQUEST';
 const REQUEST_SUCCESS = 'Login/REQUEST_SUCCESS';
@@ -45,7 +45,7 @@ const makeRequest = (data) => {
     const options = {
       method: 'POST',
       body: JSON.stringify(data),
-      credentials: 'same-origin',
+      credentials: globalCookiePolicy,
       headers: { 'Content-Type': 'application/json' }
     };
     return fetch(Endpoints.login, options)
@@ -69,7 +69,7 @@ const makeRequest = (data) => {
 const loadCredentials = () => {
   return (dispatch) => {
     const p1 = new Promise((resolve, reject) => {
-      fetch(Endpoints.getCredentials, {credentials: 'same-origin'}).then(
+      fetch(Endpoints.getCredentials, {credentials: globalCookiePolicy}).then(
         (response) => {
           if (response.ok) {
             response.json().then(
