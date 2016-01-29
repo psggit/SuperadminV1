@@ -25,7 +25,13 @@ const defaultState = {
   },
   udpate: {
   },
-  allSchemas: [
+  allSchemas: null
+};
+
+export default defaultState;
+export {defaultViewState};
+
+/*
     {
       'name': 'user_interest',
       'relationships': {
@@ -390,8 +396,4 @@ const defaultState = {
         }
       }
     }
-  ]
-};
-
-export default defaultState;
-export {defaultViewState};
+*/

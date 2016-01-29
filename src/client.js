@@ -14,6 +14,8 @@ import {syncHistory} from 'redux-simple-router';
 import {compose, createStore, applyMiddleware} from 'redux';
 
 import {Login, Home, PageContainer, Users, ViewTable} from './components'; // eslint-disable-line no-unused-vars
+import {loadCredentials} from './components/Login/Actions';
+import {loadSchema} from './components/Bills/DataActions';
 
 import initSocket from './helpers/initSocket';
 import reducer from './reducer';
@@ -48,10 +50,29 @@ global.socket = initSocket();
 /* ****************************************************************** */
 
 // Main routes and rendering
+const requireLoginAndSchema = (nextState, replaceState, cb) => {
+  const {loginState: {credentials}, tables: {allSchemas} } = store.getState();
+  if (credentials && allSchemas) {
+    cb();
+    return;
+  }
+  Promise.all([
+    store.dispatch(loadCredentials()),
+    store.dispatch(loadSchema())
+  ]).then(
+    () => {
+      cb();
+    },
+    () => {
+      replaceState(null, '/login'); cb();
+    }
+  );
+};
+
 const main = (
     <Router history={browserHistory}>
       <Route path="/login" component={Login} />
-      <Route path="/" component={PageContainer}>
+      <Route path="/" component={PageContainer} onEnter={requireLoginAndSchema}>
         <IndexRoute component={Home} />
         <Route path="tables/:table/view" component={ViewTable} />
       </Route>

@@ -3,12 +3,13 @@ import React from 'react';
 import ReactDOM from 'react-dom/server';
 import config from './config';
 import favicon from 'serve-favicon';
-import httpProxy from 'http-proxy';
 import path from 'path';
 import ApiClient from './helpers/ApiClient';
 import Html from './helpers/Html';
 import PrettyError from 'pretty-error';
 import http from 'http';
+
+import httpProxy from 'http-proxy';
 
 //SSR stuff
 import { match, RoutingContext } from 'react-router'
@@ -19,9 +20,20 @@ const pretty = new PrettyError();
 const app = new Express();
 const server = new http.Server(app);
 
-app.use(favicon(path.join(__dirname, '..', 'static', 'favicon.ico')));
+const proxy = httpProxy.createProxyServer({
+  target: 'http://130.211.255.73',
+});
 
+app.use(favicon(path.join(__dirname, '..', 'static', 'favicon.ico')));
 app.use('/rstatic', Express.static(path.join(__dirname, '..', 'static')));
+
+//Proxy to hasura
+app.use('/db', (req, res) => {
+  proxy.web(req, res, {target: 'http://130.211.255.73/db'});
+});
+app.use('/auth', (req, res) => {
+  proxy.web(req, res, {target: 'http://130.211.255.73/auth'});
+});
 
 //FIXME:
 const myReducer = (state, action) => {

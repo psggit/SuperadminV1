@@ -10,11 +10,13 @@
 */
 
 import defaultState, {defaultViewState} from './DataState';
-// import {hasuradbEndpoint} from '../../config';
+import Endpoints from '../../Endpoints';
 import requestAction from './requestAction';
 
-const hasuradbEndpoint = 'http://130.211.255.73/db';
+
 const SET_TABLE = 'Data/SET_TABLE';
+const LOAD_SCHEMA = 'Data/LOAD_SCHEMA';
+
 const V_SET_DEFAULTS = 'ViewTable/V_SET_DEFAULTS';
 
 const V_REQUEST_SUCCESS = 'ViewTable/V_REQUEST_SUCCESS';
@@ -30,13 +32,42 @@ const V_QUERY_EXPAND = 'ViewTable/V_QUERY_EXPAND';
 // const V_REMOVE_SORT;
 
 /* ************ action creators ************************/
+const loadSchema = () => {
+  return (dispatch) => {
+    const p1 = new Promise((resolve, reject) => {
+      fetch(Endpoints.getSchema, {credentials: 'same-origin'}).then(
+        (response) => {
+          if (response.ok) {
+            response.json().then(
+              (allSchemas) => {
+                dispatch({type: LOAD_SCHEMA, allSchemas});
+                resolve();
+              },
+              () => { reject(); }
+            );
+          } else {
+            alert('Could not load schema! Try refreshing this page.');
+            reject();
+          }
+        },
+        (error) => {
+          alert('Could not load schema! Try refreshing this page.');
+          console.log(error);
+          reject();
+        });
+    });
+    return p1;
+  };
+};
+
 const setTable = (tableName) => ({type: SET_TABLE, tableName});
+
 const vSetDefaults = () => ({type: V_SET_DEFAULTS});
 
 const vMakeRequest = () => {
   return (dispatch, getState) => {
     const state = getState();
-    const url = hasuradbEndpoint + '/table/' + state.tables.currentTable + '/select';
+    const url = Endpoints.db + '/table/' + state.tables.currentTable + '/select';
     const options = {
       method: 'POST',
       body: JSON.stringify(state.tables.view.query),
@@ -195,6 +226,8 @@ const dataReducer = (state = defaultState, action) => { // eslint-disable-line n
     return viewReducer(state.currentTable, state, action);
   }
   switch (action.type) {
+    case LOAD_SCHEMA:
+      return {...state, allSchemas: action.allSchemas};
     case SET_TABLE:
       return {...state, currentTable: action.tableName};
     default:
@@ -204,4 +237,4 @@ const dataReducer = (state = defaultState, action) => { // eslint-disable-line n
 };
 
 export default dataReducer;
-export {setTable, vSetDefaults, vMakeRequest, vExpandHeading};
+export {setTable, vSetDefaults, vMakeRequest, vExpandHeading, loadSchema};
