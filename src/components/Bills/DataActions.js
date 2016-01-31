@@ -17,6 +17,7 @@ import requestAction from './requestAction';
 const SET_TABLE = 'Data/SET_TABLE';
 const LOAD_SCHEMA = 'Data/LOAD_SCHEMA';
 
+/******************* View actions *************/
 const V_SET_DEFAULTS = 'ViewTable/V_SET_DEFAULTS';
 
 const V_REQUEST_SUCCESS = 'ViewTable/V_REQUEST_SUCCESS';
@@ -24,12 +25,18 @@ const V_REQUEST_ERROR = 'ViewTable/V_REQUEST_ERROR';
 
 const V_TOGGLE_EXPAND_HEADING = 'ViewTable/V_TOGGLE_EXPAND_HEADING';
 const V_QUERY_EXPAND = 'ViewTable/V_QUERY_EXPAND';
+
 // const V_ADD_WHERE;
 // const V_REMOVE_WHERE;
 // const V_SET_LIMIT;
 // const V_SET_OFFSET;
 // const V_ADD_SORT;
 // const V_REMOVE_SORT;
+
+/******************* Insert actions *************/
+const I_ONGOING_REQ = 'InsertItem/I_ONGOING_REQ';
+const I_REQUEST_SUCCESS = 'InsertItem/I_REQUEST_SUCCESS';
+const I_REQUEST_ERROR = 'InsertItem/I_REQUEST_ERROR';
 
 /* ************ action creators ************************/
 const loadSchema = () => {
@@ -59,11 +66,11 @@ const loadSchema = () => {
     return p1;
   };
 };
-
 const setTable = (tableName) => ({type: SET_TABLE, tableName});
 
+/******************* view action creators *************/
+const V_SET_DEFAULTS = 'ViewTable/V_SET_DEFAULTS';
 const vSetDefaults = () => ({type: V_SET_DEFAULTS});
-
 const vMakeRequest = () => {
   return (dispatch, getState) => {
     const state = getState();
@@ -76,7 +83,6 @@ const vMakeRequest = () => {
     return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
   };
 };
-
 const vToggleExpandHeading = (colName) => ({type: V_TOGGLE_EXPAND_HEADING, colName});
 const vQueryExpand = (colName) => ({type: V_QUERY_EXPAND, colName});
 const vExpandHeading = (colName) => {
@@ -87,6 +93,83 @@ const vExpandHeading = (colName) => {
     });
   };
 };
+
+
+/******************* insert action creators *************/
+const insertItem = (tableName, colValues) => {
+  return (dispatch, getState) => {
+    const p1 = new Promise((resolve, reject) => {
+      /* Type all the values correctly */
+      const insertObject = {};
+      const colSchema = getState().find((x) => (x.name === tableName)).columns;
+      Object.keys(colValues).map((colName) => {
+        if (colSchema[colname].type === 'integer') {
+          insertObject[colName] = parseInt(colValues[colName]);
+        } else if (colSchema[colname].type === 'numeric') {
+          insertObject[colName] = parseFloat(colValues[colName]);
+        } else if (colSchema[colname].type === 'boolean') {
+          insertObject[colName] = (colValues[colName] === 'true' ? true : false);
+        } else {
+          insertObject[colName] = colValues[colName];
+        }
+      });
+      const options = {
+        method: 'POST',
+        credentials: globalCookiePolicy,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ objects: [insertObject], returning: []});
+      };
+      const url = Endpoints.db + '/table/' + state.tables.currentTable + '/select';
+      fetch(url, options).then(
+        (response) => {
+        },
+        (error) => {
+          dispatch({type: I_REQUEST_ERROR});
+          reject();
+        });
+  };
+};
+const vToggleExpandHeading = (colName) => ({type: V_TOGGLE_EXPAND_HEADING, colName});
+const vQueryExpand = (colName) => ({type: V_QUERY_EXPAND, colName});
+const vExpandHeading = (colName) => {
+  return (dispatch) => {
+    dispatch(vQueryExpand(colName));
+    return dispatch(vMakeRequest()).then(() => {
+      dispatch(vToggleExpandHeading(colName));
+    });
+  };
+};
+
+
+/******************* insert action creators *************/
+const insertItem = (tableName, colValues) => {
+  return (dispatch, getState) => {
+    const p1 = new Promise((resolve, reject) => {
+      /* Type all the values correctly */
+      const insertObject = {};
+      const colSchema = getState().find((x) => (x.name === tableName)).columns;
+      Object.keys(colValues).map((colName) => {
+        if (colSchema[colname].type === 'integer') {
+          insertObject[colName] = parseInt(colValues[colName]);
+        } else if (colSchema[colname].type === 'numeric') {
+          insertObject[colName] = parseFloat(colValues[colName]);
+        } else if (colSchema[colname].type === 'boolean') {
+          insertObject[colName] = (colValues[colName] === 'true' ? true : false);
+        } else {
+          insertObject[colName] = colValues[colName];
+        }
+      });
+      const options = {
+        method: 'POST',
+        credentials: globalCookiePolicy,
+        body: JSON.stringify({ objects: [insertObject], returning: []});
+      };
+      fetch(Endpoints.db
+    });
+    return p1;
+  };
+};
+
 
 /* ************ helpers ************************/
 const genHeadingsFromSchema = (tableName, schema) => {

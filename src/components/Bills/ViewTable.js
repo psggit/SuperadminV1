@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {setTable, vSetDefaults, vMakeRequest, vExpandHeading} from './DataActions';
+import TableHeader from './TableHeader';
 
 const genHeadings = (headings) => {
   if (headings.length === 0) {
@@ -107,10 +108,7 @@ class ViewTable extends Component {
 
     return (
       <div className={styles.container + ' container-fluid'}>
-        <div className={styles.header}>
-          <h3>{tableName}</h3>
-          <div className="clearfix"></div>
-        </div>
+        <TableHeader dispatch={dispatch} tableName={tableName} tabName="view" />
         <div className="container-fluid">
           <div className={styles.filterOptions}>
           </div>
