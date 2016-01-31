@@ -1,0 +1,63 @@
+.container {
+  padding: 0;
+}
+.header {
+  background: #eee;
+  h3 {
+    margin: 0;
+    padding: 20px;
+    display: inline-block;
+    line-height: 26px;
+  }
+}
+
+.filterOptions {
+  height: 50px;
+}
+
+.tableContainer {
+  overflow: scroll;
+}
+.insertContainer {
+  button {
+    margin: 0 10px;
+  }
+}
+
+.table {
+  width: auto;
+  th {
+    min-width: 100px;
+  }
+}
+
+.expandable {
+  color: #779ecb;
+  text-decoration: underline;
+}
+
+.expandable:hover {
+  background: #eee;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.tableNameInput {
+  width: 300px;
+}
+.addCol {
+  .input {
+    width: 250px;
+    display: inline-block;
+  }
+  .select {
+    margin: 0 20px;
+    display: inline-block;
+    width: 120px;
+  }
+  i:hover {
+    cursor: pointer;
+    color: #B85C27;
+    transition: 0.2s;
+  }
+}

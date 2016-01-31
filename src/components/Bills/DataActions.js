@@ -17,12 +17,10 @@ import requestAction from './requestAction';
 const SET_TABLE = 'Data/SET_TABLE';
 const LOAD_SCHEMA = 'Data/LOAD_SCHEMA';
 
-/******************* View actions *************/
+/* ****************** View actions *************/
 const V_SET_DEFAULTS = 'ViewTable/V_SET_DEFAULTS';
-
 const V_REQUEST_SUCCESS = 'ViewTable/V_REQUEST_SUCCESS';
 const V_REQUEST_ERROR = 'ViewTable/V_REQUEST_ERROR';
-
 const V_TOGGLE_EXPAND_HEADING = 'ViewTable/V_TOGGLE_EXPAND_HEADING';
 const V_QUERY_EXPAND = 'ViewTable/V_QUERY_EXPAND';
 
@@ -33,7 +31,7 @@ const V_QUERY_EXPAND = 'ViewTable/V_QUERY_EXPAND';
 // const V_ADD_SORT;
 // const V_REMOVE_SORT;
 
-/******************* Insert actions *************/
+/* ****************** Insert actions *************/
 const I_ONGOING_REQ = 'InsertItem/I_ONGOING_REQ';
 const I_REQUEST_SUCCESS = 'InsertItem/I_REQUEST_SUCCESS';
 const I_REQUEST_ERROR = 'InsertItem/I_REQUEST_ERROR';
@@ -68,8 +66,7 @@ const loadSchema = () => {
 };
 const setTable = (tableName) => ({type: SET_TABLE, tableName});
 
-/******************* view action creators *************/
-const V_SET_DEFAULTS = 'ViewTable/V_SET_DEFAULTS';
+/* ****************** view action creators *************/
 const vSetDefaults = () => ({type: V_SET_DEFAULTS});
 const vMakeRequest = () => {
   return (dispatch, getState) => {
@@ -95,78 +92,32 @@ const vExpandHeading = (colName) => {
 };
 
 
-/******************* insert action creators *************/
+/* ****************** insert action creators *************/
 const insertItem = (tableName, colValues) => {
   return (dispatch, getState) => {
-    const p1 = new Promise((resolve, reject) => {
-      /* Type all the values correctly */
-      const insertObject = {};
-      const colSchema = getState().find((x) => (x.name === tableName)).columns;
-      Object.keys(colValues).map((colName) => {
-        if (colSchema[colname].type === 'integer') {
-          insertObject[colName] = parseInt(colValues[colName]);
-        } else if (colSchema[colname].type === 'numeric') {
-          insertObject[colName] = parseFloat(colValues[colName]);
-        } else if (colSchema[colname].type === 'boolean') {
-          insertObject[colName] = (colValues[colName] === 'true' ? true : false);
-        } else {
-          insertObject[colName] = colValues[colName];
-        }
-      });
-      const options = {
-        method: 'POST',
-        credentials: globalCookiePolicy,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ objects: [insertObject], returning: []});
-      };
-      const url = Endpoints.db + '/table/' + state.tables.currentTable + '/select';
-      fetch(url, options).then(
-        (response) => {
-        },
-        (error) => {
-          dispatch({type: I_REQUEST_ERROR});
-          reject();
-        });
-  };
-};
-const vToggleExpandHeading = (colName) => ({type: V_TOGGLE_EXPAND_HEADING, colName});
-const vQueryExpand = (colName) => ({type: V_QUERY_EXPAND, colName});
-const vExpandHeading = (colName) => {
-  return (dispatch) => {
-    dispatch(vQueryExpand(colName));
-    return dispatch(vMakeRequest()).then(() => {
-      dispatch(vToggleExpandHeading(colName));
+    /* Type all the values correctly */
+    const insertObject = {};
+    const state = getState();
+    const colSchema = state.tables.allSchemas.find((x) => (x.name === tableName)).columns;
+    Object.keys(colValues).map((colName) => {
+      if (colSchema[colName].type === 'integer') {
+        insertObject[colName] = parseInt(colValues[colName], 10);
+      } else if (colSchema[colName].type === 'numeric') {
+        insertObject[colName] = parseFloat(colValues[colName], 10);
+      } else if (colSchema[colName].type === 'boolean') {
+        insertObject[colName] = (colValues[colName] === 'true' ? true : false);
+      } else {
+        insertObject[colName] = colValues[colName];
+      }
     });
-  };
-};
-
-
-/******************* insert action creators *************/
-const insertItem = (tableName, colValues) => {
-  return (dispatch, getState) => {
-    const p1 = new Promise((resolve, reject) => {
-      /* Type all the values correctly */
-      const insertObject = {};
-      const colSchema = getState().find((x) => (x.name === tableName)).columns;
-      Object.keys(colValues).map((colName) => {
-        if (colSchema[colname].type === 'integer') {
-          insertObject[colName] = parseInt(colValues[colName]);
-        } else if (colSchema[colname].type === 'numeric') {
-          insertObject[colName] = parseFloat(colValues[colName]);
-        } else if (colSchema[colname].type === 'boolean') {
-          insertObject[colName] = (colValues[colName] === 'true' ? true : false);
-        } else {
-          insertObject[colName] = colValues[colName];
-        }
-      });
-      const options = {
-        method: 'POST',
-        credentials: globalCookiePolicy,
-        body: JSON.stringify({ objects: [insertObject], returning: []});
-      };
-      fetch(Endpoints.db
-    });
-    return p1;
+    const options = {
+      method: 'POST',
+      credentials: globalCookiePolicy,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ objects: [insertObject], returning: []})
+    };
+    const url = Endpoints.db + '/table/' + tableName + '/insert';
+    return dispatch(requestAction(url, options, I_REQUEST_SUCCESS, I_REQUEST_ERROR));
   };
 };
 
@@ -267,6 +218,22 @@ const expandChildQuery = (childColPath, tableName, parentColumns, schema) => {
 };
 
 /* ************ reducers ************************/
+const insertReducer = (tableName, state, action) => {
+  switch (action.type) {
+    case I_ONGOING_REQ:
+      return {ongoingRequest: true, lastError: null, lastSuccess: null};
+    case I_REQUEST_SUCCESS:
+      return {ongoingRequest: false, lastError: null, lastSuccess: true};
+    case I_REQUEST_ERROR:
+      if (action.data) {
+        return {ongoingRequest: false, lastError: action.data, lastSuccess: null};
+      }
+      return {ongoingRequest: false, lastError: 'server-failure', lastSuccess: null };
+    default:
+      return state;
+  }
+};
+
 const viewReducer = (tableName, state, action) => { // eslint-disable-line no-unused-vars
   switch (action.type) {
     case V_SET_DEFAULTS:
@@ -308,6 +275,12 @@ const dataReducer = (state = defaultState, action) => { // eslint-disable-line n
   if (action.type.indexOf('ViewTable/') === 0) {
     return viewReducer(state.currentTable, state, action);
   }
+  if (action.type.indexOf('InsertItem/') === 0) {
+    return {
+      ...state,
+      insert: insertReducer(state.currentTable, state.insertItem, action)
+    };
+  }
   switch (action.type) {
     case LOAD_SCHEMA:
       return {...state, allSchemas: action.allSchemas};
@@ -320,4 +293,4 @@ const dataReducer = (state = defaultState, action) => { // eslint-disable-line n
 };
 
 export default dataReducer;
-export {setTable, vSetDefaults, vMakeRequest, vExpandHeading, loadSchema};
+export {setTable, vSetDefaults, vMakeRequest, vExpandHeading, loadSchema, insertItem};

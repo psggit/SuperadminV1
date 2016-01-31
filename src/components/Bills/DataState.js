@@ -25,7 +25,7 @@ const defaultState = {
     ongoingRequest: false,
     lastError: null,
     lastSuccess: null
-   },
+  },
   udpate: {
   },
   allSchemas: null
