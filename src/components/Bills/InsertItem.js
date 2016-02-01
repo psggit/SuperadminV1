@@ -36,7 +36,7 @@ const InsertItem = ({tableName, schemas, ongoingRequest, lastError, lastSuccess,
               <button type="submit" className="btn btn-success" onClick={(e) => {
                 e.preventDefault();
                 const inputValues = {};
-                Object.keys(refs).map((colName) => {inputValues[colName] = refs[colName];});
+                Object.keys(refs).map((colName) => {inputValues[colName] = refs[colName].value;});
                 dispatch(insertItem(tableName, inputValues));
               }}>Save</button>
             </form>
