@@ -3,6 +3,7 @@ import Endpoints, {globalCookiePolicy} from '../../Endpoints';
 import { routeActions } from 'redux-simple-router';
 import {loadSchema} from './DataActions';
 
+const SET_DEFAULTS = 'AddTable/SET_DEFAULTS';
 const SET_TABLENAME = 'AddTable/SET_TABLENAME';
 const REMOVE_COLUMN = 'AddTable/REMOVE_COLUMN';
 const SET_COLNAME = 'AddTable/SET_COLNAME';
@@ -15,6 +16,7 @@ const MAKING_REQUEST = 'AddTable/MAKING_REQUEST';
 const REQUEST_SUCCESS = 'AddTable/REQUEST_SUCCESS';
 const REQUEST_ERROR = 'AddTable/REQUEST_ERROR';
 
+const setDefaults = () => ({type: SET_DEFAULTS});
 const setTableName = (value) => ({type: SET_TABLENAME, value});
 const removeColumn = (i) => ({type: REMOVE_COLUMN, index: i});
 const setColName = (name, index) => ({type: SET_COLNAME, name, index});
@@ -71,6 +73,8 @@ const createTable = () => {
 
 const addTableReducer = (state = defaultState, action) => {
   switch (action.type) {
+    case SET_DEFAULTS:
+      return {...defaultState};
     case MAKING_REQUEST:
       return {...state, ongoingRequest: true, lastError: null, lastSuccess: null};
     case REQUEST_SUCCESS:
@@ -129,4 +133,4 @@ const addTableReducer = (state = defaultState, action) => {
 };
 
 export default addTableReducer;
-export {setTableName, removeColumn, setColName, setColType, addCol, addPk, removePk, setPk, createTable};
+export {setDefaults, setTableName, removeColumn, setColName, setColType, addCol, addPk, removePk, setPk, createTable};
