@@ -101,6 +101,8 @@ class ViewTable extends Component {
 
     const tableRows = rows.map((row, i) => (
       <tr key={i}>
+        <td><input type="checkbox"></input></td>
+        <td><button className="btn btn-xs btn-default">Edit</button></td>
         {genRow(row, headings).map((datum, j) => {
           return <td key={j}>{datum}</td>;
         })}
@@ -113,9 +115,15 @@ class ViewTable extends Component {
           <div className={styles.filterOptions}>
           </div>
           <div className={styles.tableContainer}>
-            <table className={styles.table + ' table table-bordered table-striped'}>
+            <table className={styles.table + ' table table-bordered table-striped table-hover'}>
               <thead>
                 <tr>
+                  <th style={{minWidth: 'auto'}}>
+                    <input type="checkbox"></input>
+                  </th>
+                  <th style={{minWidth: 'auto'}}>
+                    <button className="disabled btn btn-primary btn-xs">Delete</button>
+                  </th>
                   {tableHeadings}
                 </tr>
               </thead>

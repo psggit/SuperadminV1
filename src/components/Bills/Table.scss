@@ -18,9 +18,19 @@
 .tableContainer {
   overflow: scroll;
 }
+
 .insertContainer {
   button {
     margin: 0 10px;
+  }
+  label.radioLabel {
+    padding-top: 0;
+    input[type="radio"] {
+      margin-top: 10px;
+    }
+  }
+  span.radioSpan {
+    line-height: 34px;
   }
 }
 

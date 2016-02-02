@@ -4,18 +4,38 @@ import TableHeader from './TableHeader';
 import {insertItem} from './DataActions';
 
 const InsertItem = ({tableName, schemas, ongoingRequest, lastError, lastSuccess, dispatch}) => {
+  const styles = require('./Table.scss');
+
   const columns = schemas.find((x) => (x.name === tableName)).columns;
   const refs = {};
   const elements = columns.map((col, i) => {
+    refs[col.name] = { valueNode: null, nullNode: null, defaultNode: null };
     return (
       <div key={i} className="form-group">
         <label className="col-sm-2 control-label">{col.name}</label>
-        <div className="col-sm-10">
-          <input ref={(node) => {refs[col.name] = node;}} type="text" className="form-control" />
-        </div>
+        <label className={styles.radioLabel + ' radio-inline'}>
+          <input type="radio" name={col.name + '-value'} value="option1">
+            <input ref={(node) => {refs[col.name].valueNode = node;}} type="text" className="form-control"
+              onClick={(e) => {
+                e.target.parentNode.click();
+                e.target.focus();
+              }}/>
+          </input>
+        </label>
+        <label className={styles.radioLabel + ' radio-inline'}>
+          <input type="radio" ref={(node) => {refs[col.name].nullNode = node;}}
+                 name={col.name + '-value'} value="NULL">
+            <span className={styles.radioSpan}>NULL</span>
+          </input>
+        </label>
+        <label className={styles.radioLabel + ' radio-inline'}>
+          <input type="radio" ref={(node) => {refs[col.name].defaultNode = node;}}
+                 name={col.name + '-value'} value="option3">
+            <span className={styles.radioSpan}>Default</span>
+          </input>
+        </label>
       </div>);
   });
-  const styles = require('./Table.scss');
 
   let alert = null;
   if (ongoingRequest) {
@@ -36,7 +56,15 @@ const InsertItem = ({tableName, schemas, ongoingRequest, lastError, lastSuccess,
               <button type="submit" className="btn btn-success" onClick={(e) => {
                 e.preventDefault();
                 const inputValues = {};
-                Object.keys(refs).map((colName) => {inputValues[colName] = refs[colName].value;});
+                Object.keys(refs).map((colName) => {
+                  if (refs[colName].nullNode.checked) { // null
+                    inputValues[colName] = null;
+                  } else if (refs[colName].defaultNode.checked) { // default
+                    return;
+                  } else {
+                    inputValues[colName] = refs[colName].valueNode.value;
+                  }
+                });
                 dispatch(insertItem(tableName, inputValues));
               }}>Save</button>
             </form>
