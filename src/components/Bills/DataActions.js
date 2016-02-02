@@ -98,13 +98,14 @@ const insertItem = (tableName, colValues) => {
     /* Type all the values correctly */
     const insertObject = {};
     const state = getState();
-    const colSchema = state.tables.allSchemas.find((x) => (x.name === tableName)).columns;
+    const columns = state.tables.allSchemas.find((x) => (x.name === tableName)).columns;
     Object.keys(colValues).map((colName) => {
-      if (colSchema[colName].type === 'integer') {
+      const colSchema = columns.find((x) => (x.name === colName));
+      if (colSchema.type === 'integer') {
         insertObject[colName] = parseInt(colValues[colName], 10);
-      } else if (colSchema[colName].type === 'numeric') {
+      } else if (colSchema.type === 'numeric') {
         insertObject[colName] = parseFloat(colValues[colName], 10);
-      } else if (colSchema[colName].type === 'boolean') {
+      } else if (colSchema.type === 'boolean') {
         insertObject[colName] = (colValues[colName] === 'true' ? true : false);
       } else {
         insertObject[colName] = colValues[colName];
@@ -126,18 +127,18 @@ const insertItem = (tableName, colValues) => {
 const genHeadingsFromSchema = (tableName, schema) => {
   const table = schema.find((obj) => (obj.name === tableName));
   const cols = table.columns;
-  const rels = Object.keys(table.relationships).sort().map((relName) => {
-    return [relName, table.relationships[relName]];
+  const rels = table.relationships.map((rel) => {
+    return [rel.name, rel];
   });
 
   const headings = [];
-  Object.keys(cols).sort().map((colName) => {
-    if (cols[colName].fk_cons.length === 0) {
-      headings.push(colName);
+  cols.map((col) => {
+    if (col.foreign_key_constraints.length === 0) {
+      headings.push(col.name);
       return;
     }
     // If the column is on an objRel
-    const objRels = rels.filter((rel) => ((rel[1].type === 'obj_rel') && (rel[1].lcol === colName)));
+    const objRels = rels.filter((rel) => ((rel[1].type === 'obj_rel') && (rel[1].lcol === col.name)));
     objRels.map( (objRel) => {
       headings.push({...objRel[1],
                      relname: objRel[0],
@@ -177,7 +178,7 @@ const expandChildHeading = (childColPath, parentHeadings, schema) => {
 };
 const genColsFromSchema = (tableName, schema) => {
   const table = schema.find((obj) => (obj.name === tableName));
-  return Object.keys(table.columns);
+  return table.columns.map(x => x.name);
 };
 const expandChildQuery = (childColPath, tableName, parentColumns, schema) => {
   // childColPath : city.country_id
@@ -197,10 +198,10 @@ const expandChildQuery = (childColPath, tableName, parentColumns, schema) => {
     }
     const table = schema.find((obj) => (obj.name === tableName));
     const tablesToBeExpanded = [];
-    Object.keys(table.relationships).map((relname) => {
-      const _curTable = table.relationships[relname];
+    table.relationships.map((rel) => {
+      const _curTable = rel;
       if (_curTable.lcol === lastColumn) {
-        tablesToBeExpanded.push([_curTable.rtable, relname]);
+        tablesToBeExpanded.push([_curTable.rtable, rel.name]);
       }
     });
     newColumns = tablesToBeExpanded.map(([_table, relname]) => {
@@ -223,7 +224,7 @@ const insertReducer = (tableName, state, action) => {
     case I_ONGOING_REQ:
       return {ongoingRequest: true, lastError: null, lastSuccess: null};
     case I_REQUEST_SUCCESS:
-      return {ongoingRequest: false, lastError: null, lastSuccess: true};
+      return {ongoingRequest: false, lastError: null, lastSuccess: action.data};
     case I_REQUEST_ERROR:
       if (action.data) {
         return {ongoingRequest: false, lastError: action.data, lastSuccess: null};

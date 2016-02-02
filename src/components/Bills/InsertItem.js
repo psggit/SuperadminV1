@@ -6,12 +6,12 @@ import {insertItem} from './DataActions';
 const InsertItem = ({tableName, schemas, ongoingRequest, lastError, lastSuccess, dispatch}) => {
   const columns = schemas.find((x) => (x.name === tableName)).columns;
   const refs = {};
-  const elements = Object.keys(columns).map((colName, i) => {
+  const elements = columns.map((col, i) => {
     return (
       <div key={i} className="form-group">
-        <label className="col-sm-2 control-label">{colName}</label>
+        <label className="col-sm-2 control-label">{col.name}</label>
         <div className="col-sm-10">
-          <input ref={(node) => {refs[colName] = node;}} type="text" className="form-control" />
+          <input ref={(node) => {refs[col.name] = node;}} type="text" className="form-control" />
         </div>
       </div>);
   });
