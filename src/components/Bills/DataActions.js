@@ -23,6 +23,7 @@ const V_REQUEST_SUCCESS = 'ViewTable/V_REQUEST_SUCCESS';
 const V_REQUEST_ERROR = 'ViewTable/V_REQUEST_ERROR';
 const V_TOGGLE_EXPAND_HEADING = 'ViewTable/V_TOGGLE_EXPAND_HEADING';
 const V_QUERY_EXPAND = 'ViewTable/V_QUERY_EXPAND';
+const V_EXPAND_ARR_REL = 'ViewTable/V_EXPAND_ARR_REL';
 
 // const V_ADD_WHERE;
 // const V_REMOVE_WHERE;
@@ -90,7 +91,14 @@ const vExpandHeading = (colName) => {
     });
   };
 };
-
+const vExpandArrRel = (path, relname) => {
+  return (dispatch, getState) => {
+    //Modify the query (UI will automatically change)
+    dispatch({type: V_EXPAND_ARR_REL, path, relname});
+    //Make a request
+    return dispatch(vMakeRequest());
+  };
+});
 
 /* ****************** insert action creators *************/
 const insertItem = (tableName, colValues) => {
@@ -226,6 +234,9 @@ const expandChildQuery = (childColPath, tableName, parentColumns, schema) => {
           ...parentColumns.slice(l + 1)];
 };
 
+const expandQuery = (query, tableName, path, relname) {
+  
+};
 /* ************ reducers ************************/
 const insertReducer = (tableName, state, action) => {
   switch (action.type) {
@@ -255,6 +266,14 @@ const viewReducer = (tableName, state, action) => { // eslint-disable-line no-un
                               offset: 0}
                     },
              };
+    case V_EXPAND_ARR_REL:
+      return {
+        ...state,
+        view: {
+          ...defaultViewState,
+          query: expandQuery(state.view.query, tableName, action.path, action.relname);
+        }
+      };
     case V_REQUEST_SUCCESS:
       return { ...state, view: {...state.view, rows: action.data}};
     case V_QUERY_EXPAND:

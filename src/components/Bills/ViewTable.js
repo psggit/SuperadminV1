@@ -112,13 +112,13 @@ class ViewTable extends Component {
                                 schemas={schemas}
                                 query={query}
                                 path={null}
-                                row={rows ? rows[0] : {}} />);
+                                row={(rows.length === 0) ? rows[0] : {}} />);
       } else { // view rows
         finalElement = (<ViewRows tableName={tableName}
                                  schemas={schemas}
                                  query={query}
                                  path={null}
-                                 rows={rows ? rows : []}
+                                 rows={rows}
                                  dispatch={dispatch} />);
       }
     }
