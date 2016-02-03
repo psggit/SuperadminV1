@@ -29,7 +29,14 @@ const defaultState = {
   },
   udpate: {
   },
-  allSchemas: [
+  allSchemas: null
+
+};
+
+export default defaultState;
+export {defaultViewState};
+
+/*
     {
       'name': 'new_table_5',
       'relationships': [],
@@ -1098,12 +1105,4 @@ const defaultState = {
         }
       ]
     }
-  ]
-
-};
-
-export default defaultState;
-export {defaultViewState};
-
-/*
 */

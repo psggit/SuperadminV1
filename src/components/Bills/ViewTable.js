@@ -111,13 +111,13 @@ class ViewTable extends Component {
         finalElement = (<ViewRow tableName={tableName}
                                 schemas={schemas}
                                 query={query}
-                                path={null}
-                                row={(rows.length === 0) ? rows[0] : {}} />);
+                                path={[]}
+                                row={(rows.length === 0) ? {} : rows[0]} />);
       } else { // view rows
         finalElement = (<ViewRows tableName={tableName}
                                  schemas={schemas}
                                  query={query}
-                                 path={null}
+                                 path={[]}
                                  rows={rows}
                                  dispatch={dispatch} />);
       }
@@ -126,7 +126,6 @@ class ViewTable extends Component {
     return (
       <div className={styles.container + ' container-fluid'}>
         <TableHeader dispatch={dispatch} tableName={tableName} tabName="view" />
-        <h2> {expandedArrayRel ? 'Rendering single row' : 'Rendering all rows'} </h2>
         <div className="container-fluid">
           {finalElement}
         </div>

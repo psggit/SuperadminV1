@@ -91,14 +91,14 @@ const vExpandHeading = (colName) => {
     });
   };
 };
-const vExpandArrRel = (path, relname) => {
-  return (dispatch, getState) => {
-    //Modify the query (UI will automatically change)
-    dispatch({type: V_EXPAND_ARR_REL, path, relname});
-    //Make a request
+const vExpandArrRel = (path, relname, pk) => {
+  return (dispatch) => {
+    // Modify the query (UI will automatically change)
+    dispatch({type: V_EXPAND_ARR_REL, path, relname, pk});
+    // Make a request
     return dispatch(vMakeRequest());
   };
-});
+};
 
 /* ****************** insert action creators *************/
 const insertItem = (tableName, colValues) => {
@@ -234,8 +234,18 @@ const expandChildQuery = (childColPath, tableName, parentColumns, schema) => {
           ...parentColumns.slice(l + 1)];
 };
 
-const expandQuery = (query, tableName, path, relname) {
-  
+const expandQuery = (query, tableName, pk, path, relname, schemas) => {
+  // Find the child
+  const parentSchema = schemas.find(x => x.name === tableName);
+  const childTable = parentSchema.relationships.find(r => r.name === relname).rtable;
+  const childTableSchema = schemas.find(x => x.name === childTable);
+
+  if (path.length === 0) {
+    const newColumns = [...query.columns, {name: relname, columns: childTableSchema.columns.map(cl => cl.name)}];
+    return {...query, where: pk, columns: newColumns};
+  }
+
+  // FIXME: For the parent, modify the query to return only pk
 };
 /* ************ reducers ************************/
 const insertReducer = (tableName, state, action) => {
@@ -271,7 +281,7 @@ const viewReducer = (tableName, state, action) => { // eslint-disable-line no-un
         ...state,
         view: {
           ...defaultViewState,
-          query: expandQuery(state.view.query, tableName, action.path, action.relname);
+          query: expandQuery(state.view.query, tableName, action.pk, action.path, action.relname, state.allSchemas)
         }
       };
     case V_REQUEST_SUCCESS:
@@ -322,4 +332,4 @@ const dataReducer = (state = defaultState, action) => { // eslint-disable-line n
 };
 
 export default dataReducer;
-export {setTable, vSetDefaults, vMakeRequest, vExpandHeading, loadSchema, insertItem};
+export {setTable, vSetDefaults, vMakeRequest, vExpandHeading, loadSchema, insertItem, vExpandArrRel};
