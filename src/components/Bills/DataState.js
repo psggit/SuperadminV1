@@ -1,5 +1,6 @@
 const defaultViewState = {
   headings: [],
+  arrayHeadings: [],
   query: {},
   rows: [],
   ongoingRequest: false,

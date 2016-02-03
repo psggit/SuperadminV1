@@ -124,6 +124,17 @@ const insertItem = (tableName, colValues) => {
 
 
 /* ************ helpers ************************/
+const genArrayHeadingsFromSchema = (tableName, schema) => {
+  const table = schema.find((obj) => (obj.name === tableName));
+  const arrayRels = [];
+  table.relationships.map((rel) => {
+    if (rel.type === 'arr_rel') {
+      arrayRels.push(rel);
+    }
+  });
+  return arrayRels;
+};
+
 const genHeadingsFromSchema = (tableName, schema) => {
   const table = schema.find((obj) => (obj.name === tableName));
   const cols = table.columns;
@@ -145,9 +156,6 @@ const genHeadingsFromSchema = (tableName, schema) => {
                      _expanded: false});
     });
   });
-  // FIXME: Add arr_rels
-  // rels.filter((rel) => (rel[1].type === 'arr_rel')).map((rel) => {
-  // });
 
   return headings;
 };
@@ -240,6 +248,7 @@ const viewReducer = (tableName, state, action) => { // eslint-disable-line no-un
     case V_SET_DEFAULTS:
       return {...state,
               view: {...defaultViewState,
+                     arrayHeadings: genArrayHeadingsFromSchema(tableName, state.allSchemas),
                      headings: genHeadingsFromSchema(tableName, state.allSchemas),
                      query: { columns: genColsFromSchema(tableName, state.allSchemas),
                               limit: 10,

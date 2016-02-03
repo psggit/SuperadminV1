@@ -1,7 +1,9 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {setTable, vSetDefaults, vMakeRequest, vExpandHeading} from './DataActions';
+import {setTable, vSetDefaults, vMakeRequest, vExpandHeading} from './DataActions'; // eslint-disable-line no-unused-vars
 import TableHeader from './TableHeader';
+import ViewRow from './ViewRow';
+import ViewRows from './ViewRows';
 
 const genHeadings = (headings) => {
   if (headings.length === 0) {
@@ -81,57 +83,52 @@ class ViewTable extends Component {
   }
 
   render() {
-    const {tableName, headings, query, rows,  // eslint-disable-line no-unused-vars
+    const {tableName, schemas, query, rows,  // eslint-disable-line no-unused-vars
            ongoingRequest, lastError, lastSuccess, dispatch} = this.props; // eslint-disable-line no-unused-vars
 
+    const tableSchema = schemas.find((x) => (x.name === tableName));
     const styles = require('./Table.scss');
 
-    const allHeadings = genHeadings(headings);
-    const tableHeadings = allHeadings.map((heading, i) => {
-      if (typeof(heading) === 'object') {
-        return (
-          <th className={styles.expandable} key={i} onClick={() => {
-            dispatch(vExpandHeading(heading.name));
-          }}>
-            {heading.name} &rarr;
-          </th>);
-      }
-      return <th key={i}>{heading}</th>;
-    });
+    // Are there any expanded columns that are also arr_rel
+    let finalElement = null;
+    let expandedArrayRel = null;
+    if ( !(query.columns) || (query.columns.length === 0)) {
+      finalElement = null;
+    } else {
+      expandedArrayRel = query.columns.find((x) => {
+        if (typeof(x) === 'object') {
+          const rel = tableSchema.relationships.find((r) => {
+            return ((r.type === 'arr_rel') && (r.name === x.name));
+          });
+          if (rel) {
+            return true;
+          }
+        }
+        return false;
+      });
 
-    const tableRows = rows.map((row, i) => (
-      <tr key={i}>
-        <td><input type="checkbox"></input></td>
-        <td><button className="btn btn-xs btn-default">Edit</button></td>
-        {genRow(row, headings).map((datum, j) => {
-          return <td key={j}>{datum}</td>;
-        })}
-      </tr>));
+      if (expandedArrayRel) { // view row
+        finalElement = (<ViewRow tableName={tableName}
+                                schemas={schemas}
+                                query={query}
+                                path={null}
+                                row={rows ? rows[0] : {}} />);
+      } else { // view rows
+        finalElement = (<ViewRows tableName={tableName}
+                                 schemas={schemas}
+                                 query={query}
+                                 path={null}
+                                 rows={rows ? rows : []}
+                                 dispatch={dispatch} />);
+      }
+    }
 
     return (
       <div className={styles.container + ' container-fluid'}>
         <TableHeader dispatch={dispatch} tableName={tableName} tabName="view" />
+        <h2> {expandedArrayRel ? 'Rendering single row' : 'Rendering all rows'} </h2>
         <div className="container-fluid">
-          <div className={styles.filterOptions}>
-          </div>
-          <div className={styles.tableContainer}>
-            <table className={styles.table + ' table table-bordered table-striped table-hover'}>
-              <thead>
-                <tr>
-                  <th style={{minWidth: 'auto'}}>
-                    <input type="checkbox"></input>
-                  </th>
-                  <th style={{minWidth: 'auto'}}>
-                    <button className="disabled btn btn-primary btn-xs">Delete</button>
-                  </th>
-                  {tableHeadings}
-                </tr>
-              </thead>
-              <tbody>
-                {tableRows}
-              </tbody>
-            </table>
-          </div>
+          {finalElement}
         </div>
       </div>
     );
@@ -140,7 +137,7 @@ class ViewTable extends Component {
 
 ViewTable.propTypes = {
   tableName: PropTypes.string.isRequired,
-  headings: PropTypes.array.isRequired,
+  schemas: PropTypes.array.isRequired,
   query: PropTypes.object.isRequired,
   ongoingRequest: PropTypes.bool.isRequired,
   rows: PropTypes.array.isRequired,
@@ -150,7 +147,11 @@ ViewTable.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  return {tableName: ownProps.params.table, ...state.tables.view};
+  return {
+    tableName: ownProps.params.table,
+    schemas: state.tables.allSchemas,
+    ...state.tables.view
+  };
 };
 
 export default connect(mapStateToProps)(ViewTable);
