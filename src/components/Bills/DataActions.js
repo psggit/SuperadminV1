@@ -24,6 +24,7 @@ const V_REQUEST_ERROR = 'ViewTable/V_REQUEST_ERROR';
 const V_TOGGLE_EXPAND_HEADING = 'ViewTable/V_TOGGLE_EXPAND_HEADING';
 const V_QUERY_EXPAND = 'ViewTable/V_QUERY_EXPAND';
 const V_EXPAND_ARR_REL = 'ViewTable/V_EXPAND_ARR_REL';
+const V_CLOSE_ARR_REL = 'ViewTable/V_CLOSE_ARR_REL';
 
 // const V_ADD_WHERE;
 // const V_REMOVE_WHERE;
@@ -100,6 +101,14 @@ const vExpandArrRel = (path, relname, pk) => {
   };
 };
 
+const vCloseArrRel = (path) => {
+  return (dispatch) => {
+    // Modify the query (UI will automatically change)
+    dispatch({type: V_CLOSE_ARR_REL, path});
+    // Make a request
+    return dispatch(vMakeRequest());
+  };
+};
 /* ****************** insert action creators *************/
 const insertItem = (tableName, colValues) => {
   return (dispatch, getState) => {
@@ -233,7 +242,6 @@ const expandChildQuery = (childColPath, tableName, parentColumns, schema) => {
           ...newColumns,
           ...parentColumns.slice(l + 1)];
 };
-
 const expandQuery = (query, tableName, pk, path, relname, schemas) => {
   // Find the child
   const parentSchema = schemas.find(x => x.name === tableName);
@@ -246,6 +254,19 @@ const expandQuery = (query, tableName, pk, path, relname, schemas) => {
   }
 
   // FIXME: For the parent, modify the query to return only pk
+};
+const closeQuery = (query, tableName, path, schemas) => { // eslint-disable-line no-unused-vars
+
+  if (path.length === 1) {
+    const arrRelName = path[0];
+    const arrRelIndex = query.columns.findIndex((c) => (typeof(c) === 'object') && (c.name === arrRelName));
+    const newColumns = [
+      ...query.columns.slice(0, arrRelIndex),
+      ...query.columns.slice(arrRelIndex + 1)
+    ];
+    return {columns: newColumns};
+  }
+  // FIXME: FOr path.length > 1. Default limit and size
 };
 /* ************ reducers ************************/
 const insertReducer = (tableName, state, action) => {
@@ -282,6 +303,14 @@ const viewReducer = (tableName, state, action) => { // eslint-disable-line no-un
         view: {
           ...defaultViewState,
           query: expandQuery(state.view.query, tableName, action.pk, action.path, action.relname, state.allSchemas)
+        }
+      };
+    case V_CLOSE_ARR_REL:
+      return {
+        ...state,
+        view: {
+          ...defaultViewState,
+          query: closeQuery(state.view.query, tableName, action.path, state.allSchemas)
         }
       };
     case V_REQUEST_SUCCESS:
@@ -332,4 +361,4 @@ const dataReducer = (state = defaultState, action) => { // eslint-disable-line n
 };
 
 export default dataReducer;
-export {setTable, vSetDefaults, vMakeRequest, vExpandHeading, loadSchema, insertItem, vExpandArrRel};
+export {setTable, vSetDefaults, vMakeRequest, vExpandHeading, loadSchema, insertItem, vExpandArrRel, vCloseArrRel};

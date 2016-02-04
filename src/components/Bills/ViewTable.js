@@ -4,6 +4,7 @@ import {setTable, vSetDefaults, vMakeRequest, vExpandHeading} from './DataAction
 import TableHeader from './TableHeader';
 import ViewRow from './ViewRow';
 import ViewRows from './ViewRows';
+import {findArrayRelInQuery} from './Utils';
 
 const genHeadings = (headings) => {
   if (headings.length === 0) {
@@ -95,23 +96,13 @@ class ViewTable extends Component {
     if ( !(query.columns) || (query.columns.length === 0)) {
       finalElement = null;
     } else {
-      expandedArrayRel = query.columns.find((x) => {
-        if (typeof(x) === 'object') {
-          const rel = tableSchema.relationships.find((r) => {
-            return ((r.type === 'arr_rel') && (r.name === x.name));
-          });
-          if (rel) {
-            return true;
-          }
-        }
-        return false;
-      });
-
+      [expandedArrayRel] = findArrayRelInQuery(query, tableSchema);
       if (expandedArrayRel) { // view row
         finalElement = (<ViewRow tableName={tableName}
                                 schemas={schemas}
                                 query={query}
                                 path={[]}
+                                dispatch={dispatch}
                                 row={(rows.length === 0) ? {} : rows[0]} />);
       } else { // view rows
         finalElement = (<ViewRows tableName={tableName}
