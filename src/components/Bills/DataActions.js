@@ -109,6 +109,7 @@ const vCloseArrRel = (path) => {
     return dispatch(vMakeRequest());
   };
 };
+
 /* ****************** insert action creators *************/
 const insertItem = (tableName, colValues) => {
   return (dispatch, getState) => {
@@ -139,19 +140,7 @@ const insertItem = (tableName, colValues) => {
   };
 };
 
-
 /* ************ helpers ************************/
-const genArrayHeadingsFromSchema = (tableName, schema) => {
-  const table = schema.find((obj) => (obj.name === tableName));
-  const arrayRels = [];
-  table.relationships.map((rel) => {
-    if (rel.type === 'arr_rel') {
-      arrayRels.push(rel);
-    }
-  });
-  return arrayRels;
-};
-
 const genHeadingsFromSchema = (tableName, schema) => {
   const table = schema.find((obj) => (obj.name === tableName));
   const cols = table.columns;
@@ -256,7 +245,6 @@ const expandQuery = (query, tableName, pk, path, relname, schemas) => {
   // FIXME: For the parent, modify the query to return only pk
 };
 const closeQuery = (query, tableName, path, schemas) => { // eslint-disable-line no-unused-vars
-
   if (path.length === 1) {
     const arrRelName = path[0];
     const arrRelIndex = query.columns.findIndex((c) => (typeof(c) === 'object') && (c.name === arrRelName));
@@ -290,8 +278,6 @@ const viewReducer = (tableName, state, action) => { // eslint-disable-line no-un
     case V_SET_DEFAULTS:
       return {...state,
               view: {...defaultViewState,
-                     arrayHeadings: genArrayHeadingsFromSchema(tableName, state.allSchemas),
-                     headings: genHeadingsFromSchema(tableName, state.allSchemas),
                      query: { columns: genColsFromSchema(tableName, state.allSchemas),
                               limit: 10,
                               offset: 0}
