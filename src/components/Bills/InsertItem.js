@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import TableHeader from './TableHeader';
-import {insertItem} from './DataActions';
+import {insertItem} from './InsertActions';
 
 const InsertItem = ({tableName, schemas, ongoingRequest, lastError, lastSuccess, dispatch}) => {
   const styles = require('./Table.scss');

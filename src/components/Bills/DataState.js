@@ -1,8 +1,7 @@
 const defaultViewState = {
-  headings: [],
-  arrayHeadings: [],
-  query: {},
+  query: { columns: [] },
   rows: [],
+  activePath: [],
   ongoingRequest: false,
   lastError: {},
   lastSuccess: {}
@@ -30,7 +29,6 @@ const defaultState = {
   udpate: {
   },
   allSchemas: null
-
 };
 
 export default defaultState;

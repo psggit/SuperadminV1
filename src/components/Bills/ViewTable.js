@@ -1,10 +1,8 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {setTable, vSetDefaults, vMakeRequest, vExpandHeading} from './DataActions'; // eslint-disable-line no-unused-vars
+import {setTable, vSetDefaults, vMakeRequest, vExpandHeading} from './ViewActions'; // eslint-disable-line no-unused-vars
 import TableHeader from './TableHeader';
-import ViewRow from './ViewRow';
 import ViewRows from './ViewRows';
-import {findArrayRelInQuery} from './Utils';
 
 const genHeadings = (headings) => {
   if (headings.length === 0) {
@@ -87,38 +85,27 @@ class ViewTable extends Component {
     const {tableName, schemas, query, rows,  // eslint-disable-line no-unused-vars
            ongoingRequest, lastError, lastSuccess, dispatch} = this.props; // eslint-disable-line no-unused-vars
 
-    const tableSchema = schemas.find((x) => (x.name === tableName));
     const styles = require('./Table.scss');
 
-    // Are there any expanded columns that are also arr_rel
-    let finalElement = null;
-    let expandedArrayRel = null;
-    if ( !(query.columns) || (query.columns.length === 0)) {
-      finalElement = null;
-    } else {
-      [expandedArrayRel] = findArrayRelInQuery(query, tableSchema);
-      if (expandedArrayRel) { // view row
-        finalElement = (<ViewRow tableName={tableName}
-                                schemas={schemas}
-                                query={query}
-                                path={[]}
-                                dispatch={dispatch}
-                                row={(rows.length === 0) ? {} : rows[0]} />);
-      } else { // view rows
-        finalElement = (<ViewRows tableName={tableName}
-                                 schemas={schemas}
-                                 query={query}
-                                 path={[]}
-                                 rows={rows}
-                                 dispatch={dispatch} />);
-      }
-    }
+    // Are there any expanded columns
+    const viewRows = (<ViewRows curTableName={tableName}
+                             curQuery={query}
+                             curPath={[]}
+                             curRows={rows}
+                             parentTableName={null}
+                             activePath={activePath}
+                             ongoingRequest={ongoingRequest}
+                             lastError={lastError}
+                             lastSuccess={lastSuccess}
+                             schemas={schemas}
+                             curDepth={0}
+                             dispatch={dispatch} />);
 
     return (
       <div className={styles.container + ' container-fluid'}>
         <TableHeader dispatch={dispatch} tableName={tableName} tabName="view" />
         <div className="container-fluid">
-          {finalElement}
+          {viewRows}
         </div>
       </div>
     );
