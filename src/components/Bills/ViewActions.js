@@ -63,7 +63,19 @@ const expandQuery = (curQuery, curTable, pk, curPath, relname, schemas, isObjRel
     if (isObjRel) {
       return {...curQuery, columns: newColumns};
     }
-    return {...curQuery, where: pk, columns: newColumns, oldStuff: {...curQuery}};
+    // If there's already oldStuff then don't reset it
+    if ('oldStuff' in curQuery) {
+      return {...curQuery, where: pk, columns: newColumns};
+    }
+
+    // If there's no oldStuff then set it
+    const oldStuff = {};
+    ['where', 'limit', 'offset'].map((k) => {
+      if (k in curQuery) {
+        oldStuff[k] = curQuery[k];
+      }
+    });
+    return {name: curQuery.name, where: pk, columns: newColumns, oldStuff};
   }
 
   const curRelName = curPath[0];
@@ -89,7 +101,23 @@ const closeQuery = (curQuery, curTable, curPath, relname, schemas) => { // eslin
       ...curQuery.columns.slice(0, expandedIndex),
       ...curQuery.columns.slice(expandedIndex + 1)
     ];
-    return {...curQuery, ...curQuery.oldStuff, columns: newColumns, };
+    const newStuff = {};
+    newStuff.columns = newColumns;
+    if ('name' in curQuery) {
+      newStuff.name = curQuery.name;
+    }
+    // If no other expanded columns are left
+    if (!(newColumns.find(c => typeof(c) === 'object'))) {
+      if (curQuery.oldStuff) {
+        ['where', 'limit', 'offset'].map((k) => {
+          if (k in curQuery.oldStuff) {
+            newStuff[k] = curQuery[k];
+          }
+        });
+      }
+      return {...newStuff};
+    }
+    return {...curQuery, ...newStuff};
   }
 
   const curRelName = curPath[0];
