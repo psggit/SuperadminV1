@@ -89,10 +89,10 @@ const closeQuery = (curQuery, curTable, curPath, relname, schemas) => { // eslin
       ...curQuery.columns.slice(0, expandedIndex),
       ...curQuery.columns.slice(expandedIndex + 1)
     ];
-    return {...curQuery, columns: newColumns, ...curQuery.oldStuff};
+    return {...curQuery, ...curQuery.oldStuff, columns: newColumns, };
   }
 
-  const curRelName = curPath.slice(-1)[0];
+  const curRelName = curPath[0];
   const curRel = curTable.relationships.find(r => r.name === curRelName);
   const childTableSchema = schemas.find(x => x.name === curRel.rtable);
   const curRelColIndex = curQuery.columns.findIndex(c => c.name === curRelName);
@@ -100,7 +100,7 @@ const closeQuery = (curQuery, curTable, curPath, relname, schemas) => { // eslin
     ...curQuery,
     columns: [
       ...curQuery.columns.slice(0, curRelColIndex),
-      closeQuery(curQuery.columns, childTableSchema, curPath.slice(1), relname, schemas),
+      closeQuery(curQuery.columns[curRelColIndex], childTableSchema, curPath.slice(1), relname, schemas),
       ...curQuery.columns.slice(curRelColIndex + 1)
     ]
   };
@@ -127,8 +127,12 @@ const setActivePath = (activePath, curPath, relname, query) => {
 
   return basePath;
 };
+// const updateActivePathOnClose = (activePath, tableName, curPath, relname) => {
+// Worry about this only if activePath and curPath match
+// };
 /* ****************** reducer ******************/
 const viewReducer = (tableName, schemas, viewState, action) => { // eslint-disable-line no-unused-vars
+  const tableSchema = schemas.find(x => x.name === tableName);
   switch (action.type) {
     case V_SET_DEFAULTS:
       return {
@@ -139,7 +143,6 @@ const viewReducer = (tableName, schemas, viewState, action) => { // eslint-disab
         activePath: [tableName]
       };
     case V_EXPAND_REL:
-      const tableSchema = schemas.find(x => x.name === tableName);
       return {
         ...viewState,
         query: expandQuery(viewState.query, tableSchema, action.pk, action.path, action.relname, schemas),
@@ -148,7 +151,8 @@ const viewReducer = (tableName, schemas, viewState, action) => { // eslint-disab
     case V_CLOSE_REL:
       return {
         ...viewState,
-        query: closeQuery(viewState.query, tableName, action.path, action.relname, schemas)
+        query: closeQuery(viewState.query, tableSchema, action.path, action.relname, schemas)
+        // activePath: updateActivePathOnClose(viewState.query, tableName, action.path, action.relname)
       };
     case V_SET_ACTIVE:
       return {
