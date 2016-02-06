@@ -107,7 +107,7 @@ const closeQuery = (curQuery, curTable, curPath, relname, schemas) => { // eslin
 };
 
 const setActivePath = (activePath, curPath, relname, query) => {
-  const basePath = [activePath[0], ...curPath, relname];
+  const basePath = relname ? [activePath[0], ...curPath, relname] : [activePath[0], ...curPath];
 
   // Now check if there are any more children on this path.
   // If there are, then we should expand them by default
@@ -127,9 +127,31 @@ const setActivePath = (activePath, curPath, relname, query) => {
 
   return basePath;
 };
-// const updateActivePathOnClose = (activePath, tableName, curPath, relname) => {
-// Worry about this only if activePath and curPath match
-// };
+const updateActivePathOnClose = (activePath, tableName, curPath, relname, query) => {
+  const basePath = [tableName, ...curPath, relname];
+  let subBase = [...basePath];
+  let subActive = [...activePath];
+  let matchingFound = false;
+  let commonIndex = 0;
+  subBase = subBase.slice(1);
+  subActive = subActive.slice(1);
+
+  while (subActive.length > 0) {
+    if (subBase[0] === subActive[0]) {
+      matchingFound = true;
+      break;
+    }
+    subBase = subBase.slice(1);
+    subActive = subActive.slice(1);
+    commonIndex += 1;
+  }
+
+  if (matchingFound) {
+    const newActivePath = activePath.slice(0, commonIndex + 1);
+    return setActivePath(newActivePath, newActivePath.slice(1, -1), null, query);
+  }
+  return [...activePath];
+};
 /* ****************** reducer ******************/
 const viewReducer = (tableName, schemas, viewState, action) => { // eslint-disable-line no-unused-vars
   const tableSchema = schemas.find(x => x.name === tableName);
@@ -149,10 +171,11 @@ const viewReducer = (tableName, schemas, viewState, action) => { // eslint-disab
         activePath: [...viewState.activePath, action.relname]
       };
     case V_CLOSE_REL:
+      const _query = closeQuery(viewState.query, tableSchema, action.path, action.relname, schemas);
       return {
         ...viewState,
-        query: closeQuery(viewState.query, tableSchema, action.path, action.relname, schemas)
-        // activePath: updateActivePathOnClose(viewState.query, tableName, action.path, action.relname)
+        query: _query,
+        activePath: updateActivePathOnClose(viewState.activePath, tableName, action.path, action.relname, _query)
       };
     case V_SET_ACTIVE:
       return {
