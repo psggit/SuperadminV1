@@ -19,6 +19,10 @@
   overflow: scroll;
 }
 
+.viewRowsContainer {
+  border-left: 1px solid #ddd;
+}
+
 .insertContainer {
   button {
     margin: 0 10px;
@@ -44,6 +48,10 @@
 .expandable {
   color: #779ecb;
   text-decoration: underline;
+}
+
+a.expanded {
+  color: red;
 }
 
 .expandable:hover {

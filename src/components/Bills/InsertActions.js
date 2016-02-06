@@ -1,4 +1,3 @@
-import defaultState, {defaultViewState} from './DataState';
 import Endpoints, {globalCookiePolicy} from '../../Endpoints';
 import requestAction from './requestAction';
 
@@ -6,7 +5,7 @@ const I_ONGOING_REQ = 'InsertItem/I_ONGOING_REQ';
 const I_REQUEST_SUCCESS = 'InsertItem/I_REQUEST_SUCCESS';
 const I_REQUEST_ERROR = 'InsertItem/I_REQUEST_ERROR';
 
-/* ****************** insert action creators *************/
+/* ****************** insert action creators ************ */
 const insertItem = (tableName, colValues) => {
   return (dispatch, getState) => {
     /* Type all the values correctly */
@@ -36,7 +35,7 @@ const insertItem = (tableName, colValues) => {
   };
 };
 
-/* ************ reducers ************************/
+/* ************ reducers *********************** */
 const insertReducer = (tableName, state, action) => {
   switch (action.type) {
     case I_ONGOING_REQ:
@@ -53,4 +52,5 @@ const insertReducer = (tableName, state, action) => {
   }
 };
 
-
+export default insertReducer;
+export {insertItem };

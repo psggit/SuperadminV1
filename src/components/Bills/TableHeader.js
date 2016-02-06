@@ -11,7 +11,7 @@ const TableHeader = ({tableName, tabName}) => {
       </div>
       <br/>
       <div className="container-fluid">
-        <ul className="nav nav-tabs">
+        <ul className="nav nav-tabs nav-justified">
           <li role="presentation" className={(tabName === 'view') ? 'active' : ''}>
             <Link to={'/tables/' + tableName + '/view'}>Browse rows</Link>
           </li>

@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {setTable, vSetDefaults, vMakeRequest, vExpandHeading} from './ViewActions'; // eslint-disable-line no-unused-vars
+import {vSetDefaults, vMakeRequest, vExpandHeading} from './ViewActions'; // eslint-disable-line no-unused-vars
+import {setTable} from './DataActions';
 import TableHeader from './TableHeader';
 import ViewRows from './ViewRows';
 
@@ -81,9 +82,18 @@ class ViewTable extends Component {
     }
   }
 
+  componentWillUpdate() {
+    this.shouldScrollBottom = (window.innerHeight === document.body.offsetHeight - document.body.scrollTop);
+  }
+  componentDidUpdate() {
+    if (this.shouldScrollBottom) {
+      document.body.scrollTop = document.body.offsetHeight - window.innerHeight;
+    }
+  }
+
   render() {
     const {tableName, schemas, query, rows,  // eslint-disable-line no-unused-vars
-           ongoingRequest, lastError, lastSuccess, dispatch} = this.props; // eslint-disable-line no-unused-vars
+           activePath, ongoingRequest, lastError, lastSuccess, dispatch} = this.props; // eslint-disable-line no-unused-vars
 
     const styles = require('./Table.scss');
 
@@ -115,6 +125,7 @@ class ViewTable extends Component {
 ViewTable.propTypes = {
   tableName: PropTypes.string.isRequired,
   schemas: PropTypes.array.isRequired,
+  activePath: PropTypes.array.isRequired,
   query: PropTypes.object.isRequired,
   ongoingRequest: PropTypes.bool.isRequired,
   rows: PropTypes.array.isRequired,

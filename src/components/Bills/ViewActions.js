@@ -1,4 +1,4 @@
-import defaultState, {defaultViewState} from './DataState';
+import {defaultViewState} from './DataState';
 import Endpoints, {globalCookiePolicy} from '../../Endpoints';
 import requestAction from './requestAction';
 
@@ -8,7 +8,7 @@ const V_REQUEST_SUCCESS = 'ViewTable/V_REQUEST_SUCCESS';
 const V_REQUEST_ERROR = 'ViewTable/V_REQUEST_ERROR';
 const V_EXPAND_REL = 'ViewTable/V_EXPAND_REL';
 const V_CLOSE_REL = 'ViewTable/V_CLOSE_REL';
-
+const V_SET_ACTIVE = 'ViewTable/V_SET_ACTIVE';
 // const V_ADD_WHERE;
 // const V_REMOVE_WHERE;
 // const V_SET_LIMIT;
@@ -25,7 +25,8 @@ const vMakeRequest = () => {
     const options = {
       method: 'POST',
       body: JSON.stringify(state.tables.view.query),
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
+      credentials: globalCookiePolicy
     };
     return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
   };
@@ -38,40 +39,94 @@ const vExpandRel = (path, relname, pk) => {
     return dispatch(vMakeRequest());
   };
 };
-const vCloseRel = (path) => {
+const vCloseRel = (path, relname) => {
   return (dispatch) => {
     // Modify the query (UI will automatically change)
-    dispatch({type: V_CLOSE_REL, path});
+    dispatch({type: V_CLOSE_REL, path, relname});
     // Make a request
     return dispatch(vMakeRequest());
   };
 };
-
 /* ************ helpers ************************/
-const expandQuery = (query, tableName, pk, path, relname, schemas) => {
-  // Find the child
-  const tableSchema = schemas.find(x => x.name === tableName);
-  const childTable = parentSchema.relationships.find(r => r.name === relname).rtable;
-  const childTableSchema = schemas.find(x => x.name === childTable);
-
-  if (path.length === 0) {
-    const newColumns = [...query.columns, {name: relname, columns: childTableSchema.columns.map(cl => cl.name)}];
-    return {...query, where: pk, columns: newColumns};
-  }
+const defaultSubQuery = (relname, tableSchema) => {
+  return {
+    name: relname,
+    columns: tableSchema.columns.map(c => c.name)
+  };
 };
-const closeQuery = (query, tableName, path, schemas) => { // eslint-disable-line no-unused-vars
-  if (path.length === 1) {
-    const arrRelName = path[0];
-    const arrRelIndex = query.columns.findIndex((c) => (typeof(c) === 'object') && (c.name === arrRelName));
+
+const expandQuery = (curQuery, curTable, pk, curPath, relname, schemas, isObjRel = false) => {
+  if (curPath.length === 0) {
+    const rel = curTable.relationships.find(r => r.name === relname);
+    const childTableSchema = schemas.find(x => x.name === rel.rtable);
+    const newColumns = [...curQuery.columns, defaultSubQuery(relname, childTableSchema)];
+    if (isObjRel) {
+      return {...curQuery, columns: newColumns};
+    }
+    return {...curQuery, where: pk, columns: newColumns, oldStuff: {...curQuery}};
+  }
+
+  const curRelName = curPath[0];
+  const curRel = curTable.relationships.find(r => r.name === curRelName);
+  const childTableSchema = schemas.find(x => x.name === curRel.rtable);
+  const curRelColIndex = curQuery.columns.findIndex(c => c.name === curRelName);
+  return {
+    ...curQuery,
+    columns: [
+      ...curQuery.columns.slice(0, curRelColIndex),
+      expandQuery(curQuery.columns[curRelColIndex], childTableSchema,
+        pk, curPath.slice(1), relname,
+        schemas, ((curRel.type === 'obj_rel') ? true : false)),
+      ...curQuery.columns.slice(curRelColIndex + 1)
+    ]
+  };
+};
+
+const closeQuery = (curQuery, curTable, curPath, relname, schemas) => { // eslint-disable-line no-unused-vars
+  if (curPath.length === 0) {
+    const expandedIndex = curQuery.columns.findIndex(c => c.name === relname);
     const newColumns = [
-      ...query.columns.slice(0, arrRelIndex),
-      ...query.columns.slice(arrRelIndex + 1)
+      ...curQuery.columns.slice(0, expandedIndex),
+      ...curQuery.columns.slice(expandedIndex + 1)
     ];
-    return {columns: newColumns};
+    return {...curQuery, columns: newColumns, ...curQuery.oldStuff};
   }
-  // FIXME: FOr path.length > 1. Default limit and size
+
+  const curRelName = curPath.slice(-1)[0];
+  const curRel = curTable.relationships.find(r => r.name === curRelName);
+  const childTableSchema = schemas.find(x => x.name === curRel.rtable);
+  const curRelColIndex = curQuery.columns.findIndex(c => c.name === curRelName);
+  return {
+    ...curQuery,
+    columns: [
+      ...curQuery.columns.slice(0, curRelColIndex),
+      closeQuery(curQuery.columns, childTableSchema, curPath.slice(1), relname, schemas),
+      ...curQuery.columns.slice(curRelColIndex + 1)
+    ]
+  };
 };
 
+const setActivePath = (activePath, curPath, relname, query) => {
+  const basePath = [activePath[0], ...curPath, relname];
+
+  // Now check if there are any more children on this path.
+  // If there are, then we should expand them by default
+  let subQuery = query;
+  let subBase = basePath.slice(1);
+
+  while (subBase.length > 0) {
+    subQuery = subQuery.columns.find(c => c.name === subBase[0]); // eslint-disable-line no-loop-func
+    subBase = subBase.slice(1);
+  }
+
+  subQuery = subQuery.columns.find(c => typeof(c) === 'object');
+  while (subQuery) {
+    basePath.push(subQuery.name);
+    subQuery = subQuery.columns.find(c => typeof(c) === 'object');
+  }
+
+  return basePath;
+};
 /* ****************** reducer ******************/
 const viewReducer = (tableName, schemas, viewState, action) => { // eslint-disable-line no-unused-vars
   switch (action.type) {
@@ -84,25 +139,32 @@ const viewReducer = (tableName, schemas, viewState, action) => { // eslint-disab
         activePath: [tableName]
       };
     case V_EXPAND_REL:
+      const tableSchema = schemas.find(x => x.name === tableName);
       return {
         ...viewState,
-        query: expandQuery(viewState.query, tableName, action.pk, action.path, action.relname, schemas)
+        query: expandQuery(viewState.query, tableSchema, action.pk, action.path, action.relname, schemas),
+        activePath: [...viewState.activePath, action.relname]
       };
     case V_CLOSE_REL:
       return {
         ...viewState,
-        query: closeQuery(state.view.query, tableName, action.path, schemas)
+        query: closeQuery(viewState.query, tableName, action.path, action.relname, schemas)
+      };
+    case V_SET_ACTIVE:
+      return {
+        ...viewState,
+        activePath: setActivePath(viewState.activePath, action.path, action.relname, viewState.query)
       };
     case V_REQUEST_SUCCESS:
       return { ...viewState, rows: action.data};
     default:
-      return state;
+      return viewState;
   }
-  return state;
+  return viewState;
 };
 
+export default viewReducer;
 export {
   vSetDefaults, vMakeRequest,
-  vExpandHeading, vExpandArrRel,
-  vCloseArrRel
+  vExpandRel, vCloseRel, V_SET_ACTIVE
 };

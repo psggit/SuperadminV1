@@ -9,10 +9,10 @@
 
 */
 
-import defaultState, {defaultViewState} from './DataState';
+import defaultState from './DataState';
 import Endpoints, {globalCookiePolicy} from '../../Endpoints';
-import requestAction from './requestAction';
 import insertReducer from './InsertActions';
+import viewReducer from './ViewActions';
 
 const SET_TABLE = 'Data/SET_TABLE';
 const LOAD_SCHEMA = 'Data/LOAD_SCHEMA';
@@ -52,7 +52,7 @@ const dataReducer = (state = defaultState, action) => { // eslint-disable-line n
   if (action.type.indexOf('ViewTable/') === 0) {
     return {
       ...state,
-      view: viewReducer(state.currentTable, state.allSchemas, state, action)
+      view: viewReducer(state.currentTable, state.allSchemas, state.view, action)
     };
   }
   if (action.type.indexOf('InsertItem/') === 0) {

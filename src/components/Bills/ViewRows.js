@@ -1,7 +1,10 @@
 import React from 'react';
-import {vExpandRel, vCloseRel} from './ViewActions';
+import {vExpandRel, vCloseRel, V_SET_ACTIVE} from './ViewActions';
 
-const ViewRows = ({curTableName, curQuery, curRows, curPath, parentTableName, curDepth, activePath, schemas, dispatch}) => { // eslint-disable-line no-unused-vars
+const ViewRows = ({curTableName, curQuery, curRows, // eslint-disable-line no-unused-vars
+                    curPath, parentTableName, curDepth, // eslint-disable-line no-unused-vars
+                    activePath, schemas, dispatch, // eslint-disable-line no-unused-vars
+                    ongoingRequest, lastError, lastSuccess}) => { // eslint-disable-line no-unused-vars
   const styles = require('./Table.scss');
   const tableSchema = schemas.find(x => x.name === curTableName);
   const parentTableSchema = parentTableName ? schemas.find(t => t.name === parentTableName) : null;
@@ -13,7 +16,7 @@ const ViewRows = ({curTableName, curQuery, curRows, curPath, parentTableName, cu
     isSingleRow = true;
   } else {
     if (curRelName && parentTableSchema) { // Am I an obj_rel for my parent?
-      if (parentTableSchema.relationships.find(r => r.name == curRelName && r.type === 'obj_rel')) {
+      if (parentTableSchema.relationships.find(r => r.name === curRelName && r.type === 'obj_rel')) {
         isSingleRow = true;
       }
     }
@@ -26,11 +29,11 @@ const ViewRows = ({curTableName, curQuery, curRows, curPath, parentTableName, cu
   });
   tableHeadings.push(<th style={{minWidth: 'auto', color: '#aaa', fontWeight: 300}}> &lt;&gt; </th>);
   tableSchema.relationships.map((r, i) => {
-    tableHeadings.push(<th className={styles.expandable} key={tableSchema.columns.length + i}>{r.name}</th>);
+    tableHeadings.push(<th key={tableSchema.columns.length + i}>{r.name}</th>);
   });
 
   // Get the rows
-  const tableRows = rows.map((row, i) => {
+  const tableRows = curRows.map((row, i) => {
     const pkClause = {};
     tableSchema.primary_key.map((pk) => {
       pkClause[pk] = row[pk];
@@ -44,11 +47,11 @@ const ViewRows = ({curTableName, curQuery, curRows, curPath, parentTableName, cu
         })}
         {<td></td>}
         {tableSchema.relationships.map((r, k) => {
-          if (query.columns.find(c => c.name === r.name)) { // already expanded
+          if (curQuery.columns.find(c => c.name === r.name)) { // already expanded
             return (
-              <td key={tableSchema.columns.length + k}><a href="#" onClick={(e) => {
+              <td key={tableSchema.columns.length + k}><a href="#" className={styles.expanded} onClick={(e) => {
                 e.preventDefault();
-                dispatch(vCloseRel(path, r.name, pkClause));
+                dispatch(vCloseRel(curPath, r.name));
               }}>Close</a></td>
             );
           }
@@ -56,7 +59,7 @@ const ViewRows = ({curTableName, curQuery, curRows, curPath, parentTableName, cu
           return (
             <td key={tableSchema.columns.length + k}><a href="#" onClick={(e) => {
               e.preventDefault();
-              dispatch(vExpandRel(path, r.name, pkClause));
+              dispatch(vExpandRel(curPath, r.name, pkClause));
             }}>View</a></td>
           );
         })}
@@ -70,36 +73,51 @@ const ViewRows = ({curTableName, curQuery, curRows, curPath, parentTableName, cu
   // If query object has expanded columns
   let childComponent = null;
   const childQueries = [];
-  query.columns.map((c) => {
+  curQuery.columns.map((c) => {
     if (typeof (c) === 'object') {
       childQueries.push(c);
     }
   });
   let childTabs = null;
   childTabs = childQueries.map((q, i) => {
-    const isActive = (q.name === activePath[curDepth]) ? 'active' : null;
+    const isActive = (q.name === activePath[curDepth + 1]) ? 'active' : null;
+    let appender = '';
+    for (let ij = 0; ij < (curDepth + 1); ij++) {
+      appender += '>';
+    }
     return (
       <li key={i} className={isActive} role="presentation">
-      <a href="#">{q.name}</a>
+        <a href="#" onClick={(e) => {
+          e.preventDefault();
+          dispatch({type: V_SET_ACTIVE, path: curPath, relname: q.name});
+        }}>{appender + ' ' + q.name}</a>
       </li>);
   });
   let childViewRows = null;
   childViewRows = childQueries.map((cq) => {
-    const rel = tableSchema.relationships.find((r) => r.name === cq.name);
-    return (
-      <ViewRows curTableName={rel.rtable}
-        curQuery={cq}
-        curPath={[...curPath, rel.name]}
-        curRows={curRows.map(r => r[cq.name]}
-        parentTableName={curTableName}
-        activePath={activePath}
-        ongoingRequest={ongoingRequest}
-        lastError={lastError}
-        lastSuccess={lastSuccess}
-        schemas={schemas}
-        curDepth={curDepth + 1}
-        dispatch={dispatch} />);
-    );
+    // Render child only if data is available
+    if (curRows[0][cq.name]) {
+      const rel = tableSchema.relationships.find((r) => r.name === cq.name);
+      let childRows = curRows[0][cq.name];
+      if (rel.type === 'obj_rel') {
+        childRows = [childRows];
+      }
+      return (
+        <ViewRows curTableName={rel.rtable}
+          curQuery={cq}
+          curPath={[...curPath, rel.name]}
+          curRows={childRows}
+          parentTableName={curTableName}
+          activePath={activePath}
+          ongoingRequest={ongoingRequest}
+          lastError={lastError}
+          lastSuccess={lastSuccess}
+          schemas={schemas}
+          curDepth={curDepth + 1}
+          dispatch={dispatch} />
+      );
+    }
+    return null;
   });
   if (childQueries.length > 0) {
     childComponent = (
@@ -121,9 +139,7 @@ const ViewRows = ({curTableName, curQuery, curRows, curPath, parentTableName, cu
   }
 
   return (
-    <div className={(isVisible ? '' + 'hide ') + 'container-fluid'}>
-      {tableTitle}
-      {closeTable}
+    <div className={(isVisible ? '' : 'hide ') + 'container-fluid ' + styles.viewRowsContainer}>
       <div className={styles.filterOptions}>
         {filterComponent}
       </div>
@@ -145,7 +161,7 @@ const ViewRows = ({curTableName, curQuery, curRows, curPath, parentTableName, cu
           </tbody>
         </table>
       </div>
-      <hr/>
+      <br/><br/>
       {childComponent}
     </div>
   );
