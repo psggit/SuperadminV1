@@ -1,6 +1,7 @@
 const defaultViewState = {
   query: { columns: [] },
   rows: [],
+  curFilter: {},
   activePath: [],
   ongoingRequest: false,
   lastError: {},

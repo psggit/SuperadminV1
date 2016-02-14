@@ -94,7 +94,7 @@ const ViewRows = ({curTableName, curQuery, curRows, // eslint-disable-line no-un
       </li>);
   });
   let childViewRows = null;
-  childViewRows = childQueries.map((cq) => {
+  childViewRows = childQueries.map((cq, i) => {
     // Render child only if data is available
     if (curRows[0][cq.name]) {
       const rel = tableSchema.relationships.find((r) => r.name === cq.name);
@@ -103,7 +103,7 @@ const ViewRows = ({curTableName, curQuery, curRows, // eslint-disable-line no-un
         childRows = [childRows];
       }
       return (
-        <ViewRows curTableName={rel.rtable}
+        <ViewRows key={i} curTableName={rel.rtable}
           curQuery={cq}
           curPath={[...curPath, rel.name]}
           curRows={childRows}
@@ -144,11 +144,11 @@ const ViewRows = ({curTableName, curQuery, curRows, // eslint-disable-line no-un
       <div className={styles.tableContainer}>
         <table className={styles.table + ' table table-bordered table-striped table-hover'}>
           <thead>
-            <tr>
-              {isSingleRow ? null : (<th style={{minWidth: 'auto'}}>
+            <tr key="headingRow">
+              {isSingleRow ? null : (<th key="allSelector" style={{minWidth: 'auto'}}>
                 <input type="checkbox"></input>
               </th>)}
-              {isSingleRow ? null : (<th style={{minWidth: 'auto'}}>
+              {isSingleRow ? null : (<th key="multiDeleter" style={{minWidth: 'auto'}}>
                 <button className="disabled btn btn-primary btn-xs">Delete</button>
               </th>)}
               {tableHeadings}

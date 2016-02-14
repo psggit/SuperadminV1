@@ -18,6 +18,7 @@
 
 .tableContainer {
   overflow: scroll;
+  margin-top: 25px;
 }
 
 .viewRowsContainer {
@@ -41,8 +42,13 @@
 
 .table {
   width: auto;
+  thead {
+    background: #333;
+    color: #ddd;
+  }
   th {
     min-width: 100px;
+    font-weight: 300;
   }
   td {
     max-width: 300px;
