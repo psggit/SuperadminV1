@@ -1,5 +1,6 @@
 import React from 'react';
 import {vExpandRel, vCloseRel, V_SET_ACTIVE} from './ViewActions';
+import FilterQuery from './FilterQuery';
 
 const ViewRows = ({curTableName, curQuery, curRows, // eslint-disable-line no-unused-vars
                     curPath, parentTableName, curDepth, // eslint-disable-line no-unused-vars
@@ -66,9 +67,6 @@ const ViewRows = ({curTableName, curQuery, curRows, // eslint-disable-line no-un
       </tr>);
   });
 
-  // Filter component
-  const filterComponent = null;
-  // if current path thing is obj_rel show null, else render the query filter component
 
   // If query object has expanded columns
   let childComponent = null;
@@ -90,7 +88,9 @@ const ViewRows = ({curTableName, curQuery, curRows, // eslint-disable-line no-un
         <a href="#" onClick={(e) => {
           e.preventDefault();
           dispatch({type: V_SET_ACTIVE, path: curPath, relname: q.name});
-        }}>{appender + ' ' + q.name}</a>
+        }}>{[...activePath.slice(0, 1),
+             ...curPath,
+             q.name].join('.')}</a>
       </li>);
   });
   let childViewRows = null;
@@ -140,9 +140,7 @@ const ViewRows = ({curTableName, curQuery, curRows, // eslint-disable-line no-un
 
   return (
     <div className={(isVisible ? '' : 'hide ') + 'container-fluid ' + styles.viewRowsContainer}>
-      <div className={styles.filterOptions}>
-        {filterComponent}
-      </div>
+      {isSingleRow ? null : <FilterQuery />}
       <div className={styles.tableContainer}>
         <table className={styles.table + ' table table-bordered table-striped table-hover'}>
           <thead>

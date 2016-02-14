@@ -7,21 +7,23 @@ const TableHeader = ({tableName, tabName}) => {
     <div>
       <div className={styles.header}>
         <h3>{tableName}</h3>
+        <div className={styles.nav}>
+          <ul className="nav nav-pills">
+            <li role="presentation" className={(tabName === 'view') ? 'active' : ''}>
+              <Link to={'/tables/' + tableName + '/view'}>Browse rows</Link>
+            </li>
+            <li role="presentation" className={(tabName === 'insert') ? 'active' : ''}>
+              <Link to={'/tables/' + tableName + '/insert'}>Insert row</Link>
+            </li>
+            <li role="presentation" className={(tabName === 'modify') ? 'active' : ''}>
+              <Link to={'/tables/' + tableName + '/modify'}>Modify table</Link>
+            </li>
+          </ul>
+        </div>
         <div className="clearfix"></div>
       </div>
       <br/>
       <div className="container-fluid">
-        <ul className="nav nav-tabs nav-justified">
-          <li role="presentation" className={(tabName === 'view') ? 'active' : ''}>
-            <Link to={'/tables/' + tableName + '/view'}>Browse rows</Link>
-          </li>
-          <li role="presentation" className={(tabName === 'insert') ? 'active' : ''}>
-            <Link to={'/tables/' + tableName + '/insert'}>Insert row</Link>
-          </li>
-          <li role="presentation" className={(tabName === 'modify') ? 'active' : ''}>
-            <Link to={'/tables/' + tableName + '/modify'}>Modify table</Link>
-          </li>
-        </ul>
       </div>
     </div>
   );

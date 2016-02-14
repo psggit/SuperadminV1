@@ -5,15 +5,16 @@
   background: #eee;
   h3 {
     margin: 0;
-    padding: 20px;
-    display: inline-block;
+    padding: 26px;
+    float: left;
     line-height: 26px;
+  }
+  .nav {
+    padding: 20px;
+    float: left;
   }
 }
 
-.filterOptions {
-  height: 50px;
-}
 
 .tableContainer {
   overflow: scroll;
@@ -42,6 +43,12 @@
   width: auto;
   th {
     min-width: 100px;
+  }
+  td {
+    max-width: 300px;
+    white-space: pre;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 

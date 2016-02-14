@@ -4,25 +4,37 @@
   but don't listen to state.
   derive everything through viewtable as much as possible.
 */
+import React from 'react';
 
-const FilterQuery = ({headings, schemas, dispatch}) => {
-  styles = require('./FilterQuery.scss');
-  const ColOpInputs = headings.map((heading) => {
-    return (
-      <div>
-        <div className="col-md-5">heading.name</div>
-        <div className="col-md-2"><OperatorSelect /></div>
-        <div className="col-md-5">
-          <input className="form-control" type="text" />
-        </div>
-      </div>
-    );
-  });
+const FilterQuery = () => {
+  const styles = require('./FilterQuery.scss');
   return (
-    <div className={styles.queryBox}>
-      {ColOpInputs}
+    <div className={styles.filterOptions + ' row'}>
+      <div className={styles.queryBox + ' col-md-5'}>
+        <b className={styles.boxHeading}>Select</b>
+      </div>
+      <div className={styles.queryBox + ' col-md-2'}>
+        <b className={styles.boxHeading}>Sort</b>
+      </div>
+      <div className={styles.queryBox + ' col-md-2'}>
+        <b className={styles.boxHeading}>Limit/Offset</b>
+        <nav>
+          <ul className={styles.pagination + ' pagination'}>
+            <li>
+              <a href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
-  );
+    );
 };
 
 export default FilterQuery;
