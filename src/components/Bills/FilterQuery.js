@@ -75,14 +75,7 @@ const renderSorts = (orderBy, tableSchema) => {
   );
 };
 
-const FilterQuery = () => {
-  const {whereAnd, tableSchema, orderBy, limit, offset} = { // eslint-disable-line no-unused-vars
-    whereAnd: [{ ' ': { ' ': ' ' }}],
-    tableSchema: { columns: [{name: 'name', type: 'text'}, {name: 'age', type: 'integer'}, {name: 'address', type: 'text'}] },
-    orderBy: [{column: '', order: '', nulls: 'last'}],
-    limit: 0,
-    offset: 10
-  };
+const FilterQuery = ({whereAnd, tableSchema, orderBy, limit, offset}) => { // eslint-disable-line no-unused-vars
   const styles = require('./FilterQuery.scss');
   return (
     <div className={styles.filterOptions}>
@@ -98,7 +91,7 @@ const FilterQuery = () => {
           </div>
         </div>
         <div className={styles.runQuery + ' row form-inline'}>
-          <button type="submit" className="btn btn-success">
+          <button type="submit" className="btn btn-default">
             Run query
           </button>
           <div className="input-group">

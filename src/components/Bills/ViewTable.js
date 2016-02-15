@@ -83,7 +83,7 @@ class ViewTable extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    return (nextProps.tableName === this.props.tableName);
+    return (this.props.tableName === null || nextProps.tableName === this.props.tableName);
   }
 
   componentWillUpdate() {
@@ -98,7 +98,7 @@ class ViewTable extends Component {
 
 
   render() {
-    const {tableName, schemas, query, rows,  // eslint-disable-line no-unused-vars
+    const {tableName, schemas, query, curFilter, rows,  // eslint-disable-line no-unused-vars
            activePath, ongoingRequest, lastError, lastSuccess, dispatch} = this.props; // eslint-disable-line no-unused-vars
 
     const styles = require('./Table.scss');
@@ -106,6 +106,7 @@ class ViewTable extends Component {
     // Are there any expanded columns
     const viewRows = (<ViewRows curTableName={tableName}
                              curQuery={query}
+                             curFilter={curFilter}
                              curPath={[]}
                              curRows={rows}
                              parentTableName={null}
@@ -133,6 +134,7 @@ ViewTable.propTypes = {
   schemas: PropTypes.array.isRequired,
   activePath: PropTypes.array.isRequired,
   query: PropTypes.object.isRequired,
+  curFilter: PropTypes.object.isRequired,
   ongoingRequest: PropTypes.bool.isRequired,
   rows: PropTypes.array.isRequired,
   lastError: PropTypes.object.isRequired,

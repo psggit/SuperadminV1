@@ -1,7 +1,21 @@
+const defaultQueryStuff = {
+  where: {},
+  limit: 10,
+  offset: 0,
+  order_by: []
+};
+
 const defaultViewState = {
-  query: { columns: [] },
+  query: {
+    columns: []
+  },
   rows: [],
-  curFilter: {},
+  curFilter: {
+    where: { $and: [{'': {'': ''}}] },
+    limit: 10,
+    offset: 0,
+    order_by: [{column: '', order: '', nulls: 'last'}]
+  },
   activePath: [],
   ongoingRequest: false,
   lastError: {},
@@ -33,7 +47,7 @@ const defaultState = {
 };
 
 export default defaultState;
-export {defaultViewState};
+export {defaultViewState, defaultQueryStuff};
 
 /*
     {

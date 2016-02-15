@@ -2,7 +2,7 @@ import React from 'react';
 import {vExpandRel, vCloseRel, V_SET_ACTIVE} from './ViewActions'; // eslint-disable-line no-unused-vars
 import FilterQuery from './FilterQuery';
 
-const ViewRows = ({curTableName, curQuery, curRows, // eslint-disable-line no-unused-vars
+const ViewRows = ({curTableName, curQuery, curFilter, curRows, // eslint-disable-line no-unused-vars
                     curPath, parentTableName, curDepth, // eslint-disable-line no-unused-vars
                     activePath, schemas, dispatch, // eslint-disable-line no-unused-vars
                     ongoingRequest, lastError, lastSuccess}) => { // eslint-disable-line no-unused-vars
@@ -60,7 +60,6 @@ const ViewRows = ({curTableName, curQuery, curRows, // eslint-disable-line no-un
         </td>
         );
     });
-    console.log(relationshipCols);
     return (
       <tr key={i}>
         {isSingleRow ? null : (<td><input type="checkbox"></input></td>)}
@@ -111,6 +110,7 @@ const ViewRows = ({curTableName, curQuery, curRows, // eslint-disable-line no-un
       return (
         <ViewRows key={i} curTableName={rel.rtable}
           curQuery={cq}
+          curFilter={curFilter}
           curPath={[...curPath, rel.name]}
           curRows={childRows}
           parentTableName={curTableName}
@@ -144,9 +144,32 @@ const ViewRows = ({curTableName, curQuery, curRows, // eslint-disable-line no-un
     isVisible = true;
   }
 
+  let filterQuery = null;
+  if (!(isSingleRow)) {
+    let wheres = [{'': {'': ''}}];
+    if ('where' in curFilter && '$and' in curFilter.where) {
+      wheres = [...curFilter.where.$and];
+    }
+
+    let orderBy = [{column: '', order: 'asc', nulls: 'last'}];
+    if ('order_by' in curFilter) {
+      orderBy = [...curFilter.order_by];
+    }
+    const limit = ('limit' in curFilter) ? curFilter.limit : 10;
+    const offset = ('offset' in curFilter) ? curFilter.offset : 0;
+
+    filterQuery = (
+      <FilterQuery
+        whereAnd={wheres}
+        tableSchema={tableSchema}
+        orderBy={orderBy}
+        limit={limit}
+        offset={offset} />);
+  }
+
   return (
     <div className={(isVisible ? '' : 'hide ') + 'container-fluid ' + styles.viewRowsContainer}>
-      {isSingleRow ? null : <FilterQuery />}
+      {filterQuery}
       <div className={styles.tableContainer}>
         <table className={styles.table + ' table table-bordered table-striped table-hover'}>
           <thead>
