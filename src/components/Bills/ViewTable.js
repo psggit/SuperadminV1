@@ -82,14 +82,20 @@ class ViewTable extends Component {
     }
   }
 
+  shouldComponentUpdate(nextProps) {
+    return (nextProps.tableName === this.props.tableName);
+  }
+
   componentWillUpdate() {
     this.shouldScrollBottom = (window.innerHeight === document.body.offsetHeight - document.body.scrollTop);
   }
+
   componentDidUpdate() {
     if (this.shouldScrollBottom) {
       document.body.scrollTop = document.body.offsetHeight - window.innerHeight;
     }
   }
+
 
   render() {
     const {tableName, schemas, query, rows,  // eslint-disable-line no-unused-vars

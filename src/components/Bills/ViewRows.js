@@ -1,5 +1,5 @@
 import React from 'react';
-import {vExpandRel, vCloseRel, V_SET_ACTIVE} from './ViewActions';
+import {vExpandRel, vCloseRel, V_SET_ACTIVE} from './ViewActions'; // eslint-disable-line no-unused-vars
 import FilterQuery from './FilterQuery';
 
 const ViewRows = ({curTableName, curQuery, curRows, // eslint-disable-line no-unused-vars
@@ -28,7 +28,7 @@ const ViewRows = ({curTableName, curQuery, curRows, // eslint-disable-line no-un
   tableSchema.columns.map((column, i) => {
     tableHeadings.push(<th key={i}>{column.name}</th>);
   });
-  tableHeadings.push(<th style={{minWidth: 'auto', color: '#aaa', fontWeight: 300}}> &lt;&gt; </th>);
+  tableHeadings.push(<th key="relIndicator" style={{minWidth: 'auto', color: '#aaa', fontWeight: 300}}> &lt;&gt; </th>);
   tableSchema.relationships.map((r, i) => {
     tableHeadings.push(<th key={tableSchema.columns.length + i}>{r.name}</th>);
   });
@@ -39,6 +39,28 @@ const ViewRows = ({curTableName, curQuery, curRows, // eslint-disable-line no-un
     tableSchema.primary_key.map((pk) => {
       pkClause[pk] = row[pk];
     });
+    const relationshipCols = tableSchema.relationships.map((r, k) => { // eslint-disable-line no-unused-vars
+      if (curQuery.columns.find(c => c.name === r.name)) { // already expanded
+        return (
+          <td key={tableSchema.columns.length + 10 + k}>
+            <a href="#" className={styles.expanded} onClick={(e) => {
+              e.preventDefault();
+              dispatch(vCloseRel(curPath, r.name));
+            }}>Close</a>
+          </td>
+          );
+      }
+      // can be expanded
+      return (
+        <td key={tableSchema.columns.length + 10 + k}>
+          <a href="#" onClick={(e) => {
+            e.preventDefault();
+            dispatch(vExpandRel(curPath, r.name, pkClause));
+          }}>View</a>
+        </td>
+        );
+    });
+    console.log(relationshipCols);
     return (
       <tr key={i}>
         {isSingleRow ? null : (<td><input type="checkbox"></input></td>)}
@@ -46,24 +68,8 @@ const ViewRows = ({curTableName, curQuery, curRows, // eslint-disable-line no-un
         {tableSchema.columns.map((column, j) => {
           return <td key={j}>{row[column.name]}</td>;
         })}
-        {<td></td>}
-        {tableSchema.relationships.map((r, k) => {
-          if (curQuery.columns.find(c => c.name === r.name)) { // already expanded
-            return (
-              <td key={tableSchema.columns.length + k}><a href="#" className={styles.expanded} onClick={(e) => {
-                e.preventDefault();
-                dispatch(vCloseRel(curPath, r.name));
-              }}>Close</a></td>
-            );
-          }
-          // can be expanded
-          return (
-            <td key={tableSchema.columns.length + k}><a href="#" onClick={(e) => {
-              e.preventDefault();
-              dispatch(vExpandRel(curPath, r.name, pkClause));
-            }}>View</a></td>
-          );
-        })}
+        <td>&nbsp;</td>
+        {relationshipCols.length === 0 ? null : relationshipCols}
       </tr>);
   });
 
@@ -144,18 +150,18 @@ const ViewRows = ({curTableName, curQuery, curRows, // eslint-disable-line no-un
       <div className={styles.tableContainer}>
         <table className={styles.table + ' table table-bordered table-striped table-hover'}>
           <thead>
-            <tr key="headingRow">
-              {isSingleRow ? null : (<th key="allSelector" style={{minWidth: 'auto'}}>
+            <tr>
+              {isSingleRow ? null : (<th style={{minWidth: 'auto'}}>
                 <input type="checkbox"></input>
               </th>)}
-              {isSingleRow ? null : (<th key="multiDeleter" style={{minWidth: 'auto'}}>
+              {isSingleRow ? null : (<th style={{minWidth: 'auto'}}>
                 <button className="disabled btn btn-primary btn-xs">Delete</button>
               </th>)}
               {tableHeadings}
             </tr>
           </thead>
           <tbody>
-            {tableRows}
+            {tableRows.length === 0 ? null : tableRows}
           </tbody>
         </table>
       </div>

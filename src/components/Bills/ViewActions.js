@@ -190,7 +190,8 @@ const viewReducer = (tableName, schemas, viewState, action) => { // eslint-disab
         query: {
           columns: schemas.find(t => t.name === tableName).columns.map(c => c.name)
         },
-        activePath: [tableName]
+        activePath: [tableName],
+        rows: []
       };
     case V_EXPAND_REL:
       return {
