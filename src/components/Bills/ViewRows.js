@@ -146,25 +146,31 @@ const ViewRows = ({curTableName, curQuery, curFilter, curRows, // eslint-disable
 
   let filterQuery = null;
   if (!(isSingleRow)) {
-    let wheres = [{'': {'': ''}}];
-    if ('where' in curFilter && '$and' in curFilter.where) {
-      wheres = [...curFilter.where.$and];
-    }
+    if (curRelName === activePath[curDepth] || curDepth === 0) {
+      // Rendering only if this is the activePath
 
-    let orderBy = [{column: '', order: 'asc', nulls: 'last'}];
-    if ('order_by' in curFilter) {
-      orderBy = [...curFilter.order_by];
-    }
-    const limit = ('limit' in curFilter) ? curFilter.limit : 10;
-    const offset = ('offset' in curFilter) ? curFilter.offset : 0;
+      let wheres = [{'': {'': ''}}];
+      if ('where' in curFilter && '$and' in curFilter.where) {
+        wheres = [...curFilter.where.$and];
+      }
 
-    filterQuery = (
-      <FilterQuery
-        whereAnd={wheres}
-        tableSchema={tableSchema}
-        orderBy={orderBy}
-        limit={limit}
-        offset={offset} />);
+      let orderBy = [{column: '', order: 'asc', nulls: 'last'}];
+      if ('order_by' in curFilter) {
+        orderBy = [...curFilter.order_by];
+      }
+      const limit = ('limit' in curFilter) ? curFilter.limit : 10;
+      const offset = ('offset' in curFilter) ? curFilter.offset : 0;
+
+      filterQuery = (
+        <FilterQuery
+          curQuery={curQuery}
+          whereAnd={wheres}
+          tableSchema={tableSchema}
+          orderBy={orderBy}
+          limit={limit}
+          dispatch={dispatch}
+          offset={offset} />);
+    }
   }
 
   return (

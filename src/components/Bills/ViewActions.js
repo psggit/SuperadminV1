@@ -1,6 +1,7 @@
 import {defaultViewState} from './DataState';
 import Endpoints, {globalCookiePolicy} from '../../Endpoints';
 import requestAction from './requestAction';
+import filterReducer from './FilterActions';
 
 /* ****************** View actions *************/
 const V_SET_DEFAULTS = 'ViewTable/V_SET_DEFAULTS';
@@ -182,6 +183,12 @@ const updateActivePathOnClose = (activePath, tableName, curPath, relname, query)
 };
 /* ****************** reducer ******************/
 const viewReducer = (tableName, schemas, viewState, action) => { // eslint-disable-line no-unused-vars
+  if (action.type.indexOf('ViewTable/FilterQuery/') === 0) {
+    return {
+      ...viewState,
+      curFilter: filterReducer(viewState.curFilter, action)
+    };
+  }
   const tableSchema = schemas.find(x => x.name === tableName);
   switch (action.type) {
     case V_SET_DEFAULTS:

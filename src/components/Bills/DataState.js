@@ -1,8 +1,8 @@
-const defaultQueryStuff = {
-  where: {},
+const defaultCurFilter = {
+  where: { $and: [{'': {'': ''}}] },
   limit: 10,
   offset: 0,
-  order_by: []
+  order_by: [{column: '', order: '', nulls: 'last'}]
 };
 
 const defaultViewState = {
@@ -10,12 +10,7 @@ const defaultViewState = {
     columns: []
   },
   rows: [],
-  curFilter: {
-    where: { $and: [{'': {'': ''}}] },
-    limit: 10,
-    offset: 0,
-    order_by: [{column: '', order: '', nulls: 'last'}]
-  },
+  curFilter: defaultCurFilter,
   activePath: [],
   ongoingRequest: false,
   lastError: {},
@@ -47,7 +42,7 @@ const defaultState = {
 };
 
 export default defaultState;
-export {defaultViewState, defaultQueryStuff};
+export {defaultViewState, defaultCurFilter};
 
 /*
     {
