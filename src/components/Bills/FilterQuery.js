@@ -7,6 +7,8 @@
 import React, {Component, PropTypes} from 'react';
 import Operators from './Operators';
 import {setFilterCol, setFilterOp, setFilterVal, addFilter, removeFilter} from './FilterActions.js';
+import {setOrderCol, setOrderType, addOrder, removeOrder} from './FilterActions.js';
+import {setLimit, setOffset, setNextPage, setPrevPage} from './FilterActions.js';
 import {setDefaultQuery, runQuery} from './FilterActions';
 
 const renderCols = (colName, tableSchema, onChange) => {
@@ -76,19 +78,35 @@ const renderSorts = (orderBy, tableSchema, dispatch) => {
   const styles = require('./FilterQuery.scss');
   return (
     orderBy.map((c, i) => {
+      const dSetOrderCol = (e) => {
+        dispatch(setOrderCol(e.target.value, i));
+        if ((i + 1) === orderBy.length) {
+          dispatch(addOrder());
+        }
+      };
+      let removeIcon = null;
+      if ((i + 1) < orderBy.length) {
+        removeIcon = (
+          <i className="fa fa-times" onClick={() => {
+            dispatch(removeOrder(i));
+          }}></i>
+        );
+      }
       return (
         <div key={i} className={styles.inputRow + ' row'}>
           <div className="col-md-6">
-            {renderCols(c.column, tableSchema)}
+            {renderCols(c.column, tableSchema, dSetOrderCol)}
           </div>
           <div className="col-md-5">
-            <select value={c.order} className="form-control">
+            <select value={c.order} className="form-control" onChange={e => {
+              dispatch(setOrderType(e.target.value, i));
+            }}>
               <option value="asc">Asc</option>
               <option value="desc">Desc</option>
             </select>
           </div>
           <div className="col-md-1 text-center">
-            <i className="fa fa-times"></i>
+            {removeIcon}
           </div>
         </div>
       );
@@ -121,7 +139,7 @@ class FilterQuery extends Component {
             </div>
             <div className={styles.queryBox + ' col-md-4'}>
               <b className={styles.boxHeading}>Sort</b>
-              {renderSorts(orderBy, tableSchema)}
+              {renderSorts(orderBy, tableSchema, dispatch)}
             </div>
           </div>
           <div className={styles.runQuery + ' row form-inline'}>
@@ -129,22 +147,34 @@ class FilterQuery extends Component {
               Run query
             </button>
             <div className="input-group">
-              <input value="10" type="number" className="form-control" />
+              <input value={limit} type="number" className="form-control" onChange={e => {
+                dispatch(setLimit(parseInt(e.target.value, 10)));
+              }}/>
               <div className="input-group-addon">rows</div>
             </div>
             <div className="input-group">
               <div className="input-group-addon">Starting from</div>
-              <input type="number" className="form-control" value="0" />
+              <input type="number" className="form-control" value={offset} onChange={e => {
+                dispatch(setOffset(parseInt(e.target.value, 10)));
+              }}/>
             </div>
             <nav>
               <ul className={styles.pagination + ' pagination'}>
                 <li>
-                  <a href="#" aria-label="Previous">
+                  <a href="#" aria-label="Previous" onClick={e => {
+                    e.preventDefault();
+                    dispatch(setPrevPage());
+                    dispatch(runQuery(tableSchema));
+                  }}>
                     <span aria-hidden="true">&laquo;</span>
                   </a>
                 </li>
                 <li>
-                  <a href="#" aria-label="Next">
+                  <a href="#" aria-label="Next" onClick={e => {
+                    e.preventDefault();
+                    dispatch(setNextPage());
+                    dispatch(runQuery(tableSchema));
+                  }}>
                     <span aria-hidden="true">&raquo;</span>
                   </a>
                 </li>

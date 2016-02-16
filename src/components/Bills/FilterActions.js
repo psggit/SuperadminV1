@@ -9,6 +9,15 @@ const SET_FILTEROP = 'ViewTable/FilterQuery/SET_FILTEROP';
 const SET_FILTERVAL = 'ViewTable/FilterQuery/SET_FILTERVAL';
 const ADD_FILTER = 'ViewTable/FilterQuery/ADD_FILTER';
 const REMOVE_FILTER = 'ViewTable/FilterQuery/REMOVE_FILTER';
+
+const SET_ORDERCOL = 'ViewTable/FilterQuery/SET_ORDERCOL';
+const SET_ORDERTYPE = 'ViewTable/FilterQuery/SET_ORDERTYPE';
+const ADD_ORDER = 'ViewTable/FilterQuery/ADD_ORDER';
+const REMOVE_ORDER = 'ViewTable/FilterQuery/REMOVE_ORDER';
+const SET_LIMIT = 'ViewTable/FilterQuery/SET_LIMIT';
+const SET_OFFSET = 'ViewTable/FilterQuery/SET_OFFSET';
+const SET_NEXTPAGE = 'ViewTable/FilterQuery/SET_NEXTPAGE';
+const SET_PREVPAGE = 'ViewTable/FilterQuery/SET_PREVPAGE';
 // const MAKING_REQUEST = 'ViewTable/FilterQuery/MAKING_REQUEST';
 // const REQUEST_SUCCESS = 'ViewTable/FilterQuery/REQUEST_SUCCESS';
 // const REQUEST_ERROR = 'ViewTable/FilterQuery/REQUEST_ERROR';
@@ -19,6 +28,17 @@ const setFilterOp = (opName, index) => ({type: SET_FILTEROP, opName, index});
 const setFilterVal = (val, index) => ({type: SET_FILTERVAL, val, index});
 const addFilter = () => ({type: ADD_FILTER});
 const removeFilter = (index) => ({type: REMOVE_FILTER, index});
+
+const setOrderCol = (name, index) => ({type: SET_ORDERCOL, name, index});
+const setOrderType = (order, index) => ({type: SET_ORDERTYPE, order, index});
+const addOrder = () => ({type: ADD_ORDER});
+const removeOrder = (index) => ({type: REMOVE_ORDER, index});
+
+const setLimit = (limit) => ({type: SET_LIMIT, limit});
+const setOffset = (offset) => ({type: SET_OFFSET, offset});
+const setNextPage = () => ({type: SET_NEXTPAGE});
+const setPrevPage = () => ({type: SET_PREVPAGE});
+
 const runQuery = (tableSchema) => {
   return (dispatch, getState) => {
     const state = getState().tables.view.curFilter;
@@ -133,10 +153,85 @@ const filterReducer = (state = defaultCurFilter, action) => {
         ...state,
         where: { $and: newFilters }
       };
+
+    case SET_ORDERCOL:
+      const oldOrder = state.order_by[i];
+      return {
+        ...state,
+        order_by: [
+          ...state.order_by.slice(0, i),
+          {...oldOrder, column: action.name},
+          ...state.order_by.slice(i + 1)
+        ]
+      };
+    case SET_ORDERTYPE:
+      const oldOrder1 = state.order_by[i];
+      return {
+        ...state,
+        order_by: [
+          ...state.order_by.slice(0, i),
+          {...oldOrder1, order: action.order},
+          ...state.order_by.slice(i + 1)
+        ]
+      };
+    case REMOVE_ORDER:
+      return {
+        ...state,
+        order_by: [
+          ...state.order_by.slice(0, i),
+          ...state.order_by.slice(i + 1)
+        ]
+      };
+    case ADD_ORDER:
+      return {
+        ...state,
+        order_by: [
+          ...state.order_by,
+          {column: '', order: 'asc', nulls: 'last'}
+        ]
+      };
+
+    case SET_LIMIT:
+      return {
+        ...state,
+        limit: action.limit
+      };
+    case SET_OFFSET:
+      return {
+        ...state,
+        offset: action.offset
+      };
+    case SET_NEXTPAGE:
+      return {
+        ...state,
+        offset: (state.offset + state.limit)
+      };
+    case SET_PREVPAGE:
+      const newOffset = (state.offset - state.limit);
+      return {
+        ...state,
+        offset: (newOffset < 0) ? 0 : newOffset
+      };
     default:
       return state;
   }
 };
 
 export default filterReducer;
-export {setFilterCol, setFilterOp, setFilterVal, addFilter, removeFilter, setDefaultQuery, runQuery};
+export {
+  setFilterCol,
+  setFilterOp,
+  setFilterVal,
+  addFilter,
+  removeFilter,
+  setOrderCol,
+  setOrderType,
+  addOrder,
+  removeOrder,
+  setLimit,
+  setOffset,
+  setNextPage,
+  setPrevPage,
+  setDefaultQuery,
+  runQuery
+};
