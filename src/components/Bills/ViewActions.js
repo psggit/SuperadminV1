@@ -190,6 +190,11 @@ const addQueryOptsActivePath = (query, queryStuff, activePath) => {
     curQuery = curQuery.columns.find(c => c.name === curPath[0]); // eslint-disable-line no-loop-func
     curPath = curPath.slice(1);
   }
+
+  ['where', 'order_by', 'limit', 'offset'].map(k => {
+    delete curQuery[k];
+  });
+
   for (const k in queryStuff) {
     if (queryStuff.hasOwnProperty(k)) {
       curQuery[k] = queryStuff[k];
