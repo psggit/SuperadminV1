@@ -111,9 +111,9 @@ const closeQuery = (curQuery, curTable, curPath, relname, schemas) => { // eslin
     // If no other expanded columns are left
     if (!(newColumns.find(c => typeof(c) === 'object'))) {
       if (curQuery.oldStuff) {
-        ['where', 'limit', 'offset'].map((k) => {
+        ['where', 'limit', 'order_by', 'offset'].map((k) => {
           if (k in curQuery.oldStuff) {
-            newStuff[k] = curQuery[k];
+            newStuff[k] = curQuery.oldStuff[k];
           }
         });
       }

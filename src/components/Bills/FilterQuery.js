@@ -13,7 +13,7 @@ const renderCols = (colName, tableSchema, onChange) => {
   const columns = tableSchema.columns.map(c => c.name);
   return (
     <select className="form-control" onChange={onChange} value={colName.trim()}>
-      {(colName.trim() === '') ? (<option disabled value="">-- select --</option>) : null}
+      {(colName.trim() === '') ? (<option disabled value="">-- column --</option>) : null}
       {columns.map((c, i) => (<option key={i} value={c}>{c}</option>))}
     </select>
   );
@@ -57,7 +57,7 @@ const renderWheres = (whereAnd, tableSchema, dispatch) => {
           {renderOps(opName, dSetFilterOp)}
         </div>
         <div className="col-md-4">
-          <input className="form-control" value={clause[colName][opName]} onChange={(e) => {
+          <input className="form-control" placeholder="-- value --" value={clause[colName][opName]} onChange={(e) => {
             dispatch(setFilterVal(e.target.value, i));
             if ((i + 1) === whereAnd.length) {
               dispatch(addFilter());
@@ -72,7 +72,7 @@ const renderWheres = (whereAnd, tableSchema, dispatch) => {
   });
 };
 
-const renderSorts = (orderBy, tableSchema) => {
+const renderSorts = (orderBy, tableSchema, dispatch) => {
   const styles = require('./FilterQuery.scss');
   return (
     orderBy.map((c, i) => {
