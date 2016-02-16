@@ -1,5 +1,6 @@
 import Endpoints, {globalCookiePolicy} from '../../Endpoints';
 import requestAction from './requestAction';
+import {Integers, Reals} from './Types';
 
 const I_ONGOING_REQ = 'InsertItem/I_ONGOING_REQ';
 const I_REQUEST_SUCCESS = 'InsertItem/I_REQUEST_SUCCESS';
@@ -14,9 +15,9 @@ const insertItem = (tableName, colValues) => {
     const columns = state.tables.allSchemas.find((x) => (x.name === tableName)).columns;
     Object.keys(colValues).map((colName) => {
       const colSchema = columns.find((x) => (x.name === colName));
-      if (colSchema.type === 'integer') {
+      if (colSchema.type in Integers) {
         insertObject[colName] = parseInt(colValues[colName], 10);
-      } else if (colSchema.type === 'numeric') {
+      } else if (colSchema.type in Reals) {
         insertObject[colName] = parseFloat(colValues[colName], 10);
       } else if (colSchema.type === 'boolean') {
         insertObject[colName] = (colValues[colName] === 'true' ? true : false);

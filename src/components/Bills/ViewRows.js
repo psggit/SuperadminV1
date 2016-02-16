@@ -147,7 +147,7 @@ const ViewRows = ({curTableName, curQuery, curFilter, curRows, // eslint-disable
   let filterQuery = null;
   if (!(isSingleRow)) {
     if (curRelName === activePath[curDepth] || curDepth === 0) {
-      // Rendering only if this is the activePath
+      // Rendering only if this is the activePath or this is the root
 
       let wheres = [{'': {'': ''}}];
       if ('where' in curFilter && '$and' in curFilter.where) {

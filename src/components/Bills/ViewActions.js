@@ -10,6 +10,7 @@ const V_REQUEST_ERROR = 'ViewTable/V_REQUEST_ERROR';
 const V_EXPAND_REL = 'ViewTable/V_EXPAND_REL';
 const V_CLOSE_REL = 'ViewTable/V_CLOSE_REL';
 const V_SET_ACTIVE = 'ViewTable/V_SET_ACTIVE';
+const V_SET_QUERY_OPTS = 'ViewTable/V_SET_QUERY_OPTS';
 // const V_ADD_WHERE;
 // const V_REMOVE_WHERE;
 // const V_SET_LIMIT;
@@ -181,8 +182,23 @@ const updateActivePathOnClose = (activePath, tableName, curPath, relname, query)
   }
   return [...activePath];
 };
+const addQueryOptsActivePath = (query, queryStuff, activePath) => {
+  let curPath = activePath.slice(1);
+  const newQuery = {...query};
+  let curQuery = newQuery;
+  while (curPath.length > 0) {
+    curQuery = curQuery.columns.find(c => c.name === curPath[0]); // eslint-disable-line no-loop-func
+    curPath = curPath.slice(1);
+  }
+  for (const k in queryStuff) {
+    if (queryStuff.hasOwnProperty(k)) {
+      curQuery[k] = queryStuff[k];
+    }
+  }
+  return newQuery;
+};
 /* ****************** reducer ******************/
-const viewReducer = (tableName, schemas, viewState, action) => { // eslint-disable-line no-unused-vars
+const viewReducer = (tableName, schemas, viewState, action) => {
   if (action.type.indexOf('ViewTable/FilterQuery/') === 0) {
     return {
       ...viewState,
@@ -199,6 +215,11 @@ const viewReducer = (tableName, schemas, viewState, action) => { // eslint-disab
         },
         activePath: [tableName],
         rows: []
+      };
+    case V_SET_QUERY_OPTS:
+      return {
+        ...viewState,
+        query: addQueryOptsActivePath(viewState.query, action.queryStuff, viewState.activePath)
       };
     case V_EXPAND_REL:
       return {

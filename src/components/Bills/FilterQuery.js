@@ -7,7 +7,7 @@
 import React, {Component, PropTypes} from 'react';
 import Operators from './Operators';
 import {setFilterCol, setFilterOp, setFilterVal, addFilter, removeFilter} from './FilterActions.js';
-import {setDefaultQuery} from './FilterActions';
+import {setDefaultQuery, runQuery} from './FilterActions';
 
 const renderCols = (colName, tableSchema, onChange) => {
   const columns = tableSchema.columns.map(c => c.name);
@@ -29,6 +29,7 @@ const renderOps = (opName, onChange) => {
     </select>
   );
 };
+
 const renderWheres = (whereAnd, tableSchema, dispatch) => {
   const styles = require('./FilterQuery.scss');
   return whereAnd.map((clause, i) => {
@@ -40,6 +41,13 @@ const renderWheres = (whereAnd, tableSchema, dispatch) => {
     const dSetFilterOp = (e) => {
       dispatch(setFilterOp(e.target.value, i));
     };
+    let removeIcon = null;
+    if ((i + 1) < whereAnd.length) {
+      removeIcon = (
+        <i className="fa fa-times" onClick={() => {
+          dispatch(removeFilter(i));
+        }}></i>);
+    }
     return (
       <div key={i} className={styles.inputRow + ' row'}>
         <div className="col-md-4">
@@ -57,9 +65,7 @@ const renderWheres = (whereAnd, tableSchema, dispatch) => {
           }}/>
         </div>
         <div className="text-center col-md-1">
-          <i className="fa fa-times" onClick={() => {
-            dispatch(removeFilter(i));
-          }}></i>
+          {removeIcon}
         </div>
       </div>
     );
@@ -96,6 +102,9 @@ class FilterQuery extends Component {
     dispatch(setDefaultQuery(this.props.curQuery));
   }
 
+//  componentWillReceiveProps (nextProps) {
+//  }
+
   render() {
     const {dispatch, whereAnd, tableSchema, orderBy, limit, offset} = this.props; // eslint-disable-line no-unused-vars
     const styles = require('./FilterQuery.scss');
@@ -103,7 +112,7 @@ class FilterQuery extends Component {
       <div className={styles.filterOptions}>
         <form onSubmit={(e) => {
           e.preventDefault();
-          // dispatch(runQuery());
+          dispatch(runQuery(tableSchema));
         }}>
           <div className="row">
             <div className={styles.queryBox + ' col-md-6'}>

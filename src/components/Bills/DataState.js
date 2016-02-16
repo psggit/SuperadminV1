@@ -2,7 +2,7 @@ const defaultCurFilter = {
   where: { $and: [{'': {'': ''}}] },
   limit: 10,
   offset: 0,
-  order_by: [{column: '', order: '', nulls: 'last'}]
+  order_by: [{column: '', order: 'asc', nulls: 'last'}]
 };
 
 const defaultViewState = {
