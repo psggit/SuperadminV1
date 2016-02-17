@@ -43,18 +43,18 @@ const editReducer = (tableName, state, action) => {
     case E_SET_EDITITEM:
       return {ongoingRequest: false, lastError: null, lastSuccess: null, oldItem: action.oldItem, pkClause: action.pkClause};
     case E_ONGOING_REQ:
-      return {ongoingRequest: true, lastError: null, lastSuccess: null};
+      return {...state, ongoingRequest: true, lastError: null, lastSuccess: null};
     case E_REQUEST_SUCCESS:
-      return {ongoingRequest: false, lastError: null, lastSuccess: action.data};
+      return {...state, ongoingRequest: false, lastError: null, lastSuccess: action.data};
     case E_REQUEST_ERROR:
       if (action.data) {
-        return {ongoingRequest: false, lastError: action.data, lastSuccess: null};
+        return {...state, ongoingRequest: false, lastError: action.data, lastSuccess: null};
       }
-      return {ongoingRequest: false, lastError: 'server-failure', lastSuccess: null };
+      return {...state, ongoingRequest: false, lastError: 'server-failure', lastSuccess: null };
     default:
       return state;
   }
 };
 
 export default editReducer;
-export {editItem, E_SET_EDITITEM};
+export {editItem, E_SET_EDITITEM, E_ONGOING_REQ};

@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import TableHeader from './TableHeader';
-import {editItem} from './EditActions';
+import {editItem, E_ONGOING_REQ} from './EditActions';
 
 const EditItem = ({tableName, schemas, oldItem, ongoingRequest, lastError, lastSuccess, dispatch}) => {
   const styles = require('./Table.scss');
@@ -39,8 +39,10 @@ const EditItem = ({tableName, schemas, oldItem, ongoingRequest, lastError, lastS
   });
 
   let alert = null;
+  let buttonText = 'Save';
   if (ongoingRequest) {
     alert = (<div className="alert alert-warning" role="alert">Updating...</div>);
+    buttonText = 'Saving...';
   } else if (lastError) {
     alert = (<div className="alert alert-danger" role="alert">Error: {JSON.stringify(lastError)}</div>);
   } else if (lastSuccess) {
@@ -56,6 +58,7 @@ const EditItem = ({tableName, schemas, oldItem, ongoingRequest, lastError, lastS
               {elements}
               <button type="submit" className="btn btn-success" onClick={(e) => {
                 e.preventDefault();
+                dispatch({type: E_ONGOING_REQ});
                 const inputValues = {};
                 Object.keys(refs).map((colName) => {
                   if (refs[colName].nullNode.checked) { // null
@@ -67,7 +70,7 @@ const EditItem = ({tableName, schemas, oldItem, ongoingRequest, lastError, lastS
                   }
                 });
                 dispatch(editItem(tableName, inputValues));
-              }}>Save</button>
+              }}>{buttonText}</button>
             </form>
           </div>
           <div className="col-md-4">
