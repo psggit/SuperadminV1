@@ -88,11 +88,12 @@ const ViewRows = ({curTableName, curQuery, curFilter, curRows, // eslint-disable
     }
     return (
       <tr key={i}>
-        <td>
-          {editButton}
-          {cloneButton}
-          {deleteButton}
-        </td>
+        {isSingleRow ? null :
+          (<td>
+            {editButton}
+            {cloneButton}
+            {deleteButton}
+          </td>)}
         {tableSchema.columns.map((column, j) => {
           return <td key={j}>{row[column.name]}</td>;
         })}

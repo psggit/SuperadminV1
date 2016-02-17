@@ -46,7 +46,7 @@ const insertReducer = (tableName, state, action) => {
     case I_ONGOING_REQ:
       return {...state, ongoingRequest: true, lastError: null, lastSuccess: null};
     case I_REQUEST_SUCCESS:
-      return {...state, ongoingRequest: false, lastError: null, lastSuccess: action.data};
+      return {...state, clone: null, ongoingRequest: false, lastError: null, lastSuccess: action.data};
     case I_REQUEST_ERROR:
       if (action.data) {
         return {...state, ongoingRequest: false, lastError: action.data, lastSuccess: null};
