@@ -37,6 +37,11 @@ const defaultState = {
     lastSuccess: null
   },
   udpate: {
+    ongoingRequest: false,
+    oldItem: null,
+    pkClause: null,
+    lastError: null,
+    lastSuccess: null
   },
   allSchemas: null
 };

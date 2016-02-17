@@ -1,6 +1,8 @@
 import React from 'react';
 import {vExpandRel, vCloseRel, V_SET_ACTIVE} from './ViewActions'; // eslint-disable-line no-unused-vars
 import FilterQuery from './FilterQuery';
+import {E_SET_EDITITEM} from './EditActions';
+import {routeActions} from 'redux-simple-router';
 
 const ViewRows = ({curTableName, curQuery, curFilter, curRows, // eslint-disable-line no-unused-vars
                     curPath, parentTableName, curDepth, // eslint-disable-line no-unused-vars
@@ -60,10 +62,18 @@ const ViewRows = ({curTableName, curQuery, curFilter, curRows, // eslint-disable
         </td>
         );
     });
+    let editButton = null;
+    if (!(isSingleRow)) {
+      editButton = (
+        <td><button className="btn btn-xs btn-default" onClick={() => {
+          dispatch({type: E_SET_EDITITEM, oldItem: row, pkClause});
+          dispatch(routeActions.push('/tables/' + curTableName + '/edit'));
+        }}>Edit</button></td>);
+    }
     return (
       <tr key={i}>
         {isSingleRow ? null : (<td><input type="checkbox"></input></td>)}
-        {isSingleRow ? null : (<td><button className="btn btn-xs btn-default">Edit</button></td>)}
+        {editButton}
         {tableSchema.columns.map((column, j) => {
           return <td key={j}>{row[column.name]}</td>;
         })}

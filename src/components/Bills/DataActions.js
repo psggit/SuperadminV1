@@ -13,6 +13,7 @@ import defaultState from './DataState';
 import Endpoints, {globalCookiePolicy} from '../../Endpoints';
 import insertReducer from './InsertActions';
 import viewReducer from './ViewActions';
+import editReducer from './EditActions';
 
 const SET_TABLE = 'Data/SET_TABLE';
 const LOAD_SCHEMA = 'Data/LOAD_SCHEMA';
@@ -58,7 +59,13 @@ const dataReducer = (state = defaultState, action) => { // eslint-disable-line n
   if (action.type.indexOf('InsertItem/') === 0) {
     return {
       ...state,
-      insert: insertReducer(state.currentTable, state.insertItem, action)
+      insert: insertReducer(state.currentTable, state.insert, action)
+    };
+  }
+  if (action.type.indexOf('EditItem/') === 0) {
+    return {
+      ...state,
+      update: editReducer(state.currentTable, state.update, action)
     };
   }
   switch (action.type) {

@@ -11,3 +11,4 @@ export Home from './Home/Home';
 export ViewTable from './Bills/ViewTable';
 export AddTable from './Bills/AddTable';
 export InsertItem from './Bills/InsertItem';
+export EditItem from './Bills/EditItem';
