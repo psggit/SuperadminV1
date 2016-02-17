@@ -1,5 +1,5 @@
 import React from 'react';
-import {vExpandRel, vCloseRel, V_SET_ACTIVE} from './ViewActions'; // eslint-disable-line no-unused-vars
+import {vExpandRel, vCloseRel, V_SET_ACTIVE, deleteItem} from './ViewActions'; // eslint-disable-line no-unused-vars
 import FilterQuery from './FilterQuery';
 import {E_SET_EDITITEM} from './EditActions';
 import {I_SET_CLONE} from './InsertActions';
@@ -83,8 +83,7 @@ const ViewRows = ({curTableName, curQuery, curFilter, curRows, // eslint-disable
     if (!(isSingleRow)) {
       deleteButton = (
         <button className="btn btn-xs btn-default" onClick={() => {
-          dispatch({type: E_SET_EDITITEM, oldItem: row, pkClause});
-          dispatch(routeActions.push('/tables/' + curTableName + '/edit'));
+          dispatch(deleteItem(pkClause));
         }}>Delete</button>);
     }
     return (

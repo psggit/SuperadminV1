@@ -20,6 +20,7 @@ const V_SET_QUERY_OPTS = 'ViewTable/V_SET_QUERY_OPTS';
 
 /* ****************** action creators *************/
 const vSetDefaults = () => ({type: V_SET_DEFAULTS});
+
 const vMakeRequest = () => {
   return (dispatch, getState) => {
     const state = getState();
@@ -33,6 +34,32 @@ const vMakeRequest = () => {
     return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
   };
 };
+
+const deleteItem = (pkClause) => {
+  return (dispatch, getState) => {
+    const isOk = confirm('Permanently delete this row?');
+    if (!(isOk)) {
+      return;
+    }
+    const state = getState();
+    const url = Endpoints.db + '/table/' + state.tables.currentTable + '/delete';
+    const options = {
+      method: 'POST',
+      body: JSON.stringify({where: pkClause}),
+      headers: { 'Content-Type': 'application/json' },
+      credentials: globalCookiePolicy
+    };
+    dispatch(requestAction(url, options))
+      .then(
+        () => {
+          dispatch(vMakeRequest());
+        },
+        (err) => {
+          alert('Delete failed: ' + JSON.stringify(err));
+        });
+  };
+};
+
 const vExpandRel = (path, relname, pk) => {
   return (dispatch) => {
     // Modify the query (UI will automatically change)
@@ -255,5 +282,6 @@ const viewReducer = (tableName, schemas, viewState, action) => {
 export default viewReducer;
 export {
   vSetDefaults, vMakeRequest,
-  vExpandRel, vCloseRel, V_SET_ACTIVE
+  vExpandRel, vCloseRel, V_SET_ACTIVE,
+  deleteItem
 };

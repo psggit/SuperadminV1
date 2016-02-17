@@ -10,24 +10,32 @@ const requestAction = (url, options, SUCCESS, ERROR) => {
         (response) => {
           if (response.ok) {
             return response.json().then((results) => {
-              dispatch({type: SUCCESS, data: results});
+              if (SUCCESS) {
+                dispatch({type: SUCCESS, data: results});
+              }
               resolve(results);
             });
           }
           if (response.status >= 400 && response.status < 500) {
             return response.json().then((errorMsg) => {
-              dispatch({ type: ERROR, data: errorMsg});
+              if (ERROR) {
+                dispatch({ type: ERROR, data: errorMsg});
+              }
               reject(errorMsg);
             });
           }
-          dispatch({type: ERROR, response});
+          if (ERROR) {
+            dispatch({type: ERROR, response});
+          }
           reject();
         },
         (error) => {
-          dispatch({
-            type: ERROR, code: 'server-connection-failed',
-            message: error.message
-          });
+          if (ERROR) {
+            dispatch({
+              type: ERROR, code: 'server-connection-failed',
+              message: error.message
+            });
+          }
           reject(error);
         }
       );
