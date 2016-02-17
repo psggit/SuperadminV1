@@ -32,6 +32,7 @@ const defaultState = {
     lastSuccess: {}
   },
   insert: {
+    clone: null,
     ongoingRequest: false,
     lastError: null,
     lastSuccess: null

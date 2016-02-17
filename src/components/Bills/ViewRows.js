@@ -2,6 +2,7 @@ import React from 'react';
 import {vExpandRel, vCloseRel, V_SET_ACTIVE} from './ViewActions'; // eslint-disable-line no-unused-vars
 import FilterQuery from './FilterQuery';
 import {E_SET_EDITITEM} from './EditActions';
+import {I_SET_CLONE} from './InsertActions';
 import {routeActions} from 'redux-simple-router';
 
 const ViewRows = ({curTableName, curQuery, curFilter, curRows, // eslint-disable-line no-unused-vars
@@ -63,17 +64,36 @@ const ViewRows = ({curTableName, curQuery, curFilter, curRows, // eslint-disable
         );
     });
     let editButton = null;
+    let cloneButton = null;
+    let deleteButton = null;
     if (!(isSingleRow)) {
       editButton = (
-        <td><button className="btn btn-xs btn-default" onClick={() => {
+        <button className="btn btn-xs btn-default" onClick={() => {
           dispatch({type: E_SET_EDITITEM, oldItem: row, pkClause});
           dispatch(routeActions.push('/tables/' + curTableName + '/edit'));
-        }}>Edit</button></td>);
+        }}>Edit</button>);
+    }
+    if (!(isSingleRow)) {
+      cloneButton = (
+        <button className="btn btn-xs btn-default" onClick={() => {
+          dispatch({type: I_SET_CLONE, clone: row});
+          dispatch(routeActions.push('/tables/' + curTableName + '/insert'));
+        }}>Clone</button>);
+    }
+    if (!(isSingleRow)) {
+      deleteButton = (
+        <button className="btn btn-xs btn-default" onClick={() => {
+          dispatch({type: E_SET_EDITITEM, oldItem: row, pkClause});
+          dispatch(routeActions.push('/tables/' + curTableName + '/edit'));
+        }}>Delete</button>);
     }
     return (
       <tr key={i}>
-        {isSingleRow ? null : (<td><input type="checkbox"></input></td>)}
-        {editButton}
+        <td>
+          {editButton}
+          {cloneButton}
+          {deleteButton}
+        </td>
         {tableSchema.columns.map((column, j) => {
           return <td key={j}>{row[column.name]}</td>;
         })}
@@ -190,12 +210,7 @@ const ViewRows = ({curTableName, curQuery, curFilter, curRows, // eslint-disable
         <table className={styles.table + ' table table-bordered table-striped table-hover'}>
           <thead>
             <tr>
-              {isSingleRow ? null : (<th style={{minWidth: 'auto'}}>
-                <input type="checkbox"></input>
-              </th>)}
-              {isSingleRow ? null : (<th style={{minWidth: 'auto'}}>
-                <button className="disabled btn btn-primary btn-xs">Delete</button>
-              </th>)}
+              {isSingleRow ? null : (<th style={{minWidth: 'auto'}}></th>)}
               {tableHeadings}
             </tr>
           </thead>

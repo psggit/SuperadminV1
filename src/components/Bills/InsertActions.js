@@ -2,6 +2,7 @@ import Endpoints, {globalCookiePolicy} from '../../Endpoints';
 import requestAction from './requestAction';
 import {Integers, Reals} from './Types';
 
+const I_SET_CLONE = 'InsertItem/I_SET_CLONE';
 const I_ONGOING_REQ = 'InsertItem/I_ONGOING_REQ';
 const I_REQUEST_SUCCESS = 'InsertItem/I_REQUEST_SUCCESS';
 const I_REQUEST_ERROR = 'InsertItem/I_REQUEST_ERROR';
@@ -40,19 +41,21 @@ const insertItem = (tableName, colValues) => {
 /* ************ reducers *********************** */
 const insertReducer = (tableName, state, action) => {
   switch (action.type) {
+    case I_SET_CLONE:
+      return {clone: action.clone, ongoingRequest: false, lastError: null, lastSuccess: null};
     case I_ONGOING_REQ:
-      return {ongoingRequest: true, lastError: null, lastSuccess: null};
+      return {...state, ongoingRequest: true, lastError: null, lastSuccess: null};
     case I_REQUEST_SUCCESS:
-      return {ongoingRequest: false, lastError: null, lastSuccess: action.data};
+      return {...state, ongoingRequest: false, lastError: null, lastSuccess: action.data};
     case I_REQUEST_ERROR:
       if (action.data) {
-        return {ongoingRequest: false, lastError: action.data, lastSuccess: null};
+        return {...state, ongoingRequest: false, lastError: action.data, lastSuccess: null};
       }
-      return {ongoingRequest: false, lastError: 'server-failure', lastSuccess: null };
+      return {...state, ongoingRequest: false, lastError: 'server-failure', lastSuccess: null };
     default:
       return state;
   }
 };
 
 export default insertReducer;
-export {insertItem };
+export {insertItem, I_SET_CLONE};

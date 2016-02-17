@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import TableHeader from './TableHeader';
 import {insertItem} from './InsertActions';
 
-const InsertItem = ({tableName, schemas, ongoingRequest, lastError, lastSuccess, dispatch}) => {
+const InsertItem = ({tableName, clone, schemas, ongoingRequest, lastError, lastSuccess, dispatch}) => {
   const styles = require('./Table.scss');
 
   const columns = schemas.find((x) => (x.name === tableName)).columns;
@@ -16,6 +16,7 @@ const InsertItem = ({tableName, schemas, ongoingRequest, lastError, lastSuccess,
         <label className={styles.radioLabel + ' radio-inline'}>
           <input type="radio" name={col.name + '-value'} value="option1">
             <input ref={(node) => {refs[col.name].valueNode = node;}} type="text" className="form-control"
+              defaultValue={(clone && col.name in clone) ? clone[col.name] : ''}
               onClick={(e) => {
                 e.target.parentNode.click();
                 e.target.focus();
