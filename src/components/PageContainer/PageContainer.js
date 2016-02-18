@@ -6,9 +6,13 @@ import { routeActions } from 'redux-simple-router';
 
 const PageContainer = ({schema, location, children, dispatch}) => { // eslint-disable-line no-unused-vars
   const styles = require('./PageContainer.scss');
-  const tableLinks = schema.map((table, i) => {
+  const tableLinks = schema.map((table) => {
     return (
-      <li key={i}><Link to={'/tables/' + table.name + '/view'}>{table.name}</Link></li>
+      <ul>
+      <p className={styles.sidebar_title}>{table.name.toUpperCase()}</p>
+      <li className={styles.sidebar_list}><Link to={'/tables/' + table.name + '/view'}>View all</Link></li>
+      <li className={styles.sidebar_list}><Link to={'/tables/' + table.name + '/insert'}>Insert</Link></li>
+      </ul>
     );
   });
   // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
@@ -20,11 +24,6 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
             Logged in: <b>admin</b>
           </div>
           <hr/>
-          <br/><br/>
-          <button className={styles.addBtn + ' btn btn-primary'} onClick={(e) => {
-            e.preventDefault();
-            dispatch(routeActions.push('/tables/add'));
-          }}>Add Table</button>
           <br/><br/>
           <ul>
             {tableLinks}

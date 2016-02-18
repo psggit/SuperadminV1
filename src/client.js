@@ -16,7 +16,7 @@ import {compose, createStore, applyMiddleware} from 'redux';
 import {Login, Home, PageContainer, Users, ViewTable, InsertItem, EditItem} from './components'; // eslint-disable-line no-unused-vars
 import {AddTable} from './components';
 import {loadCredentials} from './components/Login/Actions';
-import {loadSchema} from './components/Bills/DataActions';
+// import {loadSchema} from './components/Bills/DataActions';
 
 import initSocket from './helpers/initSocket';
 import reducer from './reducer';
@@ -59,7 +59,7 @@ const requireLoginAndSchema = (nextState, replaceState, cb) => {
   }
   Promise.all([
     store.dispatch(loadCredentials()),
-    store.dispatch(loadSchema())
+    // store.dispatch(loadSchema())
   ]).then(
     () => {
       cb();

@@ -29,6 +29,9 @@ const ViewRows = ({curTableName, curQuery, curFilter, curRows, // eslint-disable
   // Get the headings
   const tableHeadings = [];
   tableSchema.columns.map((column, i) => {
+    if (column.ui_name) {
+      tableHeadings.push(<th key={i}>{column.ui_name}</th>);
+    }
     tableHeadings.push(<th key={i}>{column.name}</th>);
   });
   tableHeadings.push(<th key="relIndicator" style={{minWidth: 'auto', color: '#aaa', fontWeight: 300}}> &lt;&gt; </th>);
@@ -94,6 +97,9 @@ const ViewRows = ({curTableName, curQuery, curFilter, curRows, // eslint-disable
           {deleteButton}
         </td>
         {tableSchema.columns.map((column, j) => {
+          if (column.ui_type === 'image') {
+            return <td key={j}><a href="http://www.gettyimages.in/detail/527920799" target="_blank"> Image </a></td>;
+          }
           return <td key={j}>{row[column.name]}</td>;
         })}
         <td>&nbsp;</td>

@@ -1,25 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router';
 
-const TableHeader = ({tableName, tabName}) => {
+const TableHeader = ({tableName}) => {
   const styles = require('./Table.scss');
   return (
     <div>
       <div className={styles.header}>
         <h3>{tableName}</h3>
-        <div className={styles.nav}>
-          <ul className="nav nav-pills">
-            <li role="presentation" className={(tabName === 'view') ? 'active' : ''}>
-              <Link to={'/tables/' + tableName + '/view'}>Browse rows</Link>
-            </li>
-            <li role="presentation" className={(tabName === 'insert') ? 'active' : ''}>
-              <Link to={'/tables/' + tableName + '/insert'}>Insert row</Link>
-            </li>
-            <li role="presentation" className={(tabName === 'modify') ? 'active' : ''}>
-              <Link to={'/tables/' + tableName + '/modify'}>Modify table</Link>
-            </li>
-          </ul>
-        </div>
         <div className="clearfix"></div>
       </div>
       <br/>
