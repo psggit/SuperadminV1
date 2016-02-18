@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { routeActions } from 'redux-simple-router';
-
+// import { routeActions } from 'redux-simple-router';
 
 const PageContainer = ({schema, location, children, dispatch}) => { // eslint-disable-line no-unused-vars
   const styles = require('./PageContainer.scss');
