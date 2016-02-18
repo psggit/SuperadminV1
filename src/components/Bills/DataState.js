@@ -1,3 +1,5 @@
+import Schema from "./Schema.json"
+
 const defaultCurFilter = {
   where: { $and: [{'': {'': ''}}] },
   limit: 10,

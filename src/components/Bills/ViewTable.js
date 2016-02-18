@@ -4,6 +4,7 @@ import {vSetDefaults, vMakeRequest, vExpandHeading} from './ViewActions'; // esl
 import {setTable} from './DataActions';
 import TableHeader from './TableHeader';
 import ViewRows from './ViewRows';
+// import UploadFile from './Upload';
 
 const genHeadings = (headings) => {
   if (headings.length === 0) {
