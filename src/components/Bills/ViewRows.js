@@ -91,11 +91,12 @@ const ViewRows = ({curTableName, curQuery, curFilter, curRows, // eslint-disable
     }
     return (
       <tr key={i}>
-        <td>
-          {editButton}
-          {cloneButton}
-          {deleteButton}
-        </td>
+        {isSingleRow ? null :
+          (<td>
+            {editButton}
+            {cloneButton}
+            {deleteButton}
+          </td>)}
         {tableSchema.columns.map((column, j) => {
           if (column.ui_type === 'image') {
             return <td key={j}><a href="http://www.gettyimages.in/detail/527920799" target="_blank"> Image </a></td>;
@@ -189,7 +190,7 @@ const ViewRows = ({curTableName, curQuery, curFilter, curRows, // eslint-disable
         wheres = [...curFilter.where.$and];
       }
 
-      let orderBy = [{column: '', order: 'asc', nulls: 'last'}];
+      let orderBy = [{column: '', type: 'asc', nulls: 'last'}];
       if ('order_by' in curFilter) {
         orderBy = [...curFilter.order_by];
       }
