@@ -4,6 +4,11 @@
   padding: 0;
 }
 
+.alert {
+  display:inline-block;
+}
+
+
 .flexRow {
   display: flex;
 }
@@ -31,8 +36,12 @@
   ul {
     list-style-type: none;
     padding-left: 10px;
+    padding-bottom: 15px;
+    p {
+      padding-bottom: 0px;
+    }
     li {
-      padding: 0px 0px 10px 10px;
+      padding: 0px 0px 5px 15px;
       transition: color 0.5s;
       a {
         color: rgba(0,0,0,0.54);
@@ -46,7 +55,7 @@
       }
     }
     li:hover {
-      padding: 0px 0px 10px 10px;
+      padding: 0px 0px 5px 15px;
       color: rgba(0,0,0,0.87);
       transition: color 0.5s;
       pointer: cursor;

@@ -13,7 +13,7 @@ import {Router, browserHistory, Route, IndexRoute} from 'react-router';
 import {syncHistory} from 'redux-simple-router';
 import {compose, createStore, applyMiddleware} from 'redux';
 
-import {Login, Home, PageContainer, Users, ViewTable, InsertItem, EditItem} from './components'; // eslint-disable-line no-unused-vars
+import {Login, Home, PageContainer, Users, ViewTable, InsertItem, EditItem, FileUpload} from './components'; // eslint-disable-line no-unused-vars
 import {AddTable} from './components';
 import {loadCredentials} from './components/Login/Actions';
 // import {loadSchema} from './components/Bills/DataActions';
@@ -79,6 +79,7 @@ const main = (
         <Route path="tables/:table/view" component={ViewTable} />
         <Route path="tables/:table/edit" component={EditItem} />
         <Route path="tables/:table/insert" component={InsertItem} />
+        <Route path="/upload_file" component={FileUpload} />
       </Route>
     </Router>
 );

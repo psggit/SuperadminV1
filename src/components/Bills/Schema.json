@@ -91,6 +91,18 @@
         "type": "arr_rel"
     }],
     "columns": [{
+        "foreign_key_constraints": [],
+        "ordinal_position": 6,
+        "name": "id",
+        "ui_name": "ID",
+        "type": "integer"
+    }, {
+        "foreign_key_constraints": [],
+        "ordinal_position": 7,
+        "name": "brand_name",
+        "ui_name": "Brand Name",
+        "type": "varchar"
+    }, {
         "foreign_key_constraints": [{
             "column": "id",
             "table": "category"
@@ -129,18 +141,6 @@
         "name": "created_at",
         "ui_name": "Created At",
         "type": "timestamptz"
-    }, {
-        "foreign_key_constraints": [],
-        "ordinal_position": 6,
-        "name": "id",
-        "ui_name": "ID",
-        "type": "integer"
-    }, {
-        "foreign_key_constraints": [],
-        "ordinal_position": 7,
-        "name": "brand_name",
-        "ui_name": "Brand Name",
-        "type": "varchar"
     }, {
         "foreign_key_constraints": [],
         "ordinal_position": 8,
@@ -5002,6 +5002,19 @@
     }],
     "columns": [{
         "foreign_key_constraints": [],
+        "ordinal_position": 7,
+        "name": "id",
+        "type": "integer"
+    }, {
+        "foreign_key_constraints": [{
+            "column": "id",
+            "table": "brand"
+        }],
+        "ordinal_position": 9,
+        "name": "brand_id",
+        "type": "integer"
+    }, {
+        "foreign_key_constraints": [],
         "ordinal_position": 1,
         "name": "barcode",
         "type": "varchar"
@@ -5032,22 +5045,9 @@
         "type": "timestamptz"
     }, {
         "foreign_key_constraints": [],
-        "ordinal_position": 7,
-        "name": "id",
-        "type": "integer"
-    }, {
-        "foreign_key_constraints": [],
         "ordinal_position": 8,
         "name": "description",
         "type": "text"
-    }, {
-        "foreign_key_constraints": [{
-            "column": "id",
-            "table": "brand"
-        }],
-        "ordinal_position": 9,
-        "name": "brand_id",
-        "type": "integer"
     }],
     "permissions": [{
         "insert": {
@@ -5225,6 +5225,16 @@
         "type": "arr_rel"
     }],
     "columns": [{
+        "foreign_key_constraints": [],
+        "ordinal_position": 5,
+        "name": "id",
+        "type": "integer"
+    }, {
+        "foreign_key_constraints": [],
+        "ordinal_position": 3,
+        "name": "state_name",
+        "type": "varchar"
+    }, {
         "foreign_key_constraints": [{
             "column": "id",
             "table": "state_billing"
@@ -5239,19 +5249,9 @@
         "type": "timestamptz"
     }, {
         "foreign_key_constraints": [],
-        "ordinal_position": 3,
-        "name": "state_name",
-        "type": "varchar"
-    }, {
-        "foreign_key_constraints": [],
         "ordinal_position": 4,
         "name": "created_at",
         "type": "timestamptz"
-    }, {
-        "foreign_key_constraints": [],
-        "ordinal_position": 5,
-        "name": "id",
-        "type": "integer"
     }],
     "permissions": [{
         "insert": {
