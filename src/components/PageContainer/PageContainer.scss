@@ -1,6 +1,7 @@
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/variables";
 
 .container {
+  padding: 0;
 }
 
 .flexRow {
@@ -17,33 +18,43 @@
 }
 
 .sidebar {
+  font-family: 'Roboto';
+  font-weight: 500;
   min-height: 100vh;
-  max-height: 100%;
-  overflow: scroll;
-  background: $navbar-inverse-bg;
-  color: $navbar-inverse-color;
+  max-height: 500px;
+  position: relative;
+  background: #DFDFDF;
+  color: rgba(0,0,0,0.54);
+  overflow-y: scroll;
+  padding-left: 25px;
   hr { margin: 0; }
   ul {
     list-style-type: none;
-    padding-top: 10px;
-    padding-left: 7px;
+    padding-left: 10px;
     li {
-      padding: 7px 0;
+      padding: 0px 0px 10px 10px;
       transition: color 0.5s;
-      a,a:visited {
-        color: $navbar-inverse-link-color;
+      a {
+        color: rgba(0,0,0,0.54);
+        text-decoration: none;
+      }
+      a:active {
+        color: #FF7400;
       }
       a:hover {
-        color: $navbar-inverse-link-hover-color;
+        color: rgba(0,0,0,0.87);
       }
     }
     li:hover {
-      padding: 7px 0;
-      color: $navbar-inverse-link-hover-color;
+      padding: 0px 0px 10px 10px;
+      color: rgba(0,0,0,0.87);
       transition: color 0.5s;
       pointer: cursor;
     }
-   }
+    li:active {
+      color: #FF7400;
+    }
+  }
 }
 
 .main {

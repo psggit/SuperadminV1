@@ -1,5 +1,6 @@
 .container {
   padding: 0;
+  overflow-x:scroll;
 }
 .header {
   background: #eee;
@@ -15,9 +16,10 @@
   }
 }
 
-
 .tableContainer {
-  overflow: scroll;
+  height: 300px;
+  position:relative;
+  overflow-x: scroll;
   margin-top: 25px;
 }
 
@@ -26,6 +28,9 @@
 }
 
 .insertContainer {
+  height: 450px;
+  position:relative;
+  overflow: scroll;
   button {
     margin: 0 10px;
   }
@@ -42,7 +47,9 @@
 
 .table {
   width: auto;
+  position:relative;
   thead {
+    position: relative;
     background: #333;
     color: #ddd;
   }
