@@ -98,7 +98,7 @@ const renderSorts = (orderBy, tableSchema, dispatch) => {
             {renderCols(c.column, tableSchema, dSetOrderCol)}
           </div>
           <div className="col-md-5">
-            <select value={c.order} className="form-control" onChange={e => {
+            <select value={c.type} className="form-control" onChange={e => {
               dispatch(setOrderType(e.target.value, i));
             }}>
               <option value="asc">Asc</option>

@@ -170,7 +170,7 @@ const filterReducer = (state = defaultCurFilter, action) => {
         ...state,
         order_by: [
           ...state.order_by.slice(0, i),
-          {...oldOrder1, order: action.order},
+          {...oldOrder1, type: action.order},
           ...state.order_by.slice(i + 1)
         ]
       };
@@ -187,7 +187,7 @@ const filterReducer = (state = defaultCurFilter, action) => {
         ...state,
         order_by: [
           ...state.order_by,
-          {column: '', order: 'asc', nulls: 'last'}
+          {column: '', type: 'asc', nulls: 'last'}
         ]
       };
 

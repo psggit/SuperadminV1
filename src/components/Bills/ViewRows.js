@@ -184,7 +184,7 @@ const ViewRows = ({curTableName, curQuery, curFilter, curRows, // eslint-disable
         wheres = [...curFilter.where.$and];
       }
 
-      let orderBy = [{column: '', order: 'asc', nulls: 'last'}];
+      let orderBy = [{column: '', type: 'asc', nulls: 'last'}];
       if ('order_by' in curFilter) {
         orderBy = [...curFilter.order_by];
       }
