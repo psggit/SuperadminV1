@@ -68,6 +68,12 @@ const dataReducer = (state = defaultState, action) => { // eslint-disable-line n
       update: editReducer(state.currentTable, state.update, action)
     };
   }
+  if (action.type.indexOf('UploadItem/') === 0) {
+    return {
+      ...state,
+      update: editReducer(state.currentTable, state.update, action)
+    };
+  }
   switch (action.type) {
     case LOAD_SCHEMA:
       return {...state, allSchemas: action.allSchemas};

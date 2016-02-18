@@ -1,4 +1,4 @@
-import Schema from "./Schema.json"
+import Schema from './Schema.json';
 
 const defaultCurFilter = {
   where: { $and: [{'': {'': ''}}] },
@@ -46,7 +46,7 @@ const defaultState = {
     lastError: null,
     lastSuccess: null
   },
-  allSchemas: null
+  allSchemas: Schema
 };
 
 export default defaultState;

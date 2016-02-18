@@ -53,6 +53,7 @@ global.socket = initSocket();
 // Main routes and rendering
 const requireLoginAndSchema = (nextState, replaceState, cb) => {
   const {loginState: {credentials}, tables: {allSchemas} } = store.getState();
+  console.log(credentials);
   if (allSchemas) {
     cb();
     return;
@@ -65,7 +66,7 @@ const requireLoginAndSchema = (nextState, replaceState, cb) => {
       cb();
     },
     () => {
-      replaceState(null, '/login'); cb();
+      cb();
     }
   );
 };

@@ -4,7 +4,7 @@ import {vSetDefaults, vMakeRequest, vExpandHeading} from './ViewActions'; // esl
 import {setTable} from './DataActions';
 import TableHeader from './TableHeader';
 import ViewRows from './ViewRows';
-// import UploadFile from './Upload';
+import uPloadFile from './Upload';
 
 const genHeadings = (headings) => {
   if (headings.length === 0) {
@@ -119,10 +119,12 @@ class ViewTable extends Component {
                              curDepth={0}
                              dispatch={dispatch} />);
 
+    const uploadImage = uPloadFile(dispatch);
     return (
       <div className={styles.container + ' container-fluid'}>
         <TableHeader dispatch={dispatch} tableName={tableName} tabName="view" />
         <div className="container-fluid">
+          {uploadImage}
           {viewRows}
         </div>
       </div>
