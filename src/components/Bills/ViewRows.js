@@ -99,7 +99,7 @@ const ViewRows = ({curTableName, curQuery, curFilter, curRows, // eslint-disable
           </td>)}
         {tableSchema.columns.map((column, j) => {
           if (column.ui_type === 'image') {
-            return <td key={j}><a href="http://www.gettyimages.in/detail/527920799" target="_blank"> Image </a></td>;
+            return <td key={j}><a href={row[column.name]} target="_blank"> Image </a></td>;
           }
           return <td key={j}>{row[column.name]}</td>;
         })}
