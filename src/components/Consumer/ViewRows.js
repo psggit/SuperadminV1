@@ -2,7 +2,7 @@ import React from 'react';
 import {vExpandRel, vCloseRel, V_SET_ACTIVE, deleteItem} from './ViewActions'; // eslint-disable-line no-unused-vars
 import FilterQuery from './FilterQuery';
 import {E_SET_EDITITEM} from './EditActions';
-import {I_SET_CLONE} from './InsertActions';
+// import {I_SET_CLONE} from './InsertActions';
 import {routeActions} from 'redux-simple-router';
 
 const ViewRows = ({curTableName, curQuery, curFilter, curRows, // eslint-disable-line no-unused-vars
@@ -66,9 +66,7 @@ const ViewRows = ({curTableName, curQuery, curFilter, curRows, // eslint-disable
         </td>
         );
     });
-    let editButton = null;
-    let cloneButton = null;
-    let deleteButton = null;
+
     let viewButton = null;
     if (!(isSingleRow)) {
       viewButton = (
@@ -77,6 +75,13 @@ const ViewRows = ({curTableName, curQuery, curFilter, curRows, // eslint-disable
           dispatch(routeActions.push('/consumer/profile/' + row.id));
         }}>View</button>);
     }
+
+    /*
+    let editButton = null;
+    let cloneButton = null;
+    let deleteButton = null;
+    */
+    /*
     if (!(isSingleRow)) {
       editButton = (
         <button className="btn btn-xs btn-default" onClick={() => {
@@ -97,6 +102,7 @@ const ViewRows = ({curTableName, curQuery, curFilter, curRows, // eslint-disable
           dispatch(deleteItem(pkClause));
         }}>Delete</button>);
     }
+    */
     return (
       <tr key={i}>
         {isSingleRow ? null :

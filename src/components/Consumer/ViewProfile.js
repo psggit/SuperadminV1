@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {getUserData} from './ProfileActions';
+import TableHeader from './TableHeader';
 // import TableHeader from './TableHeader';
 // import {editItem, E_ONGOING_REQ} from './EditActions';
 
@@ -11,7 +12,7 @@ class ViewProfile extends Component {
   }
   render() {
     const { data } = this.props;
-    const styles = require('./ViewProfile.scss');
+    // const styles = require('./ViewProfile.scss');
     console.log(data[0]);
     const getHtml = Object.keys(data[0]).map((key) => {
       return (
@@ -27,6 +28,7 @@ class ViewProfile extends Component {
     });
     return (
       <div>
+        <TableHeader title={'Profile ' + data[0].id}/>
         <div className="col-md-4">
           {getHtml}
         </div>
