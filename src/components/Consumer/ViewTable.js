@@ -147,7 +147,7 @@ ViewTable.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    tableName: ownProps.params.table,
+    tableName: 'consumer',
     schemas: state.tables.allSchemas,
     ...state.tables.view
   };

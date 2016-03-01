@@ -80,7 +80,7 @@ const main = (
         <Route path="tables/:table/edit" component={EditItem} />
         <Route path="tables/:table/insert" component={InsertItem} />
         <Route path="/upload_file" component={FileUpload} />
-        <Route path="consumer/:table/view" component={ViewTable} />
+        <Route path="consumer/profile" component={ViewTable} />
         <Route path="consumer/profile/:Id" component={ViewProfile} />
         <Route path="consumer/:table/edit" component={EditItem} />
         <Route path="consumer/:table/insert" component={InsertItem} />

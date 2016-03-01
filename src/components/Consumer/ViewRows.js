@@ -69,11 +69,12 @@ const ViewRows = ({curTableName, curQuery, curFilter, curRows, // eslint-disable
     let editButton = null;
     let cloneButton = null;
     let deleteButton = null;
+    let viewButton = null;
     if (!(isSingleRow)) {
-      editButton = (
+      viewButton = (
         <button className="btn btn-xs btn-default" onClick={() => {
           dispatch({type: E_SET_EDITITEM, oldItem: row, pkClause});
-          dispatch(routeActions.push('/consumer/' + curTableName + '/' + row.id));
+          dispatch(routeActions.push('/consumer/profile/' + row.id));
         }}>View</button>);
     }
     if (!(isSingleRow)) {
@@ -100,9 +101,7 @@ const ViewRows = ({curTableName, curQuery, curFilter, curRows, // eslint-disable
       <tr key={i}>
         {isSingleRow ? null :
           (<td>
-            {editButton}
-            {cloneButton}
-            {deleteButton}
+           {viewButton}
           </td>)}
         {tableSchema.columns.map((column, j) => {
           if (column.ui_type === 'image') {
