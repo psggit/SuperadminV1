@@ -5,15 +5,6 @@ import { routeActions } from 'redux-simple-router';
 
 const PageContainer = ({schema, location, children, dispatch}) => { // eslint-disable-line no-unused-vars
   const styles = require('./PageContainer.scss');
-  const tableLinks = schema.map((table) => {
-    return (
-      <ul>
-        <li className={styles.sidebar_title}><input type="checkbox" id="cb2"/><label for="cb2">{table.name.toUpperCase()}</label></li>
-        <li className={styles.sidebar_list}><label><Link to={'/consumer/profile'}>View all</Link></label></li>
-        <li className={styles.sidebar_list}><label><Link to={'/tables/' + table.name + '/insert'}>Insert</Link></label></li>
-      </ul>
-    );
-  });
   // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
   return (
     <div className={styles.container + ' container-fluid'}>
@@ -29,7 +20,7 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
             dispatch(routeActions.push('/upload_file'));
           }}>Upload File</button>
           <br/><br/>
-          <ul className={styles.sidebar_list}><li> <input type="checkbox" id="cb1"/><label for="cb1">
+          <ul className={styles.sidebar_list}><li> <input type="checkbox" id="cb1"/><label htmlFor="cb1">
           CUSTOMER MANAGEMENT
           </label>
           </li>
@@ -38,20 +29,20 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
             <li className={styles.sidebar_list}><a href="#"> Customer Transactions</a></li>
             <li className={styles.sidebar_list}><a href="#"> Support </a></li>
           </ul>
-          <ul id="sideheading"><li> <input type="checkbox" id="cb3"/><label for="cb3">
+          <ul id="sideheading"><li> <input type="checkbox" id="cb3"/><label htmlFor="cb3">
           USER MANAGEMENT
           </label>
           </li>
           </ul>
-          <ul id="sideheading"><li> <input type="checkbox" id="cb3"/><label for="cb3">
+          <ul id="sideheading"><li> <input type="checkbox" id="cb3"/><label htmlFor="cb3">
           SKU MANAGEMENT
           </label>
           </li>
-          </ul><ul id="sideheading"><li> <input type="checkbox" id="cb3"/><label for="cb3">
+          </ul><ul id="sideheading"><li> <input type="checkbox" id="cb3"/><label htmlFor="cb3">
           RETAILER MANAGEMENT
           </label>
           </li>
-          </ul><ul id="sideheading"><li> <input type="checkbox" id="cb3"/><label for="cb3">
+          </ul><ul id="sideheading"><li> <input type="checkbox" id="cb3"/><label htmlFor="cb3">
           BRAND MANAGER
           </label>
           </li>

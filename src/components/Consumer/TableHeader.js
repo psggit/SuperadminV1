@@ -1,11 +1,11 @@
 import React from 'react';
 
-const TableHeader = ({tableName}) => {
+const TableHeader = ({title}) => {
   const styles = require('./Table.scss');
   return (
     <div>
       <div className={styles.header}>
-        <h3>{tableName}</h3>
+        <h3> {title} </h3>
         <div className="clearfix"></div>
       </div>
       <br/>

@@ -118,12 +118,14 @@ class ViewTable extends Component {
                              schemas={schemas}
                              curDepth={0}
                              dispatch={dispatch} />);
+    const tableHeader = (<TableHeader title={"Consumer Profile"} />);
 
     // const uploadImage = uPloadFile(dispatch);
     // {uploadImage}
+    // <TableHeader dispatch={dispatch} title = {"Consumer Profile"}/>
     return (
       <div className={styles.container + ' container-fluid'}>
-        <TableHeader dispatch={dispatch} tableName={ tableName} tabName="view" />
+        { tableHeader }
         <div className="container-fluid">
           {viewRows}
         </div>
@@ -145,9 +147,9 @@ ViewTable.propTypes = {
   dispatch: PropTypes.func.isRequired
 };
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
   return {
-    tableName: ownProps.params.table,
+    tableName: 'consumer',
     schemas: state.tables.allSchemas,
     ...state.tables.view
   };
