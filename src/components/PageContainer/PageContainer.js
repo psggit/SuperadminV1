@@ -33,7 +33,7 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
           CUSTOMER MANAGEMENT
           </label>
           </li>
-            <li className={styles.sidebar_list}><a href="#"> KYC Functions </a></li>
+            <li className={styles.sidebar_list}><Link to={'/consumer/kyc'}> KYC Functions </Link></li>
             <li className={styles.sidebar_list}><Link to={'/consumer/profile'}>Profile</Link></li>
             <li className={styles.sidebar_list}><a href="#"> Customer Transactions</a></li>
             <li className={styles.sidebar_list}><a href="#"> Support </a></li>
