@@ -8,9 +8,9 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
   const tableLinks = schema.map((table) => {
     return (
       <ul>
-        <p className={styles.sidebar_title}>{table.name.toUpperCase()}</p>
-        <li className={styles.sidebar_list}><Link to={'/tables/' + table.name + '/view'}>View all</Link></li>
-        <li className={styles.sidebar_list}><Link to={'/tables/' + table.name + '/insert'}>Insert</Link></li>
+        <li className={styles.sidebar_title}><input type="checkbox" id="cb2"/><label for="cb2">{table.name.toUpperCase()}</label></li>
+        <li className={styles.sidebar_list}><label><Link to={'/tables/' + table.name + '/view'}>View all</Link></label></li>
+        <li className={styles.sidebar_list}><label><Link to={'/tables/' + table.name + '/insert'}>Insert</Link></label></li>
       </ul>
     );
   });
@@ -24,13 +24,37 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
           </div>
           <hr/>
           <br/><br/>
-          <ul>
           <button className={styles.addBtn + ' btn btn-primary'} onClick={(e) => {
             e.preventDefault();
             dispatch(routeActions.push('/upload_file'));
           }}>Upload File</button>
           <br/><br/>
-            {tableLinks}
+          <ul id="sideheading"><li> <input type="checkbox" id="cb1"/><label for="cb1">
+          CUSTOMER MANAGEMENT
+          </label>
+          </li>
+            <li className={styles.sidebar_list}><a href="#"> KYC Functions </a></li>
+            <li className={styles.sidebar_list}><a href="#"> Profile</a> </li>
+            <li className={styles.sidebar_list}><a href="#"> Customer Transactions</a></li>
+            <li className={styles.sidebar_list}><a href="#"> Support </a></li>
+          </ul>
+          <ul id="sideheading"><li> <input type="checkbox" id="cb3"/><label for="cb3">
+          USER MANAGEMENT
+          </label>
+          </li>
+          </ul>
+          <ul id="sideheading"><li> <input type="checkbox" id="cb3"/><label for="cb3">
+          SKU MANAGEMENT
+          </label>
+          </li>
+          </ul><ul id="sideheading"><li> <input type="checkbox" id="cb3"/><label for="cb3">
+          RETAILER MANAGEMENT
+          </label>
+          </li>
+          </ul><ul id="sideheading"><li> <input type="checkbox" id="cb3"/><label for="cb3">
+          BRAND MANAGER
+          </label>
+          </li>
           </ul>
         </div>
         <div className={styles.main + ' col-md-9'}>
