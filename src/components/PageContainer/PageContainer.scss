@@ -83,11 +83,10 @@ input[type=checkbox]:checked + label:before {
     padding: 5px;
     border: 1px solid #ABC;
     border-radius: 5px;
-  }
-  ul {
     list-style-type: none;
     padding-left: 10px;
     padding-bottom: 15px;
+  }
     p {
       padding-bottom: 0px;
     }
@@ -115,7 +114,6 @@ input[type=checkbox]:checked + label:before {
     li:active {
       color: #FF7400;
     }
-  }
 }
 
 .main {

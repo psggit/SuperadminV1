@@ -9,7 +9,7 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
     return (
       <ul>
         <li className={styles.sidebar_title}><input type="checkbox" id="cb2"/><label for="cb2">{table.name.toUpperCase()}</label></li>
-        <li className={styles.sidebar_list}><label><Link to={'/tables/' + table.name + '/view'}>View all</Link></label></li>
+        <li className={styles.sidebar_list}><label><Link to={'/consumer/profile'}>View all</Link></label></li>
         <li className={styles.sidebar_list}><label><Link to={'/tables/' + table.name + '/insert'}>Insert</Link></label></li>
       </ul>
     );
@@ -29,12 +29,12 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
             dispatch(routeActions.push('/upload_file'));
           }}>Upload File</button>
           <br/><br/>
-          <ul id="sideheading"><li> <input type="checkbox" id="cb1"/><label for="cb1">
+          <ul className={styles.sidebar_list}><li> <input type="checkbox" id="cb1"/><label for="cb1">
           CUSTOMER MANAGEMENT
           </label>
           </li>
             <li className={styles.sidebar_list}><a href="#"> KYC Functions </a></li>
-            <li className={styles.sidebar_list}><a href="#"> Profile</a> </li>
+            <li className={styles.sidebar_list}><Link to={'/consumer/profile'}>Profile</Link></li>
             <li className={styles.sidebar_list}><a href="#"> Customer Transactions</a></li>
             <li className={styles.sidebar_list}><a href="#"> Support </a></li>
           </ul>
