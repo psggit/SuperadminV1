@@ -13,7 +13,10 @@ import {Router, browserHistory, Route, IndexRoute} from 'react-router';
 import {syncHistory} from 'redux-simple-router';
 import {compose, createStore, applyMiddleware} from 'redux';
 
-import {Login, Home, PageContainer, Users, ViewTable, InsertItem, EditItem, FileUpload, ViewProfile} from './components'; // eslint-disable-line no-unused-vars
+import {Login, Home, PageContainer,
+  ViewConsumers, InsertItem, EditItem, FileUpload, ViewConsumerProfile,
+  ViewStates, ViewState,
+  ViewSkus, ViewSku} from './components'; // eslint-disable-line no-unused-vars
 import {AddTable} from './components';
 import {loadCredentials} from './components/Login/Actions';
 // import {loadSchema} from './components/Bills/DataActions';
@@ -76,14 +79,15 @@ const main = (
       <Route path="/" component={PageContainer} onEnter={requireLoginAndSchema}>
         <IndexRoute component={Home} />
         <Route path="tables/add" component={AddTable} />
-        <Route path="tables/:table/view" component={ViewTable} />
-        <Route path="tables/:table/edit" component={EditItem} />
-        <Route path="tables/:table/insert" component={InsertItem} />
         <Route path="/upload_file" component={FileUpload} />
-        <Route path="consumer/profile" component={ViewTable} />
-        <Route path="consumer/profile/:Id" component={ViewProfile} />
+        <Route path="consumer/profiles" component={ViewConsumers} />
+        <Route path="consumer/profile/:Id" component={ViewConsumerProfile} />
         <Route path="consumer/:table/edit" component={EditItem} />
         <Route path="consumer/:table/insert" component={InsertItem} />
+        <Route path="sku/states" component={ViewStates} />
+        <Route path="sku/state/:Id" component={ViewState} />
+        <Route path="sku/skus" component={ViewSkus} />
+        <Route path="sku/sku/:Id" component={ViewSku} />
       </Route>
     </Router>
 );
