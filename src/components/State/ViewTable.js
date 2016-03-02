@@ -65,7 +65,7 @@ const genRow = (row, headings) => {
   throw 'Incomplete pattern match'; // eslint-disable-line no-throw-literal
 };
 
-class ViewConsumers extends Component {
+class ViewStates extends Component {
   componentDidMount() {
     // Initialize this table
     const dispatch = this.props.dispatch;
@@ -134,7 +134,7 @@ class ViewConsumers extends Component {
   }
 }
 
-ViewConsumers.propTypes = {
+ViewStates.propTypes = {
   tableName: PropTypes.string.isRequired,
   schemas: PropTypes.array.isRequired,
   activePath: PropTypes.array.isRequired,
@@ -149,10 +149,10 @@ ViewConsumers.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    tableName: 'consumer',
+    tableName: 'state',
     schemas: state.tables.allSchemas,
     ...state.tables.view
   };
 };
 
-export default connect(mapStateToProps)(ViewConsumers);
+export default connect(mapStateToProps)(ViewStates);

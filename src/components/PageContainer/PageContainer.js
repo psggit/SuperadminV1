@@ -24,8 +24,8 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
           CUSTOMER MANAGEMENT
           </label>
           </li>
-            <li className={styles.sidebar_list}><Link to={'/consumer/kyc'}> KYC Functions </Link></li>
-            <li className={styles.sidebar_list}><Link to={'/consumer/profile'}>Profile</Link></li>
+            <li className={styles.sidebar_list}><Link to={'/consumer/kycfunctions'}> KYC Functions </Link></li>
+            <li className={styles.sidebar_list}><Link to={'/consumer/profiles'}>Profile</Link></li>
             <li className={styles.sidebar_list}><a href="#"> Customer Transactions</a></li>
             <li className={styles.sidebar_list}><a href="#"> Support </a></li>
           </ul>
@@ -37,6 +37,8 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
           <ul id="sideheading"><li> <input type="checkbox" id="cb3"/><label htmlFor="cb3">
           SKU MANAGEMENT
           </label>
+            <li className={styles.sidebar_list}><Link to={'/sku/states'}>States</Link></li>
+            <li className={styles.sidebar_list}><Link to={'/sku/skus'}>Sku</Link></li>
           </li>
           </ul><ul id="sideheading"><li> <input type="checkbox" id="cb3"/><label htmlFor="cb3">
           RETAILER MANAGEMENT

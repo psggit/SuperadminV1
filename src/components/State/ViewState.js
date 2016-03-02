@@ -1,14 +1,14 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {getUserData} from './ProfileActions';
+import {getStateData} from './StateActions';
 import TableHeader from './TableHeader';
 // import TableHeader from './TableHeader';
 // import {editItem, E_ONGOING_REQ} from './EditActions';
 
-class ViewConsumerProfile extends Component {
+class ViewState extends Component {
   componentDidMount() {
     // this.props.dispatch({type: GET_CONSUMER, data: this.props.params.Id});
-    this.props.dispatch(getUserData(parseInt(this.props.params.Id, 10)));
+    this.props.dispatch(getStateData(parseInt(this.props.params.Id, 10)));
   }
   render() {
     const { ongoingRequest, lastError, lastSuccess } = this.props;
@@ -19,7 +19,7 @@ class ViewConsumerProfile extends Component {
       getHeader = <TableHeader title={'Error'}/>;
       getHtml = (<h4> error </h4>);
     } else if (lastSuccess) {
-      getHeader = <TableHeader title={'Consumer: ' + lastSuccess[0].id}/>;
+      getHeader = <TableHeader title={'State: ' + lastSuccess[0].state_name}/>;
       console.log('This is Masochism');
       console.log(lastSuccess);
       getHtml = Object.keys(lastSuccess[0]).map((key) => {
@@ -134,7 +134,7 @@ const EditItem = ({tableName, schemas, oldItem, ongoingRequest, lastError, lastS
 };
 */
 
-ViewConsumerProfile.propTypes = {
+ViewState.propTypes = {
   params: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
   ongoingRequest: PropTypes.bool.isRequired,
@@ -143,7 +143,7 @@ ViewConsumerProfile.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  return {...state.profile};
+  return {...state.stater};
 };
 
-export default connect(mapStateToProps)(ViewConsumerProfile);
+export default connect(mapStateToProps)(ViewState);

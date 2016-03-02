@@ -13,10 +13,10 @@ import fetch from 'isomorphic-fetch';
 import Endpoints, {globalCookiePolicy} from '../../Endpoints';
 
 // const GET_CONSUMER = 'ViewProfile/GET_CONSUMER';
-const MAKE_REQUEST = 'ViewProfile/MAKE_REQUEST';
-const REQUEST_SUCCESS = 'ViewProfile/REQUEST_SUCCESS';
-const REQUEST_ERROR = 'ViewProfile/REQUEST_ERROR';
-const RESET = 'ViewProfile/RESET';
+const MAKE_REQUEST = 'ViewState/MAKE_REQUEST';
+const REQUEST_SUCCESS = 'ViewState/REQUEST_SUCCESS';
+const REQUEST_ERROR = 'ViewState/REQUEST_ERROR';
+const RESET = 'ViewState/RESET';
 
 // HTML Component defines what state it needs
 // HTML Component should be able to emit actions
@@ -27,7 +27,7 @@ const RESET = 'ViewProfile/RESET';
 
 // Reducer
 const defaultState = {ongoingRequest: false, lastError: null, lastSuccess: null, credentials: null };
-const profileReducer = (state = defaultState, action) => {
+const stateReducer = (state = defaultState, action) => {
   switch (action.type) {
     case MAKE_REQUEST:
       return {...state, ongoingRequest: true, lastSuccess: null, lastError: null};
@@ -45,13 +45,13 @@ const profileReducer = (state = defaultState, action) => {
 const requestSuccess = (data) => ({type: REQUEST_SUCCESS, data: data});
 const requestFailed = (data) => ({type: REQUEST_ERROR, data: data});
 
-const getUserData = (f) => {
+const getStateData = (f) => {
   return (dispatch) => {
-    // dispatch({ type: MAKE_REQUEST, f});
+    dispatch({ type: MAKE_REQUEST, f});
     //
     console.log(f);
     const payload = {'where': {'id': f}, 'columns': ['*']};
-    const url = Endpoints.db + '/table/' + 'consumer' + '/select';
+    const url = Endpoints.db + '/table/' + 'state' + '/select';
     const options = {
       method: 'POST',
       body: JSON.stringify(payload),
@@ -107,5 +107,5 @@ const loadCredentials = () => {
   };
 };
 
-export default profileReducer;
-export {getUserData, requestSuccess, requestFailed, loadCredentials, RESET};
+export default stateReducer;
+export {getStateData, requestSuccess, requestFailed, loadCredentials, RESET};
