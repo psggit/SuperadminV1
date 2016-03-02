@@ -34,17 +34,21 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
           </label>
           </li>
           </ul>
-          <ul id="sideheading"><li> <input type="checkbox" id="cb3"/><label htmlFor="cb3">
-          SKU MANAGEMENT
-          </label>
-            <li className={styles.sidebar_list}><Link to={'/sku/states'}>States</Link></li>
-            <li className={styles.sidebar_list}><Link to={'/sku/skus'}>Sku</Link></li>
-          </li>
-          </ul><ul id="sideheading"><li> <input type="checkbox" id="cb3"/><label htmlFor="cb3">
+          <ul id="sideheading">
+            <li>
+              <input type="checkbox" id="cb4"/>
+              <label htmlFor="cb4">
+                SKU MANAGEMENT
+              </label>
+              <li className={styles.sidebar_list}><Link to={'/sku/states'}>States</Link></li>
+              <li className={styles.sidebar_list}><Link to={'/sku/skus'}>Sku</Link></li>
+            </li>
+          </ul>
+          <ul id="sideheading"><li> <input type="checkbox" id="cb4"/><label htmlFor="cb5">
           RETAILER MANAGEMENT
           </label>
           </li>
-          </ul><ul id="sideheading"><li> <input type="checkbox" id="cb3"/><label htmlFor="cb3">
+          </ul><ul id="sideheading"><li> <input type="checkbox" id="cb4"/><label htmlFor="cb6">
           BRAND MANAGER
           </label>
           </li>

@@ -18,4 +18,6 @@ export ViewStates from './State/ViewTable';
 export ViewState from './State/ViewState';
 export ViewSkus from './Sku/ViewTable';
 export ViewSku from './Sku/ViewSku';
-export Kycfunctions from './Consumer/Kycfunctions';
+export Kycfunctions from './Kyc/Kycfunctions';
+export ViewKycs from './Kyc/ViewTable';
+export ViewKycProfile from './Kyc/KycView';
