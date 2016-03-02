@@ -20,7 +20,7 @@ class ViewConsumerProfile extends Component {
       getHtml = (<h4> error </h4>);
     } else if (lastSuccess) {
       getHeader = <TableHeader title={'Consumer: ' + lastSuccess[0].id}/>;
-      console.log('This is Masochism');
+      //console.log('This is Masochism');
       console.log(lastSuccess);
       getHtml = Object.keys(lastSuccess[0]).map((key) => {
         return (
