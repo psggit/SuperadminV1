@@ -12,7 +12,7 @@ export Home from './Home/Home';
 export ViewConsumers from './Consumer/ViewTable';
 export AddTable from './Consumer/AddTable';
 export InsertItem from './Consumer/InsertItem';
-export EditItem from './Consumer/EditItem';
+export EditItem from './Bills/EditItem';
 export ViewConsumerProfile from './Consumer/ViewProfile';
 export ViewStates from './State/ViewTable';
 export ViewState from './State/ViewState';

@@ -50,7 +50,9 @@ const getSkuData = (f) => {
     dispatch({ type: MAKE_REQUEST, f});
     //
     console.log(f);
-    const payload = {'where': {'id': f}, 'columns': ['*']};
+    let payload = {'where': {'id': f}};
+    // payload.columns= ['id', 'brand_name', {'name': 'skus', 'columns': ['*'] }];
+    payload.columns= ['*'];
     const url = Endpoints.db + '/table/' + 'brand' + '/select';
     const options = {
       method: 'POST',
