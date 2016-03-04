@@ -10,9 +10,10 @@ class ViewConsumerProfile extends Component {
     // this.props.dispatch({type: GET_CONSUMER, data: this.props.params.Id});
     this.props.dispatch(getUserData(parseInt(this.props.params.Id, 10)));
   }
+
   render() {
     const { ongoingRequest, lastError, lastSuccess } = this.props;
-    // const styles = require('./ViewState.scss');
+    // const styles = require('./ViewProfile.scss');
     let getHtml;
     let getHeader = <TableHeader title={'MeeehhhHH'}/>;
     if (lastError) {
@@ -20,7 +21,7 @@ class ViewConsumerProfile extends Component {
       getHtml = (<h4> error </h4>);
     } else if (lastSuccess) {
       getHeader = <TableHeader title={'Consumer: ' + lastSuccess[0].id}/>;
-      console.log('This is Masochism');
+      // console.log('This is Masochism');
       console.log(lastSuccess);
       getHtml = Object.keys(lastSuccess[0]).map((key) => {
         return (

@@ -14,8 +14,9 @@ import {syncHistory} from 'redux-simple-router';
 import {compose, createStore, applyMiddleware} from 'redux';
 
 import {Login, Home, PageContainer,
-  ViewConsumers, InsertItem, EditItem, FileUpload, ViewConsumerProfile,
+  ViewConsumers, InsertItem, EditItem, FileUpload, ViewConsumerProfile, Kycfunctions,
   ViewStates, ViewState,
+  ViewKycs, ViewKycProfile,
   ViewSkus, ViewSku} from './components'; // eslint-disable-line no-unused-vars
 import {AddTable} from './components';
 import {loadCredentials} from './components/Login/Actions';
@@ -81,6 +82,9 @@ const main = (
         <Route path="tables/add" component={AddTable} />
         <Route path="/upload_file" component={FileUpload} />
         <Route path="consumer/profiles" component={ViewConsumers} />
+        <Route path="consumer/kycfunctions" component={Kycfunctions} />
+        <Route path="/consumer/kycfunctions/verify_kyc" component={ViewKycs} />
+        <Route path="/consumer/kycfunctions/verify_kyc/view_kyc_profile/:Id" component={ViewKycProfile} />
         <Route path="consumer/profile/:Id" component={ViewConsumerProfile} />
         <Route path="consumer/:table/edit" component={EditItem} />
         <Route path="consumer/:table/insert" component={InsertItem} />

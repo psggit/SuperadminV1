@@ -7,6 +7,8 @@ import fileReducer from './components/FileUpload/Actions';
 import profileReducer from './components/Consumer/ProfileActions';
 import stateReducer from './components/State/StateActions';
 import skuReducer from './components/Sku/SkuActions';
+import kycReducer from './components/Consumer/KycfunctionsActions';
+import kycviewReducer from './components/Consumer/KycViewActions';
 
 const reducer = combineReducers({
   loginState: loginReducer,
@@ -16,7 +18,9 @@ const reducer = combineReducers({
   profile: profileReducer,
   files: fileReducer,
   stater: stateReducer,
-  sku: skuReducer
+  sku: skuReducer,
+  kyc: kycReducer,
+  kycviewprofile: kycviewReducer
 });
 
 export default reducer;
