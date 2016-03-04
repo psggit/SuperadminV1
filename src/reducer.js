@@ -8,7 +8,7 @@ import profileReducer from './components/Consumer/ProfileActions';
 import stateReducer from './components/State/StateActions';
 import skuReducer from './components/Sku/SkuActions';
 import kycReducer from './components/Consumer/KycfunctionsActions';
-import kycviewReducer from './components/Consumer/KycViewActions';
+import kycviewReducer from './components/KycUpload/KycUploadViewActions';
 
 const reducer = combineReducers({
   loginState: loginReducer,
@@ -20,7 +20,8 @@ const reducer = combineReducers({
   stater: stateReducer,
   sku: skuReducer,
   kyc: kycReducer,
-  kycviewprofile: kycviewReducer
+  kycviewprofile: kycviewReducer,
+  kycupload: kycuploadviewReducer
 });
 
 export default reducer;
