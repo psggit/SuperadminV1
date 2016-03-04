@@ -34,6 +34,7 @@ const editItem = (tableName, colValues) => {
       body: JSON.stringify({ values: insertObject, where: state.tables.update.pkClause})
     };
     const url = Endpoints.db + '/table/' + tableName + '/update';
+    console.log(options);
     return dispatch(requestAction(url, options, E_REQUEST_SUCCESS, E_REQUEST_ERROR));
   };
 };
