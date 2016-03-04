@@ -61,9 +61,14 @@
       }
       a:active {
         color: #FF7400;
+        text-decoration: none;
       }
       a:hover {
         color: rgba(0,0,0,0.87);
+        text-decoration: none;
+      }
+      a:visited {
+        text-decoration: none;
       }
     }
     li:hover {

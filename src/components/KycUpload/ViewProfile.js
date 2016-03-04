@@ -5,7 +5,7 @@ import TableHeader from './TableHeader';
 // import TableHeader from './TableHeader';
 // import {editItem, E_ONGOING_REQ} from './EditActions';
 
-class ViewConsumerProfile extends Component {
+class ViewUploadProfile extends Component {
   componentDidMount() {
     // this.props.dispatch({type: GET_CONSUMER, data: this.props.params.Id});
     this.props.dispatch(getUserData(parseInt(this.props.params.Id, 10)));
@@ -135,7 +135,7 @@ const EditItem = ({tableName, schemas, oldItem, ongoingRequest, lastError, lastS
 };
 */
 
-ViewConsumerProfile.propTypes = {
+ViewUploadProfile.propTypes = {
   params: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
   ongoingRequest: PropTypes.bool.isRequired,
@@ -144,7 +144,7 @@ ViewConsumerProfile.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  return {...state.kycviewprofile};
+  return {...state.kycupload};
 };
 
-export default connect(mapStateToProps)(ViewConsumerProfile);
+export default connect(mapStateToProps)(ViewUploadProfile);

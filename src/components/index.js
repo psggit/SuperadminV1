@@ -20,4 +20,6 @@ export ViewSkus from './Sku/ViewTable';
 export ViewSku from './Sku/ViewSku';
 export Kycfunctions from './Kyc/Kycfunctions';
 export ViewKycs from './Kyc/ViewTable';
+export ViewKyc from './KycUpload/ViewTable';
 export ViewKycProfile from './Kyc/KycView';
+export KycViewUpload from './KycUpload/KycUploadViews';
