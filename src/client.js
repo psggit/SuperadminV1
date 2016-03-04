@@ -16,7 +16,7 @@ import {compose, createStore, applyMiddleware} from 'redux';
 import {Login, Home, PageContainer,
   ViewConsumers, InsertItem, EditItem, FileUpload, ViewConsumerProfile, Kycfunctions,
   ViewStates, ViewState,
-  ViewKycs, KycUploadProfile, ViewKycProfile,
+  ViewKycs, ViewKycProfile,
   ViewSkus, ViewSku} from './components'; // eslint-disable-line no-unused-vars
 import {AddTable} from './components';
 import {loadCredentials} from './components/Login/Actions';
@@ -85,7 +85,6 @@ const main = (
         <Route path="consumer/kycfunctions" component={Kycfunctions} />
         <Route path="/consumer/kycfunctions/verify_kyc" component={ViewKycs} />
         <Route path="/consumer/kycfunctions/verify_kyc/view_kyc_profile/:Id" component={ViewKycProfile} />
-        <Route path="/consumer/kycfunctions/upload_kyc/:Id" component={KycUploadProfile} />
         <Route path="consumer/profile/:Id" component={ViewConsumerProfile} />
         <Route path="consumer/:table/edit" component={EditItem} />
         <Route path="consumer/:table/insert" component={InsertItem} />

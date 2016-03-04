@@ -11,7 +11,7 @@ const defaultViewState = {
   query: {
     columns: []
   },
-  rows: ["id"],
+  rows: ['id'],
   curFilter: defaultCurFilter,
   activePath: [],
   ongoingRequest: false,
