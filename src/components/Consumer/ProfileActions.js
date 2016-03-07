@@ -16,6 +16,7 @@ import Endpoints, {globalCookiePolicy} from '../../Endpoints';
 const MAKE_REQUEST = 'ViewProfile/MAKE_REQUEST';
 const REQUEST_SUCCESS = 'ViewProfile/REQUEST_SUCCESS';
 const REQUEST_ERROR = 'ViewProfile/REQUEST_ERROR';
+const SECONDARY_VIEW = 'ViewProfile/SECONDARY_VIEW';
 const RESET = 'ViewProfile/RESET';
 
 // HTML Component defines what state it needs
@@ -26,15 +27,17 @@ const RESET = 'ViewProfile/RESET';
 
 
 // Reducer
-const defaultState = {ongoingRequest: false, lastError: null, lastSuccess: null, credentials: null };
+const defaultState = {ongoingRequest: false, lastError: null, lastSuccess: null, credentials: null, secondaryData: null};
 const profileReducer = (state = defaultState, action) => {
   switch (action.type) {
     case MAKE_REQUEST:
-      return {...state, ongoingRequest: true, lastSuccess: null, lastError: null};
+      return {...state, ongoingRequest: true, lastSuccess: null, lastError: null, secondaryData: null};
     case REQUEST_SUCCESS:
-      return {...state, ongoingRequest: false, lastSuccess: action.data, lastError: null, credentials: action.data};
+      return {...state, ongoingRequest: false, lastSuccess: action.data, lastError: null, credentials: action.data, secondaryData: null};
     case REQUEST_ERROR:
-      return {...state, ongoingRequest: false, lastError: action.data, lastSuccess: null};
+      return {...state, ongoingRequest: false, lastError: action.data, lastSuccess: null, secondaryData: null};
+    case SECONDARY_VIEW:
+      return {...state, ongoingRequest: false, lastSuccess: null, secondaryData: action.data};
     case RESET:
       return {...defaultState};
     default: return state;
@@ -45,6 +48,15 @@ const profileReducer = (state = defaultState, action) => {
 const requestSuccess = (data) => ({type: REQUEST_SUCCESS, data: data});
 const requestFailed = (data) => ({type: REQUEST_ERROR, data: data});
 
+
+const getSecondaryData = (data, key) => {
+  return (dispatch) => {
+    console.log(data);
+    dispatch({type: SECONDARY_VIEW, data: data[0][key]});
+
+  }
+}
+
 const getUserData = (f) => {
   return (dispatch) => {
     // dispatch({ type: MAKE_REQUEST, f});
@@ -52,15 +64,15 @@ const getUserData = (f) => {
     console.log(f);
     const payload = {'where': {'id': f}, 'columns': ['*']};
     const url = Endpoints.db + '/table/' + 'consumer' + '/select';
+    // body: JSON.stringify(payload),
     const options = {
-      method: 'POST',
-      body: JSON.stringify(payload),
+      method: 'GET',
       headers: { 'Content-Type': 'application/json' },
       credentials: globalCookiePolicy
     };
     // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
 
-    return fetch(url, options)
+    return fetch('http://localhost:3080/get_consumer_profile/' + f, options)
            .then(
              (response) => {
                if (response.ok) { // 2xx status
@@ -108,4 +120,4 @@ const loadCredentials = () => {
 };
 
 export default profileReducer;
-export {getUserData, requestSuccess, requestFailed, loadCredentials, RESET};
+export {getUserData, requestSuccess, requestFailed, loadCredentials, RESET, getSecondaryData};

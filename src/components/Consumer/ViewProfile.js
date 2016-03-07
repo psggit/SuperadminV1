@@ -2,7 +2,6 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {getUserData} from './ProfileActions';
 import TableHeader from './TableHeader';
-// import TableHeader from './TableHeader';
 // import {editItem, E_ONGOING_REQ} from './EditActions';
 
 class ViewConsumerProfile extends Component {
@@ -12,8 +11,43 @@ class ViewConsumerProfile extends Component {
   }
 
   render() {
+    const reservationHtml = () => {
+      return (
+        <button className="btn btn-default btn-xs" onClick={() =>{
+          // this.props.dispatch(getSecondaryData(arr));
+        }}> View All </button>
+      );
+    };
+    const funcMap = {
+      'reservations': reservationHtml
+    };
+    let valueComponent;
     const { ongoingRequest, lastError, lastSuccess } = this.props;
-    // const styles = require('./ViewProfile.scss');
+    let valueComponent = (obj, key) => {
+      if (funcMap.hasOwnProperty(key)) {
+        return funcMap[key]();
+      } else {
+        return (
+        <div className="col-md-6">
+        {obj[key] ? obj[key] : 'undefined'}
+        </div>);
+    }
+    const objToHtml = (obj) => {
+      return (
+        Object.keys(obj).map((key) => {
+          return (
+            <div>
+              <div className="col-md-6">
+                {key}
+              </div>
+              <div className="col-md-6">
+                {valueComponent(obj, key)}
+              </div>
+            </div>
+          )
+        })
+      )
+    }
     let getHtml;
     let getHeader = <TableHeader title={'MeeehhhHH'}/>;
     if (lastError) {
@@ -23,18 +57,7 @@ class ViewConsumerProfile extends Component {
       getHeader = <TableHeader title={'Consumer: ' + lastSuccess[0].id}/>;
       // console.log('This is Masochism');
       console.log(lastSuccess);
-      getHtml = Object.keys(lastSuccess[0]).map((key) => {
-        return (
-              <div>
-                <div className="col-md-6">
-                {key}
-                </div>
-                <div className="col-md-6">
-                {lastSuccess[0][key] ? lastSuccess[0][key] : 'undefined'}
-                </div>
-              </div>
-        );
-      });
+      getHtml = objToHtml(lastSuccess[0])
     } else if (ongoingRequest) {
       getHeader = <TableHeader title={'Requesting'}/>;
       getHtml = <h4> requesting </h4>;
@@ -133,6 +156,21 @@ const EditItem = ({tableName, schemas, oldItem, ongoingRequest, lastError, lastS
     </div>
   );
 };
+*/
+
+/*
+      getHtml = Object.keys(lastSuccess[0]).map((key) => {
+        return (
+              <div>
+                <div className="col-md-6">
+                {key}
+                </div>
+                <div className="col-md-6">
+                {lastSuccess[0][key] ? lastSuccess[0][key] : 'undefined'}
+                </div>
+              </div>
+        );
+      });
 */
 
 ViewConsumerProfile.propTypes = {
