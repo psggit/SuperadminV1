@@ -8,7 +8,7 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
   // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
   return (
     <div className={styles.container + ' container-fluid'}>
-      <div className={styles.flexRow + ' row'}>
+      <div className={styles.flexRow}>
         <div className={styles.sidebar + ' col-md-3'}>
           <div className={styles.account}>
             Logged in: <b>admin</b>
@@ -55,7 +55,7 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
           </ul>
         </div>
         <div className={styles.main + ' col-md-9'}>
-          <div>
+          <div className={styles.right_wrapper}>
             {children}
           </div>
         </div>

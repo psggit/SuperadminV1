@@ -36,6 +36,9 @@ const _finalCreateStore = compose(
   require('redux-devtools').persistState( window.location.href.match(/[?&]debug_session=([^&]+)\b/))
 )(createStore);
 
+console.log('browserHistory');
+console.log(browserHistory);
+
 const store = _finalCreateStore(reducer);
 
 /* ****************************************************************** */
@@ -73,7 +76,6 @@ const requireLoginAndSchema = (nextState, replaceState, cb) => {
     }
   );
 };
-
 const main = (
     <Router history={browserHistory}>
       <Route path="/login" component={Login} />

@@ -48,14 +48,12 @@ const profileReducer = (state = defaultState, action) => {
 const requestSuccess = (data) => ({type: REQUEST_SUCCESS, data: data});
 const requestFailed = (data) => ({type: REQUEST_ERROR, data: data});
 
-
 const getSecondaryData = (data, key) => {
   return (dispatch) => {
     console.log(data);
     dispatch({type: SECONDARY_VIEW, data: data[0][key]});
-
-  }
-}
+  };
+};
 
 const getUserData = (f) => {
   return (dispatch) => {
@@ -64,15 +62,15 @@ const getUserData = (f) => {
     console.log(f);
     const payload = {'where': {'id': f}, 'columns': ['*']};
     const url = Endpoints.db + '/table/' + 'consumer' + '/select';
-    // body: JSON.stringify(payload),
     const options = {
-      method: 'GET',
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      credentials: globalCookiePolicy
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(payload),
     };
     // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
 
-    return fetch('http://localhost:3080/get_consumer_profile/' + f, options)
+    return fetch(url, options)
            .then(
              (response) => {
                if (response.ok) { // 2xx status
