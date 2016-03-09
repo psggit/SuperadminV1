@@ -11,6 +11,44 @@ class ViewConsumerProfile extends Component {
     this.props.dispatch(getUserData(parseInt(this.props.params.Id, 10)));
   }
   render() {
+      const styles = require('./Table.scss');
+      const reservationHtml = () => {
+        return (
+          <button className="btn btn-default btn-xs" onClick={() =>{
+            // this.props.dispatch(getSecondaryData(arr));
+          }}> View All </button>
+        );
+      };
+      const funcMap = {
+        'reservations': reservationHtml
+      };
+      const { ongoingRequest, lastError, lastSuccess } = this.props;
+      const valueComponent = (obj, key) => {
+        if (funcMap.hasOwnProperty(key)) {
+          return funcMap[key]();
+        }
+        return (
+            <div className="col-md-6">
+                {obj[key] ? obj[key] : 'N/A'}
+            </div>
+        );
+      };
+      const objToHtml = (obj) => {
+        return (
+          Object.keys(obj).map((key) => {
+            return (
+              <div className={styles.profile_information}>
+                <div className={styles.wd_30}>
+                  {key}:
+                </div>
+                <div className={styles.wd_70} >
+                  {valueComponent(obj, key)}
+                </div>
+              </div>
+            );
+          })
+        );
+      };
     // const styles = require('./ViewProfile.scss');
    const { ongoingRequest, lastError, lastSuccess } = this.props;
     // const styles = require('./ViewState.scss');
@@ -40,10 +78,36 @@ class ViewConsumerProfile extends Component {
       getHtml = <h4> requesting </h4>;
     }
     return (
-      <div>
+      <div className={styles.profile_wrapper}>
         {getHeader}
-        <div className="col-md-4">
-          {getHtml}
+        <div className={styles.white_width}>
+        </div>
+        <div className={styles.profile_view_wrapper}>
+            <div className={styles.profile_view_left}>
+                <p className={styles.profile_view_header}>
+                    Account Details
+                </p>
+                {getHtml}
+            </div>
+            <div className={styles.profile_view_right}>
+            </div>
+        </div>
+        <div className={styles.profile_actions}>
+            <div className={styles.profile_action_button}>
+                <button className="form-control" id="edit">
+                    Edit User
+                </button>
+            </div>
+            <div className={styles.profile_action_button}>
+                <button className="form-control" id="reset_pin">
+                    Reset Pin
+                </button>
+            </div>
+            <div className={styles.profile_action_button}>
+                <button className="form-control" id="reset_password">
+                    Reset Password
+                </button>
+            </div>
         </div>
       </div>
     );

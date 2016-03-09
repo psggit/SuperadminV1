@@ -3,13 +3,10 @@ import React from 'react';
 const TableHeader = ({title}) => {
   const styles = require('./Table.scss');
   return (
-    <div>
+    <div className={styles.header_wrapper}>
       <div className={styles.header}>
-        <h3> {title} </h3>
-        <div className="clearfix"></div>
-      </div>
-      <br/>
-      <div className="container-fluid">
+        <h3> KYC / Verify KYC / View Profile / {title} </h3>
+      <div className="clearfix"></div>
       </div>
     </div>
   );

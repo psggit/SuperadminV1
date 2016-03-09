@@ -49,7 +49,7 @@ class ViewConsumerProfile extends Component {
       );
     };
     let getHtml;
-    let getHeader = <TableHeader title={'MeeehhhHH'}/>;
+    let getHeader = <TableHeader title={'Initial'}/>;
     if (lastError) {
       getHeader = <TableHeader title={'Error'}/>;
       getHtml = (<h4> error </h4>);
