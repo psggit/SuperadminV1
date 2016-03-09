@@ -46,7 +46,8 @@ app.use((req, res) => {
     // hot module replacement is enabled in the development env
     webpackIsomorphicTools.refresh();
   }
-  const client = new ApiClient(req);
+  /* I commented it out because it had no purpose */
+  //const client = new ApiClient(req);
 
   const assets = webpackIsomorphicTools.assets();
 
