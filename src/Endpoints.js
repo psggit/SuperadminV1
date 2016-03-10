@@ -6,7 +6,7 @@ const Endpoints = {
   getConsumer: base + '/api/1/table/consumer/select',
   schemaChange: base + '/api/1/change',
   getCredentials: base + '/hauth/get_credentials',
-  file_upload: 'http://192.168.99.100:8081/upload'
+  file_upload: 'http://130.211.246.199:30181/file_upload/upload'
 };
 const globalCookiePolicy = 'include';
 

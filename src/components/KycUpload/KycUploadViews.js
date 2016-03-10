@@ -23,6 +23,19 @@ class KycUploadProfile extends Component {
     const funcMap = {
       'reservations': reservationHtml
     };
+    let keyName;
+    const nameMap = (key) => {
+      if (key === 'full_name') {
+        keyName = 'Name';
+        return keyName;
+      } else if (key === 'email') {
+        keyName = 'Email';
+        return keyName;
+      } else if (key === 'mobile_number') {
+        keyName = 'Mobile Number';
+        return keyName;
+      }
+    };
 
     const { ongoingRequest, lastError, lastSuccess, dispatch } = this.props;
     const valueComponent = (obj, key) => {
@@ -38,16 +51,20 @@ class KycUploadProfile extends Component {
     const objToHtml = (obj) => {
       return (
           Object.keys(obj).map((key) => {
-            return (
-              <div className={styles.profile_information}>
+            if (key === 'full_name' || key === 'mobile_number' || key === 'email') {
+              keyName = nameMap(key);
+              console.log({keyName});
+              return (
+                <div className={styles.profile_information}>
                 <div className={styles.wd_30}>
-                  {key}:
+                  {keyName}:
                 </div>
                 <div className={styles.wd_70} >
                   {valueComponent(obj, key)}
                 </div>
-              </div>
-            );
+                </div>
+              );
+            }
           })
         );
     };
@@ -82,6 +99,9 @@ class KycUploadProfile extends Component {
         <div className={styles.upload_wrapper}>
           <div className={styles.upload_white}>
             <div className={styles.upload_right}>
+            <p className={styles.upload_header}>
+                Proof of ID
+            </p>
             <div className={styles.profile_actions}>
             <input type="file" ref={(node) => {file = node;}} className="form-control" placeholder="username" />
                 <div className={styles.upload_action_button}>

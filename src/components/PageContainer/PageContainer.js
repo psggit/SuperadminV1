@@ -44,11 +44,11 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
               <li className={styles.sidebar_list}><Link to={'/sku/skus'}>Sku</Link></li>
             </li>
           </ul>
-          <ul id="sideheading"><li> <input type="checkbox" id="cb4"/><label htmlFor="cb5">
+          <ul id="sideheading"><li> <input type="checkbox" id="cb5"/><label htmlFor="cb5">
           RETAILER MANAGEMENT
           </label>
           </li>
-          </ul><ul id="sideheading"><li> <input type="checkbox" id="cb4"/><label htmlFor="cb6">
+          </ul><ul id="sideheading"><li> <input type="checkbox" id="cb6"/><label htmlFor="cb6">
           BRAND MANAGER
           </label>
           </li>
