@@ -20,7 +20,7 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
             dispatch(routeActions.push('/upload_file'));
           }}>Upload File</button>
           <br/><br/>
-
+          <section id="accordion">
           <ul className={styles.sidebar_list}>
             <li>
               <input type="checkbox" id="cb1"/>
@@ -41,6 +41,7 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
               <a href="#"> Support </a>
             </li>
           </ul>
+          </section>
           <ul id="sideheading">
             <li> <input type="checkbox" id="cb3"/>
               <label htmlFor="cb3">

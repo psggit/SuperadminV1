@@ -50,6 +50,48 @@
   color: rgba(0,0,0,0.54);
   overflow-y: scroll;
   padding-left: 25px;
+  #accordion input {
+	display: none;
+  }
+  #accordion label {
+	background: #eee;
+	border-radius: .25em;
+	cursor: pointer;
+	display: block;
+	margin-bottom: .125em;
+	padding: .25em 1em;
+	z-index: 20;
+}
+#accordion label:hover {
+	background: #ccc;
+}
+
+#accordion input:checked + label {
+	background: #ccc;
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
+	color: white;
+	margin-bottom: 0;
+}
+#accordion li {
+	background: #f7f7f7;
+	height:0px;
+	overflow:hidden;
+	z-index:10;
+}
+#accordion article p {
+	padding: 1em;
+}
+#accordion input:checked article {
+}
+#accordion input:checked ~ article {
+	border-bottom-left-radius: .25em;
+	border-bottom-right-radius: .25em;
+	height: auto;
+	margin-bottom: .125em;
+}
+
+
   hr { margin: 0; }
   ul{
     list-style-type: none;
@@ -94,49 +136,6 @@
     li:active {
       color: #FF7400;
     }
-    input[type=checkbox] {
-      display: none;
-    }
-    input[type=checkbox] ~ ul {
-    max-height: 0;
-    max-width: 0;
-    opacity: 0;
-    overflow: hidden;
-    white-space: nowrap;
-     -webkit-transition:all 1s ease;
-     -moz-transition:all 1s ease;
-     -o-transition:all 1s ease;
-     transition:all 1s ease;
-   }
-    input[type=checkbox]:checked ~ ul {
-    max-height: 100%;
-    max-width: 100%;
-    opacity: 1;
-  }
-  input[type=checkbox] + label:before{
-    transform-origin:25% 50%;
-    border: 8px solid transparent;
-    border-width: 8px 12px;
-    border-left-color: white;
-    margin-left: -20px;
-    width: 0;
-    height: 0;
-    display: inline-block;
-    text-align: center;
-    content: '';
-    color: #AAAFAB;
-     -webkit-transition:all .5s ease;
-     -moz-transition:all .5s ease;
-     -o-transition:all .5s ease;
-     transition:all .5s ease;
-    position: absolute;
-    margin-top: 1px;
-  }
-  input[type=checkbox]:checked + label:before {
-    transform: rotate(90deg);
-    /*margin-top: 6px;
-    margin-left: -25px;*/
-  }
 }
 
 .main {
