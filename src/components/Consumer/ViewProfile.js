@@ -9,7 +9,7 @@ class ViewConsumerProfile extends Component {
     // this.props.dispatch({type: GET_CONSUMER, data: this.props.params.Id});
     this.props.dispatch(getUserData(parseInt(this.props.params.Id, 10)));
   }
-  clickHandler(e) {
+  clickHandler() {
     // Dispatch the event here
     this.props.dispatch(resetPin(parseInt(this.props.params.Id, 10)));
   }
@@ -166,11 +166,12 @@ class ViewConsumerProfile extends Component {
       const key = dbNamesPriority[_priority];
       const dbKey = fieldObjectMapping[key];
       let renderLink;
+      let isLink = false;
       /* Check whether the value is an object or not */
       if (typeof(obj[dbKey]) === 'object') {
         /* Get the element to display */
         printValue = (fieldFunctionMapping[key]) ? fieldFunctionMapping[key](obj[dbKey]) : 'N/A';
-        printValue = [
+        const renderValue = [
           'cart',
           'device_history',
           'recharge_history',
@@ -180,22 +181,29 @@ class ViewConsumerProfile extends Component {
           'reservation_history',
           'gifts_given',
           'gifts_received'
-        ].indexOf(key) !== -1 ? (printValue !== 'N/A') ? (printValue + ((printValue > 1) ? ' items' : ' item')) : printValue : printValue;
+        ];
 
-        renderLink = (
-                <div className={styles.wd_60_link}>
-                  {printValue}
-                </div>
-            );
-      }
-      else {
+        if (renderValue.indexOf(key) !== -1) {
+          if (printValue !== 'N/A' && printValue > 0) {
+            printValue += ((printValue > 1) ? ' items' : ' item');
+            isLink = true;
+          } else {
+            isLink = false;
+          }
+        }
+
+        if (isLink) {
+          renderLink = (
+                  <div className={styles.wd_60_link}>
+                    {printValue}
+                  </div>
+              );
+        } else {
+          renderLink = printValue;
+        }
+      } else {
         renderLink = obj[dbNamesPriority[_priority]];
       }
-      /*
-      if (funcMap.hasOwnProperty(key)) {
-        return funcMap[key]();
-      }
-      */
       return (
         <div className={styles.wd_60}>
             {renderLink}
