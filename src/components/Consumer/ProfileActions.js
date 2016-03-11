@@ -27,17 +27,17 @@ const RESET = 'ViewProfile/RESET';
 
 
 // Reducer
-const defaultState = {ongoingRequest: false, lastError: null, lastSuccess: null, credentials: null, secondaryData: null};
+const defaultState = {ongoingRequest: false, lastError: {}, lastSuccess: [], credentials: null, secondaryData: null};
 const profileReducer = (state = defaultState, action) => {
   switch (action.type) {
     case MAKE_REQUEST:
-      return {...state, ongoingRequest: true, lastSuccess: null, lastError: null, secondaryData: null};
+      return {...state, ongoingRequest: true, lastSuccess: [], lastError: {}, secondaryData: {}};
     case REQUEST_SUCCESS:
-      return {...state, ongoingRequest: false, lastSuccess: action.data, lastError: null, credentials: action.data, secondaryData: null};
+      return {...state, ongoingRequest: false, lastSuccess: action.data, lastError: {}, credentials: action.data, secondaryData: {}};
     case REQUEST_ERROR:
-      return {...state, ongoingRequest: false, lastError: action.data, lastSuccess: null, secondaryData: null};
+      return {...state, ongoingRequest: false, lastError: {'error': action.data}, lastSuccess: [], secondaryData: {}};
     case SECONDARY_VIEW:
-      return {...state, ongoingRequest: false, lastSuccess: null, secondaryData: action.data};
+      return {...state, ongoingRequest: false, lastSuccess: [], secondaryData: action.data};
     case RESET:
       return {...defaultState};
     default: return state;
@@ -60,7 +60,72 @@ const getUserData = (f) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
     console.log(f);
-    const payload = {'where': {'id': f}, 'columns': ['*']};
+    /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
+    const payload = {
+      'columns': [
+        {
+          'name': 'old_consumer_device_history',
+          'columns': ['*']
+        },
+        {
+          'name': 'device',
+          'columns': ['*']
+        },
+        {
+          'name': 'carts',
+          'columns': [
+            {
+              'name': 'normal_items',
+              'columns': ['*']
+            },
+            {
+              'name': 'cashback_items',
+              'columns': ['*']
+            },
+            {
+              'name': 'discount_items',
+              'columns': ['*']
+            },
+            {
+              'name': 'onpack_items',
+              'columns': ['*']
+            },
+            {
+              'name': 'crosspromo_items',
+              'columns': ['*']
+            },
+            {
+              'name': 'merchandise_items',
+              'columns': ['*']
+            }
+          ],
+          'order_by': '-created_at',
+          'limit': 1
+        },
+        {
+          'name': 'gifts',
+          'columns': [
+            '*'
+          ]
+        },
+        {
+          'name': 'payment_recharges',
+          'columns': ['*']
+        },
+        {
+          'name': 'reservations',
+          'columns': ['*']
+        },
+        {
+          'name': 'orders',
+          'columns': ['*']
+        },
+        '*'
+      ],
+      'where': {
+        'id': f
+      }
+    };
     const url = Endpoints.db + '/table/' + 'consumer' + '/select';
     const options = {
       method: 'POST',
@@ -76,19 +141,80 @@ const getUserData = (f) => {
                if (response.ok) { // 2xx status
                  response.json().then(
                    (d) => {
-                     dispatch({type: REQUEST_SUCCESS, data: d});
+                     return dispatch({type: REQUEST_SUCCESS, data: d});
                    },
                    () => {
-                     dispatch(requestFailed('Error. Try again!'));
+                     return dispatch(requestFailed('Error. Try again!'));
                    }
                  );
+               } else {
+                 return dispatch(requestFailed('Error. Try again!'));
                }
-               return dispatch(requestFailed('Error. Try again!'));
              },
              (error) => {
                console.log(error);
                return dispatch(requestFailed(error.text));
              });
+  };
+};
+
+const resetPin = (customerId) => {
+  return (dispatch) => {
+    const updateValues = {};
+    updateValues.encrypted_pin = null;
+    updateValues.salt = null;
+    const url = Endpoints.db + '/table/' + 'consumer' + '/update';
+    const query = {
+      'where': {
+        'id': customerId
+      },
+      'returning': [
+        'level_id',
+        'email',
+        'device_id',
+        'gcm_token',
+        'full_name',
+        'tm_id',
+        'referred_by',
+        'dob',
+        'mobile_number',
+        'gender',
+        'updated_at',
+        'salt',
+        'created_at',
+        'id',
+        'referral_code',
+        'encrypted_pin'
+      ],
+      'values': updateValues
+    };
+    const options = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(query)
+    };
+    return fetch(url, options)
+      .then(
+             (response) => {
+               if (response.ok) {
+                 response.json().then(
+                    (resp) => {
+                      alert('Pin has been successfully cleared');
+                      return dispatch({type: REQUEST_SUCCESS, data: resp.returning });
+                    },
+                    () => {
+                      return dispatch(requestFailed('Error. Try again!'));
+                    }
+                  );
+               } else {
+                 return dispatch(requestFailed('Error. Try again!'));
+               }
+             },
+             (error) => {
+               return dispatch(requestFailed(error.text));
+             }
+           );
   };
 };
 
@@ -118,4 +244,4 @@ const loadCredentials = () => {
 };
 
 export default profileReducer;
-export {getUserData, requestSuccess, requestFailed, loadCredentials, RESET, getSecondaryData};
+export {getUserData, requestSuccess, requestFailed, loadCredentials, RESET, getSecondaryData, resetPin};
