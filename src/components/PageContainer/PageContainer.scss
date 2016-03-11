@@ -53,7 +53,6 @@
   hr { margin: 0; }
   ul{
     list-style-type: none;
-    list-style: none;
     margin: 10px;
     padding: 5px;
     border: 1px ;
@@ -63,12 +62,12 @@
     padding-bottom: 15px;
     background: #ededed
   }
+
     p {
       padding-bottom: 0px;
     }
     li {
       padding: 0px 0px 5px 15px;
-      transition: color 0.5s;
       a {
         color: rgba(0,0,0,0.54);
         text-decoration: none;
@@ -103,12 +102,12 @@
     max-width: 0;
     opacity: 0;
     overflow: hidden;
-    white-space:nowrap;
-    -webkit-transition:all 1s ease;
-    -moz-transition:all 1s ease;
-    -o-transition:all 1s ease;
-    transition:all 1s ease;
-    }
+    white-space: nowrap;
+     -webkit-transition:all 1s ease;
+     -moz-transition:all 1s ease;
+     -o-transition:all 1s ease;
+     transition:all 1s ease;
+   }
     input[type=checkbox]:checked ~ ul {
     max-height: 100%;
     max-width: 100%;
