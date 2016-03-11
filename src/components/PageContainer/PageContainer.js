@@ -20,19 +20,33 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
             dispatch(routeActions.push('/upload_file'));
           }}>Upload File</button>
           <br/><br/>
-          <ul>
-            <li><input type="checkbox" id="cb1"/><label htmlFor="cb1">CUSTOMER MANAGEMENT</label></li>
-            <ul>
-            <li><Link to={'/consumer/kycfunctions'}> KYC Functions </Link></li>
-            <li><Link to={'/consumer/profiles'}>Profile</Link></li>
-            <li><a href="#"> Customer Transactions</a></li>
-            <li><a href="#"> Support </a></li>
-            </ul>
+
+          <ul className={styles.sidebar_list}>
+            <li>
+              <input type="checkbox" id="cb1"/>
+              <label htmlFor="cb1">
+                CUSTOMER MANAGEMENT
+              </label>
+            </li>
+            <li className={styles.sidebar_list}>
+              <Link to={'/consumer/kycfunctions'}> KYC Functions </Link>
+            </li>
+            <li className={styles.sidebar_list}>
+              <Link to={'/consumer/profiles'}>Profile</Link>
+            </li>
+            <li className={styles.sidebar_list}>
+              <a href="#"> Customer Transactions</a>
+            </li>
+            <li className={styles.sidebar_list}>
+              <a href="#"> Support </a>
+            </li>
           </ul>
-          <ul id="sideheading"><li> <input type="checkbox" id="cb3"/><label htmlFor="cb3">
-          USER MANAGEMENT
-          </label>
-          </li>
+          <ul id="sideheading">
+            <li> <input type="checkbox" id="cb3"/>
+              <label htmlFor="cb3">
+                USER MANAGEMENT
+              </label>
+            </li>
           </ul>
           <ul id="sideheading">
             <li>
@@ -40,18 +54,25 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
               <label htmlFor="cb4">
                 SKU MANAGEMENT
               </label>
-              <li className={styles.sidebar_list}><Link to={'/sku/states'}>States</Link></li>
-              <li className={styles.sidebar_list}><Link to={'/sku/skus'}>Sku</Link></li>
+            </li>
+            <li className={styles.sidebar_list}><Link to={'/sku/states'}>States</Link></li>
+            <li className={styles.sidebar_list}><Link to={'/sku/skus'}>Sku</Link></li>
+          </ul>
+          <ul id="sideheading">
+            <li>
+              <input type="checkbox" id="cb4"/>
+              <label htmlFor="cb5">
+                RETAILER MANAGEMENT
+              </label>
             </li>
           </ul>
-          <ul id="sideheading"><li> <input type="checkbox" id="cb5"/><label htmlFor="cb5">
-          RETAILER MANAGEMENT
-          </label>
-          </li>
-          </ul><ul id="sideheading"><li> <input type="checkbox" id="cb6"/><label htmlFor="cb6">
-          BRAND MANAGER
-          </label>
-          </li>
+          <ul id="sideheading">
+            <li>
+              <input type="checkbox" id="cb4"/>
+              <label htmlFor="cb6">
+                BRAND MANAGER
+              </label>
+            </li>
           </ul>
         </div>
         <div className={styles.main + ' col-md-9'}>
