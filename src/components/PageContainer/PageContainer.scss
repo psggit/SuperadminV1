@@ -12,6 +12,15 @@
 .alert {
   display:inline-block;
 }
+.menu_bg{
+  float:right ;
+  position:absolute;
+  width: 350px;
+  height: 200px;
+  left: 600px;
+  top: 215px;
+  background: #DFDFDF ;
+}
 
 
 .flexRow {
@@ -35,7 +44,7 @@
   font-family: 'Roboto';
   font-weight: 500;
   min-height: 100vh;
-  max-height: 500px;
+  max-height: 100%;
   position: relative;
   background: #DFDFDF;
   color: rgba(0,0,0,0.54);
@@ -43,14 +52,16 @@
   padding-left: 25px;
   hr { margin: 0; }
   ul{
+    list-style-type: none;
     list-style: none;
     margin: 10px;
     padding: 5px;
-    border: 1px solid #ABC;
+    border: 1px ;
     border-radius: 5px;
     list-style-type: none;
     padding-left: 10px;
     padding-bottom: 15px;
+    background: #ededed
   }
     p {
       padding-bottom: 0px;
@@ -65,9 +76,14 @@
       }
       a:active {
         color: #FF7400;
+        text-decoration: none;
       }
       a:hover {
         color: rgba(0,0,0,0.87);
+        text-decoration: none;
+      }
+      a:visited {
+        text-decoration: none;
       }
     }
     li:hover {

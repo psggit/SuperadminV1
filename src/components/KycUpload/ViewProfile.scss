@@ -1,13 +1,23 @@
 .container {
   padding: 0;
+  width: 120%;
+  background: white;
+  overflow: none;
 }
 
+p{
+    font-family: 'Roboto';
+    font-weight: 500;
+    text-transform: capitalize;
+    overflow: none;
+    padding-top: 5px;
+}
 .leftsquarebox{
     position: absolute;
     width: 200px;
-    height: 100px;
-    left: 250px;
-    top: 250px;
+    height: 400px;
+    left: 50px;
+    top: 50px;
     font-family: 'Roboto';
     font-weight: 500;
     position: relative;
@@ -51,9 +61,6 @@ a:hover {
   color: rgba(0,0,0,0.87);
   text-decoration: none;
 }
-a:visited{
-  text-decoration: none;
-}
 .squarecontent div {
    display: table;
    width: 100%;
@@ -64,4 +71,34 @@ a:visited{
     text-align: center;
     vertical-align: middle;
     color: white
+}
+
+.Table
+{
+    display: table;
+}
+.Title
+{
+    display: table-caption;
+    text-align: center;
+    font-weight: bold;
+    font-size: larger;
+}
+.Heading
+{
+    display: table-row;
+    font-weight: bold;
+    text-align: center;
+}
+.Row
+{
+    display: table-row;
+}
+.Cell
+{
+    display: table-cell;
+    border: solid;
+    border-width: thin;
+    padding-left: 5px;
+    padding-right: 5px;
 }

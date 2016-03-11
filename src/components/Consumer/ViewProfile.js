@@ -221,7 +221,7 @@ class ViewConsumerProfile extends Component {
     };
     let getHtml;
     let getButtons;
-    let getHeader = <TableHeader title={'MeeehhhHH'}/>;
+    let getHeader = <TableHeader title={'Initial'}/>;
     /* If Last error is set */
     if (Object.keys(lastError).length > 0) {
       getHeader = <TableHeader title={'Error'}/>;

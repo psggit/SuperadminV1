@@ -5,7 +5,7 @@ const TableHeader = ({title}) => {
   return (
     <div className={styles.header_wrapper}>
       <div className={styles.header}>
-        <h3> KYC / Verify KYC / View Profile / {title} </h3>
+        <h3> KYC / Upload KYC / View Profile / {title} </h3>
       <div className="clearfix"></div>
       </div>
     </div>
