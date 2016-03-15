@@ -184,7 +184,7 @@ const getCartData = (f) => {
               'name': 'sku_pricing',
               'columns': [{
                 'name': 'sku',
-                'columns': ['*']
+                'columns': ['*', {'name': 'brand', 'columns': ['*']} ]
               }, '*']
             }, '*']
           }, '*']
@@ -196,7 +196,7 @@ const getCartData = (f) => {
               'name': 'sku_pricing',
               'columns': [{
                 'name': 'sku',
-                'columns': ['*']
+                'columns': ['*', {'name': 'brand', 'columns': ['*']} ]
               }, '*']
             }, '*']
           }, '*']
@@ -208,7 +208,7 @@ const getCartData = (f) => {
               'name': 'sku_pricing',
               'columns': [{
                 'name': 'sku',
-                'columns': ['*']
+                'columns': ['*', {'name': 'brand', 'columns': ['*']}]
               }, '*']
             }, '*']
           }, '*']
@@ -220,7 +220,7 @@ const getCartData = (f) => {
               'name': 'sku_pricing',
               'columns': [{
                 'name': 'sku',
-                'columns': ['*']
+                'columns': ['*', {'name': 'brand', 'columns': ['*']}]
               }, '*']
             }, '*']
           }, '*']
@@ -232,7 +232,7 @@ const getCartData = (f) => {
               'name': 'sku_pricing',
               'columns': [{
                 'name': 'sku',
-                'columns': ['*']
+                'columns': ['*', {'name': 'brand', 'columns': ['*']}]
               }, '*']
             }, '*']
           }, '*']
@@ -244,6 +244,59 @@ const getCartData = (f) => {
         'columns': ['*']
       },
         '*'
+      ],
+      'where': {
+        'id': f
+      }
+    };
+    const url = Endpoints.db + '/table/' + 'consumer' + '/select';
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(payload),
+    };
+    // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
+
+    return fetch(url, options)
+           .then(
+             (response) => {
+               if (response.ok) { // 2xx status
+                 response.json().then(
+                   (d) => {
+                     return dispatch({type: REQUEST_SUCCESS, data: d});
+                   },
+                   () => {
+                     return dispatch(requestFailed('Error. Try again!'));
+                   }
+                 );
+               } else {
+                 return dispatch(requestFailed('Error. Try again!'));
+               }
+             },
+             (error) => {
+               console.log(error);
+               return dispatch(requestFailed(error.text));
+             });
+  };
+};
+
+
+const getDeviceData = (f) => {
+  return (dispatch) => {
+    // dispatch({ type: MAKE_REQUEST, f});
+    //
+    console.log(f);
+    /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
+    const payload = {
+      'columns': [{
+        'name': 'gifts',
+        'columns': ['*']
+      }, {
+        'name': 'old_consumer_device_history',
+        'columns': ['*', {'name': 'device', 'columns': ['*']}]
+      },
+      '*'
       ],
       'where': {
         'id': f
@@ -367,4 +420,4 @@ const loadCredentials = () => {
 };
 
 export default profileReducer;
-export {getUserData, requestSuccess, requestFailed, loadCredentials, RESET, getSecondaryData, resetPin, getCartData};
+export {getUserData, requestSuccess, requestFailed, loadCredentials, RESET, getSecondaryData, resetPin, getCartData, getDeviceData};

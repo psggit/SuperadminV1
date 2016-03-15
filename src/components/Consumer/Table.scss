@@ -17,6 +17,7 @@
         float: left;
         padding-left: 60px;
         padding-top: 20px;
+        padding-bottom: 20px;
         .profile_view_left {
             width:50%;
             float:left ;
@@ -49,22 +50,6 @@
                     .wd_60_link {
                         color: #FF4108;
                         cursor: pointer;
-                        a {
-                          color: #FF4108;
-                          text-decoration: none;
-                          display: block;
-                        }
-                        a:active {
-                          color: #FF0000;
-                          text-decoration: none;
-                        }
-                        a:hover {
-                          color: #FF0000;
-                          text-decoration: none;
-                        }
-                        a:visited {
-                          text-decoration: none;
-                        }
                         &:hover {
                             color: #FF0000;
                         }

@@ -213,6 +213,12 @@ class ViewConsumerProfile extends Component {
                       <Link to={'/consumer/profile/' + obj.id + '/reservation'}> {printValue} </Link>
                     </div>
                 );
+          } else if (key === 'device_history') {
+            renderLink = (
+                    <div className={styles.wd_60_link}>
+                      <Link to={'/consumer/profile/' + obj.id + '/device_history'}> {printValue} </Link>
+                    </div>
+                );
           } else {
             renderLink = (
                     <div className={styles.wd_60_link}>
