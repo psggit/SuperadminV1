@@ -28,7 +28,7 @@ const RESET = 'ViewProfile/RESET';
 
 // Reducer
 const defaultState = {ongoingRequest: false, lastError: {}, lastSuccess: [], credentials: null, secondaryData: null};
-const profileReducer = (state = defaultState, action) => {
+const reservationReducer = (state = defaultState, action) => {
   switch (action.type) {
     case MAKE_REQUEST:
       return {...state, ongoingRequest: true, lastSuccess: [], lastError: {}, secondaryData: {}};
@@ -55,7 +55,7 @@ const getSecondaryData = (data, key) => {
   };
 };
 
-const getUserData = (f) => {
+const getReservationData = (f) => {
   return (dispatch) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
@@ -123,7 +123,7 @@ const getUserData = (f) => {
         'id': f
       }
     };
-    const url = Endpoints.db + '/table/' + 'reservation' + '/select';
+    const url = Endpoints.db + '/table/' + 'consumer' + '/select';
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -240,5 +240,5 @@ const loadCredentials = () => {
   };
 };
 
-export default profileReducer;
-export {getUserData, requestSuccess, requestFailed, loadCredentials, RESET, getSecondaryData, resetPin};
+export default reservationReducer;
+export {requestSuccess, requestFailed, loadCredentials, RESET, getSecondaryData, resetPin, getReservationData};
