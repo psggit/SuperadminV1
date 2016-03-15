@@ -14,6 +14,7 @@ export AddTable from './Consumer/AddTable';
 export InsertItem from './Consumer/InsertItem';
 export EditItem from './Bills/EditItem';
 export ViewConsumerProfile from './Consumer/ViewProfile';
+export ViewCart from './Consumer/components/Cart/Cart';
 export ViewStates from './State/ViewTable';
 export ViewState from './State/ViewState';
 export ViewSkus from './Sku/ViewTable';

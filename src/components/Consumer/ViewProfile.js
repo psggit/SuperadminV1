@@ -1,4 +1,6 @@
 import React, {Component, PropTypes} from 'react';
+import { Link } from 'react-router';
+
 import {connect} from 'react-redux';
 import {getUserData, resetPin} from './ProfileActions';
 import TableHeader from './TableHeader';
@@ -193,9 +195,12 @@ class ViewConsumerProfile extends Component {
         }
 
         if (isLink) {
+          const url = '/consumer/profile/' + this.props.params.Id + '/cart';
           renderLink = (
                   <div className={styles.wd_60_link}>
-                    {printValue}
+                    <Link to={url}>
+                        {printValue}
+                    </Link>
                   </div>
               );
         } else {

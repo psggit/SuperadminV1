@@ -158,6 +158,129 @@ const getUserData = (f) => {
   };
 };
 
+const getCartData = (f) => {
+  return (dispatch) => {
+    // dispatch({ type: MAKE_REQUEST, f});
+    //
+    console.log(f);
+    /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
+    const payload = {
+      'columns': [{
+        'name': 'carts',
+        'columns': ['id', 'consumer_id', {
+          'name': 'normal_items',
+          'columns': [{
+            'name': 'sku_pricing',
+            'columns': [{
+              'name': 'sku',
+              'columns': ['*', {'name': 'brand', 'columns': ['*']}]
+            }, '*']
+          }, '*']
+        }, {
+          'name': 'cashback_items',
+          'columns': [{
+            'name': 'cash_back_offer_sku',
+            'columns': [{
+              'name': 'sku_pricing',
+              'columns': [{
+                'name': 'sku',
+                'columns': ['*']
+              }, '*']
+            }, '*']
+          }, '*']
+        }, {
+          'name': 'discount_items',
+          'columns': [{
+            'name': 'discount_offer_sku',
+            'columns': [{
+              'name': 'sku_pricing',
+              'columns': [{
+                'name': 'sku',
+                'columns': ['*']
+              }, '*']
+            }, '*']
+          }, '*']
+        }, {
+          'name': 'onpack_items',
+          'columns': [{
+            'name': 'on_pack_offer_sku',
+            'columns': [{
+              'name': 'sku_pricing',
+              'columns': [{
+                'name': 'sku',
+                'columns': ['*']
+              }, '*']
+            }, '*']
+          }, '*']
+        }, {
+          'name': 'crosspromo_items',
+          'columns': [{
+            'name': 'cross_promo_offer_sku',
+            'columns': [{
+              'name': 'sku_pricing',
+              'columns': [{
+                'name': 'sku',
+                'columns': ['*']
+              }, '*']
+            }, '*']
+          }, '*']
+        }, {
+          'name': 'merchandise_items',
+          'columns': [{
+            'name': 'merchandise_offer_sku',
+            'columns': [{
+              'name': 'sku_pricing',
+              'columns': [{
+                'name': 'sku',
+                'columns': ['*']
+              }, '*']
+            }, '*']
+          }, '*']
+        }],
+        'order_by': '-created_at',
+        'limit': 1
+      }, {
+        'name': 'gifts',
+        'columns': ['*']
+      },
+        '*'
+      ],
+      'where': {
+        'id': f
+      }
+    };
+    const url = Endpoints.db + '/table/' + 'consumer' + '/select';
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(payload),
+    };
+    // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
+
+    return fetch(url, options)
+           .then(
+             (response) => {
+               if (response.ok) { // 2xx status
+                 response.json().then(
+                   (d) => {
+                     return dispatch({type: REQUEST_SUCCESS, data: d});
+                   },
+                   () => {
+                     return dispatch(requestFailed('Error. Try again!'));
+                   }
+                 );
+               } else {
+                 return dispatch(requestFailed('Error. Try again!'));
+               }
+             },
+             (error) => {
+               console.log(error);
+               return dispatch(requestFailed(error.text));
+             });
+  };
+};
+
 const resetPin = (customerId) => {
   return (dispatch) => {
     const updateValues = {};
@@ -244,4 +367,4 @@ const loadCredentials = () => {
 };
 
 export default profileReducer;
-export {getUserData, requestSuccess, requestFailed, loadCredentials, RESET, getSecondaryData, resetPin};
+export {getUserData, requestSuccess, requestFailed, loadCredentials, RESET, getSecondaryData, resetPin, getCartData};
