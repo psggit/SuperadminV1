@@ -334,6 +334,63 @@ const getDeviceData = (f) => {
   };
 };
 
+const getRechargeData = (f) => {
+  return (dispatch) => {
+    // dispatch({ type: MAKE_REQUEST, f});
+    //
+    console.log(f);
+    /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
+    const payload = {
+      'columns': [{
+        'name': 'payment_recharges',
+        'columns': [{
+          'name': 'payment_detail',
+          'columns': ['*']
+        }, '*']
+      }, {
+        'name': 'gift_recharges',
+        'columns': [{
+          'name': 'payment_detail',
+          'columns': ['*']
+        }, '*']
+      }, '*'],
+      'where': {
+        'id': f
+      }
+    };
+
+    const url = Endpoints.db + '/table/' + 'consumer' + '/select';
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(payload),
+    };
+    // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
+
+    return fetch(url, options)
+           .then(
+             (response) => {
+               if (response.ok) { // 2xx status
+                 response.json().then(
+                   (d) => {
+                     return dispatch({type: REQUEST_SUCCESS, data: d});
+                   },
+                   () => {
+                     return dispatch(requestFailed('Error. Try again!'));
+                   }
+                 );
+               } else {
+                 return dispatch(requestFailed('Error. Try again!'));
+               }
+             },
+             (error) => {
+               console.log(error);
+               return dispatch(requestFailed(error.text));
+             });
+  };
+};
+
 const resetPin = (customerId) => {
   return (dispatch) => {
     const updateValues = {};
@@ -420,4 +477,4 @@ const loadCredentials = () => {
 };
 
 export default profileReducer;
-export {getUserData, requestSuccess, requestFailed, loadCredentials, RESET, getSecondaryData, resetPin, getCartData, getDeviceData};
+export {getUserData, requestSuccess, requestFailed, loadCredentials, RESET, getSecondaryData, resetPin, getCartData, getDeviceData, getRechargeData};
