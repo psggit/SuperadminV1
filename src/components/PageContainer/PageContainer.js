@@ -20,57 +20,79 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
             dispatch(routeActions.push('/upload_file'));
           }}>Upload File</button>
           <br/><br/>
-          <ul className={styles.sidebar_list}>
-            <li>
-              <input type="checkbox" id="cb1"/>
-              <label htmlFor="cb1">
-                CUSTOMER MANAGEMENT
-              </label>
-            </li>
-            <li className={styles.sidebar_list}>
-              <Link to={'/consumer/kycfunctions'}> KYC Functions </Link>
-            </li>
-            <li className={styles.sidebar_list}>
-              <Link to={'/consumer/profiles'}>Profile</Link>
-            </li>
-            <li className={styles.sidebar_list}>
-              <a href="#"> Customer Transactions</a>
-            </li>
-            <li className={styles.sidebar_list}>
-              <a href="#"> Support </a>
+          <ul>
+          	<li><input type="checkbox" id="cb1"/><label htmlFor="cb1">CUSTOMER MANAGEMENT</label>
+          		<ul>
+              <li className={styles.sidebar_list}><label>
+                <Link to={'/consumer/kycfunctions'}> KYC Functions </Link>
+              </label></li>
+              <li className={styles.sidebar_list}><label>
+                <Link to={'/consumer/profiles'}>Profile</Link>
+              </label></li>
+              <li className={styles.sidebar_list}><label>
+                <a href="#"> Customer Transactions</a>
+              </label></li>
+              <li className={styles.sidebar_list}><label>
+                <a href="#"> Support </a>
+              </label></li>
+              </ul>
             </li>
           </ul>
-          <ul id="sideheading">
-            <li> <input type="checkbox" id="cb3"/>
-              <label htmlFor="cb3">
-                USER MANAGEMENT
-              </label>
+
+          <ul>
+          	<li><input type="checkbox" id="cb2"/><label htmlFor="cb2">USER MANAGEMENT</label>
+          		<ul>
+              <li className={styles.sidebar_list}><label>
+                <Link to={'/consumer/kycfunctions'}> KYC Functions </Link>
+              </label></li>
+              <li className={styles.sidebar_list}><label>
+                <Link to={'/consumer/profiles'}>Profile</Link>
+              </label></li>
+              <li className={styles.sidebar_list}><label>
+                <a href="#"> Customer Transactions</a>
+              </label></li>
+              <li className={styles.sidebar_list}><label>
+                <a href="#"> Support </a>
+              </label></li>
+              </ul>
             </li>
           </ul>
-          <ul id="sideheading">
-            <li>
-              <input type="checkbox" id="cb4"/>
-              <label htmlFor="cb4">
-                SKU MANAGEMENT
-              </label>
-            </li>
-            <li className={styles.sidebar_list}><Link to={'/sku/states'}>States</Link></li>
-            <li className={styles.sidebar_list}><Link to={'/sku/skus'}>Sku</Link></li>
-          </ul>
-          <ul id="sideheading">
-            <li>
-              <input type="checkbox" id="cb4"/>
-              <label htmlFor="cb5">
-                RETAILER MANAGEMENT
-              </label>
+
+          <ul>
+            <li><input type="checkbox" id="cb3"/><label htmlFor="cb3">SKU MANAGEMENT</label>
+              <ul>
+              <li className={styles.sidebar_list}><label>
+                <Link to={'/consumer/kycfunctions'}> States </Link>
+              </label></li>
+              <li className={styles.sidebar_list}><label>
+                <Link to={'/consumer/profiles'}>SKU</Link>
+              </label></li>
+              </ul>
             </li>
           </ul>
-          <ul id="sideheading">
-            <li>
-              <input type="checkbox" id="cb4"/>
-              <label htmlFor="cb6">
-                BRAND MANAGER
-              </label>
+          <ul>
+            <li><input type="checkbox" id="cb4"/><label htmlFor="cb4">RETAILER MANAGEMENT</label>
+              <ul>
+              <li className={styles.sidebar_list}><label>
+                <Link to={'/consumer/kycfunctions'}> Retailer 1 </Link>
+              </label></li>
+              <li className={styles.sidebar_list}><label>
+                <Link to={'/consumer/profiles'}>Retailer 2</Link>
+              </label></li>
+              </ul>
+            </li>
+          </ul>
+
+          <ul>
+            <li><input type="checkbox" id="cb5"/><label htmlFor="cb5">BRAND MANAGER</label>
+              <ul>
+              <li className={styles.sidebar_list}><label>
+                <Link to={'/consumer/kycfunctions'}> Brand 1 </Link>
+              </label></li>
+              <li className={styles.sidebar_list}><label>
+                <Link to={'/consumer/profiles'}>Brand 2</Link>
+              </label></li>
+              </ul>
             </li>
           </ul>
         </div>

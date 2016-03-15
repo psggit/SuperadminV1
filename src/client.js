@@ -17,7 +17,7 @@ import {Login, Home, PageContainer,
   ViewConsumers, InsertItem, EditItem, FileUpload, ViewConsumerProfile, Kycfunctions,
   ViewStates, ViewState, ViewKyc,
   ViewKycs, ViewKycProfile, KycViewUpload,
-  ViewSkus, ViewSku, ViewCart} from './components'; // eslint-disable-line no-unused-vars
+  ViewSkus, ViewSku, ViewCart, Reservations} from './components'; // eslint-disable-line no-unused-vars
 import {AddTable} from './components';
 import {loadCredentials} from './components/Login/Actions';
 // import {loadSchema} from './components/Bills/DataActions';
@@ -89,6 +89,7 @@ const main = (
         <Route path="/consumer/kycfunctions/upload_kyc" component={ViewKyc} />
         <Route path="/consumer/kycfunctions/upload_kyc/upload_kyc_profile/:Id" component={KycViewUpload} />
         <Route path="/consumer/kycfunctions/verify_kyc/view_kyc_profile/:Id" component={ViewKycProfile} />
+        <Route path="consumer/profile/:Id/reservation" component={Reservations} />
         <Route path="consumer/profile/:Id" component={ViewConsumerProfile} />
         <Route path="consumer/profile/:Id/cart" component={ViewCart} />
         <Route path="consumer/:table/edit" component={EditItem} />
