@@ -31,7 +31,6 @@ class ViewCart extends Component {
       const cart = cartData.carts[0];
 
       const normalItems = cart.normal_items;
-
       console.log('Normal Items');
       console.log('Normal Items');
       console.log(normalItems);
