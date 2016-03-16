@@ -48,7 +48,7 @@ class ViewDevice extends Component {
 
       if (normalHtml.length !== 0) {
         return (
-                    <table className="table">
+                    <table className="table table-hover">
                       <thead>
                         <tr>
                           <th> Id </th>
