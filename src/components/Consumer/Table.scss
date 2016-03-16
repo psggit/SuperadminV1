@@ -80,7 +80,15 @@
             thead tr {
                 color: #727373;
             }
-            
+        }
+        .recharge_history_left {
+            width: 95%;
+            float:left ;
+            background-color: white ;
+            overflow: auto ;
+            thead tr {
+                color: #727373;
+            }
         }
         
         .profile_view_right {

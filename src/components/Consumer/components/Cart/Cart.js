@@ -39,7 +39,9 @@ class ViewCart extends Component {
         }
       });
 
+
       normalHtml = allItems.map((item, index) => {
+
         let createdAt = item.created_at;
         let updatedAt = item.updated_at;
         let itemObj;
@@ -78,7 +80,7 @@ class ViewCart extends Component {
 
       if (normalHtml.length !== 0) {
         return (
-                    <table className="table">
+                    <table className="table table-hover">
                       <thead>
                         <tr>
                           <th> Id </th>

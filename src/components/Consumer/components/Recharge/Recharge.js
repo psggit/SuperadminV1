@@ -1,13 +1,13 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {getDeviceData} from '../../ProfileActions';
+import {getRechargeData} from '../../ProfileActions';
 import TableHeader from '../../TableHeader';
 // import {editItem, E_ONGOING_REQ} from './EditActions';
 
-class ViewDevice extends Component {
+class RechargeHistory extends Component {
   componentDidMount() {
     // this.props.dispatch({type: GET_CONSUMER, data: this.props.params.Id});
-    this.props.dispatch(getDeviceData(parseInt(this.props.params.Id, 10)));
+    this.props.dispatch(getRechargeData(parseInt(this.props.params.Id, 10)));
   }
   render() {
     const styles = require('../../Table.scss');
@@ -22,24 +22,43 @@ class ViewDevice extends Component {
     let getButtons;
     let getHeader = <TableHeader title={'Initial'}/>;
 
-    const breadcrumbText = this.props.params.Id + '/' + ' Devices';
+    const breadcrumbText = this.props.params.Id + '/' + ' Recharge History';
 
     const objToHtml = (response) => {
       /* Getting the first element from the response */
-      const deviceData = response.old_consumer_device_history;
+      let allItems;
+      allItems = [];
+
+      Object.keys(response).forEach((item) => {
+        if (typeof(response[item]) === 'object' && (response[item])) {
+          response[item].forEach((i) => {
+            allItems.push(i);
+          });
+        }
+      });
       let normalHtml;
 
-      normalHtml = deviceData.map((item, index) => {
+      normalHtml = allItems.map((item, index) => {
         let createdAt = item.created_at;
         let updatedAt = item.updated_at;
+        /* Check if the payment is being made for a gift */
+        const isGift = (item.payment_detail.productinfo.toLowerCase() === 'gift') ? true : false;
+        const giftText = (isGift) ? 'Yes' : 'No';
 
         createdAt = new Date(new Date(createdAt).getTime()).toLocaleString();
         updatedAt = new Date(new Date(updatedAt).getTime()).toLocaleString();
         return (
                   <tr key={index}>
                     <td> { item.id} </td>
-                    <td> { item.device.device_num} </td>
-                    <td> { item.ip } </td>
+                    <td> { item.consumer_id} </td>
+                    <td> { item.payment_detail.txn_id} </td>
+                    <td> { item.payment_detail.pay_mih_id } </td>
+                    <td> { item.payment_detail.bank_ref_num } </td>
+                    <td> { item.payment_detail.amount } </td>
+                    <td> { giftText } </td>
+                    <td> { (item.payment_detail.is_success) ? 'Successful' : 'Failed'} </td>
+                    <td> { item.payment_detail.mode } </td>
+                    <td> { item.payment_detail.bank_code} </td>
                     <td> { createdAt } </td>
                     <td> { updatedAt } </td>
                   </tr>
@@ -52,8 +71,15 @@ class ViewDevice extends Component {
                       <thead>
                         <tr>
                           <th> Id </th>
-                          <th> Device ID </th>
-                          <th> IP </th>
+                          <th> Consumer ID </th>
+                          <th> Transaction ID</th>
+                          <th> PayU Txn ID </th>
+                          <th> Bank Ref ID </th>
+                          <th> Amount </th>
+                          <th> Is Gift </th>
+                          <th> Status </th>
+                          <th> Mode </th>
+                          <th> Bank Code </th>
                           <th> Updated At </th>
                           <th> Created At </th>
                         </tr>
@@ -99,9 +125,9 @@ class ViewDevice extends Component {
         </div>
         <div className={styles.profile_view_wrapper}>
             <p className={styles.cart_view_header}>
-                Devices
+                Recharges
             </p>
-            <div className={styles.cart_view_left}>
+            <div className={styles.recharge_history_left}>
                 {getHtml}
             </div>
             <div className={styles.profile_view_right}>
@@ -116,7 +142,7 @@ class ViewDevice extends Component {
 
 /* lastSuccess is an array in the beginning and it is populated as an array by the Hasura Response */
 /* lastError is an object in the beginning and it is made an object in case of error conditions */
-ViewDevice.propTypes = {
+RechargeHistory.propTypes = {
   params: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
   ongoingRequest: PropTypes.bool.isRequired,
@@ -128,4 +154,4 @@ const mapStateToProps = (state) => {
   return {...state.profile};
 };
 
-export default connect(mapStateToProps)(ViewDevice);
+export default connect(mapStateToProps)(RechargeHistory);

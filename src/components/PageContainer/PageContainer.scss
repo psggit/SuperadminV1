@@ -107,6 +107,9 @@
       a:visited {
         text-decoration: none;
       }
+      a.current{
+        color: #FF7400;
+      }
     }
     li:hover {
       color: #5e5e5e;
