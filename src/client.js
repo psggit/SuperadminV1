@@ -17,7 +17,7 @@ import {Login, Home, PageContainer,
   ViewConsumers, InsertItem, EditItem, FileUpload, ViewConsumerProfile, Kycfunctions,
   ViewStates, ViewState, ViewKyc,
   ViewKycs, ViewKycProfile, KycViewUpload,
-  ViewSkus, ViewSku, ViewCart, Reservations, ViewDevice, RechargeHistory, StateManagement} from './components'; // eslint-disable-line no-unused-vars
+  ViewSkus, ViewSku, ViewCart, Reservations, ViewDevice, RechargeHistory, StateManagement, CustomerTransaction} from './components'; // eslint-disable-line no-unused-vars
 import {AddTable} from './components';
 import {loadCredentials} from './components/Login/Actions';
 // import {loadSchema} from './components/Bills/DataActions';
