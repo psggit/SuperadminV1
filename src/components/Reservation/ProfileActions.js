@@ -123,6 +123,7 @@ const getReservationData = (f) => {
         'id': f
       }
     };
+    // console.log(payload);
     const url = Endpoints.db + '/table/' + 'consumer' + '/select';
     const options = {
       method: 'POST',
@@ -130,6 +131,7 @@ const getReservationData = (f) => {
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
+    // console.log(options);
     // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
 
     return fetch(url, options)
