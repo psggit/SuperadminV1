@@ -53,21 +53,44 @@
   hr { margin: 0; }
   ul{
     list-style-type: none;
-    margin: 3px;
+    // margin: 3px;
     padding-top: 3px;
     border: 1px ;
-    border-radius: 5px;
+    border-radius: 3px;
     list-style-type: none;
     height: auto;
     padding-left: 5px;
-    background: #ededed;
+    color: #777;
+    letter-spacing: 0.5px;
+    margin-bottom: 0;
+    margin-left: 10px;
+    li
+    {
+    }
   }
+    ul li ul 
+    {
+      background: #ededed;
+      li
+      {
+        label
+        {
+          font-weight: 400;
+          margin-bottom: 0;
+          cursor: pointer;
+        }
+      }
+      li:last-child
+      {
+        margin-bottom: 5px;
+      }
+    }
 
     p {
       padding-bottom: 0px;
     }
     li {
-      padding: 0px 0px 5px 0px;
+      padding: 5px 5px 5px 5px;
       a {
         color: rgba(0,0,0,0.54);
         text-decoration: none;
@@ -86,8 +109,7 @@
       }
     }
     li:hover {
-      padding: 0px 0px 5px 0px;
-      color: rgba(0,0,0,0.87);
+      color: #5e5e5e;
       transition: color 0.5s;
       pointer: cursor;
     }
@@ -100,6 +122,7 @@
     	max-width: 0;
     	opacity: 0;
     	overflow: hidden;
+      margin-left: 0;
     	white-space: nowrap;
        -webkit-transition:all 1s ease;
        -moz-transition:all 1s ease;
@@ -114,8 +137,8 @@
     input[type=checkbox] + label:before {
     	transform-origin:25% 50%;
       border: 8px solid transparent;
-      border-width: 8px 12px;
-      border-left-color: white;
+      border-width: 8px 10px;
+      border-left-color: #787878;
       margin-left: -20px;
     	width: 0;
     	height: 0;
@@ -128,7 +151,7 @@
        -o-transition:all .5s ease;
        transition:all .5s ease;
     	position: absolute;
-    	margin-top: 1px;
+    	margin-top: 2px;
     }
     input[type=checkbox]:checked + label:before {
     	transform: rotate(90deg);
