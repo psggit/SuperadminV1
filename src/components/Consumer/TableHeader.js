@@ -5,7 +5,10 @@ const TableHeader = ({title}) => {
   return (
     <div className={styles.header_wrapper}>
       <div className={styles.header}>
-        <h3> CUSTOMER MANAGEMENT / Profile / {title} </h3>
+      <ol className = "breadcrumb">
+        <li><a href = "#">CUSTOMER MANAGEMENT</a></li>
+        <li className = "active">{title}</li>
+        </ol>
         <div className="clearfix"></div>
       </div>
     </div>
