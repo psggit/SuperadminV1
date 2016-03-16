@@ -30,7 +30,9 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
                 <Link to={'/consumer/profiles'}>Profile</Link>
               </label></li>
               <li className={styles.sidebar_list}><label>
-                <a href="#"> Customer Transactions</a>
+                <Link to={'/customer_transactions'}>
+                    Customer Transactions
+                </Link>
               </label></li>
               <li className={styles.sidebar_list}><label>
                 <a href="#"> Support </a>

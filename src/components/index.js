@@ -22,6 +22,7 @@ export ViewState from './State/ViewState';
 export ViewSkus from './Sku/ViewTable';
 export ViewSku from './Sku/ViewSku';
 export Kycfunctions from './Kyc/Kycfunctions';
+export CustomerTransaction from './CustomerTransaction/CustomerTransaction';
 export ViewKycs from './Kyc/ViewTable';
 export Reservations from './Reservation/ViewProfile';
 export ViewKyc from './KycUpload/ViewTable';

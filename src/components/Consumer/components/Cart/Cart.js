@@ -22,7 +22,7 @@ class ViewCart extends Component {
     let getButtons;
     let getHeader = <TableHeader title={'Initial'}/>;
 
-    const breadcrumbText = this.props.params.Id + '/' + ' Cart';
+    const breadcrumbText = this.props.params.Id + ' /' + ' Cart';
 
     const objToHtml = (response) => {
       /* Getting the first element from the response */
@@ -41,7 +41,6 @@ class ViewCart extends Component {
 
 
       normalHtml = allItems.map((item, index) => {
-
         let createdAt = item.created_at;
         let updatedAt = item.updated_at;
         let itemObj;
