@@ -22,7 +22,7 @@ class RechargeHistory extends Component {
     let getButtons;
     let getHeader = <TableHeader title={'Initial'}/>;
 
-    const breadcrumbText = this.props.params.Id + '/' + ' Recharge History';
+    const breadcrumbText = this.props.params.Id + ' /' + ' Recharge History';
 
     const objToHtml = (response) => {
       /* Getting the first element from the response */

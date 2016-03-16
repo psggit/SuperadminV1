@@ -17,7 +17,7 @@ import {Login, Home, PageContainer,
   ViewConsumers, InsertItem, EditItem, FileUpload, ViewConsumerProfile, Kycfunctions,
   ViewStates, ViewState, ViewKyc,
   ViewKycs, ViewKycProfile, KycViewUpload,
-  ViewSkus, ViewSku, ViewCart, Reservations, ViewDevice, RechargeHistory} from './components'; // eslint-disable-line no-unused-vars
+  ViewSkus, ViewSku, ViewCart, Reservations, ViewDevice, RechargeHistory, StateManagement, CustomerTransaction} from './components'; // eslint-disable-line no-unused-vars
 import {AddTable} from './components';
 import {loadCredentials} from './components/Login/Actions';
 // import {loadSchema} from './components/Bills/DataActions';
@@ -83,23 +83,25 @@ const main = (
         <IndexRoute component={Home} />
         <Route path="tables/add" component={AddTable} />
         <Route path="/upload_file" component={FileUpload} />
-        <Route path="consumer/profiles" component={ViewConsumers} />
-        <Route path="consumer/kycfunctions" component={Kycfunctions} />
+        <Route path="/consumer/profiles" component={ViewConsumers} />
+        <Route path="/consumer/kycfunctions" component={Kycfunctions} />
         <Route path="/consumer/kycfunctions/verify_kyc" component={ViewKycs} />
         <Route path="/consumer/kycfunctions/upload_kyc" component={ViewKyc} />
         <Route path="/consumer/kycfunctions/upload_kyc/upload_kyc_profile/:Id" component={KycViewUpload} />
         <Route path="/consumer/kycfunctions/verify_kyc/view_kyc_profile/:Id" component={ViewKycProfile} />
-        <Route path="consumer/profile/:Id/reservation" component={Reservations} />
-        <Route path="consumer/profile/:Id" component={ViewConsumerProfile} />
-        <Route path="consumer/profile/:Id/cart" component={ViewCart} />
-        <Route path="consumer/profile/:Id/device_history" component={ViewDevice} />
-        <Route path="consumer/profile/:Id/recharge_history" component={RechargeHistory} />
-        <Route path="consumer/:table/edit" component={EditItem} />
-        <Route path="consumer/:table/insert" component={InsertItem} />
+        <Route path="/consumer/profile/:Id/reservation" component={Reservations} />
+        <Route path="/consumer/profile/:Id" component={ViewConsumerProfile} />
+        <Route path="/consumer/profile/:Id/cart" component={ViewCart} />
+        <Route path="/consumer/profile/:Id/device_history" component={ViewDevice} />
+        <Route path="/consumer/profile/:Id/recharge_history" component={RechargeHistory} />
+        <Route path="/customer_transactions" component={CustomerTransaction} />
+        <Route path="/consumer/:table/edit" component={EditItem} />
+        <Route path="/consumer/:table/insert" component={InsertItem} />
         <Route path="sku/states" component={ViewStates} />
         <Route path="sku/state/:Id" component={ViewState} />
         <Route path="sku/skus" component={ViewSkus} />
         <Route path="sku/sku/:Id" component={ViewSku} />
+        <Route path="/test" component={StateManagement} />
       </Route>
     </Router>
 );
