@@ -27,3 +27,4 @@ export Reservations from './Reservation/ViewProfile';
 export ViewKyc from './KycUpload/ViewTable';
 export ViewKycProfile from './Kyc/KycView';
 export KycViewUpload from './KycUpload/KycUploadViews';
+export StateManagement from './StateManagement/StateManagement';
