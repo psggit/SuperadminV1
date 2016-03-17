@@ -33,3 +33,4 @@ export StateManagement from './StateManagement/StateManagement';
 /* Consumer Transactions */
 
 export ConsumerRecharge from './CustomerTransaction/components/Recharge/Recharge';
+export ConsumerReservation from './CustomerTransaction/components/Reservation/Reservation';

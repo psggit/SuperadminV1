@@ -9,6 +9,7 @@ const SearchWrapper = ( {data} ) => {
   tableBody = data.map((dat, index) => {
     let createdAt = dat.created_at;
     let updatedAt = dat.updated_at;
+    const isGift = (dat.is_gift) ? 'Yes' : 'No';
 
     createdAt = new Date(new Date(createdAt).getTime()).toLocaleString();
     updatedAt = new Date(new Date(updatedAt).getTime()).toLocaleString();
@@ -21,13 +22,8 @@ const SearchWrapper = ( {data} ) => {
                 { dat.consumer_id }
               </Link>
             </td>
-            <td> { dat.payment_detail.txn_id } </td>
-            <td> { dat.payment_detail.pay_mih_id } </td>
-            <td> { dat.payment_detail.bank_ref_num } </td>
-            <td> { dat.payment_detail.amount } </td>
-            <td> { (dat.payment_detail.is_success) ? 'Successful' : 'Failed'} </td>
-            <td> { dat.payment_detail.mode } </td>
-            <td> { dat.payment_detail.bank_code} </td>
+            <td> { dat.amount } </td>
+            <td> { isGift } </td>
             <td> { createdAt } </td>
             <td> { updatedAt } </td>
           </tr>
@@ -50,13 +46,8 @@ const SearchWrapper = ( {data} ) => {
             <tr>
               <th> ID </th>
               <th> Consumer ID </th>
-              <th> Transaction ID</th>
-              <th> PayU Txn ID </th>
-              <th> Bank Ref ID </th>
               <th> Amount </th>
-              <th> Status </th>
-              <th> Mode </th>
-              <th> Bank Code </th>
+              <th> Is Gift </th>
               <th> Updated At </th>
               <th> Created At </th>
             </tr>

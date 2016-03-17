@@ -1,35 +1,31 @@
 import React, {Component, PropTypes} from 'react';
 
-// import TableHeader from '../../../Common/TableHeader';
+import TableHeader from '../../../Common/TableHeader';
 
 import {connect} from 'react-redux';
 
-import {getRechargeData} from '../../actions/Action';
+import {getReservationData} from '../../actions/Action';
 import SearchWrapper from './SearchWrapper';
 
-class ConsumerRecharge extends Component {
+class ConsumerReservation extends Component {
   componentDidMount() {
-    this.props.dispatch(getRechargeData());
+    this.props.dispatch(getReservationData());
   }
   render() {
-    const styles = require('./Recharge.scss');
+    const styles = require('./Reservation.scss');
     const { ongoingRequest, lastError, lastSuccess } = this.props;
     console.log(lastError);
     console.log(ongoingRequest);
     return (
-          <div className={styles.recharge_container}>
-            <ol className = "breadcrumb">
-              <li><a href = "#">Customer Management </a></li>
-              <li><a href = "/consumer_transactions/"> Customer Transactions</a></li>
-              <li className = "active"> Recharges </li>
-              </ol>
+          <div className={styles.reservation_container}>
+            <TableHeader title={'Customer Management/Customer Reservations'} />
             <SearchWrapper data={lastSuccess}/>
           </div>
         );
   }
 }
 
-ConsumerRecharge.propTypes = {
+ConsumerReservation.propTypes = {
   params: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
   ongoingRequest: PropTypes.bool.isRequired,
@@ -41,4 +37,4 @@ const mapStateToProps = (state) => {
   return {...state.transaction_data};
 };
 
-export default connect(mapStateToProps)(ConsumerRecharge);
+export default connect(mapStateToProps)(ConsumerReservation);
