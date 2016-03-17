@@ -1,34 +1,107 @@
 .search_wrapper {
   width: 100%;
-  float:left;
+  float: left;
   padding-bottom: 30px;
+  color: rgba(0, 0, 0, 0.54);
+
   .table_fixed_layout {
-    font-family: 'Roboto' ;
-    table-layout: fixed;
-    width: 1928px;
+    background: #FFF;
+    width: auto;
+    max-width: none;
     thead {
-      color: #9F9E9E;
       font-weight: 500;
     }
+    thead tr th
+    {
+      white-space: pre;
+      border-bottom: 1px;
+      padding: 12px 8px;
+      font-weight: 500;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+    }
+    tbody tr td
+    {
+      white-space: pre;
+      padding: 11px 8px;
+      font-size: 13px;
+    }
+    tbody tr td:nth-child(2)
+    {
+      a
+      {
+        color: rgba(255, 116, 0, 0.9);
+      }
+    }
     tbody tr td a {
-      color: #FF4108;
       &:hover {
-        color:  #FF0000;
+        color: rgba(255, 116, 0, 1);
+        text-decoration: none;
+      }
+      &:focus
+      {
+        text-decoration: none;
       }
     }
   }
   .wd_80 {
     width: 100%;
-    background: white;
     float: left;
-    margin-left: 60px;
+    padding-left: 45px;
+    overflow: auto;
   }
   .header_element {
     float: left;
     width: 100%;
     padding-top: 20px;
-    padding-left: 60px;
+    padding-left: 45px;
     padding-bottom: 20px;
-    color: #727373;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    color: rgba(0, 0, 0, 0.54);
+  }
+  .pagination_wrapper
+  {
+    text-align: center;
+    color: #FF7400;
+    margin-top: 30px;
+    .custom_pagination
+    {
+      list-style: none;
+      display: inline-block;
+      border-radius: 4px;
+      margin: 0;
+      padding: 0;
+      background: #FFF;
+      border: 1px solid #ECEEEF;
+      border-radius: 4px;
+      li
+      {
+        display:inline-block;
+        border-right: 1px solid #ECEEEF;
+        a
+        {
+          padding: 8px 14px; 
+          color: #FF7400;
+          display: inline-block;
+          &:hover, &:focus
+          {
+            text-decoration: none;
+          }
+        }
+      }
+      .active
+      {
+        a
+        {
+          background: #FF7400;
+          color: #FFF; 
+        }
+      }
+      li:last-child
+      {
+        border-right: 0;
+      }
+    }
   }
 }

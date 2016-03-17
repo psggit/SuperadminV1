@@ -45,26 +45,26 @@ const SearchWrapper = ( {data} ) => {
   } else {
     objHtml = () => {
       return (
-        <table className={styles.table_fixed_layout + ' table table-hover'}>
-          <thead>
-            <tr>
-              <th> ID </th>
-              <th> Consumer ID </th>
-              <th> Transaction ID</th>
-              <th> PayU Txn ID </th>
-              <th> Bank Ref ID </th>
-              <th> Amount </th>
-              <th> Status </th>
-              <th> Mode </th>
-              <th> Bank Code </th>
-              <th> Updated At </th>
-              <th> Created At </th>
-            </tr>
-          </thead>
-          <tbody>
-            {tableBody}
-          </tbody>
-        </table>
+            <table className={styles.table_fixed_layout + ' table table-striped'}>
+              <thead>
+                <tr>
+                  <th> ID </th>
+                  <th> Consumer ID </th>
+                  <th> Transaction ID</th>
+                  <th> PayU Txn ID </th>
+                  <th> Bank Ref ID </th>
+                  <th> Amount </th>
+                  <th> Status </th>
+                  <th> Mode </th>
+                  <th> Bank Code </th>
+                  <th> Updated At </th>
+                  <th> Created At </th>
+                </tr>
+              </thead>
+              <tbody>
+                {tableBody}
+              </tbody>
+            </table>
       );
     }();
   }
@@ -76,6 +76,25 @@ const SearchWrapper = ( {data} ) => {
           </div>
           <div className={styles.wd_80}>
             {objHtml}
+          </div>
+          <div className={styles.pagination_wrapper + ' ' + styles.wd_100 + ' ' + 'hide'}>
+            <ul className={styles.custom_pagination}>
+                <li>
+                    <a href="#">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li className={styles.active}><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li>
+                    <a href="#">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
           </div>
         </div>
       );

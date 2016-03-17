@@ -28,7 +28,7 @@ const TableHeader = ({title}) => {
   return (
     <div className={styles.header_wrapper}>
       <div className={styles.header}>
-        <ol className = "breadcrumb">
+        <ol className>
           {breadCrumbs}
         </ol>
         <div className="clearfix"></div>

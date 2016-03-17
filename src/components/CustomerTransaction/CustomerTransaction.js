@@ -44,6 +44,7 @@ const CustomerTransaction = ({dispatch}) => { // eslint-disable-line no-unused-v
                         </div>
                     </div>
                 </div>
+                <div className ="clearfix"></div>
             </div>
         </div>
         );

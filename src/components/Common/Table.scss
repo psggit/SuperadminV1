@@ -7,7 +7,6 @@
    content: "/ ";
    padding: 0 5px;
 }
-
 a {
   color: rgba(0,0,0,0.54);
   text-decoration: none;
@@ -146,13 +145,11 @@ a.current{
 {
     width:100%;
     float:left ;
-    padding-top: 70px;
+    padding: 70px 45px 10px 45px;
     background: #ddd;
-    padding-bottom: 10px;
     .header {
       color: #666666;
       font-weight: 400;
-      padding-left: 60px;
       h3 {
         margin: 0;
         float: left;
@@ -161,6 +158,25 @@ a.current{
       .nav {
         padding: 20px;
         float: left;
+      }
+      ol
+      {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        li
+        {
+          display: inline-block;
+        }
+        li:after
+        {
+          content: "/";
+          padding: 0 5px;
+        }
+        li:last-child:after
+        {
+          content: none;
+        }
       }
     }
 }
