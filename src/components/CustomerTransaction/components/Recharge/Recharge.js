@@ -29,7 +29,7 @@ class ConsumerRecharge extends Component {
               <li><a href = "/consumer_transactions/"> Customer Transactions</a></li>
               <li className = "active"> Recharges </li>
               </ol>
-            <SearchWrapper data={lastSuccess}/>
+            <RechargeSearchWrapper data={lastSuccess}/>
           </div>
         );
   }
