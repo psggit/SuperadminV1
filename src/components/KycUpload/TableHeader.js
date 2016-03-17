@@ -1,11 +1,15 @@
 import React from 'react';
 
-const TableHeader = ({title}) => {
+const TableHeader = () => {
   const styles = require('./Table.scss');
   return (
     <div className={styles.header_wrapper}>
       <div className={styles.header}>
-        <h3> KYC / Upload KYC / View Profile / {title} </h3>
+      <ol className = "breadcrumb">
+        <li><a href = "#">KYC </a></li>
+        <li><a href = "/consumer/kycfunctions"> KYC Functions </a></li>
+        <li className = "active"> Upload KYC </li>
+        </ol>
       <div className="clearfix"></div>
       </div>
     </div>

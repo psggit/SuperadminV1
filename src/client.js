@@ -17,7 +17,10 @@ import {Login, Home, PageContainer,
   ViewConsumers, InsertItem, EditItem, FileUpload, ViewConsumerProfile, Kycfunctions,
   ViewStates, ViewState, ViewKyc,
   ViewKycs, ViewKycProfile, KycViewUpload,
-  ViewSkus, ViewSku, ViewCart, Reservations, ViewDevice, RechargeHistory, StateManagement, CustomerTransaction} from './components'; // eslint-disable-line no-unused-vars
+  ViewSkus, ViewSku, ViewCart, Reservations, ViewDevice, RechargeHistory, StateManagement, CustomerTransaction,
+  ConsumerRecharge,
+  ConsumerReservation
+} from './components'; // eslint-disable-line no-unused-vars
 import {AddTable} from './components';
 import {loadCredentials} from './components/Login/Actions';
 // import {loadSchema} from './components/Bills/DataActions';
@@ -94,7 +97,9 @@ const main = (
         <Route path="/consumer/profile/:Id/cart" component={ViewCart} />
         <Route path="/consumer/profile/:Id/device_history" component={ViewDevice} />
         <Route path="/consumer/profile/:Id/recharge_history" component={RechargeHistory} />
-        <Route path="/customer_transactions" component={CustomerTransaction} />
+        <Route path="/consumer_transactions" component={CustomerTransaction} />
+        <Route path="/consumer_transactions/recharges" component={ConsumerRecharge} />
+        <Route path="/consumer_transactions/reservations" component={ConsumerReservation} />
         <Route path="/consumer/:table/edit" component={EditItem} />
         <Route path="/consumer/:table/insert" component={InsertItem} />
         <Route path="sku/states" component={ViewStates} />

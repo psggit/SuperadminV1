@@ -1,0 +1,34 @@
+.search_wrapper {
+  width: 100%;
+  float:left;
+  padding-bottom: 30px;
+  .table_fixed_layout {
+    font-family: 'Roboto' ;
+    table-layout: fixed;
+    width: 1928px;
+    thead {
+      color: #9F9E9E;
+      font-weight: 500;
+    }
+    tbody tr td a {
+      color: #FF4108;
+      &:hover {
+        color:  #FF0000;
+      }
+    }
+  }
+  .wd_80 {
+    width: 100%;
+    background: white;
+    float: left;
+    margin-left: 60px;
+  }
+  .header_element {
+    float: left;
+    width: 100%;
+    padding-top: 20px;
+    padding-left: 60px;
+    padding-bottom: 20px;
+    color: #727373;
+  }
+}

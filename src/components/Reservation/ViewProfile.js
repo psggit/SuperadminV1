@@ -25,27 +25,37 @@ class ViewReservation extends Component {
       /* Getting the first element from the response */
       const resData = response;
 
-      const reservationdata = resData.reservations[0];
+      const reservationdata = resData.reservations;
       console.log('Hello world');
       console.log(reservationdata);
-      const cart = resData.carts[0];
-      const normalItems = cart.normal_items;
+      console.log(reservationdata.consumer_id);
+      // const cart = resData.carts[0];
+      // const normalItems = cart.normal_items;
 
-      console.log('Cart ID');
-      // console.log(cartId);
+      const allItems = [];
+//      let normalHtml;
+      /* Aggregation of all possible cart items */
 
-      const normalHtml = normalItems.map((item, index) => {
+      console.log('All items');
+      console.log(allItems);
+      const normalHtml = reservationdata.map((item, index) => {
         let createdAt = item.created_at;
         let updatedAt = item.updated_at;
         console.log(createdAt);
         createdAt = new Date(new Date(createdAt).getTime() + 19800000).toLocaleString();
         updatedAt = new Date(new Date(updatedAt).getTime() + 19800000).toLocaleString();
+        let isgift = item.is_gift;
+        if (isgift === true) {
+          isgift = 'true';
+        } else if (isgift === false) {
+          isgift = 'false';
+        }
         return (
                   <tr key={index}>
                     <td> {item.id} </td>
-                      <td> {reservationdata.consumer_id } </td>
-                    <td> {reservationdata.amount } </td>
-                    <td> { reservationdata.isgift }N/A</td>
+                    <td> {item.consumer_id } </td>
+                    <td> {item.amount } </td>
+                    <td> {isgift}</td>
                     <td> { createdAt } </td>
                     <td> { updatedAt } </td>
                   </tr>

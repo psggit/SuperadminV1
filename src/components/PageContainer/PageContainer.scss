@@ -73,7 +73,7 @@
       }
     }
   }
-    ul li ul 
+    ul li ul
     {
       background: #ededed;
       li
@@ -127,6 +127,7 @@
     input[type=checkbox] { display: none; }
     input[type=checkbox] ~ ul {
     	max-height: 0;
+      color: #FF7400;
     	max-width: 0;
     	opacity: 0;
     	overflow: hidden;
@@ -137,6 +138,7 @@
        -o-transition:all 1s ease;
        transition:all 1s ease;
     }
+
     input[type=checkbox]:checked ~ ul {
     	max-height: 100%;
     	max-width: 100%;
