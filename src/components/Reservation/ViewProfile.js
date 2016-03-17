@@ -17,7 +17,7 @@ class ViewReservation extends Component {
     let getButtons;
     let getHeader = <TableHeader title={'Initial'}/>;
 
-    const breadcrumbText = this.props.params.Id + '/' + ' Reservation';
+    const breadcrumbText = this.props.params.Id;
 
     const { ongoingRequest, lastError, lastSuccess } = this.props;
 
@@ -91,7 +91,7 @@ class ViewReservation extends Component {
                   </div>
                 );
     } else if (lastSuccess.length > 0) { /* If its an object */
-      getHeader = <TableHeader title={breadcrumbText} breadcrumb={breadcrumbText}/>;
+      getHeader = <TableHeader title={breadcrumbText}/>;
       getHtml = objToHtml(lastSuccess[0]);
     } else if (ongoingRequest) {
       getHeader = <TableHeader title={'Requesting'}/>;

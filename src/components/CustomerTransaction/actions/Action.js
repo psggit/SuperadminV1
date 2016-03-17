@@ -78,11 +78,10 @@ const loadCredentials = () => {
   };
 };
 
-const getRechargeData = (f) => {
+const getRechargeData = () => {
   return (dispatch) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
-    console.log(f);
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
     const payload = {
       'columns': [
@@ -124,11 +123,10 @@ const getRechargeData = (f) => {
   };
 };
 
-const getReservationData = (f) => {
+const getReservationData = () => {
   return (dispatch) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
-    console.log(f);
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
     const payload = {
       'columns': [ '*']

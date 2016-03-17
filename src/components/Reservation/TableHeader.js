@@ -1,11 +1,17 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 const TableHeader = ({title}) => {
   const styles = require('./Table.scss');
   return (
     <div className={styles.header_wrapper}>
       <div className={styles.header}>
-        <h3> CUSTOMER MANAGEMENT / Profile / {title} </h3>
+        <ol className = "breadcrumb">
+          <li><a href = "#">CUSTOMER MANAGEMENT</a></li>
+            <li><Link to ={'/consumer/profiles'}>Consumer Profile</Link></li>
+            <li><Link to = {'/consumer/profile/' + title} >{title}</Link></li>
+          <li className = "active"> Reservation </li>
+          </ol>
         <div className="clearfix"></div>
       </div>
     </div>
