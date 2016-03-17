@@ -5,7 +5,12 @@ const TableHeader = ({title}) => {
   return (
     <div className={styles.header_wrapper}>
       <div className={styles.header}>
-        <h3> CUSTOMER MANAGEMENT / Profile / {title} </h3>
+        <ol className = "breadcrumb">
+          <li><a href = "#">CUSTOMER MANAGEMENT</a></li>
+            <li><a href = "/consumer/profiles">Consumer Profile</a></li>
+            <li><a href = {'/consumer/profile/' + title} >{title}</a></li>
+          <li className = "active"> Reservation </li>
+          </ol>
         <div className="clearfix"></div>
       </div>
     </div>

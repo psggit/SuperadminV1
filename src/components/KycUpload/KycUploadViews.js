@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {getUserData} from './KycUploadViewActions';
 import { makeRequest} from '../FileUpload/Actions';
-import TableHeader from './TableHeader';
+import TableProfileHeader from './TableProfileHeader';
 // import TableHeader from './TableHeader';
 // import {editItem, E_ONGOING_REQ} from './EditActions';
 
@@ -69,16 +69,16 @@ class KycUploadProfile extends Component {
         );
     };
     let getHtml;
-    let getHeader = <TableHeader title={'Initial'}/>;
+    let getHeader = <TableProfileHeader title={'Initial'}/>;
     let file;
     if (lastError) {
-      getHeader = <TableHeader title={'Error'}/>;
+      getHeader = <TableProfileHeader title={'Error'}/>;
       getHtml = (<h4> error </h4>);
     } else if (lastSuccess) {
-      getHeader = <TableHeader title={lastSuccess[0].id}/>;
+      getHeader = <TableProfileHeader title={lastSuccess[0].id}/>;
       getHtml = objToHtml(lastSuccess[0]);
     } else if (ongoingRequest) {
-      getHeader = <TableHeader title={'Requesting'}/>;
+      getHeader = <TableProfileHeader title={'Requesting'}/>;
       getHtml = <h4> requesting </h4>;
     }
     return (
