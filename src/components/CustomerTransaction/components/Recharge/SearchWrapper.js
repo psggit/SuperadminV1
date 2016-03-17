@@ -39,7 +39,7 @@ const SearchWrapper = ( {data} ) => {
   } else {
     objHtml = () => {
       return (
-        <table className="table table-hover">
+        <table className={styles.table_fixed_layout + ' table table-hover'}>
           <thead>
             <tr>
               <th> ID </th>

@@ -1,11 +1,20 @@
 .search_wrapper {
   width: 100%;
   float:left;
+  .table_fixed_layout {
+    font-family: 'Roboto' ;
+    table-layout: fixed;
+    width: 1928px;
+    thead {
+      color: #9F9E9E;
+      font-weight: 500;
+    }
+  }
   .wd_80 {
     width: 100%;
     background: white;
+    float: left;
     margin-left: 60px;
-    margin-top: 20px;
   }
   .header_element {
     float: left;
