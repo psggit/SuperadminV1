@@ -18,7 +18,8 @@ import {Login, Home, PageContainer,
   ViewStates, ViewState, ViewKyc,
   ViewKycs, ViewKycProfile, KycViewUpload,
   ViewSkus, ViewSku, ViewCart, Reservations, ViewDevice, RechargeHistory, StateManagement, CustomerTransaction,
-  ConsumerRecharge
+  ConsumerRecharge,
+  ConsumerReservation
 } from './components'; // eslint-disable-line no-unused-vars
 import {AddTable} from './components';
 import {loadCredentials} from './components/Login/Actions';
@@ -98,6 +99,7 @@ const main = (
         <Route path="/consumer/profile/:Id/recharge_history" component={RechargeHistory} />
         <Route path="/consumer_transactions" component={CustomerTransaction} />
         <Route path="/consumer_transactions/recharges" component={ConsumerRecharge} />
+        <Route path="/consumer_transactions/reservations" component={ConsumerReservation} />
         <Route path="/consumer/:table/edit" component={EditItem} />
         <Route path="/consumer/:table/insert" component={InsertItem} />
         <Route path="sku/states" component={ViewStates} />

@@ -73,10 +73,12 @@ a.current{
                     font-weight: 400;
                     color: #757575;
                     .wd_60_link {
-                        color: #FF4108;
-                        cursor: pointer;
-                        &:hover {
-                            color: #FF0000;
+                        a {
+                          color: #FF4108;
+                          cursor: pointer;
+                          &:hover {
+                              color: #FF0000;
+                          }
                         }
                     }
                 }

@@ -9,7 +9,7 @@ lastSuccess: {} or <object>
 /* Fetch module for API requests */
 import fetch from 'isomorphic-fetch';
 
-import Endpoints, {globalCookiePolicy} from '../../../../Endpoints';
+import Endpoints, {globalCookiePolicy} from '../../../Endpoints';
 
 /* Actions */
 
@@ -27,7 +27,7 @@ const RESET = 'CTRecharge/RESET';
 
 const defaultState = {ongoingRequest: false, lastError: {}, lastSuccess: [], credentials: null, secondaryData: null};
 
-const rechargeReducer = (state = defaultState, action) => {
+const transactionReducer = (state = defaultState, action) => {
   switch (action.type) {
     case MAKE_REQUEST:
       return {...state, ongoingRequest: true, lastSuccess: [], lastError: {}, secondaryData: {}};
@@ -124,7 +124,47 @@ const getRechargeData = (f) => {
   };
 };
 
-export default rechargeReducer;
-export {requestSuccess, requestFailed, loadCredentials, RESET, getSecondaryData, getRechargeData};
+const getReservationData = (f) => {
+  return (dispatch) => {
+    // dispatch({ type: MAKE_REQUEST, f});
+    //
+    console.log(f);
+    /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
+    const payload = {
+      'columns': [ '*']
+    };
 
+    const url = Endpoints.db + '/table/' + 'reservation' + '/select';
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(payload),
+    };
+    // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
 
+    return fetch(url, options)
+           .then(
+             (response) => {
+               if (response.ok) { // 2xx status
+                 response.json().then(
+                   (d) => {
+                     return dispatch({type: REQUEST_SUCCESS, data: d});
+                   },
+                   () => {
+                     return dispatch(requestFailed('Error. Try again!'));
+                   }
+                 );
+               } else {
+                 return dispatch(requestFailed('Error. Try again!'));
+               }
+             },
+             (error) => {
+               console.log(error);
+               return dispatch(requestFailed(error.text));
+             });
+  };
+};
+
+export default transactionReducer;
+export {requestSuccess, requestFailed, loadCredentials, RESET, getSecondaryData, getRechargeData, getReservationData};

@@ -11,7 +11,7 @@ import skuReducer from './components/Sku/SkuActions';
 import kycReducer from './components/Consumer/KycfunctionsActions';
 import kycviewReducer from './components/Kyc/KycViewActions';
 import kycuploadviewReducer from './components/KycUpload/KycUploadViewActions';
-import rechargeReducer from './components/CustomerTransaction/components/Recharge/RechargeAction';
+import transactionReducer from './components/CustomerTransaction/actions/Action';
 
 const reducer = combineReducers({
   loginState: loginReducer,
@@ -26,7 +26,7 @@ const reducer = combineReducers({
   kyc: kycReducer,
   kycviewprofile: kycviewReducer,
   kycupload: kycuploadviewReducer,
-  recharge_history: rechargeReducer
+  transaction_data: transactionReducer
 });
 
 export default reducer;
