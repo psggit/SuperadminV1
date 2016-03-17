@@ -39,7 +39,6 @@ class ViewCart extends Component {
         }
       });
 
-
       normalHtml = allItems.map((item, index) => {
         let createdAt = item.created_at;
         let updatedAt = item.updated_at;
