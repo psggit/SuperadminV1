@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 
-// import TableHeader from '../../../Common/TableHeader';
+import TableHeader from '../../../Common/TableHeader';
 
 import {connect} from 'react-redux';
 
@@ -24,11 +24,7 @@ class ConsumerRecharge extends Component {
     console.log(ongoingRequest);
     return (
           <div className={styles.recharge_container}>
-            <ol className = "breadcrumb">
-              <li><a href = "#">Customer Management </a></li>
-              <li><a href = "/consumer_transactions/"> Customer Transactions</a></li>
-              <li className = "active"> Recharges </li>
-              </ol>
+            <TableHeader title={'Customer Management/Customer Reservations'} />
             <RechargeSearchWrapper data={lastSuccess}/>
           </div>
         );
