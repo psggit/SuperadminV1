@@ -16,7 +16,6 @@ const SearchWrapper = ( {data} ) => {
     return (
           <tr key={index}>
             <td> { dat.id } </td>
-
             <td>
               <Link to={'/consumer/profile/' + dat.consumer_id}>
                 { dat.consumer_id }
@@ -63,7 +62,7 @@ const SearchWrapper = ( {data} ) => {
   return (
         <div className={styles.search_wrapper}>
           <div className={styles.header_element}>
-            Recharges
+            Reservations
           </div>
           <div className={styles.wd_80}>
             {objHtml}

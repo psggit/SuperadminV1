@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-const SearchWrapper = ( {data} ) => {
+const RechargeSearchWrapper = ( {data} ) => {
   const styles = require('./SearchWrapper.scss');
   let tableBody;
   let objHtml;
@@ -9,6 +9,7 @@ const SearchWrapper = ( {data} ) => {
   tableBody = data.map((dat, index) => {
     let createdAt = dat.created_at;
     let updatedAt = dat.updated_at;
+    const isSuccess = (dat.payment_detail) ? dat.payment_detail.is_success : false;
 
     createdAt = new Date(new Date(createdAt).getTime()).toLocaleString();
     updatedAt = new Date(new Date(updatedAt).getTime()).toLocaleString();
@@ -21,13 +22,13 @@ const SearchWrapper = ( {data} ) => {
                 { dat.consumer_id }
               </Link>
             </td>
-            <td> { dat.payment_detail.txn_id } </td>
-            <td> { dat.payment_detail.pay_mih_id } </td>
-            <td> { dat.payment_detail.bank_ref_num } </td>
-            <td> { dat.payment_detail.amount } </td>
-            <td> { (dat.payment_detail.is_success) ? 'Successful' : 'Failed'} </td>
-            <td> { dat.payment_detail.mode } </td>
-            <td> { dat.payment_detail.bank_code} </td>
+            <td> { (dat.payment_detail) ? dat.payment_detail.txn_id : '' } </td>
+            <td> { (dat.payment_detail) ? dat.payment_detail.pay_mih_id : '' } </td>
+            <td> { (dat.payment_detail) ? dat.payment_detail.bank_ref_num : '' } </td>
+            <td> { (dat.payment_detail) ? dat.payment_detail.amount : '' } </td>
+            <td> { (isSuccess) ? 'Successful' : 'Failed'} </td>
+            <td> { (dat.payment_detail) ? dat.payment_detail.mode : '' } </td>
+            <td> { (dat.payment_detail) ? dat.payment_detail.bank_code : ''} </td>
             <td> { createdAt } </td>
             <td> { updatedAt } </td>
           </tr>
@@ -81,4 +82,4 @@ const SearchWrapper = ( {data} ) => {
       );
 };
 
-export default SearchWrapper;
+export default RechargeSearchWrapper;

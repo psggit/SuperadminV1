@@ -5,11 +5,17 @@ import TableHeader from '../../../Common/TableHeader';
 import {connect} from 'react-redux';
 
 import {getRechargeData} from '../../actions/Action';
-import SearchWrapper from './SearchWrapper';
+import RechargeSearchWrapper from './SearchWrapper';
 
 class ConsumerRecharge extends Component {
   componentDidMount() {
     this.props.dispatch(getRechargeData());
+  }
+  shouldComponentUpdate() {
+    return true;
+  }
+  componentWillUnmount() {
+    console.log('Unmounted');
   }
   render() {
     const styles = require('./Recharge.scss');
@@ -19,7 +25,7 @@ class ConsumerRecharge extends Component {
     return (
           <div className={styles.recharge_container}>
             <TableHeader title={'Customer Management/Customer Transactions'} />
-            <SearchWrapper data={lastSuccess}/>
+            <RechargeSearchWrapper data={lastSuccess}/>
           </div>
         );
   }

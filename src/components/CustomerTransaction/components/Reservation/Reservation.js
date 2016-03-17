@@ -11,6 +11,9 @@ class ConsumerReservation extends Component {
   componentDidMount() {
     this.props.dispatch(getReservationData());
   }
+  componentWillUnmount() {
+    console.log('Unmounted');
+  }
   render() {
     const styles = require('./Reservation.scss');
     const { ongoingRequest, lastError, lastSuccess } = this.props;
