@@ -12,7 +12,7 @@ const CustomerTransaction = ({dispatch}) => { // eslint-disable-line no-unused-v
                     <div className={styles.squarecontent}>
                         <div>
                             <span>
-                                <Link to={'/consumer/kycfunctions/verify_kyc'}>Recharges</Link>
+                                <Link to={'/consumer_transactions/recharges'}>Recharges</Link>
                             </span>
                         </div>
                     </div>
