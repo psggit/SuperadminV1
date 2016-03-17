@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 const TableHeader = ({title}) => {
   const styles = require('./Table.scss');
@@ -7,8 +8,8 @@ const TableHeader = ({title}) => {
       <div className={styles.header}>
         <ol className = "breadcrumb">
           <li><a href = "#">CUSTOMER MANAGEMENT</a></li>
-            <li><a href = "/consumer/profiles">Consumer Profile</a></li>
-            <li><a href = {'/consumer/profile/' + title} >{title}</a></li>
+            <li><Link to ={'/consumer/profiles'}>Consumer Profile</Link></li>
+            <li><Link to = {'/consumer/profile/' + title} >{title}</Link></li>
           <li className = "active"> Reservation </li>
           </ol>
         <div className="clearfix"></div>

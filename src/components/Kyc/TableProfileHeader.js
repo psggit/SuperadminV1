@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 const TableProfileHeader = ({title}) => {
   const styles = require('./Table.scss');
@@ -7,8 +8,8 @@ const TableProfileHeader = ({title}) => {
       <div className={styles.header}>
       <ol className = "breadcrumb">
       <li><a href = "#">KYC </a></li>
-      <li><a href = "/consumer/kycfunctions"> KYC Functions </a></li>
-      <li><a href = "/consumer/kycfunctions/verify_kyc"> Verify KYC </a></li>
+      <li><Link to ={'/consumer/kycfunctions'}> KYC Functions </Link></li>
+      <li><Link to ={'/consumer/kycfunctions/verify_kyc'}> Verify KYC </Link></li>
         <li className = "active">{title}</li>
         </ol>
         <div className="clearfix"></div>
