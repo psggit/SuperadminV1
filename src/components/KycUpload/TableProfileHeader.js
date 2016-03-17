@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-const TableHeader = () => {
+const TableProfileHeader = ({title}) => {
   const styles = require('./Table.scss');
   return (
     <div className={styles.header_wrapper}>
@@ -9,7 +9,8 @@ const TableHeader = () => {
       <ol className = "breadcrumb">
         <li><a href = "#">KYC </a></li>
         <li><Link to ={'/consumer/kycfunctions'}> KYC Functions </Link></li>
-        <li className = "active"> Verify KYC </li>
+        <li><Link to ={'/consumer/kycfunctions/upload_kyc'}> Upload KYC </Link></li>
+        <li className = "active"> {title} </li>
         </ol>
       <div className="clearfix"></div>
       </div>
@@ -23,4 +24,4 @@ const TableHeader = () => {
          <li role="presentation"><a href="#">Messages</a></li>
          </ul>
 */
-export default TableHeader;
+export default TableProfileHeader;

@@ -2,31 +2,6 @@
   padding: 0;
   overflow-x:scroll;
 }
-.breadcrumb > li {
-   color: #FF7400;
-   content: "/ ";
-   padding: 0 5px;
-}
-
-a {
-  color: rgba(0,0,0,0.54);
-  text-decoration: none;
-  display: block;
-}
-a:active {
-  color: #FF7400;
-  text-decoration: none;
-}
-a:hover {
-  color: rgba(0,0,0,0.87);
-  text-decoration: none;
-}
-a:visited {
-  text-decoration: none;
-}
-a.current{
-  color: #FF7400;
-}
 .profile_wrapper {
     width:100%;
     float:left;
