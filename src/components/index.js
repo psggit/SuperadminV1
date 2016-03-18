@@ -29,6 +29,9 @@ export ViewKyc from './KycUpload/ViewTable';
 export ViewKycProfile from './Kyc/KycView';
 export KycViewUpload from './KycUpload/KycUploadViews';
 export StateManagement from './StateManagement/StateManagement';
+export CreateNotepadEntry from './CreateNotepadEntry/CreateNotepadEntry';
+export NotepadEntries from './NotepadEntries/NotepadEntries';
+export EditAccountDetails from './EditAccountDetails/EditAccountDetails';
 
 /* Consumer Transactions */
 

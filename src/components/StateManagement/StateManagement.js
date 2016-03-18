@@ -19,8 +19,8 @@ const StateManagement = () => { // eslint-disable-line no-unused-vars
        		</div>
        	</div>
    		<div className={styles.create_state_wrapper + ' ' + 'hide'}>
-			<p>Create State</p>
-			<div className={styles.create_form}>
+			 <p>Create State</p>
+			 <div className={styles.create_form}>
 				<div className={styles.indiv_form}>
 					<label>State Name</label>
 					<input type="text" />
@@ -32,7 +32,7 @@ const StateManagement = () => { // eslint-disable-line no-unused-vars
 					</select>
 				</div>
 				<button className={styles.common_btn + ' ' + styles.create_btn }>Create state</button>
-			</div>
+			 </div>
    		</div>
    		<div className={styles.create_layout + ' ' + styles.wd_100}>
    			<button className={styles.common_btn}>Create State</button>
