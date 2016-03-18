@@ -64,7 +64,6 @@ app.use((req, res) => {
   }
 
   // FIXME: Add SSR
-
 });
 
 if (config.port) {

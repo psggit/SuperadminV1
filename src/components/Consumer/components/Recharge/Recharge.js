@@ -22,7 +22,7 @@ class RechargeHistory extends Component {
     let getButtons;
     let getHeader = <TableHeader title={'Initial'}/>;
 
-    const breadcrumbText = this.props.params.Id + ' /' + ' Recharge History';
+    const breadcrumbText = 'Consumer Management/Profile/' + this.props.params.Id + '/Recharge History';
 
     const objToHtml = (response) => {
       /* Getting the first element from the response */
@@ -30,7 +30,7 @@ class RechargeHistory extends Component {
       allItems = [];
 
       Object.keys(response).forEach((item) => {
-        if (typeof(response[item]) === 'object' && (response[item])) {
+        if (typeof(response[item]) === 'object' && (response[item] && response[item].length)) {
           response[item].forEach((i) => {
             allItems.push(i);
           });
@@ -42,8 +42,10 @@ class RechargeHistory extends Component {
         let createdAt = item.created_at;
         let updatedAt = item.updated_at;
         /* Check if the payment is being made for a gift */
-        const isGift = (item.payment_detail.productinfo.toLowerCase() === 'gift') ? true : false;
+        const productInfo = (item.payment_detail) ? item.payment_detail.productinfo : '';
+        const isGift = (productInfo.toLowerCase() === 'gift') ? true : false;
         const giftText = (isGift) ? 'Yes' : 'No';
+        const isSuccess = (item.payment_detail) ? item.payment_detail.is_success : false;
 
         createdAt = new Date(new Date(createdAt).getTime()).toLocaleString();
         updatedAt = new Date(new Date(updatedAt).getTime()).toLocaleString();
@@ -51,14 +53,14 @@ class RechargeHistory extends Component {
                   <tr key={index}>
                     <td> { item.id} </td>
                     <td> { item.consumer_id} </td>
-                    <td> { item.payment_detail.txn_id} </td>
-                    <td> { item.payment_detail.pay_mih_id } </td>
-                    <td> { item.payment_detail.bank_ref_num } </td>
-                    <td> { item.payment_detail.amount } </td>
+                    <td> { (item.payment_detail) ? item.payment_detail.txn_id : ''} </td>
+                    <td> { (item.payment_detail) ? item.payment_detail.pay_mih_id : ''} </td>
+                    <td> { (item.payment_detail) ? item.payment_detail.bank_ref_num : '' } </td>
+                    <td> { (item.payment_detail) ? item.payment_detail.amount : ''} </td>
                     <td> { giftText } </td>
-                    <td> { (item.payment_detail.is_success) ? 'Successful' : 'Failed'} </td>
-                    <td> { item.payment_detail.mode } </td>
-                    <td> { item.payment_detail.bank_code} </td>
+                    <td> { (isSuccess) ? 'Successful' : 'Failed'} </td>
+                    <td> { (item.payment_detail) ? item.payment_detail.mode : ''} </td>
+                    <td> { (item.payment_detail) ? item.payment_detail.bank_code : ''} </td>
                     <td> { createdAt } </td>
                     <td> { updatedAt } </td>
                   </tr>

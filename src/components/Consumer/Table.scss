@@ -2,6 +2,30 @@
   padding: 0;
   overflow-x:scroll;
 }
+.breadcrumb > li {
+   color: #FF7400;
+   content: "/ ";
+   padding: 0 5px;
+}
+a {
+  color: rgba(0,0,0,0.54);
+  text-decoration: none;
+  display: block;
+}
+a:active {
+  color: #FF7400;
+  text-decoration: none;
+}
+a:hover {
+  color: rgba(0,0,0,0.87);
+  text-decoration: none;
+}
+a:visited {
+  text-decoration: none;
+}
+a.current{
+  color: #FF7400;
+}
 .profile_wrapper {
     width:100%;
     float:left;
@@ -47,13 +71,11 @@
                     word-wrap: break-word;
                     font-weight: 400;
                     color: #757575;
-                    .wd_60_link {
-                        a {
-                          color: #FF4108;
-                          cursor: pointer;
-                          &:hover {
-                              color: #FF0000;
-                          }
+                    .wd_60_link a {
+                        color: #FF4108;
+                        cursor: pointer;
+                        &:hover {
+                            color: #FF0000;
                         }
                     }
                 }
@@ -123,13 +145,11 @@
 {
     width:100%;
     float:left ;
-    padding-top: 70px;
+    padding: 70px 45px 10px 45px;
     background: #ddd;
-    padding-bottom: 10px;
     .header {
       color: #666666;
       font-weight: 400;
-      padding-left: 60px;
       h3 {
         margin: 0;
         float: left;
@@ -138,6 +158,25 @@
       .nav {
         padding: 20px;
         float: left;
+      }
+      ol
+      {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        li
+        {
+          display: inline-block;
+        }
+        li:after
+        {
+          content: "/";
+          padding: 0 5px;
+        }
+        li:last-child:after
+        {
+          content: none;
+        }
       }
     }
 }
@@ -224,19 +263,4 @@ a.expanded {
     color: #B85C27;
     transition: 0.2s;
   }
-}
-a {
-  color: rgba(0,0,0,0.54);
-  text-decoration: none;
-  display: inline-block;
-}
-a:active {
-  color: #FF7400;
-}
-a:hover {
-  color: rgba(0,0,0,0.87);
-  text-decoration: none;
-}
-a:visited{
-  text-decoration: none;
 }
