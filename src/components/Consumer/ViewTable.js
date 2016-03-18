@@ -118,7 +118,7 @@ class ViewConsumers extends Component {
                              schemas={schemas}
                              curDepth={0}
                              dispatch={dispatch} />);
-    const tableHeader = (<TableHeader title={"Consumer Profile"} />);
+    const tableHeader = (<TableHeader title={"Consumer Profile/View"} />);
 
     // const uploadImage = uPloadFile(dispatch);
     // {uploadImage}

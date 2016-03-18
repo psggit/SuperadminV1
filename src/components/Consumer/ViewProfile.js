@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 import {connect} from 'react-redux';
 import {getUserData, resetPin} from './ProfileActions';
-import TableProfileHeader from './TableProfileHeader';
+import TableHeader from './TableHeader';
 // import {editItem, E_ONGOING_REQ} from './EditActions';
 
 class ViewConsumerProfile extends Component {
@@ -263,10 +263,10 @@ class ViewConsumerProfile extends Component {
     };
     let getHtml;
     let getButtons;
-    let getHeader = <TableProfileHeader title={'Initial'}/>;
+    let getHeader = <TableHeader title={'Initial'}/>;
     /* If Last error is set */
     if (Object.keys(lastError).length > 0) {
-      getHeader = <TableProfileHeader title={'Error'}/>;
+      getHeader = <TableHeader title={'Error'}/>;
       getHtml = (
                   <div className={styles.profile_information}>
                     <div className={styles.error_message}>
@@ -275,7 +275,7 @@ class ViewConsumerProfile extends Component {
                   </div>
                 );
     } else if (lastSuccess.length > 0) { /* If its an object */
-      getHeader = <TableProfileHeader title={lastSuccess[0].id}/>;
+      getHeader = <TableHeader title={'Consumer Management/Profile/' + lastSuccess[0].id}/>;
       getHtml = objToHtml(lastSuccess[0]);
       getButtons = (
                      <div className={styles.profile_actions}>
@@ -292,7 +292,7 @@ class ViewConsumerProfile extends Component {
                      </div>
               );
     } else if (ongoingRequest) {
-      getHeader = <TableProfileHeader title={'Requesting'}/>;
+      getHeader = <TableHeader title={'Requesting'}/>;
       getHtml = <h4> requesting </h4>;
     }
 

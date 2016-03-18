@@ -22,7 +22,7 @@ class ViewDevice extends Component {
     let getButtons;
     let getHeader = <TableHeader title={'Initial'}/>;
 
-    const breadcrumbText = this.props.params.Id + ' /' + ' Devices';
+    const breadcrumbText = 'Consumer Management/Profile/' + this.props.params.Id + '/Devices';
 
     const objToHtml = (response) => {
       /* Getting the first element from the response */
@@ -38,7 +38,7 @@ class ViewDevice extends Component {
         return (
                   <tr key={index}>
                     <td> { item.id} </td>
-                    <td> { item.device.device_num} </td>
+                    <td> { (item.device) ? item.device.device_num : ''} </td>
                     <td> { item.ip } </td>
                     <td> { createdAt } </td>
                     <td> { updatedAt } </td>

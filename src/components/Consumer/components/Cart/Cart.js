@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {getCartData} from '../../ProfileActions';
-import TableProfileHeader from './TableProfileHeader';
+import TableHeader from '../../TableHeader';
 // import {editItem, E_ONGOING_REQ} from './EditActions';
 
 class ViewCart extends Component {
@@ -20,9 +20,9 @@ class ViewCart extends Component {
 
     let getHtml;
     let getButtons;
-    let getHeader = <TableProfileHeader title={'Initial'}/>;
+    let getHeader = <TableHeader title={'Initial'}/>;
 
-    const breadcrumbText = this.props.params.Id;
+    const breadcrumbText = 'Consumer Management/Profile/' + this.props.params.Id + '/Cart';
 
     const objToHtml = (response) => {
       /* Getting the first element from the response */
@@ -64,11 +64,11 @@ class ViewCart extends Component {
         return (
                   <tr key={index}>
                     <td> {item.id} </td>
-                    <td> {cart.consumer_id } </td>
-                    <td> {itemObj.sku_pricing.sku.brand.brand_name } </td>
+                    <td> { (cart.consumer_id) ? cart.consumer_id : '' } </td>
+                    <td> {(itemObj.sku_pricing) ? itemObj.sku_pricing.sku.brand.brand_name : ''} </td>
                     <td> {offerType} </td>
-                    <td> { itemObj.sku_pricing.sku.volume } ML </td>
-                    <td> { itemObj.sku_pricing.duty_paid } Rs </td>
+                    <td> { (itemObj.sku_pricing) ? itemObj.sku_pricing.sku.volume : '' } ML </td>
+                    <td> { (itemObj.sku_pricing) ? itemObj.sku_pricing.duty_paid : '' } Rs </td>
                     <td> N/A </td>
                     <td> { createdAt } </td>
                     <td> { updatedAt } </td>
@@ -109,7 +109,7 @@ class ViewCart extends Component {
     };
     /* If Last error is set */
     if (Object.keys(lastError).length > 0) {
-      getHeader = <TableProfileHeader title={'Error'} breadcrumb={breadcrumbText} />;
+      getHeader = <TableHeader title={'Error'} breadcrumb={breadcrumbText} />;
       getHtml = (
                   <div className={styles.profile_information}>
                     <div className={styles.error_message}>
@@ -118,10 +118,10 @@ class ViewCart extends Component {
                   </div>
                 );
     } else if (lastSuccess.length > 0) { /* If its an object */
-      getHeader = <TableProfileHeader title={breadcrumbText}/>;
+      getHeader = <TableHeader title={breadcrumbText}/>;
       getHtml = objToHtml(lastSuccess[0]);
     } else if (ongoingRequest) {
-      getHeader = <TableProfileHeader title={'Requesting'}/>;
+      getHeader = <TableHeader title={'Requesting'}/>;
       getHtml = <h4> requesting </h4>;
     }
 
