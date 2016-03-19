@@ -78,25 +78,6 @@ const RechargeSearchWrapper = ( {data} ) => {
           <div className={styles.wd_80}>
             {objHtml}
           </div>
-          <div className={styles.pagination_wrapper + ' ' + styles.wd_100 + ' ' + 'hide'}>
-            <ul className={styles.custom_pagination}>
-                <li>
-                    <a href="#">
-                      <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                <li className={styles.active}><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li>
-                    <a href="#">
-                      <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-          </div>
         </div>
       );
 };

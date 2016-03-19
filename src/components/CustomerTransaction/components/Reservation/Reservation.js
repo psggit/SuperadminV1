@@ -4,25 +4,33 @@ import TableHeader from '../../../Common/TableHeader';
 
 import {connect} from 'react-redux';
 
-import {getReservationData} from '../../actions/Action';
+import {getAllReservationData} from '../../actions/Action';
 import SearchWrapper from './SearchWrapper';
+import PaginationContainer from '../Recharge/Pagination';
 
 class ConsumerReservation extends Component {
   componentDidMount() {
-    this.props.dispatch(getReservationData());
+    const {query} = this.props.location;
+    const page = (Object.keys(query).length > 0) ? parseInt(query.p, 10) : 1;
+
+    this.props.dispatch(getAllReservationData(page));
   }
   componentWillUnmount() {
     console.log('Unmounted');
   }
   render() {
     const styles = require('./Reservation.scss');
-    const { ongoingRequest, lastError, lastSuccess } = this.props;
+    const { ongoingRequest, lastError, lastSuccess, count} = this.props;
+    const {query} = this.props.location;
+    const page = (Object.keys(query).length > 0) ? parseInt(query.p, 10) : 1;
+
     console.log(lastError);
     console.log(ongoingRequest);
     return (
           <div className={styles.reservation_container}>
             <TableHeader title={'Customer Management/Customer Reservations'} />
             <SearchWrapper data={lastSuccess}/>
+            <PaginationContainer limit="10" currentPage={page} showMax="5" count={count} parentUrl="/consumer_transactions/reservations" />
           </div>
         );
   }
@@ -30,10 +38,12 @@ class ConsumerReservation extends Component {
 
 ConsumerReservation.propTypes = {
   params: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
   ongoingRequest: PropTypes.bool.isRequired,
   lastError: PropTypes.object.isRequired,
-  lastSuccess: PropTypes.array.isRequired
+  lastSuccess: PropTypes.array.isRequired,
+  count: PropTypes.number.isRequired
 };
 
 const mapStateToProps = (state) => {
