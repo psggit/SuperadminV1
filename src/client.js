@@ -18,6 +18,7 @@ import {Login, Home, PageContainer,
   ViewStates, ViewState, ViewKyc,
   ViewKycs, ViewKycProfile, KycViewUpload,
   ViewSkus, ViewSku, ViewCart, Reservations, ViewDevice, RechargeHistory, StateManagement, CustomerTransaction,
+  CreateNotepadEntry, NotepadEntries, EditAccountDetails,
   ConsumerRecharge,
   ConsumerReservation
 } from './components'; // eslint-disable-line no-unused-vars
@@ -104,6 +105,9 @@ const main = (
         <Route path="sku/skus" component={ViewSkus} />
         <Route path="sku/sku/:Id" component={ViewSku} />
         <Route path="/statemanagement" component={StateManagement} />
+        <Route path="/create_notepad_entry" component={CreateNotepadEntry} />
+        <Route path="/notepad_entries" component={NotepadEntries} />
+        <Route path="/edit_account_details" component={EditAccountDetails} />
       </Route>
     </Router>
 );
