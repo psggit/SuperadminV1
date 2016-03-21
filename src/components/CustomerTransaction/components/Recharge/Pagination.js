@@ -19,11 +19,18 @@ const Pagination = ({limit, currentPage, showMax, count, parentUrl, onClickHandl
    * */
   const currentIndex = parseInt(currentPage, 10);
   let currentShowMax = parseInt(showMax, 10);
-  const compute = currentIndex - ((currentIndex + (currentShowMax - 1)) - pages);
-  let startVal = (currentIndex + (currentShowMax - 1)) < pages ? currentIndex : compute;
+
+  /* Check if show Max is greater than the total pages
+   * if yes let it be else reduce the showMax to the number of pages available
+   * */
+  currentShowMax = (currentShowMax > pages) ? pages : currentShowMax;
+  /* Computation of lowest value to start with to go uptil the showMax */
+  let compute = currentIndex - ((currentIndex + (currentShowMax - 1)) - pages);
+  compute = (compute) ? compute : 1;
+  let startVal = (currentIndex + (currentShowMax - 1)) <= pages ? currentIndex : compute;
   startVal = (startVal < 0) ? 1 : startVal;
 
-  currentShowMax = (currentIndex + (currentShowMax - 1)) < pages ? currentShowMax : pages;
+  // currentShowMax = (currentIndex + (currentShowMax - 1)) <= pages ? currentShowMax : pages - 1;
 
   isLeftPage = (currentPage > 1) ? true : false;
   isRightPage = (currentPage < pages ) ? true : false;
