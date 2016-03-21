@@ -18,6 +18,13 @@ class ConsumerReservation extends Component {
   componentWillUnmount() {
     console.log('Unmounted');
   }
+  onClickHandle(e) {
+    // e.preventDefault();
+    const currentPage = parseInt(e.target.href.split('?p=')[1], 10);
+    if (currentPage) {
+      this.props.dispatch(getAllReservationData(currentPage));
+    }
+  }
   render() {
     const styles = require('./Reservation.scss');
     const { ongoingRequest, lastError, lastSuccess, count} = this.props;
@@ -30,7 +37,7 @@ class ConsumerReservation extends Component {
           <div className={styles.reservation_container}>
             <TableHeader title={'Customer Management/Customer Reservations'} />
             <SearchWrapper data={lastSuccess}/>
-            <PaginationContainer limit="10" currentPage={page} showMax="5" count={count} parentUrl="/consumer_transactions/reservations" />
+            <PaginationContainer limit="10" onClickHandler={this.onClickHandle.bind(this)} currentPage={page} showMax="5" count={count} parentUrl="/hadmin/consumer_transactions/reservations" />
           </div>
         );
   }

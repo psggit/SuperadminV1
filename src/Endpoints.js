@@ -1,4 +1,5 @@
 const base = 'http://130.211.246.199';
+// const base = '';
 const Endpoints = {
   login: base + '/hauth/login',
   db: base + '/api/1',
@@ -6,7 +7,8 @@ const Endpoints = {
   getConsumer: base + '/api/1/table/consumer/select',
   schemaChange: base + '/api/1/change',
   getCredentials: base + '/hauth/get_credentials',
-  file_upload: 'http://130.211.246.199:30181/file_upload/upload'
+  file_upload: 'http://130.211.246.199:30181/file_upload/upload',
+  baseUrl: base
 };
 const globalCookiePolicy = 'include';
 

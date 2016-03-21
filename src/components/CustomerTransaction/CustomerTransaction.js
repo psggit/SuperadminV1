@@ -16,7 +16,7 @@ const CustomerTransaction = ({dispatch}) => { // eslint-disable-line no-unused-v
                     <div className={styles.squarecontent}>
                         <div>
                             <span>
-                                <Link to={'/consumer_transactions/recharges'}>Recharges</Link>
+                                <Link to={'/hadmin/consumer_transactions/recharges'}>Recharges</Link>
                             </span>
                         </div>
                     </div>
@@ -34,7 +34,7 @@ const CustomerTransaction = ({dispatch}) => { // eslint-disable-line no-unused-v
                     <div className={styles.squarecontent}>
                         <div>
                             <span>
-                                <Link to={'/consumer_transactions/reservations'}>Reservations</Link>
+                                <Link to={'/hadmin/consumer_transactions/reservations'}>Reservations</Link>
                             </span>
                         </div>
                     </div>

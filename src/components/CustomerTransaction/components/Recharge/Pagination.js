@@ -1,6 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router';
 
-const Pagination = ({limit, currentPage, showMax, count, parentUrl}) => {
+const Pagination = ({limit, currentPage, showMax, count, parentUrl, onClickHandler}) => {
   const styles = require('./Pagination.scss');
 
   const currentLimit = parseInt(limit, 10);
@@ -39,9 +40,9 @@ const Pagination = ({limit, currentPage, showMax, count, parentUrl}) => {
     const isActive = (startVal === currentIndex) ? true : false;
     return (
           <li key={i} className={(isActive) ? styles.active : ''}>
-            <a href={parentUrl + '?p=' + startVal} >
+            <Link to={parentUrl + '?p=' + startVal} onClick={onClickHandler}>
               {startVal++}
-            </a>
+            </Link>
           </li>
         );
   });
@@ -50,15 +51,15 @@ const Pagination = ({limit, currentPage, showMax, count, parentUrl}) => {
           <div className={styles.pagination_wrapper + ' ' + styles.wd_100 + ' ' + ''}>
             <ul className={styles.custom_pagination}>
               <li>
-                <a href={leftPage} >
+                <Link to={leftPage} onClick={onClickHandler}>
                   <span aria-hidden="true">&laquo;</span>
-                </a>
+                </Link>
               </li>
               {pageHtml}
               <li>
-                <a href={rightPage} >
+                <Link to={rightPage} onClick={onClickHandler}>
                   <span aria-hidden="true">&raquo;</span>
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

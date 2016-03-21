@@ -10,6 +10,9 @@ import RechargeSearchWrapper from './SearchWrapper';
 import PaginationContainer from './Pagination';
 
 class ConsumerRecharge extends Component {
+  componentWillMount() {
+    console.log('Will mount called');
+  }
   componentDidMount() {
     const {query} = this.props.location;
     const page = (Object.keys(query).length > 0) ? parseInt(query.p, 10) : 1;
@@ -23,11 +26,19 @@ class ConsumerRecharge extends Component {
     this.props.dispatch(getRechargeData(page, 16));
     */
   }
+
   shouldComponentUpdate() {
     return true;
   }
   componentWillUnmount() {
     console.log('Unmounted');
+  }
+  onClickHandle(e) {
+    // e.preventDefault();
+    const currentPage = parseInt(e.target.href.split('?p=')[1], 10);
+    if (currentPage) {
+      this.props.dispatch(getAllRechargeData(currentPage));
+    }
   }
   render() {
     const styles = require('./Recharge.scss');
@@ -40,7 +51,7 @@ class ConsumerRecharge extends Component {
           <div className={styles.recharge_container}>
             <TableHeader title={'Customer Management/Customer Reservations'} />
             <RechargeSearchWrapper data={lastSuccess}/>
-            <PaginationContainer limit="10" currentPage={page} showMax="5" count={count} parentUrl="/consumer_transactions/recharges" />
+            <PaginationContainer limit="10" onClickHandler={this.onClickHandle.bind(this)} currentPage={page} showMax="5" count={count} parentUrl="/hadmin/consumer_transactions/recharges" />
           </div>
         );
   }

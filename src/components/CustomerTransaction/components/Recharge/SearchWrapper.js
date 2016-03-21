@@ -18,7 +18,7 @@ const RechargeSearchWrapper = ( {data} ) => {
             <td> { dat.id } </td>
 
             <td>
-              <Link to={'/consumer/profile/' + dat.consumer_id}>
+              <Link to={'/hadmin/consumer/profile/' + dat.consumer_id}>
                 { dat.consumer_id }
               </Link>
             </td>

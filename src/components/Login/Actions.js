@@ -54,7 +54,7 @@ const makeRequest = (data) => {
                if (response.ok) { // 2xx status
                  return Promise.all([
                    dispatch(requestSuccess(response.json())),
-                   dispatch(routeActions.push('/'))
+                   dispatch(routeActions.push('/hadmin'))
                  ]);
                }
                return dispatch(requestFailed('Error. Try again!'));

@@ -15,6 +15,7 @@ import Endpoints, {globalCookiePolicy} from '../../Endpoints';
 // const GET_CONSUMER = 'ViewProfile/GET_CONSUMER';
 const MAKE_REQUEST = 'ViewProfile/MAKE_REQUEST';
 const REQUEST_SUCCESS = 'ViewProfile/REQUEST_SUCCESS';
+const BALANCE_FETCHED = 'ViewProfile/BALANCE_FETCHED';
 const REQUEST_ERROR = 'ViewProfile/REQUEST_ERROR';
 const SECONDARY_VIEW = 'ViewProfile/SECONDARY_VIEW';
 const RESET = 'ViewProfile/RESET';
@@ -27,13 +28,15 @@ const RESET = 'ViewProfile/RESET';
 
 
 // Reducer
-const defaultState = {ongoingRequest: false, lastError: {}, lastSuccess: [], credentials: null, secondaryData: null};
+const defaultState = {ongoingRequest: false, lastError: {}, lastSuccess: [], credentials: null, secondaryData: null, balance: {}};
 const profileReducer = (state = defaultState, action) => {
   switch (action.type) {
     case MAKE_REQUEST:
       return {...state, ongoingRequest: true, lastSuccess: [], lastError: {}, secondaryData: {}};
     case REQUEST_SUCCESS:
       return {...state, ongoingRequest: false, lastSuccess: action.data, lastError: {}, credentials: action.data, secondaryData: {}};
+    case BALANCE_FETCHED:
+      return {...state, balance: action.data };
     case REQUEST_ERROR:
       return {...state, ongoingRequest: false, lastError: {'error': action.data}, lastSuccess: [], secondaryData: {}};
     case SECONDARY_VIEW:
@@ -142,6 +145,43 @@ const getUserData = (f) => {
                  response.json().then(
                    (d) => {
                      return dispatch({type: REQUEST_SUCCESS, data: d});
+                   },
+                   () => {
+                     return dispatch(requestFailed('Error. Try again!'));
+                   }
+                 );
+               } else {
+                 return dispatch(requestFailed('Error. Try again!'));
+               }
+             },
+             (error) => {
+               console.log(error);
+               return dispatch(requestFailed(error.text));
+             });
+  };
+};
+
+const getBalance = (f) => {
+  return (dispatch) => {
+    // dispatch({ type: MAKE_REQUEST, f});
+    //
+    console.log(f);
+    /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
+    const url = Endpoints.baseUrl + '/consumer/balance/normal/' + parseInt(f, 10);
+    const options = {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: globalCookiePolicy
+    };
+    // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
+
+    return fetch(url, options)
+           .then(
+             (response) => {
+               if (response.ok) { // 2xx status
+                 response.json().then(
+                   (d) => {
+                     return dispatch({type: BALANCE_FETCHED, data: d});
                    },
                    () => {
                      return dispatch(requestFailed('Error. Try again!'));
@@ -434,7 +474,51 @@ const resetPin = (customerId) => {
                  response.json().then(
                     (resp) => {
                       alert('Pin has been successfully cleared');
-                      return dispatch({type: REQUEST_SUCCESS, data: resp.returning });
+                      console.log(resp);
+                      // return dispatch({type: REQUEST_SUCCESS, data: resp.returning });
+                    },
+                    () => {
+                      return dispatch(requestFailed('Error. Try again!'));
+                    }
+                  );
+               } else {
+                 return dispatch(requestFailed('Error. Try again!'));
+               }
+             },
+             (error) => {
+               return dispatch(requestFailed(error.text));
+             }
+           );
+  };
+};
+
+const resetPassword = (email, dob) => {
+  return (dispatch) => {
+    const updateValues = {};
+    updateValues.encrypted_pin = null;
+    updateValues.salt = null;
+    const url = Endpoints.baseUrl + '/hauth/' + 'forgot_password';
+    const query = {
+      'email': email,
+      'info': {
+        'dob': dob
+      }
+    };
+    const options = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(query)
+    };
+    return fetch(url, options)
+      .then(
+             (response) => {
+               if (response.ok) {
+                 response.json().then(
+                    (resp) => {
+                      alert('Password Reset Link has been successfully sent');
+                      console.log(resp);
+                      // return dispatch({type: REQUEST_SUCCESS, data: resp.returning });
                     },
                     () => {
                       return dispatch(requestFailed('Error. Try again!'));
@@ -477,4 +561,4 @@ const loadCredentials = () => {
 };
 
 export default profileReducer;
-export {getUserData, requestSuccess, requestFailed, loadCredentials, RESET, getSecondaryData, resetPin, getCartData, getDeviceData, getRechargeData};
+export {getUserData, requestSuccess, requestFailed, loadCredentials, RESET, getSecondaryData, resetPin, resetPassword, getCartData, getDeviceData, getRechargeData, getBalance};

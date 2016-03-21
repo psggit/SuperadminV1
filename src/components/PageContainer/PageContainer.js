@@ -24,13 +24,13 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
           	<li><input type="checkbox" id="cb1"/><label htmlFor="cb1">CUSTOMER MANAGEMENT</label>
           		<ul>
               <li className={styles.sidebar_list}><label>
-                <Link to={'/consumer/kycfunctions'}> KYC Functions </Link>
+                <Link to={'/hadmin/consumer/kycfunctions'}> KYC Functions </Link>
               </label></li>
               <li className={styles.sidebar_list}><label>
-                <Link to={'/consumer/profiles'}>Profile</Link>
+                <Link to={'/hadmin/consumer/profiles'}>Profile</Link>
               </label></li>
               <li className={styles.sidebar_list}><label>
-                <Link to={'/consumer_transactions'}>
+                <Link to={'/hadmin/consumer_transactions'}>
                     Customer Transactions
                 </Link>
               </label></li>

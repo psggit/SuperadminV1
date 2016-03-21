@@ -73,41 +73,41 @@ const requireLoginAndSchema = (nextState, replaceState, cb) => {
       cb();
     },
     () => {
-      replaceState(null, '/login'); cb();
+      replaceState(null, '/hadmin/login'); cb();
     }
   );
 };
 const main = (
     <Router history={browserHistory}>
-      <Route path="/login" component={Login} />
-      <Route path="/" component={PageContainer} onEnter={requireLoginAndSchema}>
+      <Route path="/hadmin/login" component={Login} />
+      <Route path="/hadmin" component={PageContainer} onEnter={requireLoginAndSchema}>
         <IndexRoute component={Home} />
         <Route path="tables/add" component={AddTable} />
-        <Route path="/upload_file" component={FileUpload} />
-        <Route path="/consumer/profiles" component={ViewConsumers} />
-        <Route path="/consumer/kycfunctions" component={Kycfunctions} />
-        <Route path="/consumer/kycfunctions/verify_kyc" component={ViewKycs} />
-        <Route path="/consumer/kycfunctions/upload_kyc" component={ViewKyc} />
-        <Route path="/consumer/kycfunctions/upload_kyc/upload_kyc_profile/:Id" component={KycViewUpload} />
-        <Route path="/consumer/kycfunctions/verify_kyc/view_kyc_profile/:Id" component={ViewKycProfile} />
-        <Route path="/consumer/profile/:Id/reservation" component={Reservations} />
-        <Route path="/consumer/profile/:Id" component={ViewConsumerProfile} />
-        <Route path="/consumer/profile/:Id/cart" component={ViewCart} />
-        <Route path="/consumer/profile/:Id/device_history" component={ViewDevice} />
-        <Route path="/consumer/profile/:Id/recharge_history" component={RechargeHistory} />
-        <Route path="/consumer_transactions" component={CustomerTransaction} />
-        <Route path="/consumer_transactions/recharges" component={ConsumerRecharge} />
-        <Route path="/consumer_transactions/reservations" component={ConsumerReservation} />
-        <Route path="/consumer/:table/edit" component={EditItem} />
-        <Route path="/consumer/:table/insert" component={InsertItem} />
+        <Route path="upload_file" component={FileUpload} />
+        <Route path="consumer/profiles" component={ViewConsumers} />
+        <Route path="consumer/kycfunctions" component={Kycfunctions} />
+        <Route path="consumer/kycfunctions/verify_kyc" component={ViewKycs} />
+        <Route path="consumer/kycfunctions/upload_kyc" component={ViewKyc} />
+        <Route path="consumer/kycfunctions/upload_kyc/upload_kyc_profile/:Id" component={KycViewUpload} />
+        <Route path="consumer/kycfunctions/verify_kyc/view_kyc_profile/:Id" component={ViewKycProfile} />
+        <Route path="consumer/profile/:Id/reservation" component={Reservations} />
+        <Route path="consumer/profile/:Id" component={ViewConsumerProfile} />
+        <Route path="consumer/profile/:Id/cart" component={ViewCart} />
+        <Route path="consumer/profile/:Id/device_history" component={ViewDevice} />
+        <Route path="consumer/profile/:Id/recharge_history" component={RechargeHistory} />
+        <Route path="consumer_transactions" component={CustomerTransaction} />
+        <Route path="consumer_transactions/recharges" component={ConsumerRecharge} />
+        <Route path="consumer_transactions/reservations" component={ConsumerReservation} />
+        <Route path="consumer/:table/edit" component={EditItem} />
+        <Route path="consumer/:table/insert" component={InsertItem} />
         <Route path="sku/states" component={ViewStates} />
         <Route path="sku/state/:Id" component={ViewState} />
         <Route path="sku/skus" component={ViewSkus} />
         <Route path="sku/sku/:Id" component={ViewSku} />
-        <Route path="/statemanagement" component={StateManagement} />
-        <Route path="/create_notepad_entry" component={CreateNotepadEntry} />
-        <Route path="/notepad_entries" component={NotepadEntries} />
-        <Route path="/edit_account_details" component={EditAccountDetails} />
+        <Route path="statemanagement" component={StateManagement} />
+        <Route path="create_notepad_entry" component={CreateNotepadEntry} />
+        <Route path="notepad_entries" component={NotepadEntries} />
+        <Route path="edit_account_details" component={EditAccountDetails} />
       </Route>
     </Router>
 );

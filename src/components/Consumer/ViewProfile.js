@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import { Link } from 'react-router';
 
 import {connect} from 'react-redux';
-import {getUserData, resetPin} from './ProfileActions';
+import {getUserData, resetPin, getBalance, resetPassword} from './ProfileActions';
 import TableHeader from './TableHeader';
 // import {editItem, E_ONGOING_REQ} from './EditActions';
 
@@ -10,10 +10,15 @@ class ViewConsumerProfile extends Component {
   componentDidMount() {
     // this.props.dispatch({type: GET_CONSUMER, data: this.props.params.Id});
     this.props.dispatch(getUserData(parseInt(this.props.params.Id, 10)));
+    this.props.dispatch(getBalance(parseInt(this.props.params.Id, 10)));
   }
   clickHandler() {
     // Dispatch the event here
     this.props.dispatch(resetPin(parseInt(this.props.params.Id, 10)));
+  }
+  resetHandler() {
+    // Dispatch the event here
+    this.props.dispatch(resetPassword(this.props.lastSuccess[0].email, this.props.lastSuccess[0].dob));
   }
   render() {
     const styles = require('./Table.scss');
@@ -33,7 +38,7 @@ class ViewConsumerProfile extends Component {
     */
     /* */
     /* */
-    const { ongoingRequest, lastError, lastSuccess } = this.props;
+    const { ongoingRequest, lastError, lastSuccess, balance} = this.props;
     let dbNamesPriority = {};
     let dbNamesDisplayMapping = {};
     let fieldFunctionMapping = {};
@@ -106,7 +111,10 @@ class ViewConsumerProfile extends Component {
     };
 
     const calculateCredits = (values) => {
-      return values.length;
+      /* It takes the balance object in the scope to get the amount */
+      console.log(values);
+      return balance.amount;
+      // return values.length;
     };
 
     const calculateCarts = (values) => {
@@ -199,7 +207,7 @@ class ViewConsumerProfile extends Component {
 
         if (isLink) {
           if (key === 'cart') {
-            const url = '/consumer/profile/' + this.props.params.Id + '/cart';
+            const url = '/hadmin/consumer/profile/' + this.props.params.Id + '/cart';
             renderLink = (
                     <div className={styles.wd_60_link}>
                       <Link to={url}>
@@ -210,19 +218,19 @@ class ViewConsumerProfile extends Component {
           } else if (key === 'reservation_history') {
             renderLink = (
                     <div className={styles.wd_60_link}>
-                      <Link to={'/consumer/profile/' + obj.id + '/reservation'}> {printValue} </Link>
+                      <Link to={'/hadmin/consumer/profile/' + obj.id + '/reservation'}> {printValue} </Link>
                     </div>
                 );
           } else if (key === 'device_history') {
             renderLink = (
                     <div className={styles.wd_60_link}>
-                      <Link to={'/consumer/profile/' + obj.id + '/device_history'}> {printValue} </Link>
+                      <Link to={'/hadmin/consumer/profile/' + obj.id + '/device_history'}> {printValue} </Link>
                     </div>
                 );
           } else if (key === 'recharge_history') {
             renderLink = (
                     <div className={styles.wd_60_link}>
-                      <Link to={'/consumer/profile/' + obj.id + '/recharge_history'}> {printValue} </Link>
+                      <Link to={'/hadmin/consumer/profile/' + obj.id + '/recharge_history'}> {printValue} </Link>
                     </div>
                 );
           } else {
@@ -285,7 +293,7 @@ class ViewConsumerProfile extends Component {
                            </button>
                        </div>
                        <div className={styles.profile_action_button}>
-                           <button className="form-control" id="reset_password">
+                           <button className="form-control" id="reset_password" onClick={ this.resetHandler.bind(this) }>
                                Reset Password
                            </button>
                        </div>
@@ -326,7 +334,8 @@ ViewConsumerProfile.propTypes = {
   dispatch: PropTypes.func.isRequired,
   ongoingRequest: PropTypes.bool.isRequired,
   lastError: PropTypes.object.isRequired,
-  lastSuccess: PropTypes.array.isRequired
+  lastSuccess: PropTypes.array.isRequired,
+  balance: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) => {
