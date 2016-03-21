@@ -4,6 +4,10 @@ import { Link } from 'react-router';
 
 const Kycfunctions = ({dispatch}) => { // eslint-disable-line no-unused-vars
   const styles = require('./kycfunctions.scss');
+
+  const lastPathname = location.pathname.split('/');
+  console.log('path');
+  console.log(lastPathname);
   // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
   return (
         <div className={styles.container + ' container-fluid'}>

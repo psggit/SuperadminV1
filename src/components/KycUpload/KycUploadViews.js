@@ -96,7 +96,8 @@ class KycUploadProfile extends Component {
             <div className={styles.profile_view_right}>
             </div>
         </div>
-        <div className={styles.upload_wrapper}>
+        <br></br>
+        <div className={styles.profile_view_wrapper}>
           <div className={styles.upload_white}>
             <div className={styles.upload_right}>
             <p className={styles.upload_header}>
@@ -113,10 +114,9 @@ class KycUploadProfile extends Component {
                     </button>
                   </div>
                 </div>
-            </div>
+                </div>
           </div>
           </div>
-
         <div className={styles.profile_actions}>
             <div className={styles.profile_action_button}>
                 <button className="form-control" id="edit">

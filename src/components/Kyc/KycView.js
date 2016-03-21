@@ -5,6 +5,9 @@ import TableProfileHeader from './TableProfileHeader';
 // import TableHeader from './TableHeader';
 // import {editItem, E_ONGOING_REQ} from './EditActions';
 
+const lastPathname = location.pathname.split('/');
+console.log('path');
+console.log(lastPathname);
 class KycViewProfile extends Component {
   componentDidMount() {
     // this.props.dispatch({type: GET_CONSUMER, data: this.props.params.Id});
