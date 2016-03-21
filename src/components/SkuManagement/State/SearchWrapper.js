@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 const SearchWrapper = ( {data} ) => {
   const styles = require('./SearchWrapper.scss');
@@ -15,9 +16,11 @@ const SearchWrapper = ( {data} ) => {
     return (
           <tr key={index}>
             <td>
-              <button className={styles.edit_btn} data-state-id={dat.id}>
-                Edit
-              </button>
+              <Link to={'/hadmin/state_management/edit/' + dat.id}>
+                <button className={styles.edit_btn} data-state-id={dat.id}>
+                  Edit
+                </button>
+              </Link>
             </td>
             <td> { dat.id } </td>
             <td>
