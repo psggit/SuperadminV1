@@ -73,12 +73,26 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
           <ul>
             <li><input type="checkbox" id="cb3"/><label htmlFor="cb3">SKU MANAGEMENT</label>
               <ul>
-              <li className={styles.sidebar_list}><label>
-                <Link to={'/consumer/kycfunctions'} className={ lastPathname === 'profiles' ? styles.active : '' }> States </Link>
-              </label></li>
-              <li className={styles.sidebar_list}><label>
-                <Link to={'/consumer/profiles'} className={ lastPathname === 'profiles' ? styles.active : '' }>SKU</Link>
-              </label></li>
+                <li className={styles.sidebar_list}>
+                  <label>
+                    <Link to={'/hadmin/state_management'}>Manage States</Link>
+                  </label>
+                </li>
+                <li className={styles.sidebar_list}>
+                  <label>
+                    <Link to={'/hadmin/brand_management'}>Manage Brands</Link>
+                  </label>
+                </li>
+                <li className={styles.sidebar_list}>
+                  <label>
+                    <Link to={'/hadmin/category_management'}>Manage Categories</Link>
+                  </label>
+                </li>
+                <li className={styles.sidebar_list}>
+                  <label>
+                    <Link to={'/hadmin/genre_management'}>Manage Genres</Link>
+                  </label>
+                </li>
               </ul>
             </li>
           </ul>

@@ -20,7 +20,8 @@ import {Login, Home, PageContainer,
   ViewSkus, ViewSku, ViewCart, Reservations, ViewDevice, RechargeHistory, StateManagement, CustomerTransaction,
   CreateNotepadEntry, NotepadEntries, EditAccountDetails,
   ConsumerRecharge,
-  ConsumerReservation
+  ConsumerReservation,
+  ManageState
 } from './components'; // eslint-disable-line no-unused-vars
 import {AddTable} from './components';
 import {loadCredentials} from './components/Login/Actions';
@@ -104,7 +105,8 @@ const main = (
         <Route path="sku/state/:Id" component={ViewState} />
         <Route path="sku/skus" component={ViewSkus} />
         <Route path="sku/sku/:Id" component={ViewSku} />
-        <Route path="statemanagement" component={StateManagement} />
+        <Route path="state_management" component={StateManagement} />
+        <Route path="state_management/create" component={ManageState} />
         <Route path="create_notepad_entry" component={CreateNotepadEntry} />
         <Route path="notepad_entries" component={NotepadEntries} />
         <Route path="edit_account_details" component={EditAccountDetails} />
