@@ -8,7 +8,7 @@ const TableHeader = () => {
       <div className={styles.header}>
       <ol className = "breadcrumb">
         <li><a href = "#">KYC </a></li>
-        <li><Link to ={'/consumer/kycfunctions'}> KYC Functions </Link></li>
+        <li><Link to ={'/hadmin/consumer/kycfunctions'}> KYC Functions </Link></li>
         <li className = "active"> Verify KYC </li>
         </ol>
       <div className="clearfix"></div>

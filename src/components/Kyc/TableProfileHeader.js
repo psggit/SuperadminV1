@@ -8,8 +8,8 @@ const TableProfileHeader = ({title}) => {
       <div className={styles.header}>
       <ol className = "breadcrumb">
       <li><a href = "#">KYC </a></li>
-      <li><Link to ={'/consumer/kycfunctions'}> KYC Functions </Link></li>
-      <li><Link to ={'/consumer/kycfunctions/verify_kyc'}> Verify KYC </Link></li>
+      <li><Link to ={'/hadmin/consumer/kycfunctions'}> KYC Functions </Link></li>
+      <li><Link to ={'/hadmin/consumer/kycfunctions/verify_kyc'}> Verify KYC </Link></li>
         <li className = "active">{title}</li>
         </ol>
         <div className="clearfix"></div>
