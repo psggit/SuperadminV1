@@ -26,20 +26,20 @@ const RESET = 'CTRecharge/RESET';
 // When the state is modified, anybody dependent on the state is asked to update
 // HTML Component is listening to state, hence re-renders
 
-const defaultState = {ongoingRequest: false, lastError: {}, lastSuccess: [], credentials: null, secondaryData: null, count: 0};
+const defaultState = {ongoingRequest: false, lastError: {}, lastSuccess: [], credentials: null, secondaryData: null, count: 1};
 
 const transactionReducer = (state = defaultState, action) => {
   switch (action.type) {
     case MAKE_REQUEST:
-      return {...state, ongoingRequest: true, lastSuccess: [], lastError: {}, secondaryData: {}, count: 0};
+      return {...state, ongoingRequest: true, lastSuccess: [], lastError: {}, secondaryData: {}};
     case REQUEST_SUCCESS:
       return {...state, ongoingRequest: false, lastSuccess: action.data, lastError: {}, credentials: action.data, secondaryData: {}};
     case COUNT_FETCHED:
       return {...state, count: action.data.count };
     case REQUEST_ERROR:
-      return {...state, ongoingRequest: false, lastError: {'error': action.data}, lastSuccess: [], secondaryData: {}, count: 0};
+      return {...state, ongoingRequest: false, lastError: {'error': action.data}, lastSuccess: [], secondaryData: {}};
     case SECONDARY_VIEW:
-      return {...state, ongoingRequest: false, lastSuccess: [], secondaryData: action.data, count: 0};
+      return {...state, ongoingRequest: false, lastSuccess: [], secondaryData: action.data};
     case RESET:
       return {...defaultState};
     default: return state;

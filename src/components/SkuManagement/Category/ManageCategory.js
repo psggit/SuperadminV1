@@ -1,44 +1,43 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { insertState, fetchState, updateState, updateStateText, resetState} from '../Action';
+import { insertCategory, fetchCategory, updateCategory, updateCategoryText, resetCategory} from '../Action';
 
-class ManageState extends React.Component { // eslint-disable-line no-unused-vars
+class ManageCategory extends React.Component { // eslint-disable-line no-unused-vars
   componentDidMount() {
     /* If On edit operation */
-    let stateId = this.props.params.Id;
-    if (stateId) {
-      stateId = parseInt(stateId, 10);
-      this.props.dispatch(fetchState(stateId));
+    let CategoryId = this.props.params.Id;
+    if (CategoryId) {
+      CategoryId = parseInt(CategoryId, 10);
+      this.props.dispatch(fetchCategory(CategoryId));
     } else {
-      this.props.dispatch(resetState());
+      this.props.dispatch(resetCategory());
     }
   }
   onClickHandle() {
     // e.preventDefault();
-    const stateName = document.querySelectorAll('[data-field-name="state_name"]')[0].value;
-    const stateObj = {};
-    stateObj.state_billing_id = 1;
-    stateObj.state_name = stateName;
-    stateObj.created_at = new Date().toISOString();
-    stateObj.updated_at = new Date().toISOString();
-    this.props.dispatch(insertState(stateObj));
+    const CategoryName = document.querySelectorAll('[data-field-name="category_name"]')[0].value;
+    const CategoryObj = {};
+    CategoryObj.name = CategoryName;
+    CategoryObj.created_at = new Date().toISOString();
+    CategoryObj.updated_at = new Date().toISOString();
+    this.props.dispatch(insertCategory(CategoryObj));
   }
   onClickEdit(e) {
-    const stateName = document.querySelectorAll('[data-field-name="state_name"]')[0].value;
-    const stateId = parseInt(e.target.getAttribute('data-state-id'), 10);
-    const stateObj = {};
-    stateObj.values = {};
-    stateObj.values.state_name = stateName;
-    stateObj.returning = ['id'];
-    this.props.dispatch(updateState(stateObj, stateId));
+    const CategoryName = document.querySelectorAll('[data-field-name="category_name"]')[0].value;
+    const CategoryId = parseInt(e.target.getAttribute('data-category-id'), 10);
+    const CategoryObj = {};
+    CategoryObj.values = {};
+    CategoryObj.values.name = CategoryName;
+    CategoryObj.returning = ['id'];
+    this.props.dispatch(updateCategory(CategoryObj, CategoryId));
   }
-  /* Function to update the Fetched State of this component so that input field is editable */
+  /* Function to update the Fetched Category of this component so that input field is editable */
   inputOnChange(e) {
     e.target.value = e.target.value;
-    this.props.dispatch(updateStateText(e.target.value));
+    this.props.dispatch(updateCategoryText(e.target.value));
   }
   render() {
-    const styles = require('./StateManagement.scss');
+    const styles = require('./CategoryManagement.scss');
 
     const { ongoingRequest, lastError, lastSuccess } = this.props;
     console.log(ongoingRequest);
@@ -49,16 +48,16 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
         return (
           <div className={styles.wrapper}>
             <div className={styles.head_container}>
-            	SKU Management / Edit State
+            	SKU Management / Edit Category
             </div>
             <div className={styles.create_state_wrapper}>
               <p>
-                Edit State
+                Edit Category
               </p>
               <div className={styles.create_form}>
                 <div className={styles.indiv_form}>
-                	<label>State Name</label>
-                	<input type="text" data-field-name="state_name" onChange={this.inputOnChange.bind(this)} value={lastSuccess[0].state_name} />
+                	<label>Category Name</label>
+                	<input type="text" data-field-name="category_name" onChange={this.inputOnChange.bind(this)} value={lastSuccess[0].name} />
                 </div>
                 {/*
                 <div className={styles.indiv_form}>
@@ -68,7 +67,7 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
                 	</select>
                 </div>
                 */}
-                <button className={styles.common_btn + ' ' + styles.create_btn } data-state-id={lastSuccess[0].id} onClick={this.onClickEdit.bind(this)}>Edit state</button>
+                <button className={styles.common_btn + ' ' + styles.create_btn } data-category-id={lastSuccess[0].id} onClick={this.onClickEdit.bind(this)}>Edit Category</button>
               </div>
             </div>
           </div>
@@ -77,16 +76,16 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
       return (
         <div className={styles.wrapper}>
           <div className={styles.head_container}>
-          	SKU Management / Create State
+          	SKU Management / Create Category
           </div>
           <div className={styles.create_state_wrapper}>
             <p>
-              Create State
+              Create Category
             </p>
             <div className={styles.create_form}>
               <div className={styles.indiv_form}>
-              	<label>State Name</label>
-              	<input type="text" data-field-name="state_name" />
+              	<label>Category Name</label>
+              	<input type="text" data-field-name="category_name" />
               </div>
               {/*
               <div className={styles.indiv_form}>
@@ -96,7 +95,7 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
               	</select>
               </div>
               */}
-              <button className={styles.common_btn + ' ' + styles.create_btn } onClick={this.onClickHandle.bind(this)} disabled={ongoingRequest ? true : false}>Create state</button>
+              <button className={styles.common_btn + ' ' + styles.create_btn } onClick={this.onClickHandle.bind(this)} disabled={ongoingRequest ? true : false}>Create Category</button>
             </div>
           </div>
         </div>
@@ -112,7 +111,7 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
   }
 }
 
-ManageState.propTypes = {
+ManageCategory.propTypes = {
   params: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
@@ -125,4 +124,4 @@ const mapStateToProps = (state) => {
   return {...state.sku_data};
 };
 
-export default connect(mapStateToProps)(ManageState);
+export default connect(mapStateToProps)(ManageCategory);

@@ -21,7 +21,11 @@ import {Login, Home, PageContainer,
   CreateNotepadEntry, NotepadEntries, EditAccountDetails,
   ConsumerRecharge,
   ConsumerReservation,
-  ManageState
+  ManageState,
+  GenreManagement,
+  ManageGenre,
+  CategoryManagement,
+  ManageCategory
 } from './components'; // eslint-disable-line no-unused-vars
 import {AddTable} from './components';
 import {loadCredentials} from './components/Login/Actions';
@@ -108,6 +112,12 @@ const main = (
         <Route path="state_management" component={StateManagement} />
         <Route path="state_management/edit/:Id" component={ManageState} />
         <Route path="state_management/create" component={ManageState} />
+        <Route path="genre_management" component={GenreManagement} />
+        <Route path="genre_management/edit/:Id" component={ManageGenre} />
+        <Route path="genre_management/create" component={ManageGenre} />
+        <Route path="category_management" component={CategoryManagement} />
+        <Route path="category_management/edit/:Id" component={ManageCategory} />
+        <Route path="category_management/create" component={ManageCategory} />
         <Route path="create_notepad_entry" component={CreateNotepadEntry} />
         <Route path="notepad_entries" component={NotepadEntries} />
         <Route path="edit_account_details" component={EditAccountDetails} />

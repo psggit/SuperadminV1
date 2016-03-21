@@ -41,6 +41,7 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
             </li>
           </ul>
 
+          {/*
           <ul>
           	<li><input type="checkbox" id="cb2"/><label htmlFor="cb2">USER MANAGEMENT</label>
           		<ul>
@@ -59,6 +60,7 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
               </ul>
             </li>
           </ul>
+          */}
 
           <ul>
             <li><input type="checkbox" id="cb3"/><label htmlFor="cb3">SKU MANAGEMENT</label>
@@ -86,6 +88,7 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
               </ul>
             </li>
           </ul>
+          {/*
           <ul>
             <li><input type="checkbox" id="cb4"/><label htmlFor="cb4">RETAILER MANAGEMENT</label>
               <ul>
@@ -111,6 +114,7 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
               </ul>
             </li>
           </ul>
+          */}
         </div>
         <div className={styles.main + ' col-md-9'}>
           <div className={styles.right_wrapper}>
