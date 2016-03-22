@@ -92,16 +92,175 @@ class KycUploadProfile extends Component {
                     Account Details
                 </p>
                 {getHtml}
-            </div>
-            <div className={styles.profile_view_right}>
-            </div>
-        </div>
-        <br></br>
-        <div className={styles.profile_view_wrapper}>
+                <div className={styles.profile_information}>
+                  <div className={styles.wd_30}>
+                  PAN:
+                  </div>
+                  <div className={styles.wd_70} >
+                    <input type="text" name="pan"/>
+                  </div>
+                </div>
+                <div className={styles.profile_information}>
+                  <div className={styles.wd_30}>
+                    Adress Line 1:
+                  </div>
+                  <div className={styles.wd_70} >
+                    <input type="text" name="address1"/>
+                  </div>
+                </div>
+                <div className={styles.profile_information}>
+                  <div className={styles.wd_30}>
+                    Adress Line 2:
+                  </div>
+                  <div className={styles.wd_70} >
+                    <input type="text" name="address2"/>
+                  </div>
+                </div>
+                <div className={styles.profile_information}>
+                  <p className={styles.profile_view_header}>
+                      Customer Photo
+                  </p>
+                  </div>
+                  <div className={styles.profile_information}>
+                  <div className={styles.wd_30}>
+                    Available
+                  </div>
+                  <div className={styles.wd_70} >
+                    <select name="PhotoAvailability">
+                      <option selected disabled>Choose here</option>
+                      <option value="yesphoto">Yes</option>
+                      <option value="nophoto">No</option>
+                    </select>
+                  </div>
+                </div>
+                <div className={styles.profile_information}>
+                  <div className={styles.wd_30}>
+                    Verified
+                  </div>
+                  <div className={styles.wd_70} >
+                    <select name="PhotoVerification">
+                      <option selected disabled>Choose here</option>
+                      <option value="yesverify">Yes</option>
+                      <option value="noverify">No</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className={styles.profile_information}>
+                  <p className={styles.profile_view_header}>
+                      ID Proof Details
+                  </p>
+                </div>
+                <div className={styles.profile_information}>
+                  <div className={styles.wd_30}>
+                    Available
+                  </div>
+                  <div className={styles.wd_70} >
+                    <select name="IDAvailability">
+                      <option selected disabled>Choose here</option>
+                      <option value="yesavailable">Yes</option>
+                      <option value="noavailable">No</option>
+                    </select>
+                  </div>
+                </div>
+                <div className={styles.profile_information}>
+                  <div className={styles.wd_30}>
+                    Proof Type
+                  </div>
+                  <div className={styles.wd_70} >
+                    <select name="IDType">
+                      <option selected disabled>Choose here</option>
+                      <option value="drivinglicense">Driving License</option>
+                      <option value="voterid">Voter ID</option>
+                      <option value="aadhaarcard">Aadhaar Card</option>
+                      <option value="pan">PAN</option>
+                      <option value="passport">Passport</option>
+                    </select>
+                  </div>
+                </div>
+                <div className={styles.profile_information}>
+                  <div className={styles.wd_30}>
+                    Verified
+                  </div>
+                  <div className={styles.wd_70} >
+                    <select name="IdVerification">
+                      <option selected disabled>Choose here</option>
+                      <option value="yesidverify">Yes</option>
+                      <option value="noidverify">No</option>
+                    </select>
+                  </div>
+                </div>
+                <div className={styles.profile_information}>
+                  <div className={styles.wd_30}>
+                    Comment
+                  </div>
+                  <div className={styles.wd_70} >
+                    <textarea rows="3" cols="30">
+                    </textarea>
+                  </div>
+                </div>
+                <div className={styles.profile_information}>
+                  <p className={styles.profile_view_header}>
+                      Address Proof Details
+                  </p>
+                </div>
+                <div className={styles.profile_information}>
+                  <div className={styles.wd_30}>
+                    Available
+                  </div>
+                  <div className={styles.wd_70} >
+                    <select name="addressAvailability">
+                      <option selected disabled>Choose here</option>
+                      <option value="yesavailable">Yes</option>
+                      <option value="noavailable">No</option>
+                    </select>
+                  </div>
+                </div>
+                <div className={styles.profile_information}>
+                  <div className={styles.wd_30}>
+                    Proof Type
+                  </div>
+                  <div className={styles.wd_70} >
+                    <select name="AddressProofType">
+                      <option selected disabled>Choose here</option>
+                      <option value="drivinglicense">Driving License</option>
+                      <option value="voterid">Voter ID</option>
+                      <option value="aadhaarcard">Aadhaar Card</option>
+                      <option value="pan">PAN</option>
+                      <option value="passport">Passport</option>
+                    </select>
+                  </div>
+                </div>
+                <div className={styles.profile_information}>
+                  <div className={styles.wd_30}>
+                    Verified
+                  </div>
+                  <div className={styles.wd_70} >
+                    <select name="IdVerification">
+                      <option selected disabled>Choose here</option>
+                      <option value="yesidverify">Yes</option>
+                      <option value="noidverify">No</option>
+                    </select>
+                  </div>
+                </div>
+                <div className={styles.profile_actions}>
+                    <div className={styles.profile_action_button}>
+                        <button className="form-control" id="edit">
+                            Edit
+                        </button>
+                    </div>
+                    <div className={styles.profile_action_button}>
+                        <button className="form-control" id="save">
+                            Save
+                        </button>
+                    </div>
+                </div>
+              </div>
+          </div>
+        <div className={styles.profile_view_right}>
           <div className={styles.upload_white}>
-            <div className={styles.upload_right}>
             <p className={styles.upload_header}>
-                Proof of ID
+                Customer Photo
             </p>
             <div className={styles.profile_actions}>
             <input type="file" ref={(node) => {file = node;}} className="form-control" placeholder="username" />
@@ -115,8 +274,24 @@ class KycUploadProfile extends Component {
                   </div>
                 </div>
                 </div>
-          </div>
-          </div>
+
+            <div className={styles.upload_white}>
+              <p className={styles.upload_header}>
+                  Proof of ID
+              </p>
+              <div className={styles.profile_actions}>
+              <input type="file" ref={(node) => {file = node;}} className="form-control" placeholder="username" />
+                  <div className={styles.upload_action_button}>
+                      <button className="form-control" id="edit" onClick={(e) => {
+                        e.preventDefault();
+                        dispatch(makeRequest({file: file.files[0]}));
+                      }}>
+                      Upload
+                      </button>
+                    </div>
+                  </div>
+                  </div>
+            </div>
         <div className={styles.profile_actions}>
             <div className={styles.profile_action_button}>
                 <button className="form-control" id="edit">

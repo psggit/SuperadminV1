@@ -7,17 +7,17 @@ const Kycfunctions = ({dispatch}) => { // eslint-disable-line no-unused-vars
   // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
   return (
       <div className={styles.container + ' container-fluid'}>
-      <div className = {styles.leftsquarebox}>
-    <div className={styles.squarecontent}>
-    <div><span><Link to={'hadmin/consumer/kycfunctions/kycview'}>Verify KYC</Link></span></div>
-    </div>
-  </div>
-  <div className = {styles.rightsquarebox}>
-    <div className={styles.squarecontent}>
-    <div><span><Link to={'hadmin/consumer/kycfunctions/uploadkyc'}>Upload KYC</Link></span></div>
-    </div>
-</div>
-</div>
+        <div className = {styles.leftsquarebox}>
+          <div className={styles.squarecontent}>
+            <div><span><Link to={'hadmin/consumer/kycfunctions/kycview'}>Verify KYC</Link></span></div>
+          </div>
+        </div>
+        <div className = {styles.rightsquarebox}>
+          <div className={styles.squarecontent}>
+            <div><span><Link to={'hadmin/consumer/kycfunctions/uploadkyc'}>Hello KYC</Link></span></div>
+          </div>
+        </div>
+      </div>
 );
 };
 const mapStateToProps = (state) => {

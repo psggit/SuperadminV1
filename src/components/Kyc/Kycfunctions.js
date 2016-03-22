@@ -23,9 +23,11 @@ const Kycfunctions = ({dispatch}) => { // eslint-disable-line no-unused-vars
             <div className = {styles.rightsquarebox}>
                     <div>
                     <div className={styles.squarecontent}>
+                      <div>
                         <span>
                             <Link to={'/hadmin/consumer/kycfunctions/upload_kyc'}>Upload KYC</Link>
                         </span>
+                      </div>
                     </div>
                 </div>
             </div>
