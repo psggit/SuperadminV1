@@ -15,15 +15,15 @@ const SearchWrapper = ( {data} ) => {
     return (
           <tr key={index}>
             <td>
-              <Link to={'/hadmin/state_management/edit/' + dat.id}>
-                <button className={styles.edit_btn} data-state-id={dat.id}>
+              <Link to={'/hadmin/genre_management/edit/' + dat.id}>
+                <button className={styles.edit_btn} data-genre-id={dat.id}>
                   Edit
                 </button>
               </Link>
             </td>
             <td> { dat.id } </td>
             <td>
-                { dat.state_name}
+                { dat.genre_name}
             </td>
             <td> { createdAt } </td>
             <td> { updatedAt } </td>
@@ -47,7 +47,7 @@ const SearchWrapper = ( {data} ) => {
                 <tr>
                   <th> </th>
                   <th> ID </th>
-                  <th> State Name </th>
+                  <th> Genre Name </th>
                   <th> Updated At </th>
                   <th> Created At </th>
                 </tr>
@@ -63,7 +63,7 @@ const SearchWrapper = ( {data} ) => {
   return (
         <div className={styles.list_of_states_wrapper}>
           <label>
-            List of States
+            List of Genres
           </label>
           <div className={styles.wd_80}>
             {objHtml}

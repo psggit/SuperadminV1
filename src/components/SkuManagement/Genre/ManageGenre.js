@@ -1,44 +1,43 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { insertState, fetchState, updateState, updateStateText, resetState} from '../Action';
+import { insertGenre, fetchGenre, updateGenre, updateGenreText, resetGenre} from '../Action';
 
-class ManageState extends React.Component { // eslint-disable-line no-unused-vars
+class ManageGenre extends React.Component { // eslint-disable-line no-unused-vars
   componentDidMount() {
     /* If On edit operation */
-    let stateId = this.props.params.Id;
-    if (stateId) {
-      stateId = parseInt(stateId, 10);
-      this.props.dispatch(fetchState(stateId));
+    let genreId = this.props.params.Id;
+    if (genreId) {
+      genreId = parseInt(genreId, 10);
+      this.props.dispatch(fetchGenre(genreId));
     } else {
-      this.props.dispatch(resetState());
+      this.props.dispatch(resetGenre());
     }
   }
   onClickHandle() {
     // e.preventDefault();
-    const stateName = document.querySelectorAll('[data-field-name="state_name"]')[0].value;
-    const stateObj = {};
-    stateObj.state_billing_id = 1;
-    stateObj.state_name = stateName;
-    stateObj.created_at = new Date().toISOString();
-    stateObj.updated_at = new Date().toISOString();
-    this.props.dispatch(insertState(stateObj));
+    const genreName = document.querySelectorAll('[data-field-name="genre_name"]')[0].value;
+    const genreObj = {};
+    genreObj.genre_name = genreName;
+    genreObj.created_at = new Date().toISOString();
+    genreObj.updated_at = new Date().toISOString();
+    this.props.dispatch(insertGenre(genreObj));
   }
   onClickEdit(e) {
-    const stateName = document.querySelectorAll('[data-field-name="state_name"]')[0].value;
-    const stateId = parseInt(e.target.getAttribute('data-state-id'), 10);
-    const stateObj = {};
-    stateObj.values = {};
-    stateObj.values.state_name = stateName;
-    stateObj.returning = ['id'];
-    this.props.dispatch(updateState(stateObj, stateId));
+    const genreName = document.querySelectorAll('[data-field-name="genre_name"]')[0].value;
+    const genreId = parseInt(e.target.getAttribute('data-genre-id'), 10);
+    const genreObj = {};
+    genreObj.values = {};
+    genreObj.values.genre_name = genreName;
+    genreObj.returning = ['id'];
+    this.props.dispatch(updateGenre(genreObj, genreId));
   }
-  /* Function to update the Fetched State of this component so that input field is editable */
+  /* Function to update the Fetched Genre of this component so that input field is editable */
   inputOnChange(e) {
     e.target.value = e.target.value;
-    this.props.dispatch(updateStateText(e.target.value));
+    this.props.dispatch(updateGenreText(e.target.value));
   }
   render() {
-    const styles = require('./StateManagement.scss');
+    const styles = require('./GenreManagement.scss');
 
     const { ongoingRequest, lastError, lastSuccess } = this.props;
     console.log(ongoingRequest);
@@ -49,16 +48,16 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
         return (
           <div className={styles.wrapper}>
             <div className={styles.head_container}>
-            	SKU Management / Edit State
+            	SKU Management / Edit Genre
             </div>
             <div className={styles.create_state_wrapper}>
               <p>
-                Edit State
+                Edit Genre
               </p>
               <div className={styles.create_form}>
                 <div className={styles.indiv_form}>
-                	<label>State Name</label>
-                	<input type="text" data-field-name="state_name" onChange={this.inputOnChange.bind(this)} value={lastSuccess[0].state_name} />
+                	<label>Genre Name</label>
+                	<input type="text" data-field-name="genre_name" onChange={this.inputOnChange.bind(this)} value={lastSuccess[0].genre_name} />
                 </div>
                 {/*
                 <div className={styles.indiv_form}>
@@ -68,7 +67,7 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
                 	</select>
                 </div>
                 */}
-                <button className={styles.common_btn + ' ' + styles.create_btn } data-state-id={lastSuccess[0].id} onClick={this.onClickEdit.bind(this)}>Edit state</button>
+                <button className={styles.common_btn + ' ' + styles.create_btn } data-genre-id={lastSuccess[0].id} onClick={this.onClickEdit.bind(this)}>Edit Genre</button>
               </div>
             </div>
           </div>
@@ -77,16 +76,16 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
       return (
         <div className={styles.wrapper}>
           <div className={styles.head_container}>
-          	SKU Management / Create State
+          	SKU Management / Create Genre
           </div>
           <div className={styles.create_state_wrapper}>
             <p>
-              Create State
+              Create Genre
             </p>
             <div className={styles.create_form}>
               <div className={styles.indiv_form}>
-              	<label>State Name</label>
-              	<input type="text" data-field-name="state_name" />
+              	<label>Genre Name</label>
+              	<input type="text" data-field-name="genre_name" />
               </div>
               {/*
               <div className={styles.indiv_form}>
@@ -96,7 +95,7 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
               	</select>
               </div>
               */}
-              <button className={styles.common_btn + ' ' + styles.create_btn } onClick={this.onClickHandle.bind(this)} disabled={ongoingRequest ? true : false}>Create state</button>
+              <button className={styles.common_btn + ' ' + styles.create_btn } onClick={this.onClickHandle.bind(this)} disabled={ongoingRequest ? true : false}>Create Genre</button>
             </div>
           </div>
         </div>
@@ -112,7 +111,7 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
   }
 }
 
-ManageState.propTypes = {
+ManageGenre.propTypes = {
   params: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
@@ -125,4 +124,4 @@ const mapStateToProps = (state) => {
   return {...state.sku_data};
 };
 
-export default connect(mapStateToProps)(ManageState);
+export default connect(mapStateToProps)(ManageGenre);
