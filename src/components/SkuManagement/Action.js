@@ -11,6 +11,8 @@ import fetch from 'isomorphic-fetch';
 
 import Endpoints, {globalCookiePolicy} from '../../Endpoints';
 
+import { routeActions } from 'redux-simple-router';
+
 /* Actions */
 
 const MAKE_REQUEST = 'CTSKU/MAKE_REQUEST';
@@ -175,6 +177,9 @@ const getStateData = (page) => {
   };
 };
 
+/* Gets a state object with keys as state_name, state_billing_id, created_at and updated_at and inserts it into state table
+* Post insert loads the StateManagement.js
+* */
 const insertState = (stateObj) => {
   return (dispatch) => {
     // dispatch({ type: MAKE_REQUEST, f});
@@ -202,7 +207,96 @@ const insertState = (stateObj) => {
                  response.json().then(
                    (d) => {
                      alert('state successfully inserted');
-                     return dispatch({type: REQUEST_SUCCESS, data: d.returning});
+                     return Promise.all([
+                       dispatch({type: REQUEST_SUCCESS, data: d.returning}),
+                       dispatch(routeActions.push('/hadmin/state_management'))
+                     ]);
+                   },
+                   () => {
+                     return dispatch(requestFailed('Error. Try again!'));
+                   }
+                 );
+               } else {
+                 return dispatch(requestFailed('Error. Try again!'));
+               }
+             },
+             (error) => {
+               console.log(error);
+               return dispatch(requestFailed(error.text));
+             });
+  };
+};
+
+const fetchState = (stateId) => {
+  return (dispatch) => {
+    // dispatch({ type: MAKE_REQUEST, f});
+    //
+    const payload = {
+      'where': {'id': stateId},
+      'columns': ['*']
+    };
+
+    const url = Endpoints.db + '/table/' + 'state' + '/select';
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(payload),
+    };
+    // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
+
+    return fetch(url, options)
+           .then(
+             (response) => {
+               if (response.ok) { // 2xx status
+                 response.json().then(
+                   (d) => {
+                     dispatch({type: REQUEST_SUCCESS, data: d});
+                   },
+                   () => {
+                     return dispatch(requestFailed('Error. Try again!'));
+                   }
+                 );
+               } else {
+                 return dispatch(requestFailed('Error. Try again!'));
+               }
+             },
+             (error) => {
+               console.log(error);
+               return dispatch(requestFailed(error.text));
+             });
+  };
+};
+
+const updateState = (updateObj, stateId) => {
+  return (dispatch) => {
+    // dispatch({ type: MAKE_REQUEST, f});
+    //
+    const payload = updateObj;
+    payload.where = {
+      'id': stateId
+    };
+
+    const url = Endpoints.db + '/table/' + 'state' + '/update';
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(payload),
+    };
+    // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
+
+    return fetch(url, options)
+           .then(
+             (response) => {
+               if (response.ok) { // 2xx status
+                 response.json().then(
+                   (d) => {
+                     alert('state successfully updated');
+                     return Promise.all([
+                       dispatch({type: REQUEST_SUCCESS, data: d.returning}),
+                       dispatch(routeActions.push('/hadmin/state_management'))
+                     ]);
                    },
                    () => {
                      return dispatch(requestFailed('Error. Try again!'));
@@ -234,4 +328,4 @@ const getAllStateData = (page) => {
 };
 
 export default transactionReducer;
-export {requestSuccess, requestFailed, loadCredentials, RESET, getSecondaryData, getAllStateData, getStateData, insertState};
+export {requestSuccess, requestFailed, loadCredentials, RESET, getSecondaryData, getAllStateData, getStateData, insertState, fetchState, updateState};

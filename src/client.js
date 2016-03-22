@@ -106,6 +106,7 @@ const main = (
         <Route path="sku/skus" component={ViewSkus} />
         <Route path="sku/sku/:Id" component={ViewSku} />
         <Route path="state_management" component={StateManagement} />
+        <Route path="state_management/edit/:Id" component={ManageState} />
         <Route path="state_management/create" component={ManageState} />
         <Route path="create_notepad_entry" component={CreateNotepadEntry} />
         <Route path="notepad_entries" component={NotepadEntries} />
