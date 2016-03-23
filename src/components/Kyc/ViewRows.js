@@ -72,7 +72,7 @@ const ViewRows = ({curTableName, curQuery, curFilter, curRows, // eslint-disable
       viewButton = (
         <button className="btn btn-xs btn-default" onClick={() => {
           dispatch({type: E_SET_EDITITEM, oldItem: row, pkClause});
-          dispatch(routeActions.push('/consumer/kycfunctions/verify_kyc/view_kyc_profile/' + row.id));
+          dispatch(routeActions.push('/hadmin/consumer/kycfunctions/verify_kyc/view_kyc_profile/' + row.id));
         }}>View</button>);
     }
 

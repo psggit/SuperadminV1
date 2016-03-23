@@ -7,9 +7,9 @@ const TableProfileHeader = ({title}) => {
     <div className={styles.header_wrapper}>
       <div className={styles.header}>
       <ol className = "breadcrumb">
-        <li><a href = "#">CUSTOMER MANAGEMENT</a></li>
-          <li><Link to ={'/consumer/profiles'}>Consumer Profile</Link></li>
-          <li><Link to = {'/consumer/profile/' + title} >{title}</Link></li>
+        <li><a href = "#">Customer Management</a></li>
+          <li><Link to ={'/hadmin/consumer/profiles'}>Consumer Profile</Link></li>
+          <li><Link to = {'/hadmin/consumer/profile/' + title} >{title}</Link></li>
         <li className = "active">Cart</li>
         </ol>
         <div className="clearfix"></div>

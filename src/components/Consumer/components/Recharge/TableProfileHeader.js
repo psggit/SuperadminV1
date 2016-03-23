@@ -7,10 +7,10 @@ const TableProfileHeader = ({title}) => {
     <div className={styles.header_wrapper}>
       <div className={styles.header}>
       <ol className = "breadcrumb">
-      <li><a href = "#">KYC </a></li>
-      <li><Link to ={'/hadmin/consumer/kycfunctions'}> KYC Functions </Link></li>
-      <li><Link to ={'/hadmin/consumer/kycfunctions/verify_kyc'}> Verify KYC </Link></li>
-        <li className = "active">{title}</li>
+        <li><a href = "#">Customer Management</a></li>
+          <li><Link to ={'/hadmin/consumer/profiles'}>Consumer Profile</Link></li>
+          <li><Link to = {'/hadmin/consumer/profile/' + title} >{title}</Link></li>
+        <li className = "active">Recharge History</li>
         </ol>
         <div className="clearfix"></div>
       </div>

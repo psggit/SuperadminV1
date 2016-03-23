@@ -1,6 +1,10 @@
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/variables";
 .container {
   padding: 0;
   overflow-x:scroll;
+}
+input[type=text]{
+  border-radius:4px;
 }
 
 a {
@@ -20,31 +24,14 @@ a:visited{
 }
 
 .upload_wrapper{
-    width: 30%;
-    float: right;
-    padding-right: 30px;
-}
-.upload_header{
-    padding-top: 10px ;
-    padding-left: 15px ;
-    color: #9F9E9E;
-    background: white;
-    font-weight: 500;
-    text-transform: uppercase;
-}
-.upload_white{
-  float:right ;
-  position:absolute;
-  width: 350px;
-  height: 200px;
-  left: 600px;
-  top: 215px;
-  background: #DFDFDF ;
-}
+  width:100%;
+  float:left;
+  font-family: 'Roboto';
+
 .upload_action_button {
     width:30% ;
     float:right;
-    margin-right: 120px;
+    margin-right: 130px;
     margin-top: 30px;
     button {
         color: #FF7400;
@@ -54,6 +41,8 @@ a:visited{
         }
     }
 }
+}
+
 .profile_wrapper {
     width:100%;
     float:left;
@@ -103,10 +92,24 @@ a:visited{
             }
         }
         .profile_view_right {
-            width: 50% ;
-            float:left ;
+            width: 40% ;
+            float:right ;
             background-color: white;
+            .upload_header{
+              padding-top: 15px ;
+              padding-left: 15px ;
+              background: white;
+              color: #9F9E9E;
+              font-weight: 500;
+              height: auto;
+              text-transform: uppercase;
+              }
+          .upload_white {
+            float:right ;
+            background: #DFDFDF ;
+          }
         }
+
     }
     .profile_actions {
         width:100% ;
@@ -117,7 +120,7 @@ a:visited{
         .profile_action_button {
             width:15% ;
             float:left ;
-            margin-right: 40px;
+            margin-right: 120px;
             button {
                 color: #FF7400;
                 border-color: #FF7400;

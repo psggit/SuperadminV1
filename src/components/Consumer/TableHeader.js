@@ -1,37 +1,16 @@
 import React from 'react';
+// import { Link } from 'react-router';
 
-const TableHeader = ({title}) => {
+const TableHeader = () => {
   const styles = require('./Table.scss');
-  const titleSplit = title.split('/');
-  let breadCrumbs;
-  if (titleSplit.length > 0) {
-    breadCrumbs = titleSplit.map((titl, index) => {
-      let isTitle;
-      if (index === titleSplit.length - 1) {
-        isTitle = true;
-      } else {
-        isTitle = false;
-      }
-      return (
-              <li key={index} className={(isTitle) ? 'active' : ''}> {titl} </li>
-          );
-    });
-  } else {
-    breadCrumbs = () => {
-      return (
-            <li>
-              Wrong input to bread crumb
-            </li>
-          );
-    }();
-  }
   return (
     <div className={styles.header_wrapper}>
       <div className={styles.header}>
-        <ol className>
-          {breadCrumbs}
+      <ol className = "breadcrumb">
+      <li><a href = "#">Consumer Management </a></li>
+      <li className = "active"> Consumer Profile </li>
         </ol>
-        <div className="clearfix"></div>
+      <div className="clearfix"></div>
       </div>
     </div>
   );

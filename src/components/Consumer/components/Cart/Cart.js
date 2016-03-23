@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {getCartData} from '../../ProfileActions';
-import TableHeader from '../../TableHeader';
+import TableProfileHeader from './TableProfileHeader';
 // import {editItem, E_ONGOING_REQ} from './EditActions';
 
 class ViewCart extends Component {
@@ -20,9 +20,9 @@ class ViewCart extends Component {
 
     let getHtml;
     let getButtons;
-    let getHeader = <TableHeader title={'Initial'}/>;
+    let getHeader = <TableProfileHeader title={'Initial'}/>;
 
-    const breadcrumbText = 'Consumer Management/Profile/' + this.props.params.Id + '/Cart';
+    const breadcrumbText = this.props.params.Id;
 
     const objToHtml = (response) => {
       /* Getting the first element from the response */
@@ -109,7 +109,7 @@ class ViewCart extends Component {
     };
     /* If Last error is set */
     if (Object.keys(lastError).length > 0) {
-      getHeader = <TableHeader title={'Error'} breadcrumb={breadcrumbText} />;
+      getHeader = <TableProfileHeader title={'Error'} breadcrumb={breadcrumbText} />;
       getHtml = (
                   <div className={styles.profile_information}>
                     <div className={styles.error_message}>
@@ -118,10 +118,10 @@ class ViewCart extends Component {
                   </div>
                 );
     } else if (lastSuccess.length > 0) { /* If its an object */
-      getHeader = <TableHeader title={breadcrumbText}/>;
+      getHeader = <TableProfileHeader title={breadcrumbText}/>;
       getHtml = objToHtml(lastSuccess[0]);
     } else if (ongoingRequest) {
-      getHeader = <TableHeader title={'Requesting'}/>;
+      getHeader = <TableProfileHeader title={'Requesting'}/>;
       getHtml = <h4> requesting </h4>;
     }
 
