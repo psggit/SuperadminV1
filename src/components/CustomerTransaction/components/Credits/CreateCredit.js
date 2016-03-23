@@ -99,11 +99,11 @@ class CreateCredit extends Component { // eslint-disable-line no-unused-vars
             </div>
             <div className={styles.indiv_element + ' ' + styles.wd_100}>
               <label className={styles.label_float_left}>Batch Number</label>
-              <input className={styles.constrained_input + ' form-control'} type="text" data-field-name="batch_number" />
+              <input className={styles.constrained_input} type="text" data-field-name="batch_number" />
             </div>
             <div className={styles.indiv_element + ' ' + styles.wd_100}>
               <label className={styles.label_float_left}>Amount</label>
-              <input className={styles.constrained_input + ' form-control'} type="text" data-field-name="amount" />
+              <input className={styles.constrained_input} type="text" data-field-name="amount" />
             </div>
             <div className={styles.indiv_element + ' ' + styles.wd_100}>
               <label>Comment</label>

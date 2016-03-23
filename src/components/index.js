@@ -37,6 +37,7 @@ export ManageCategory from './SkuManagement/Category/ManageCategory';
 export CreateNotepadEntry from './CreateNotepadEntry/CreateNotepadEntry';
 export NotepadEntries from './NotepadEntries/NotepadEntries';
 export EditAccountDetails from './EditAccountDetails/EditAccountDetails';
+export BrandManagement from './BrandManagement/BrandManagement';
 
 export AddCredit from './CustomerTransaction/components/Credits/CreateCredit';
 export ConfirmCredit from './CustomerTransaction/components/Credits/ConfirmCredits';

@@ -39,6 +39,20 @@
   }
   .constrained_input {
     width: 200px;
+    border: 1px solid #CCC;
+	border-radius: 3px;
+	padding: 5px 10px;
+	transition: all 0.2s;
+	background: #FFF;
+	font-size: 13px;
+	height: 30px;
+	color: rgba(0,0,0,0.9);
+	width: 170px;
+	&:focus
+	{
+		outline: none;
+		border: 1px solid #FF7400;
+	}
   }
 	.create_btn
 	{
