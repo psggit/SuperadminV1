@@ -43,7 +43,7 @@ const CustomerTransaction = ({dispatch}) => { // eslint-disable-line no-unused-v
                     <div className={styles.squarecontent}>
                         <div>
                             <span>
-                                <Link to={'#'}>Add Credits</Link>
+                                <Link to={'/hadmin/consumer_transactions/add_credits'}>Add Credits</Link>
                             </span>
                         </div>
                     </div>

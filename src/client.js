@@ -25,7 +25,10 @@ import {Login, Home, PageContainer,
   GenreManagement,
   ManageGenre,
   CategoryManagement,
-  ManageCategory
+  ManageCategory,
+  AddCredit,
+  ConfirmCredit,
+  ViewCredits
 } from './components'; // eslint-disable-line no-unused-vars
 import {AddTable} from './components';
 import {loadCredentials} from './components/Login/Actions';
@@ -100,15 +103,24 @@ const main = (
         <Route path="consumer/profile/:Id/cart" component={ViewCart} />
         <Route path="consumer/profile/:Id/device_history" component={ViewDevice} />
         <Route path="consumer/profile/:Id/recharge_history" component={RechargeHistory} />
+
+        /* Customer Transactions */
         <Route path="consumer_transactions" component={CustomerTransaction} />
         <Route path="consumer_transactions/recharges" component={ConsumerRecharge} />
         <Route path="consumer_transactions/reservations" component={ConsumerReservation} />
+        <Route path="consumer_transactions/add_credits" component={AddCredit} />
+        <Route path="consumer_transactions/confirm_credits" component={ConfirmCredit} />
+        <Route path="consumer_transactions/view_credits/:batchNumber" component={ViewCredits} />
+        /* End of Customer Transactions */
+
         <Route path="consumer/:table/edit" component={EditItem} />
         <Route path="consumer/:table/insert" component={InsertItem} />
         <Route path="sku/states" component={ViewStates} />
         <Route path="sku/state/:Id" component={ViewState} />
         <Route path="sku/skus" component={ViewSkus} />
         <Route path="sku/sku/:Id" component={ViewSku} />
+
+        /* SKU Management (State, Genre, Category) */
         <Route path="state_management" component={StateManagement} />
         <Route path="state_management/edit/:Id" component={ManageState} />
         <Route path="state_management/create" component={ManageState} />
@@ -118,6 +130,8 @@ const main = (
         <Route path="category_management" component={CategoryManagement} />
         <Route path="category_management/edit/:Id" component={ManageCategory} />
         <Route path="category_management/create" component={ManageCategory} />
+        /* End of SKU Management */
+
         <Route path="create_notepad_entry" component={CreateNotepadEntry} />
         <Route path="notepad_entries" component={NotepadEntries} />
         <Route path="edit_account_details" component={EditAccountDetails} />

@@ -38,6 +38,11 @@ export CreateNotepadEntry from './CreateNotepadEntry/CreateNotepadEntry';
 export NotepadEntries from './NotepadEntries/NotepadEntries';
 export EditAccountDetails from './EditAccountDetails/EditAccountDetails';
 
+export AddCredit from './CustomerTransaction/components/Credits/CreateCredit';
+export ConfirmCredit from './CustomerTransaction/components/Credits/ConfirmCredits';
+export ViewCredits from './CustomerTransaction/components/Credits/ViewCredits';
+
+
 /* Consumer Transactions */
 
 export ConsumerRecharge from './CustomerTransaction/components/Recharge/Recharge';

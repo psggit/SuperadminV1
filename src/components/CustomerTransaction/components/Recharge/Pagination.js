@@ -58,14 +58,14 @@ const Pagination = ({limit, currentPage, showMax, count, parentUrl, onClickHandl
           <div className={styles.pagination_wrapper + ' ' + styles.wd_100 + ' ' + ''}>
             <ul className={styles.custom_pagination}>
               <li>
-                <Link to={leftPage} onClick={onClickHandler}>
-                  <span aria-hidden="true">&laquo;</span>
+                <Link to={leftPage} className={ !isLeftPage ? styles.disable_link : '' } onClick={onClickHandler}>
+                  &laquo;
                 </Link>
               </li>
               {pageHtml}
               <li>
-                <Link to={rightPage} onClick={onClickHandler}>
-                  <span aria-hidden="true">&raquo;</span>
+                <Link to={rightPage} className={ !isRightPage ? styles.disable_link : '' } onClick={onClickHandler}>
+                  &raquo;
                 </Link>
               </li>
             </ul>

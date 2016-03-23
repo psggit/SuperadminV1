@@ -13,6 +13,9 @@
     background: #FFF;
     border: 1px solid #ECEEEF;
     border-radius: 4px;
+    .disable_link {
+      pointer-events: none;
+    }
     li
     {
       display:inline-block;
