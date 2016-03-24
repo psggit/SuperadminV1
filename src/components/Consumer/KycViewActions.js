@@ -82,7 +82,6 @@ const getUserData = (f) => {
   };
 };
 
-
 const loadCredentials = () => {
   return (dispatch) => {
     const p1 = new Promise((resolve, reject) => {

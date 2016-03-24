@@ -153,7 +153,6 @@ const filterReducer = (state = defaultCurFilter, action) => {
         ...state,
         where: { $and: newFilters }
       };
-
     case SET_ORDERCOL:
       const oldOrder = state.order_by[i];
       return {
@@ -190,7 +189,6 @@ const filterReducer = (state = defaultCurFilter, action) => {
           {column: '', type: 'asc', nulls: 'last'}
         ]
       };
-
     case SET_LIMIT:
       return {
         ...state,

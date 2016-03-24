@@ -14,6 +14,8 @@ import kycuploadviewReducer from './components/KycUpload/KycUploadViewActions';
 import transactionReducer from './components/CustomerTransaction/actions/Action';
 import skuReducer from './components/SkuManagement/Action';
 
+import defaultReducer from './components/Common/Actions/CommonReducer';
+
 const reducer = combineReducers({
   loginState: loginReducer,
   tables: dataReducer,
@@ -27,7 +29,8 @@ const reducer = combineReducers({
   kycviewprofile: kycviewReducer,
   kycupload: kycuploadviewReducer,
   transaction_data: transactionReducer,
-  sku_data: skuReducer
+  sku_data: skuReducer,
+  page_data: defaultReducer
 });
 
 export default reducer;

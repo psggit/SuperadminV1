@@ -54,7 +54,8 @@ class ViewConsumerProfile extends Component {
       'redemption_history': 'gifts',
       'credits_available': 'gifts',
       'device_id': 'device',
-      'device_history': 'old_consumer_device_history'
+      'device_history': 'old_consumer_device_history',
+      'notepad': 'consumer_notepads'
     };
     let priority = 1;
     /* Db field names are mapped to ui names */
@@ -75,7 +76,8 @@ class ViewConsumerProfile extends Component {
       'cancellation_history': 'Cancellation History',
       'redemption_history': 'Redemption History',
       'gifts_given': 'Gifts Given',
-      'gifts_received': 'Gifts Received'
+      'gifts_received': 'Gifts Received',
+      'notepad': 'Notepad'
     };
     /* Priority of each field in UI */
     dbNamesPriority = {
@@ -90,12 +92,13 @@ class ViewConsumerProfile extends Component {
       '9': 'device_id',
       '10': 'device_history',
       '11': 'cart',
-      '12': 'recharge_history',
-      '13': 'reservation_history',
-      '14': 'cancellation_history',
-      '15': 'redemption_history',
-      '16': 'gifts_given',
-      '17': 'gifts_received'
+      '12': 'notepad',
+      '13': 'recharge_history',
+      '14': 'reservation_history',
+      '15': 'cancellation_history',
+      '16': 'redemption_history',
+      '17': 'gifts_given',
+      '18': 'gifts_received'
     };
 
     /* Function mapping implementation */
@@ -156,6 +159,10 @@ class ViewConsumerProfile extends Component {
       return values.length;
     };
 
+    const getNotepads = (values) => {
+      return values.length;
+    };
+
     /* Field to function mapping */
     fieldFunctionMapping = {
       'credits_available': calculateCredits,
@@ -167,7 +174,8 @@ class ViewConsumerProfile extends Component {
       'gifts_given': giftsGivens,
       'gifts_received': giftsReceived,
       'device_id': getDevice,
-      'device_history': getDeviceHistory
+      'device_history': getDeviceHistory,
+      'notepad': getNotepads
     };
 
 
@@ -295,6 +303,16 @@ class ViewConsumerProfile extends Component {
                        <div className={styles.profile_action_button}>
                            <button className="form-control" id="reset_password" onClick={ this.resetHandler.bind(this) }>
                                Reset Password
+                           </button>
+                       </div>
+                       <div className={styles.profile_action_button}>
+                           <button className="form-control" id="disable_user" >
+                               Disable User
+                           </button>
+                       </div>
+                       <div className={styles.profile_action_button}>
+                           <button className="form-control" id="disable_device" >
+                               Disable Device
                            </button>
                        </div>
                      </div>

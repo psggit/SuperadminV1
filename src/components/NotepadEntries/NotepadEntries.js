@@ -1,78 +1,72 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 
-const NotepadEntries = () => { // eslint-disable-line no-unused-vars
+const NotepadEntries = ({data, userId}) => { // eslint-disable-line no-unused-vars
   const styles = require('./NotepadEntries.scss');
   // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
+  const notepadHtml = data.map((dat, index) => {
+    let createdAt = dat.created_at;
+    let updatedAt = dat.updated_at;
+
+    createdAt = new Date(new Date(createdAt).getTime()).toLocaleString();
+    updatedAt = new Date(new Date(updatedAt).getTime()).toLocaleString();
+    return (
+          <div key={index} className={styles.indiv_item + ' ' + styles.wd_100}>
+            <div className={styles.header + ' ' + styles.wd_100}>
+              <label>Notepad ID: <span>{dat.id}</span></label>
+              <label>Updated At: <span>{createdAt}</span></label>
+              <label>Created At: <span>{updatedAt}</span></label>
+            </div>
+            <div className={styles.item_info + ' ' + styles.wd_100}>
+              <ul>
+                <li>
+                  <label>Customer ID</label>
+                  <p>{dat.consumer_id}</p>
+                </li>
+                <li>
+                  <label>Marker ID</label>
+                  <p>1</p>
+                </li>
+                <li>
+                  <label>Issue Code</label>
+                  <p>{dat.issue ? dat.issue.code : 'N/A'}</p>
+                </li>
+                <li>
+                  <label>Notepad Issue Description</label>
+                  <p>{dat.issue ? dat.issue.description : 'N/A'}</p>
+                </li>
+                <li>
+                  <label>Comment</label>
+                  <p>{dat.description}</p>
+                </li>
+              </ul>
+            </div>
+          </div>
+        );
+  });
+  const htmlContent = (dat) => {
+    return (dat.length) ? (
+        <div className={styles.notepad_entries_container}>
+          <label className={styles.total_item_lab}>Total Items: <span>{dat.length}</span></label>
+          { notepadHtml }
+        </div>
+      ) : (
+          <div className={styles.error_message}>
+            Sorry no notepad entries yet
+          </div>
+        );
+  };
+
+  const htmlCont = htmlContent(data);
+
   return (
     <div className={styles.container}>
-      <div className={styles.notepad_entries_container}>
-        <button className={styles.create_btn}>Create</button>
-        <label className={styles.total_item_lab}>Total Items: <span>10</span></label>
-        <div className={styles.indiv_item + ' ' + styles.wd_100}>
-          <div className={styles.header + ' ' + styles.wd_100}>
-            <label>Notepad ID: <span>127</span></label>
-            <label>Updated At: <span>12-05-2016</span></label>
-            <label>Created At: <span>12-04-2016</span></label>
-          </div>
-          <div className={styles.item_info + ' ' + styles.wd_100}>
-            <ul>
-              <li>
-                <label>Customer ID</label>
-                <p>21</p>
-              </li>
-              <li>
-                <label>Marker ID</label>
-                <p>21</p>
-              </li>
-              <li>
-                <label>Issue Code</label>
-                <p>A103</p>
-              </li>
-              <li>
-                <label>Notepad Issue Description</label>
-                <p>Customer unable to redeem usign nearbytes</p>
-              </li>
-              <li>
-                <label>Comment</label>
-                <p>Customer unable to redeem usign nearbytes Customer unable to redeem usign nearbytes
-                Customer unable to redeem usign nearbytes Customer unable to redeem usign nearbytes</p>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className={styles.indiv_item + ' ' + styles.wd_100}>
-          <div className={styles.header + ' ' + styles.wd_100}>
-            <label>Notepad ID: <span>127</span></label>
-            <label>Updated At: <span>12-05-2016</span></label>
-            <label>Created At: <span>12-04-2016</span></label>
-          </div>
-          <div className={styles.item_info + ' ' + styles.wd_100}>
-            <ul>
-              <li>
-                <label>Customer ID</label>
-                <p>21</p>
-              </li>
-              <li>
-                <label>Marker ID</label>
-                <p>21</p>
-              </li>
-              <li>
-                <label>Issue Code</label>
-                <p>A103</p>
-              </li>
-              <li>
-                <label>Notepad Issue Description</label>
-                <p>Customer unable to redeem usign nearbytes</p>
-              </li>
-              <li>
-                <label>Comment</label>
-                <p>Customer unable to redeem usign nearbytes Customer unable to redeem usign nearbytes
-                Customer unable to redeem usign nearbytes Customer unable to redeem usign nearbytes</p>
-              </li>
-            </ul>
-          </div>
-        </div>
+      <div className={styles.notepad_container}>
+        <Link to={'/hadmin/consumer/profile/' + userId + '/create_notepad_entry'}>
+          <button className={styles.create_btn}>Create</button>
+        </Link>
+        {htmlCont}
       </div>
     </div>);
 };

@@ -37,8 +37,10 @@ const BrandManagement = () => { // eslint-disable-line no-unused-vars
             </li>
             <li>
               <label>Status</label>
-              <select>
-                <option>Sipping Spirit</option>
+              <select data-field-name="status">
+                <option>Select Status</option>
+                <option data-field-name="status" data-field-value="active">Active</option>
+                <option data-field-name="status" data-field-value="inactive">InActive</option>
               </select>
             </li>
           </ul>
@@ -65,7 +67,7 @@ const BrandManagement = () => { // eslint-disable-line no-unused-vars
           </li>
         </ul>
       </div>
-      <div className={styles.edit_brand_btn}>Edit Brand</div>
+      <div className={styles.edit_brand_btn}>Create Brand</div>
     </div>);
 };
 

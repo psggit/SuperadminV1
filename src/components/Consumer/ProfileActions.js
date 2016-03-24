@@ -112,6 +112,12 @@ const getUserData = (f) => {
           ]
         },
         {
+          'name': 'consumer_notepads',
+          'columns': [
+            '*'
+          ]
+        },
+        {
           'name': 'payment_recharges',
           'columns': ['*']
         },

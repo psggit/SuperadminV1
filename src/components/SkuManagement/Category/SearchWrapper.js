@@ -63,7 +63,7 @@ const SearchWrapper = ( {data} ) => {
   return (
         <div className={styles.list_of_states_wrapper}>
           <label>
-            List of Genres
+            List of Categories
           </label>
           <div className={styles.wd_80}>
             {objHtml}
