@@ -2,18 +2,18 @@
  * Will receive default state from Common
  * */
 
+import { defaultNotepadState } from '../Common/Actions/DefaultState';
 import requestAction from '../Common/Actions/requestAction';
 import Endpoints, { globalCookiePolicy } from '../../Endpoints';
 import { MAKE_REQUEST,
   REQUEST_SUCCESS,
+  REQUEST_COMPLETED,
   REQUEST_ERROR } from '../Common/Actions/Actions';
 
 import { routeActions } from 'redux-simple-router';
 // import commonReducer from '../Common/Actions/CommonReducer';
 
-// const NOTEPAD_INSERT_SUCCESS = 'NOTEPAD/NOTEPAD_INSERT_SUCCESS';
-// const NOTEPAD_INSERT_FAILURE = 'NOTEPAD/NOTEPAD_INSERT_SUCCESS';
-
+const NOTEPAD_FETCH_ISSUE_SUCCESS = 'NOTEPAD/NOTEPAD_FETCH_ISSUE_SUCCESS';
 
 /* ****** Action Creators ******** */
 
@@ -61,7 +61,10 @@ const fetchIssueTypes = () => {
     };
     /* Make a MAKE_REQUEST action */
     dispatch({type: MAKE_REQUEST});
-    return dispatch(requestAction(url, options, REQUEST_SUCCESS, REQUEST_ERROR));
+    return Promise.all([
+      dispatch(requestAction(url, options, NOTEPAD_FETCH_ISSUE_SUCCESS, REQUEST_ERROR)),
+      dispatch({type: REQUEST_COMPLETED})
+    ]);
   };
 };
 
@@ -89,7 +92,7 @@ const insertNotepad = (issueId, description, userId) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: globalCookiePolicy,
-      body: JSON.stringify(insertObj),
+      body: JSON.stringify(insertObj)
     };
 
     dispatch({type: MAKE_REQUEST});
@@ -104,14 +107,28 @@ const insertNotepad = (issueId, description, userId) => {
       .catch((resp) => {
         console.log(resp);
         alert('Something wrong happened while creating a notepad entry');
+        return dispatch({type: REQUEST_COMPLETED});
       });
   };
 };
 
 /* ****************** END OF ACTION CREATORS ****************** */
 
+/* ****************** REDUCER ********************************* */
+
+const notepadReducer = (state = defaultNotepadState, action) => {
+  switch (action.type) {
+    case NOTEPAD_FETCH_ISSUE_SUCCESS:
+      return {...state, issueTypes: action.data};
+    default: return state;
+  }
+};
+
+/* ****************** END OF REDUCER ************************** */
+
 export {
   fetchNotepad,
   fetchIssueTypes,
   insertNotepad
 };
+export default notepadReducer;

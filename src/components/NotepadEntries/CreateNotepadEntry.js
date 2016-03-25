@@ -20,10 +20,10 @@ class CreateNotepadEntry extends Component { // eslint-disable-line no-unused-va
     const styles = require('./CreateNotepadEntry.scss');
     // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
     /* Render the select options */
-    const { lastSuccess, ongoingRequest } = this.props;
+    const { issueTypes, ongoingRequest } = this.props;
     const { Id: userId } = this.props.params;
 
-    const issueTypes = lastSuccess.map((issue, index) => {
+    const issueTypesHtml = issueTypes.map((issue, index) => {
       return (
             <option key={index} data-issue-id={issue.id}>{issue.code}</option>
           );
@@ -37,7 +37,7 @@ class CreateNotepadEntry extends Component { // eslint-disable-line no-unused-va
             <div className={styles.indiv_element + ' ' + styles.wd_100}>
               <label>Issue Code</label>
               <select data-field-name="issue_id">
-                {issueTypes}
+                {issueTypesHtml}
               </select>
             </div>
             <div className={styles.indiv_element + ' ' + styles.wd_100} data-field-name="description">
@@ -58,11 +58,12 @@ CreateNotepadEntry.propTypes = {
   ongoingRequest: PropTypes.bool.isRequired,
   lastError: PropTypes.object.isRequired,
   lastSuccess: PropTypes.array.isRequired,
+  issueTypes: PropTypes.array.isRequired,
   count: PropTypes.number.isRequired
 };
 
 const mapStateToProps = (state) => {
-  return {...state.page_data};
+  return {...state.notepad_data, ...state.page_data};
 };
 
 export default connect(mapStateToProps)(CreateNotepadEntry);

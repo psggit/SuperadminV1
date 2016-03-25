@@ -15,6 +15,7 @@ import transactionReducer from './components/CustomerTransaction/actions/Action'
 import skuReducer from './components/SkuManagement/Action';
 
 import defaultReducer from './components/Common/Actions/CommonReducer';
+import notepadReducer from './components/NotepadEntries/NotepadAction';
 
 const reducer = combineReducers({
   loginState: loginReducer,
@@ -30,7 +31,8 @@ const reducer = combineReducers({
   kycupload: kycuploadviewReducer,
   transaction_data: transactionReducer,
   sku_data: skuReducer,
-  page_data: defaultReducer
+  page_data: defaultReducer,
+  notepad_data: notepadReducer
 });
 
 export default reducer;

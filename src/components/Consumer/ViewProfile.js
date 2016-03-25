@@ -43,6 +43,7 @@ class ViewConsumerProfile extends Component {
     let dbNamesDisplayMapping = {};
     let fieldFunctionMapping = {};
     let fieldObjectMapping = {};
+    const { Id: userId } = this.props.params;
 
     fieldObjectMapping = {
       'recharge_history': 'payment_recharges',
@@ -201,7 +202,8 @@ class ViewConsumerProfile extends Component {
           'cancellation_history',
           'reservation_history',
           'gifts_given',
-          'gifts_received'
+          'gifts_received',
+          'notepad'
         ];
 
         if (renderValue.indexOf(key) !== -1) {
@@ -241,6 +243,12 @@ class ViewConsumerProfile extends Component {
                       <Link to={'/hadmin/consumer/profile/' + obj.id + '/recharge_history'}> {printValue} </Link>
                     </div>
                 );
+          } else if (key === 'notepad') {
+            renderLink = (
+                    <div className={styles.wd_60_link}>
+                      <Link to={'/hadmin/consumer/profile/' + obj.id + '/view_notepads'}> {printValue} </Link>
+                    </div>
+                );
           } else {
             renderLink = (
                     <div className={styles.wd_60_link}>
@@ -249,7 +257,22 @@ class ViewConsumerProfile extends Component {
                 );
           }
         } else {
-          renderLink = printValue;
+          if (key === 'notepad') {
+            renderLink = (
+                <div className={styles.wd_60_notepad}>
+                  <div className={styles.notepad_items}>
+                    {printValue}
+                  </div>
+                  <Link to={'/hadmin/consumer/profile/' + userId + '/create_notepad_entry'}>
+                    <button className={ 'form-control ' + styles.add_btn} id="add_notepad">
+                        Create
+                    </button>
+                  </Link>
+                </div>
+              );
+          } else {
+            renderLink = printValue;
+          }
         }
       } else {
         renderLink = obj[dbNamesPriority[_priority]];

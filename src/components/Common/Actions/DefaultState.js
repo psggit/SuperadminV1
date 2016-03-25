@@ -7,4 +7,9 @@ const defaultState = {
   count: 1
 };
 
+const defaultNotepadState = {
+  issueTypes: []
+};
+
 export default defaultState;
+export { defaultNotepadState };

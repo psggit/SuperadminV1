@@ -2,6 +2,7 @@ import { MAKE_REQUEST,
   REQUEST_SUCCESS,
   COUNT_FETCHED,
   REQUEST_ERROR,
+  REQUEST_COMPLETED,
   RESET} from './Actions';
 import defaultState from './DefaultState';
 
@@ -15,6 +16,8 @@ const commonReducer = (state = defaultState, action) => {
       return {...state, count: action.data.count};
     case REQUEST_ERROR:
       return {...state, ongoingRequest: false, lastError: {'error': action.data}, lastSuccess: []};
+    case REQUEST_COMPLETED:
+      return {...state, ongoingRequest: false};
     case RESET:
       return {...defaultState};
     default: return state;
