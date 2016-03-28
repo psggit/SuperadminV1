@@ -11,5 +11,15 @@ const defaultNotepadState = {
   issueTypes: []
 };
 
+const defaultBrandState = {
+  companyList: [],
+  genreList: [],
+  categoryList: []
+};
+
+const defaultConsumerState = {
+  userData: []
+};
+
 export default defaultState;
-export { defaultNotepadState };
+export { defaultNotepadState, defaultBrandState, defaultConsumerState};

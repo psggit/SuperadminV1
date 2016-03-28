@@ -319,6 +319,13 @@ class ViewConsumerProfile extends Component {
       getButtons = (
                      <div className={styles.profile_actions}>
                        <div className={styles.profile_action_button}>
+                         <Link to={'/hadmin/consumer/profile/' + userId + '/edit_account_details'} >
+                           <button className="form-control" id="update_user" >
+                               Update User
+                           </button>
+                         </Link>
+                       </div>
+                       <div className={styles.profile_action_button}>
                            <button className="form-control" id="reset_pin" onClick={this.clickHandler.bind(this) } >
                                Reset Pin
                            </button>

@@ -13,9 +13,11 @@ import kycviewReducer from './components/Kyc/KycViewActions';
 import kycuploadviewReducer from './components/KycUpload/KycUploadViewActions';
 import transactionReducer from './components/CustomerTransaction/actions/Action';
 import skuReducer from './components/SkuManagement/Action';
+import brandReducer from './components/SkuManagement/Brand/BrandAction';
 
 import defaultReducer from './components/Common/Actions/CommonReducer';
 import notepadReducer from './components/NotepadEntries/NotepadAction';
+import userDataReducer from './components/Consumer/components/EditProfile/EditAction';
 
 const reducer = combineReducers({
   loginState: loginReducer,
@@ -32,7 +34,9 @@ const reducer = combineReducers({
   transaction_data: transactionReducer,
   sku_data: skuReducer,
   page_data: defaultReducer,
-  notepad_data: notepadReducer
+  notepad_data: notepadReducer,
+  brand_data: brandReducer,
+  user_data: userDataReducer
 });
 
 export default reducer;
