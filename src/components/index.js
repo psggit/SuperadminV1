@@ -34,10 +34,12 @@ export CategoryManagement from './SkuManagement/Category/CategoryManagement';
 export ManageState from './SkuManagement/State/ManageState';
 export ManageGenre from './SkuManagement/Genre/ManageGenre';
 export ManageCategory from './SkuManagement/Category/ManageCategory';
-export CreateNotepadEntry from './CreateNotepadEntry/CreateNotepadEntry';
-export NotepadEntries from './NotepadEntries/NotepadEntries';
-export EditAccountDetails from './EditAccountDetails/EditAccountDetails';
-export BrandManagement from './BrandManagement/BrandManagement';
+export CreateNotepadEntry from './NotepadEntries/CreateNotepadEntry';
+export Notepad from './NotepadEntries/Notepad';
+export EditAccountDetails from './Consumer/components/EditProfile/EditAccountDetails';
+export BrandManagement from './SkuManagement/Brand/BrandManagement';
+
+export BrandCreate from './SkuManagement/Brand/BrandCreate';
 
 export AddCredit from './CustomerTransaction/components/Credits/CreateCredit';
 export ConfirmCredit from './CustomerTransaction/components/Credits/ConfirmCredits';

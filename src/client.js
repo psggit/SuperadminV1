@@ -18,8 +18,10 @@ import {Login, Home, PageContainer,
   ViewStates, ViewState, ViewKyc,
   ViewKycs, ViewKycProfile, KycViewUpload,
   ViewSkus, ViewSku, ViewCart, Reservations, ViewDevice, RechargeHistory, StateManagement, CustomerTransaction,
-  CreateNotepadEntry, NotepadEntries, EditAccountDetails,
-  ConsumerRecharge, BrandManagement,
+  CreateNotepadEntry, Notepad, EditAccountDetails,
+  ConsumerRecharge,
+  BrandCreate,
+  BrandManagement,
   ConsumerReservation,
   ManageState,
   GenreManagement,
@@ -104,6 +106,14 @@ const main = (
         <Route path="consumer/profile/:Id/device_history" component={ViewDevice} />
         <Route path="consumer/profile/:Id/recharge_history" component={RechargeHistory} />
 
+        /* Editing Profile */
+
+        <Route path="consumer/profile/:Id/edit_account_details" component={EditAccountDetails} />
+
+        /* Creating and viewing notepads */
+        <Route path="/hadmin/consumer/profile/:Id/create_notepad_entry" component={CreateNotepadEntry} />
+        <Route path="consumer/profile/:Id/view_notepads" component={Notepad} />
+
         /* Customer Transactions */
         <Route path="consumer_transactions" component={CustomerTransaction} />
         <Route path="consumer_transactions/recharges" component={ConsumerRecharge} />
@@ -131,10 +141,11 @@ const main = (
         <Route path="category_management/edit/:Id" component={ManageCategory} />
         <Route path="category_management/create" component={ManageCategory} />
         <Route path="brand_management" component={BrandManagement} />
+        <Route path="brand_management/create" component={BrandCreate} />
         /* End of SKU Management */
-        <Route path="create_notepad_entry" component={CreateNotepadEntry} />
+        {/*
         <Route path="notepad_entries" component={NotepadEntries} />
-        <Route path="edit_account_details" component={EditAccountDetails} />
+        */}
       </Route>
     </Router>
 );
