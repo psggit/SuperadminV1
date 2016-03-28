@@ -69,8 +69,6 @@ class KycViewProfile extends Component {
 
         <div className={styles.profile_wrapper}>
           {getHeader}
-          <div className={styles.white_width}>
-          </div>
           <div className={styles.profile_view_wrapper}>
               <div className={styles.profile_view_left}>
                   <p className={styles.profile_view_header}>
@@ -79,6 +77,30 @@ class KycViewProfile extends Component {
                   {getHtml}
               </div>
               <div className={styles.profile_view_right}>
+                <div className={styles.indiv_photo_id}>
+                  <div className={styles.heading}>
+                    customer photo
+                  </div>
+                  <div className={styles.img}>
+                    <img src=""/>
+                  </div>
+                </div>
+                <div className={styles.indiv_photo_id}>
+                  <div className={styles.heading}>
+                    Proof of id
+                  </div>
+                  <div className={styles.img}>
+                    <img src=""/>
+                  </div>
+                </div>
+                <div className={styles.indiv_photo_id}>
+                  <div className={styles.heading}>
+                    proof of address
+                  </div>
+                  <div className={styles.img}>
+                    <img src=""/>
+                  </div>
+                </div>
               </div>
           </div>
           <div className={styles.profile_actions}>

@@ -36,15 +36,13 @@ a:visited{
     .profile_view_wrapper {
         width: 100%;
         float: left;
-        padding-left: 60px;
-        padding-top: 20px;
+        padding: 20px 45px; 
         .profile_view_left {
-            width:50%;
+            width:40%;
             float:left ;
+            padding: 10px 15px;
             background-color: white ;
             .profile_view_header{
-                padding-top: 10px ;
-                padding-left: 15px ;
                 color: #9F9E9E;
                 font-weight: 500;
                 text-transform: uppercase;
@@ -56,15 +54,18 @@ a:visited{
                 .wd_30 {
                     width: 30%;
                     float: left;
-                    padding-left: 15px;
                     font-weight: 400;
-                    color: #757575;
+                    color: rgba(0,0,0,0.54);
+                    letter-spacing: 0.3px;
                 }
                 .wd_70 {
                     width: 70%;
                     float: left;
                     font-weight: 400;
-                    color: #757575;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    color: rgba(0,0,0,0.54);
+                    letter-spacing: 0.3px;
                 }
                 .break_word {
                     word-wrap: normal ;
@@ -72,9 +73,42 @@ a:visited{
             }
         }
         .profile_view_right {
-            width: 50% ;
+            width: 55% ;
             float:left ;
-            background-color: white;
+            margin-left: 5%;
+            .indiv_photo_id
+            {
+              width: 100%;
+              float: left;
+              margin-bottom: 20px;
+              background-color: white;
+            }
+            .heading
+            {
+              width: 100%;
+              padding: 12px 12px;
+              text-transform: uppercase;
+              color: #666666;
+              font-size: 13px;
+              font-weight: 500;
+              letter-spacing: 0.3px;
+              background: #DFDFDF;
+            }
+            .img
+            {
+              width: 100%;
+              float: left;
+              background: #FFF;
+              height: 250px;
+              overflow: auto;
+              white-space: nowrap;
+              img
+              {
+                max-width: 100%;
+                display: inline-block;
+                height: inherit;
+              }
+            }
         }
     }
     .profile_actions {
@@ -152,19 +186,28 @@ a:visited{
 .table {
   width: auto;
   position:relative;
+  background: #FFF;
   thead {
     position: relative;
-    background: #333;
-    color: #ddd;
+    color: rgba(0,0,0,0.54);
   }
   th {
     min-width: 100px;
-    font-weight: 300;
+    font-weight: 500;
+    border-bottom: 1px !important; 
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+    padding: 12px 8px !important;
   }
   td {
     max-width: 300px;
     white-space: pre;
     overflow: hidden;
+    font-size: 13px;
+    padding: 11px 8px;
+    color: rgba(0,0,0,0.54);
+    font-weight: 400;
     text-overflow: ellipsis;
   }
 }

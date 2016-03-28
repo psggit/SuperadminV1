@@ -222,10 +222,10 @@ const ViewRows = ({curTableName, curQuery, curFilter, curRows, // eslint-disable
   }
 
   return (
-    <div className={(isVisible ? '' : 'hide ') + 'container-fluid ' + styles.viewRowsContainer}>
+    <div className={(isVisible ? '' : 'hide ') + ' container-fluid'}>
       {filterQuery}
       <div className={styles.tableContainer}>
-        <table className={styles.table + ' table table-bordered table-striped table-hover'}>
+        <table className={styles.table + ' table table-striped'}>
           <thead>
             <tr>
               {isSingleRow ? null : (<th style={{minWidth: 'auto'}}></th>)}

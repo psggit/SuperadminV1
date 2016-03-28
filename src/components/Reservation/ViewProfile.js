@@ -63,7 +63,7 @@ class ViewReservation extends Component {
       });
 
       return (
-                  <table className="table">
+                  <table className={styles.table + ' table table-striped'}>
                     <thead>
                       <tr>
                         <th> Item Id </th>
@@ -100,8 +100,6 @@ class ViewReservation extends Component {
     return (
         <div className={styles.profile_wrapper}>
           {getHeader}
-          <div className={styles.white_width}>
-          </div>
           <div className={styles.profile_view_wrapper}>
               <p className={styles.cart_view_header}>
                   RESERVATION

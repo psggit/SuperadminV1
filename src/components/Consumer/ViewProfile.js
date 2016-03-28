@@ -308,8 +308,6 @@ class ViewConsumerProfile extends Component {
     return (
       <div className={styles.profile_wrapper}>
         {getHeader}
-        <div className={styles.white_width}>
-        </div>
         <div className={styles.profile_view_wrapper}>
             <div className={styles.profile_view_left}>
                 <p className={styles.profile_view_header}>
