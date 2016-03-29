@@ -14,9 +14,21 @@ import {syncHistory} from 'redux-simple-router';
 import {compose, createStore, applyMiddleware} from 'redux';
 
 import {Login, Home, PageContainer,
-  ViewConsumers, InsertItem, EditItem, FileUpload, ViewConsumerProfile, Kycfunctions,
-  ViewStates, ViewState, ViewKyc,
-  ViewKycs, ViewKycProfile, KycViewUpload,
+  ViewConsumers,
+  InsertItem,
+  EditItem,
+  FileUpload,
+  ViewConsumerProfile,
+  Kycfunctions,
+  VerifyKycs,
+  UploadKycs,
+  /*
+  ViewKyc,
+  ViewKycProfile,
+  */
+  ViewStates,
+  ViewState,
+  KycViewUpload,
   ViewSkus, ViewSku, ViewCart, Reservations, ViewDevice, RechargeHistory, StateManagement, CustomerTransaction,
   CreateNotepadEntry, Notepad, EditAccountDetails,
   ConsumerRecharge,
@@ -96,10 +108,14 @@ const main = (
         <Route path="upload_file" component={FileUpload} />
         <Route path="consumer/profiles" component={ViewConsumers} />
         <Route path="consumer/kycfunctions" component={Kycfunctions} />
-        <Route path="consumer/kycfunctions/verify_kyc" component={ViewKycs} />
-        <Route path="consumer/kycfunctions/upload_kyc" component={ViewKyc} />
+        <Route path="consumer/kycfunctions/verify_kyc" component={VerifyKycs} />
+        <Route path="consumer/kycfunctions/upload_kyc" component={UploadKycs} />
+        {/*
+        */}
         <Route path="consumer/kycfunctions/upload_kyc/upload_kyc_profile/:Id" component={KycViewUpload} />
+        {/*
         <Route path="consumer/kycfunctions/verify_kyc/view_kyc_profile/:Id" component={ViewKycProfile} />
+        */}
         <Route path="consumer/profile/:Id/reservation" component={Reservations} />
         <Route path="consumer/profile/:Id" component={ViewConsumerProfile} />
         <Route path="consumer/profile/:Id/cart" component={ViewCart} />

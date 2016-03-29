@@ -335,6 +335,7 @@ class ViewConsumerProfile extends Component {
                                Reset Password
                            </button>
                        </div>
+                       {/*
                        <div className={styles.profile_action_button}>
                            <button className="form-control" id="disable_user" >
                                Disable User
@@ -345,6 +346,7 @@ class ViewConsumerProfile extends Component {
                                Disable Device
                            </button>
                        </div>
+                       */}
                      </div>
               );
     } else if (ongoingRequest) {

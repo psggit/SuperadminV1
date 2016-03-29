@@ -12,7 +12,7 @@
     font-weight: 500;
     position: relative;
     color: rgba(0,0,0,0.54);
-    border-style: solid;
+    border: 1px solid #D0D0D0;
     overflow: hidden;
     background: #E0E0E0;
 }
@@ -25,9 +25,8 @@
     top: 250px;
     font-family: 'Roboto';
     font-weight: 500;
-    position: absolute;
     color: rgba(0,0,0,0.54);
-    border-style: solid;
+    border: 1px solid #D0D0D0;
     overflow: hidden;
     background: #E0E0E0;
 }
@@ -49,6 +48,9 @@ a:active {
 }
 a:hover {
   color: rgba(0,0,0,0.87);
+  text-decoration: none;
+}
+a:visited{
   text-decoration: none;
 }
 .squarecontent div {
