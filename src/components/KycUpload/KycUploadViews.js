@@ -183,21 +183,30 @@ class KycUploadProfile extends Component {
           const imgUrl = Endpoints.file_get + file;
           hasConsumerPic = true;
           return (
-            <img key={index} src={ imgUrl } className="img-responsive"/>
+            <div className={styles.image_actions} key={index}>
+              <img key={index} src={ imgUrl } className="img-responsive"/>
+              <p className={styles.close}>X</p>
+            </div>
           );
         });
         idPic = idProof.map((file, index) => {
           const imgUrl = Endpoints.file_get + file;
           hasConsumerPic = true;
           return (
-            <img key={index} src={ imgUrl } className="img-responsive"/>
+            <div className={styles.image_actions} key={index}>
+              <img key={index} src={ imgUrl } className="img-responsive"/>
+              <p className={styles.close}>X</p>
+            </div>
           );
         });
         addressPic = addressProof.map((file, index) => {
           const imgUrl = Endpoints.file_get + file;
           hasConsumerPic = true;
           return (
-            <img key={index} src={ imgUrl } className="img-responsive"/>
+            <div className={styles.image_actions} key={index}>
+              <img key={index} src={ imgUrl } className="img-responsive"/>
+              <p className={styles.close}>X</p>
+            </div>
           );
         });
       } else if (lastSuccess.length > 0) {
@@ -207,7 +216,10 @@ class KycUploadProfile extends Component {
             if (file.proof_type === 'CONSUMERPIC') {
               hasConsumerPic = true;
               return (
-                <img key={index} src={ imgUrl } className="img-responsive"/>
+                <div className={styles.image_actions} key={index}>
+                  <img key={index} src={ imgUrl } className="img-responsive"/>
+                  <p className={styles.close}>X</p>
+                </div>
               );
             }
           });
@@ -217,7 +229,10 @@ class KycUploadProfile extends Component {
             if (file.proof_type === 'IDPROOF') {
               hasIDProofPic = true;
               return (
-                <img key={index} src={ imgUrl } className="img-responsive"/>
+                <div className={styles.image_actions} key={index}>
+                  <img key={index} src={ imgUrl } className="img-responsive"/>
+                  <p className={styles.close}>X</p>
+                </div>
               );
             }
           });
@@ -227,7 +242,10 @@ class KycUploadProfile extends Component {
             if (file.proof_type === 'ADDRESSPROOF') {
               hasAddressPic = true;
               return (
-                <img key={index} src={ imgUrl } className="img-responsive"/>
+                <div className={styles.image_actions} key={index}>
+                  <img key={index} src={ imgUrl } className="img-responsive"/>
+                  <p className={styles.close}>X</p>
+                </div>
               );
             }
           });
