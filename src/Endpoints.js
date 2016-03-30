@@ -8,6 +8,7 @@ const Endpoints = {
   schemaChange: base + '/api/1/change',
   getCredentials: base + '/hauth/get_credentials',
   file_upload: 'http://130.211.246.199/file_upload/upload',
+  file_get: 'http://130.211.246.199/file_upload/get?fs_url=',
   baseUrl: base
 };
 const globalCookiePolicy = 'include';

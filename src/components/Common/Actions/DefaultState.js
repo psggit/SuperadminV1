@@ -21,5 +21,15 @@ const defaultConsumerState = {
   userData: []
 };
 
+const defaultKycState = {
+  isUploaded: false,
+  consumerPIC: [],
+  idProof: [],
+  addressProof: [],
+  consumerCommentStatus: 'hide',
+  idCommentStatus: 'hide',
+  addressCommentStatus: 'hide'
+};
+
 export default defaultState;
-export { defaultNotepadState, defaultBrandState, defaultConsumerState};
+export { defaultNotepadState, defaultBrandState, defaultConsumerState, defaultKycState};
