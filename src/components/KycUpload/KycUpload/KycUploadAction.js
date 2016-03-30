@@ -83,7 +83,7 @@ const fetchConsumer = (page) => {
     };
     queryObj.limit = limit;
     queryObj.offset = offset;
-    queryObj.order_by = '+id';
+    queryObj.order_by = '+consumer.id';
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

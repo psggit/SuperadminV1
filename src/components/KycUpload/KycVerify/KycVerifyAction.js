@@ -80,7 +80,8 @@ const fetchConsumer = (page) => {
       {
         'name': 'consumer',
         'columns': ['*']
-      }
+      },
+      'created_at'
     ];
     queryObj.where = {
       'status': 'open'

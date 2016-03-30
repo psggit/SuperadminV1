@@ -8,7 +8,7 @@ import profileReducer from './components/Consumer/ProfileActions';
 import reservationReducer from './components/Reservation/ProfileActions';
 import stateReducer from './components/State/StateActions';
 // import skuReducer from './components/Sku/SkuActions';
-import kycReducer from './components/Consumer/KycfunctionsActions';
+import kycReducer from './components/KycUpload/KycUploadViewActions';
 import kycviewReducer from './components/Kyc/KycViewActions';
 import kycuploadviewReducer from './components/KycUpload/KycUploadViewActions';
 import transactionReducer from './components/CustomerTransaction/actions/Action';

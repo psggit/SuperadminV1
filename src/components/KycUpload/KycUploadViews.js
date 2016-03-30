@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {getUserData, uploadAndSave, RESET} from './KycUploadViewActions';
+import {getUserData, uploadAndSave, RESET, uploadKycsAndUpdate, updateConsumerKyc, UPDATE_CONSUMER_COMMENT, UPDATE_ID_COMMENT, UPDATE_ADDRESS_COMMENT} from './KycUploadViewActions';
 // import { makeRequest} from '../FileUpload/Actions';
 import TableProfileHeader from './TableProfileHeader';
 import Endpoints from '../../Endpoints';
@@ -18,7 +18,7 @@ class KycUploadProfile extends Component {
   }
   onUploadClick(e) {
     e.preventDefault();
-    const { Id: consumerId } = this.props.params;
+    // const { Id: consumerId } = this.props.params;
     const idToTypeMap = {};
     const idToFileMap = {};
     const formData = new FormData();
@@ -41,7 +41,102 @@ class KycUploadProfile extends Component {
     /* Call a function to upload the file then insert it into the consumer kyc Table
      * */
 
-    this.props.dispatch(uploadAndSave(formData, consumerId, idToTypeMap[domId]));
+    this.props.dispatch(uploadAndSave(formData, idToTypeMap[domId]));
+  }
+  showHideComment(e) {
+    const idToActionMap = {};
+    let selectStatus = document.querySelectorAll("select[data-field-name='" + e.target.getAttribute('data-field-name') + "'] option:checked")[0].value;
+    idToActionMap.consumer_status = UPDATE_CONSUMER_COMMENT;
+    idToActionMap.id_status = UPDATE_ID_COMMENT;
+    idToActionMap.address_status = UPDATE_ADDRESS_COMMENT;
+
+    selectStatus = (selectStatus === 'No') ? '' : 'hide';
+
+    this.props.dispatch({type: idToActionMap[e.target.getAttribute('data-field-name')], 'data': selectStatus});
+  }
+  uploadKYCDetails() {
+    const { consumerPIC, idProof, addressProof, isUploaded } = this.props;
+
+    const kycId = this.props.lastSuccess[0].kycs[0].id;
+    /* Verified Status */
+    let consumerPICVerification = document.querySelectorAll('[data-field-name=consumer_status] option:checked')[0].value;
+    let idProofVerification = document.querySelectorAll('[data-field-name=id_status] option:checked')[0].value;
+    let addressProofVerification = document.querySelectorAll('[data-field-name=address_status] option:checked')[0].value;
+
+
+    /* Final KYC Status */
+    let consumerKYCStatus = (consumerPICVerification === 'Yes' ? true : false ) && (idProofVerification === 'Yes' ? true : false ) && (addressProofVerification === 'Yes' ? true : false );
+    consumerKYCStatus = (consumerKYCStatus) ? 'Verified' : 'Not Verified';
+    /* End of it */
+
+    /* Dom Values */
+    const consumerComment = (consumerPICVerification === 'Yes' ) ? '' : document.querySelectorAll('[data-field-name=consumer_comment]')[0].value;
+    const idComment = (idProofVerification === 'Yes') ? '' : document.querySelectorAll('[data-field-name=id_comment]')[0].value;
+    const addressComment = (addressProofVerification === 'Yes') ? '' : document.querySelectorAll('[data-field-name=address_comment]')[0].value;
+    /* End of DOM Values */
+
+    consumerPICVerification = consumerPICVerification === 'Yes' ? 'Verified' : 'Not Verified';
+    idProofVerification = idProofVerification === 'Yes' ? 'Verified' : 'Not Verified';
+    addressProofVerification = addressProofVerification === 'Yes' ? 'Verified' : 'Not Verified';
+
+    /* End of it */
+
+    const panID = document.querySelectorAll('[data-field-name=panId]')[0].value;
+    const address1 = document.querySelectorAll('[data-field-name=address1]')[0].value;
+    const address2 = document.querySelectorAll('[data-field-name=address2]')[0].value;
+    const city = document.querySelectorAll('[data-field-name=city]')[0].value;
+    const pincode = document.querySelectorAll('[data-field-name=pincode]')[0].value;
+    const proofType = document.querySelectorAll('[data-field-name=addressProofType] option:checked')[0].value;
+
+    /* If isUploaded is true meaning we need to tag the file in kyc_files else no need for that step */
+    if (isUploaded) {
+      const insertObjs = [];
+      consumerPIC.forEach((file) => {
+        const singleObj = {};
+        singleObj.proof_type = 'CONSUMERPIC';
+        singleObj.file = file;
+        singleObj.comment = consumerComment;
+        singleObj.status = consumerPICVerification;
+        singleObj.consumer_kyc_id = kycId;
+        singleObj.is_active = true;
+        singleObj.created_at = new Date().toISOString();
+        singleObj.updated_at = new Date().toISOString();
+        insertObjs.push(singleObj);
+      });
+      idProof.forEach((file) => {
+        const singleObj = {};
+        singleObj.proof_type = 'IDPROOF';
+        singleObj.file = file;
+        singleObj.comment = idComment;
+        singleObj.status = idProofVerification;
+        singleObj.consumer_kyc_id = kycId;
+        singleObj.created_at = new Date().toISOString();
+        singleObj.updated_at = new Date().toISOString();
+        singleObj.pan_number = panID;
+        singleObj.is_active = true;
+        insertObjs.push(singleObj);
+      });
+      addressProof.forEach((file) => {
+        const singleObj = {};
+        singleObj.proof_type = 'ADDRESSPROOF';
+        singleObj.file = file;
+        singleObj.comment = addressComment;
+        singleObj.status = addressProofVerification;
+        singleObj.consumer_kyc_id = kycId;
+        singleObj.created_at = new Date().toISOString();
+        singleObj.updated_at = new Date().toISOString();
+        singleObj.address1 = address1;
+        singleObj.address2 = address2;
+        singleObj.pin_code = pincode;
+        singleObj.id_type = proofType;
+        singleObj.city = city;
+        singleObj.is_active = true;
+        insertObjs.push(singleObj);
+      });
+      this.props.dispatch(uploadKycsAndUpdate(insertObjs, consumerKYCStatus, kycId));
+    } else {
+      this.props.dispatch(updateConsumerKyc(kycId, consumerKYCStatus));
+    }
   }
   render() {
     const styles = require('./Table.scss');
@@ -76,41 +171,73 @@ class KycUploadProfile extends Component {
       }
     };
 
-    const { ongoingRequest, lastError, lastSuccess} = this.props;
+    const { ongoingRequest, lastError, lastSuccess, consumerPIC, idProof, addressProof, isUploaded, consumerCommentStatus, idCommentStatus, addressCommentStatus} = this.props;
 
-    if (lastSuccess.length > 0) {
-      if (lastSuccess[0].kycs) {
-        consumerPic = lastSuccess[0].kycs[0].files.map((file, index) => {
-          const imgUrl = Endpoints.file_get + file.file;
-          if (file.proof_type === 'CONSUMERPIC') {
-            hasConsumerPic = true;
-            return (
-              <img key={index} src={ imgUrl } className="img-responsive"/>
-            );
-          }
-        });
+    /*
+     * Get the correct data (In the initial page load take the lastSuccess object and if the update happens (File upload happens) take that object)
+     * */
 
-        idPic = lastSuccess[0].kycs[0].files.map((file, index) => {
-          const imgUrl = Endpoints.file_get + file.file;
-          if (file.proof_type === 'IDPROOF') {
-            hasIDProofPic = true;
-            return (
-              <img key={index} src={ imgUrl } className="img-responsive"/>
-            );
-          }
+    const populateImageHtml = () => {
+      if (isUploaded) {
+        consumerPic = consumerPIC.map((file, index) => {
+          const imgUrl = Endpoints.file_get + file;
+          hasConsumerPic = true;
+          return (
+            <img key={index} src={ imgUrl } className="img-responsive"/>
+          );
         });
+        idPic = idProof.map((file, index) => {
+          const imgUrl = Endpoints.file_get + file;
+          hasConsumerPic = true;
+          return (
+            <img key={index} src={ imgUrl } className="img-responsive"/>
+          );
+        });
+        addressPic = addressProof.map((file, index) => {
+          const imgUrl = Endpoints.file_get + file;
+          hasConsumerPic = true;
+          return (
+            <img key={index} src={ imgUrl } className="img-responsive"/>
+          );
+        });
+      } else if (lastSuccess.length > 0) {
+        if (lastSuccess[0].kycs) {
+          consumerPic = lastSuccess[0].kycs[0].files.map((file, index) => {
+            const imgUrl = Endpoints.file_get + file.file;
+            if (file.proof_type === 'CONSUMERPIC') {
+              hasConsumerPic = true;
+              return (
+                <img key={index} src={ imgUrl } className="img-responsive"/>
+              );
+            }
+          });
 
-        addressPic = lastSuccess[0].kycs[0].files.map((file, index) => {
-          const imgUrl = Endpoints.file_get + file.file;
-          if (file.proof_type === 'ADDRESSPROOF') {
-            hasAddressPic = true;
-            return (
-              <img key={index} src={ imgUrl } className="img-responsive"/>
-            );
-          }
-        });
+          idPic = lastSuccess[0].kycs[0].files.map((file, index) => {
+            const imgUrl = Endpoints.file_get + file.file;
+            if (file.proof_type === 'IDPROOF') {
+              hasIDProofPic = true;
+              return (
+                <img key={index} src={ imgUrl } className="img-responsive"/>
+              );
+            }
+          });
+
+          addressPic = lastSuccess[0].kycs[0].files.map((file, index) => {
+            const imgUrl = Endpoints.file_get + file.file;
+            if (file.proof_type === 'ADDRESSPROOF') {
+              hasAddressPic = true;
+              return (
+                <img key={index} src={ imgUrl } className="img-responsive"/>
+              );
+            }
+          });
+        }
+      } else {
+        console.log('just ignore');
       }
-    }
+    };
+
+    populateImageHtml();
 
     const valueComponent = (obj, key) => {
       if (funcMap.hasOwnProperty(key)) {
@@ -165,46 +292,6 @@ class KycUploadProfile extends Component {
               </p>
               {getHtml}
               <div className={styles.profile_information}>
-                <div className={styles.wd_30}>
-                PAN:
-                </div>
-                <div className={styles.wd_70} >
-                  <input type="text" name="pan"/>
-                </div>
-              </div>
-              <div className={styles.profile_information}>
-                <div className={styles.wd_30}>
-                  Address Line 1:
-                </div>
-                <div className={styles.wd_70} >
-                  <input type="text" name="address1"/>
-                </div>
-              </div>
-              <div className={styles.profile_information}>
-                <div className={styles.wd_30}>
-                  Address Line 2:
-                </div>
-                <div className={styles.wd_70} >
-                  <input type="text" name="address2"/>
-                </div>
-              </div>
-              <div className={styles.profile_information}>
-                <div className={styles.wd_30}>
-                  City:
-                </div>
-                <div className={styles.wd_70} >
-                  <input type="text" name="city"/>
-                </div>
-              </div>
-              <div className={styles.profile_information}>
-                <div className={styles.wd_30}>
-                  PinCode:
-                </div>
-                <div className={styles.wd_70} >
-                  <input type="text" name="pincode"/>
-                </div>
-              </div>
-              <div className={styles.profile_information}>
                 <p className={styles.profile_view_header}>
                     Customer Photo
                 </p>
@@ -232,11 +319,20 @@ class KycUploadProfile extends Component {
                   Verified
                 </div>
                 <div className={styles.wd_70} >
-                  <select name="PhotoVerification">
+                  <select name="PhotoVerification" data-field-name="consumer_status" onChange={ this.showHideComment.bind(this) }>
                     <option >Choose here</option>
-                    <option value="yesverify">Yes</option>
-                    <option value="noverify">No</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
                   </select>
+                </div>
+              </div>
+              <div className={styles.profile_information + ' ' + consumerCommentStatus}>
+                <div className={styles.wd_30}>
+                  Comment
+                </div>
+                <div className={styles.wd_70} >
+                  <textarea data-field-name="consumer_comment" rows="3" cols="30">
+                  </textarea>
                 </div>
               </div>
 
@@ -267,6 +363,10 @@ class KycUploadProfile extends Component {
                   Proof Type
                 </div>
                 <div className={styles.wd_70} >
+                  <div className="col-md-6">
+                    PAN
+                  </div>
+                  {/*
                   <select name="IDType">
                     <option >Choose here</option>
                     <option value="drivinglicense">Driving License</option>
@@ -275,6 +375,15 @@ class KycUploadProfile extends Component {
                     <option value="pan">PAN</option>
                     <option value="passport">Passport</option>
                   </select>
+                  */}
+                </div>
+              </div>
+              <div className={styles.profile_information}>
+                <div className={styles.wd_30}>
+                PAN:
+                </div>
+                <div className={styles.wd_70} >
+                  <input type="text" name="pan"data-field-name="panId"/>
                 </div>
               </div>
               <div className={styles.profile_information}>
@@ -282,19 +391,19 @@ class KycUploadProfile extends Component {
                   Verified
                 </div>
                 <div className={styles.wd_70} >
-                  <select name="IdVerification">
+                  <select name="IdVerification" data-field-name="id_status" onChange={ this.showHideComment.bind(this) }>
                     <option >Choose here</option>
-                    <option value="yesidverify">Yes</option>
-                    <option value="noidverify">No</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
                   </select>
                 </div>
               </div>
-              <div className={styles.profile_information}>
+              <div className={styles.profile_information + ' ' + idCommentStatus} >
                 <div className={styles.wd_30}>
                   Comment
                 </div>
                 <div className={styles.wd_70} >
-                  <textarea rows="3" cols="30">
+                  <textarea data-field-name="id_comment" rows="3" cols="30">
                   </textarea>
                 </div>
               </div>
@@ -322,16 +431,48 @@ class KycUploadProfile extends Component {
               </div>
               <div className={styles.profile_information}>
                 <div className={styles.wd_30}>
+                  Address Line 1:
+                </div>
+                <div className={styles.wd_70} >
+                  <input type="text" name="address1" data-field-name="address1"/>
+                </div>
+              </div>
+              <div className={styles.profile_information}>
+                <div className={styles.wd_30}>
+                  Address Line 2:
+                </div>
+                <div className={styles.wd_70} >
+                  <input type="text" name="address2" data-field-name="address2"/>
+                </div>
+              </div>
+              <div className={styles.profile_information}>
+                <div className={styles.wd_30}>
+                  City:
+                </div>
+                <div className={styles.wd_70} >
+                  <input type="text" name="city" data-field-name="city"/>
+                </div>
+              </div>
+              <div className={styles.profile_information}>
+                <div className={styles.wd_30}>
+                  PinCode:
+                </div>
+                <div className={styles.wd_70} >
+                  <input type="text" name="pincode" data-field-name="pincode"/>
+                </div>
+              </div>
+              <div className={styles.profile_information}>
+                <div className={styles.wd_30}>
                   Proof Type
                 </div>
                 <div className={styles.wd_70} >
-                  <select name="AddressProofType">
+                  <select name="AddressProofType" data-field-name="addressProofType">
                     <option >Choose here</option>
-                    <option value="drivinglicense">Driving License</option>
-                    <option value="voterid">Voter ID</option>
-                    <option value="aadhaarcard">Aadhaar Card</option>
-                    <option value="pan">PAN</option>
-                    <option value="passport">Passport</option>
+                    <option value="DrivingLicense">Driving License</option>
+                    <option value="VoterID">Voter ID</option>
+                    <option value="AadhaarCard">Aadhaar Card</option>
+                    <option value="Pan">PAN</option>
+                    <option value="Passport">Passport</option>
                   </select>
                 </div>
               </div>
@@ -340,11 +481,20 @@ class KycUploadProfile extends Component {
                   Verified
                 </div>
                 <div className={styles.wd_70} >
-                  <select name="IdVerification">
+                  <select name="IdVerification" data-field-name="address_status" onChange={ this.showHideComment.bind(this) }>
                     <option >Choose here</option>
-                    <option value="yesidverify">Yes</option>
-                    <option value="noidverify">No</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
                   </select>
+                </div>
+              </div>
+              <div className={styles.profile_information + ' ' + addressCommentStatus}>
+                <div className={styles.wd_30}>
+                  Comment
+                </div>
+                <div className={styles.wd_70} >
+                  <textarea data-field-name="address_comment" rows="3" cols="30">
+                  </textarea>
                 </div>
               </div>
               <div className={styles.user_actions}>
@@ -353,7 +503,7 @@ class KycUploadProfile extends Component {
                     Edit
                 </button>
                 */}
-                <button className={styles.common_btn} id="save">
+                <button className={styles.common_btn} id="save" onClick={ this.uploadKYCDetails.bind(this) }>
                     Save
                 </button>
               </div>
@@ -450,11 +600,18 @@ KycUploadProfile.propTypes = {
   dispatch: PropTypes.func.isRequired,
   ongoingRequest: PropTypes.bool.isRequired,
   lastError: PropTypes.object.isRequired,
-  lastSuccess: PropTypes.array.isRequired
+  lastSuccess: PropTypes.array.isRequired,
+  consumerPIC: PropTypes.array.isRequired,
+  idProof: PropTypes.array.isRequired,
+  addressProof: PropTypes.array.isRequired,
+  isUploaded: PropTypes.bool.isRequired,
+  consumerCommentStatus: PropTypes.string.isRequired,
+  addressCommentStatus: PropTypes.string.isRequired,
+  idCommentStatus: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => {
-  return {...state.kycupload, ...state.page_data};
+  return {...state.kyc, ...state.page_data};
 };
 
 export default connect(mapStateToProps)(KycUploadProfile);
