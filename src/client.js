@@ -18,7 +18,8 @@ import {Login, Home, PageContainer,
   ViewStates, ViewState, ViewKyc,
   ViewKycs, ViewKycProfile, KycViewUpload,
   ViewSkus, ViewSku, ViewCart, Reservations, ViewDevice, RechargeHistory, StateManagement, CustomerTransaction,
-  CreateNotepadEntry, Notepad, EditAccountDetails,
+  CreateNotepadEntry, Notepad, EditAccountDetails, Skus, Toppicks, AddToppicks, CreateSku, SkuManagementViewSkus,
+  SkuManagementToppicks,
   ConsumerRecharge,
   BrandCreate,
   BrandManagement,
@@ -142,6 +143,12 @@ const main = (
         <Route path="category_management/create" component={ManageCategory} />
         <Route path="brand_management" component={BrandManagement} />
         <Route path="brand_management/create" component={BrandCreate} />
+        <Route path="skus" component={Skus} />
+        <Route path="skus/toppicks" component={Toppicks} />
+        <Route path="skus/add_top_picks" component={AddToppicks} />
+        <Route path="skus/create_sku" component={CreateSku} />
+        <Route path="skus/view_sku" component={SkuManagementViewSkus} />
+        <Route path="skus/top_picks" component={SkuManagementToppicks} />
         /* End of SKU Management */
         {/*
         <Route path="notepad_entries" component={NotepadEntries} />

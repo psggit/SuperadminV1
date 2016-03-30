@@ -123,6 +123,62 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
           </ul>
         </div>
         */}
+        <div className="clearfix"></div>
+        <div className={styles.region_wrapper}>
+          <div className={styles.regions_container}>
+            <div className={styles.heading}>Regions</div>
+            <div className={styles.add_lab}>+ Add New</div>
+            <ul>
+              <li>
+                <label>South</label>
+                <p>3 Cities</p>
+              </li>
+            </ul>
+          </div>
+          <div className={styles.add_regions_container}>
+            <div className={styles.heading}>Add new Regions</div>
+            <div className={styles.wd_100}>
+              <label className={styles.region_lab}>Region name</label>
+              <input type="text" />
+            </div>
+            <div className={styles.wd_100 + ' ' + styles.select_city}>
+              <label className={styles.cites_lab}>
+                SELECT CITIES
+                <span className={styles.selected}>1 Selected</span>
+              </label>
+            </div>
+            <div className={styles.available_states_container}>
+              <div className={styles.heading}>
+                  <label>Available states</label>
+                  <p>20 Items</p>
+              </div>
+              <ul>
+                <li>
+                  <label>Tamil nadu</label>
+                  <p>3 Cities</p>
+                </li>
+              </ul>
+            </div>
+            <div className={styles.cities_in_container}>
+              <div className={styles.heading}>
+                Cities in: <span className={styles.state}>Tamil Nadu</span>
+              </div>
+              <ul>
+                <li>
+                  <label>
+                    <input type="checkbox"/> Tamil nadu
+                  </label>
+                </li>
+              </ul>
+            </div>
+            <div className="clearfix"></div>
+            <div className={styles.user_actions}>
+              <button>Delete</button>
+              <button>Update</button>
+            </div>
+          </div>
+        </div>
+        <div className="clearfix"></div>
         <button className={styles.edit_brand_btn} disabled={ ongoingRequest ? true : false} onClick={this.onClickCreateBrand.bind(this)}>
           Create Brand
         </button>

@@ -1,0 +1,97 @@
+.container
+{
+	width: 100%;
+	float: left;
+}
+.add_top_picks_wrapper
+{
+	float: left;
+	display: inline-block;
+	background: #FFF;
+	padding: 15px 20px;
+	margin: 20px 45px;
+}
+.wd_100
+{
+	width: 100%;
+	float: left;
+}
+.display_block
+{
+	display: block;
+}
+.display_inline_block
+{
+	display: inline-block;
+	vertical-align: middle;
+}
+.indiv_field
+{
+	margin-bottom: 15px;
+	.heading
+	{
+		color: rgba(0,0,0,0.54);
+		font-size: 13px;
+		letter-spacing: 0.3px;
+		font-weight: 400;
+		margin-bottom: 5px;
+		display: block;
+	}
+	input
+	{
+		border: 1px solid #CCC;
+		background: #FFF;
+		font-size: 13px;
+		height: 30px;
+		width: 100px;
+		border-radius: 3px;
+		color: rgba(0,0,0,0.6);
+		padding: 5px 10px;
+		&:focus
+		{
+			outline: none;
+			border: 1px solid #FF7400;
+		}
+	}
+	select
+	{
+		@extend input;
+		width: 150px;
+		margin-right: 15px;
+		color: rgba(0,0,0,0.6);
+	}
+}
+.or_label
+{
+	display: inline-block;
+	vertical-align: middle;
+	font-weight: 500;
+	color: rgba(0,0,0,0.8);
+	padding: 0 30px;
+}
+.add_btn
+{
+	width: 130px;
+    height: 30px;
+    color: rgba(255, 116, 0, 0.8);
+    border: 1px solid #FF7400;
+    border-radius: 4px;
+    background: #FFF;
+    cursor: pointer;
+    font-weight: 400;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: block;
+    text-align: center;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    &:focus
+    {
+    	outline: none;
+    }
+    &:hover
+    {
+    	color: rgba(255, 116, 0 , 1);
+    }
+}

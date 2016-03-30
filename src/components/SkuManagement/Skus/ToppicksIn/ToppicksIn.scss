@@ -1,0 +1,92 @@
+.container
+{
+	width: 100%;
+	float: left;
+}
+.toppicksin_container
+{
+	width: 100%;
+	float: left;
+	padding: 20px 45px;
+	.heading
+	{
+		width: 100%;
+		float: left;
+		color: rgba(0,0,0,0.54);
+		font-size: 14px;
+		letter-spacing: 0.3px;
+		font-weight: 500;
+		margin-bottom: 15px;
+	}
+	.toppicks_table
+	{
+		width: 100%;
+		float: left;
+	}
+}
+.table_fixed_layout 
+{
+	background: #FFF;
+	width: 100%;
+	max-width: none;
+	color: rgba(0,0,0,0.54);
+	thead {
+	  font-weight: 500;
+	}
+	thead tr th
+	{
+	  white-space: pre;
+	  border-bottom: 1px;
+	  padding: 12px 8px;
+	  font-weight: 500;
+	  font-size: 13px;
+	  letter-spacing: 0.5px;
+	}
+	tbody tr td
+	{
+	  white-space: nowrap;
+	  padding: 11px 8px;
+	  font-size: 13px;
+	}
+	tbody tr td:nth-child(2)
+	{
+	  a
+	  {
+	    color: rgba(255, 116, 0, 0.9);
+	  }
+	}
+	tbody tr td a 
+	{
+	  &:hover {
+	    color: rgba(255, 116, 0, 1);
+	    text-decoration: none;
+	  }
+	  &:focus
+	  {
+	    text-decoration: none;
+	  }
+	}
+	.link_color
+	{
+		color: #FF7400;
+	}
+	button
+	{
+		background: #FFF;
+		border: 1px solid #ccc;
+		border-radius: 3px;
+		height: 20px;
+		width: 55px;
+		text-align: center;
+		font-size: 12px;
+		color: rgba(0,0,0,0.45);
+		&:focus
+		{
+			outline: none;
+		}
+		&:hover
+		{
+			color: rgba(0,0,0,0.54);
+		}
+	}
+}

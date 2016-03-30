@@ -40,6 +40,13 @@ export EditAccountDetails from './Consumer/components/EditProfile/EditAccountDet
 export BrandManagement from './SkuManagement/Brand/BrandManagement';
 
 export BrandCreate from './SkuManagement/Brand/BrandCreate';
+export Skus from './SkuManagement/Skus/Skus';
+export Toppicks from './SkuManagement/Skus/Toppicks/Toppicks';
+export AddToppicks from './SkuManagement/Skus/AddToppicks/AddToppicks';
+export CreateSku from './SkuManagement/Skus/CreateSku/CreateSku';
+export SkuManagementViewSkus from './SkuManagement/Skus/ViewSku/ViewSku';
+export SkuManagementToppicks from './SkuManagement/Skus/ToppicksIn/ToppicksIn';
+
 
 export AddCredit from './CustomerTransaction/components/Credits/CreateCredit';
 export ConfirmCredit from './CustomerTransaction/components/Credits/ConfirmCredits';

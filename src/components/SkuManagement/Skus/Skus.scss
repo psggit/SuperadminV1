@@ -1,0 +1,46 @@
+.container
+{
+	width: 100%;
+	float: left;
+}
+.skus_link
+{
+	width: 100%;
+	float: left;
+	padding: 40px 45px;
+	text-align: center;
+}
+.skus_wrapper
+{
+	display: inline-block;
+	text-align: left;
+}
+.indiv_link
+{
+	border: 1px solid #CCCCCC;
+	background: #E0E0E0;
+	width: 235px;
+	height: 120px;
+	text-align: center;
+	display: inline-block;
+	vertical-align: middle;
+	color: rgba(0,0,0,0.54);
+	letter-spacing: 0.3px;
+	font-size: 15px;
+	position: relative;
+	p
+	{
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+}
+.margin_right
+{
+	margin-right: 55px;
+}
+.margin_top
+{
+	margin-top: 35px;
+}

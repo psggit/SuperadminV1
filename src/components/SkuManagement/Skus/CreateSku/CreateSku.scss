@@ -1,0 +1,323 @@
+.container
+{
+	width: 100%;
+	float: left;
+	padding: 20px 45px;
+}
+.create_sku_wrapper
+{
+	width: 40%;
+	float: left;
+	padding: 15px 15px;
+	background: #FFF;
+	margin-right: 2%;
+	.indiv_element
+	{
+		width: 100%;
+		float: left;
+		margin-bottom: 15px;
+		label
+		{
+			font-weight: 400;
+			font-size: 13px;
+			padding-top: 5px;
+			letter-spacing: 0.03px;
+			width: 50%;
+			float: left;
+			color: rgba(0,0,0,0.54);
+		}
+		input , select
+		{
+			width: 50%;
+			float: left;
+			border: 1px solid #CCC;
+			background: #FFF;
+			font-size: 13px;
+			height: 30px;
+			border-radius: 3px;
+			color: rgba(0,0,0,0.6);
+			padding: 5px 10px;
+			&:focus
+			{
+				outline: none;
+				border: 1px solid #FF7400;
+			}
+		}
+		textarea
+		{
+			@extend input;
+			resize: none;
+			height: 100px;
+		}
+	}
+	.indiv_element:last-child
+	{
+		margin-bottom: 0;
+	}
+}
+.heading
+{
+	text-transform: uppercase;
+	color: rgba(0,0,0,0.54);
+	letter-spacing: 0.5px;
+	display: block;
+	font-weight: 500;
+	font-size: 13px;
+	float: left;
+	margin-bottom: 20px;
+}
+
+.available_states_wrapper
+{
+	width: 56%;
+	float: left;
+	padding: 15px 15px;
+	margin-left: 2%;
+	background: #FFF;
+	.states_list
+	{
+		height: 460px;
+		overflow: auto;
+		width: 100%;
+		float: left;
+	}
+	.indiv_element
+	{
+		width: 100%;
+		float: left;
+		margin-bottom: 15px;
+		.check_box
+		{
+			float: left;
+			font-weight: 400;
+			color: rgba(0,0,0,0.54);
+			width: 40%;
+			padding-top: 5px;
+		}
+		input[type="text"], input[type="number"]
+		{
+			float: left;
+			width: 28%;
+			border: 1px solid #CCC;
+			background: #FFF;
+			font-size: 13px;
+			height: 30px;
+			margin-right: 2%;
+			border-radius: 3px;
+			color: rgba(0,0,0,0.6);
+			padding: 5px 10px;
+			&:focus
+			{
+				outline: none;
+				border: 1px solid #FF7400;
+			}
+		}
+		input[type="text"]:last-child
+		{
+			margin-right: 0;
+		}
+	}
+}
+.wd_100
+{
+	float: left;
+	width: 100%;
+}
+.upload_container
+{
+	float: left;
+	width: 250px;
+	margin-top: 20px;
+	.upload_images
+	{
+		width: 100%;
+		float: left;
+	}
+	.upload_lab
+	{
+		color: rgba(0,0,0,0.54);
+		font-weight: 500;
+		font-size: 14px;
+		padding-bottom: 15px;
+	}
+	.upload_id
+	{
+		color: rgba(0,0,0,0.54);
+		font-size: 13px;
+		font-weight: 500;
+		padding: 10px 15px;
+		background: #DFDFDF;
+	}
+	.upload_img
+	{
+		max-width: 100%;
+		max-height: 200px;
+	}
+	.file_upload
+	{
+		width: 100%;
+		float: left;
+		height: 200px;
+		background: #FFF;
+		display: flex;
+		align-items: center;
+	}
+	input[type="file"]
+	{
+		width: 80%;
+		padding: 8px;
+		background: #FFF;
+		border-radius: 3px;
+		border: 1px solid #CCC;
+		margin: auto;
+		&:focus
+		{
+			outline: none;
+			border: 1px solid #FF7400;
+		}
+	}
+	.upload_btn_layout
+	{
+		background: #DFDFDF;
+		width: 100%;
+		float: left;
+	}
+}
+.outlets_lab
+{
+	color: rgba(0,0,0,0.54);
+	width: 100%;
+	float: left;
+	padding: 15px 0;
+	font-weight: 500;
+}
+.upload_btn
+{
+	width: 130px;
+    height: 30px;
+    color: rgba(255, 116, 0, 0.8);
+    border: 1px solid #FF7400;
+    border-radius: 4px;
+    background: #FFF;
+    cursor: pointer;
+    font-weight: 400;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: block;
+    text-align: center;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    &:focus
+    {
+    	outline: none;
+    }
+    &:hover
+    {
+    	color: rgba(255, 116, 0 , 1);
+    }
+}
+.states_container
+{
+	padding: 15px;
+	width: 33%;
+	float: left;
+	background: #FFF;
+	margin-right: 2%;
+	.heading
+	{
+		text-transform: uppercase;
+		color: rgba(0,0,0,0.4);
+		font-size: 13px;
+		width: 100%;
+		float: left;
+		margin-bottom: 15px;
+	}
+	ul
+	{
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		width: 100%;
+		float: left;
+		height: 450px;
+		overflow: auto;
+	}
+	li
+	{
+		margin-bottom: 15px;
+		width: 100%;
+		float: left;
+		label
+		{
+			font-weight: 400;
+			font-size: 13px;
+			color: rgba(0,0,0,0.54);
+			width: 70%;
+			float: left;
+			margin-bottom: 0;
+			input[type="checkbox"]
+			{
+				margin-right: 5px;
+			}
+		}
+		p
+		{
+			color: #FF7400;
+			font-size: 13px;
+			width: 30%;
+			float: left;
+			margin-bottom: 0;
+			text-align: right;
+		}
+	}
+}
+.cities_container
+{
+	@extend .states_container;
+	margin-left: 2%;
+	margin-right: 0;
+}
+.outlets_container
+{
+	@extend .states_container;
+	margin-left: 4%;
+	margin-right: 0;	
+	width: 26%;
+	li
+	{
+		label
+		{
+			width: 100%;
+		}
+	}
+}
+.save_btn
+{
+	@extend .upload_btn;
+	margin-top: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
