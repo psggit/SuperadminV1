@@ -22,13 +22,37 @@ const defaultConsumerState = {
 };
 
 const defaultKycState = {
-  isUploaded: false,
+  isConsumerPICUploaded: false,
+  isAddressProofUploaded: false,
+  isIdProofUploaded: false,
   consumerPIC: [],
   idProof: [],
   addressProof: [],
   consumerCommentStatus: 'hide',
   idCommentStatus: 'hide',
-  addressCommentStatus: 'hide'
+  addressCommentStatus: 'hide',
+
+  isConsumerPICVUpdated: false,
+  consumerPICVIStatus: '',
+  consumerPICVCStatus: '',
+  consumerPICVComment: '',
+
+  isAddressProofVUpdated: false,
+  addressProofVIStatus: '',
+  addressProofVCStatus: '',
+  addressProofVComment: '',
+
+  isIdProofVUpdated: false,
+  idProofVIStatus: '',
+  idProofVCStatus: '',
+  idProofVComment: '',
+
+  panIValue: '',
+  address1IValue: '',
+  address2IValue: '',
+  cityIValue: '',
+  proofType: '',
+  pinCodeIValue: '',
 };
 
 export default defaultState;

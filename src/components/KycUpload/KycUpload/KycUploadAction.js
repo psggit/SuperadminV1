@@ -78,9 +78,9 @@ const fetchConsumer = (page) => {
         'columns': ['*']
       }
     ];
-    queryObj.where = {
+    /* queryObj.where = {
       'status': 'open'
-    };
+    };*/
     queryObj.limit = limit;
     queryObj.offset = offset;
     queryObj.order_by = '+consumer.id';
