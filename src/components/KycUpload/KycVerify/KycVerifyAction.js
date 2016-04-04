@@ -22,10 +22,17 @@ const fetchConsumerCount = () => {
     dispatch({ type: MAKE_REQUEST});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
+    // Fetching all the consumers who have uploaded some pictures and are in level 1 and requested for level 2
     const payload = {
       'columns': ['id'],
       'where': {
-        'status': 'open'
+        'files': {
+          'is_active': true
+        },
+        'level_id': 2,
+        'consumer': {
+          'level_id': 1
+        }
       },
       'order_by': '+id'
     };
@@ -84,7 +91,13 @@ const fetchConsumer = (page) => {
       'created_at'
     ];
     queryObj.where = {
-      'status': 'open'
+      'files': {
+        'is_active': true
+      },
+      'level_id': 2,
+      'consumer': {
+        'level_id': 1
+      }
     };
     queryObj.limit = limit;
     queryObj.offset = offset;

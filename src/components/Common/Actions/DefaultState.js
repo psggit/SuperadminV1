@@ -53,6 +53,30 @@ const defaultKycState = {
   cityIValue: '',
   proofType: '',
   pinCodeIValue: '',
+
+  defaultConsumerPIC: {
+    consumerPICVIStatus: '',
+    consumerCommentStatus: 'hide',
+    consumerPICVComment: ''
+  },
+  defaultIdProof: {
+    idProofVIStatus: '',
+    idCommentStatus: 'hide',
+    idProofVComment: '',
+    panIValue: ''
+  },
+
+  defaultAddressProof: {
+    addressProofVIStatus: '',
+    addressCommentStatus: 'hide',
+    addressProofVComment: '',
+    address1IValue: '',
+    address2IValue: '',
+    cityIValue: '',
+    pinCodeIValue: '',
+    proofType: ''
+  }
+
 };
 
 export default defaultState;

@@ -14,6 +14,7 @@ import requestAction from '../Common/Actions/requestAction';
 import Endpoints, { globalCookiePolicy } from '../../Endpoints';
 import { MAKE_REQUEST,
   REQUEST_SUCCESS,
+  REQUEST_COMPLETED,
   REQUEST_ERROR, RESET } from '../Common/Actions/Actions';
 
 /* Action Constants */
@@ -29,7 +30,7 @@ const UPDATE_CONSUMER_PIC = 'KYCREDUCER/UPDATE_CONSUMER_PIC';
 const RETRIEVE_INITIAL_STATUSES = 'KYCREDUCER/RETRIEVE_INITIAL_STATUSES';
 
 const UPDATE_STATUSES = 'KYCREDUCER/UPDATE_STATUSES';
-
+const CLEAR_LOCAL_FILES = 'KYCREDUCER/CLEAR_LOCAL_FILES';
 
 const UPDATE_CONSUMER_COMMENT_DATA = 'KYCREDUCER/UPDATE_CONSUMER_COMMENT_DATA';
 const UPDATE_ID_COMMENT_DATA = 'KYCREDUCER/UPDATE_ID_COMMENT_DATA';
@@ -40,7 +41,7 @@ const UPDATE_ADDRESS_COMMENT_DATA = 'KYCREDUCER/UPDATE_ADDRESS_COMMENT_DATA';
 /* *************** Begininning of Action Creators **************** */
 const getUserData = (f) => {
   return (dispatch) => {
-    dispatch({ type: MAKE_REQUEST, f});
+    dispatch({ type: MAKE_REQUEST});
     //
     console.log(f);
     const payload = {
@@ -104,6 +105,8 @@ const getUserData = (f) => {
 const uploadAndSave = (formData, proofType) => {
   return (dispatch) => {
     const fileUploadUrl = Endpoints.file_upload;
+
+    dispatch({ type: MAKE_REQUEST});
     // const currentUser = consumerId;
     const pType = proofType;
     // const fetchedObj = {};
@@ -179,7 +182,10 @@ const uploadAndSave = (formData, proofType) => {
     };
     */
 
-    return dispatch(requestAction(fileUploadUrl, options, proofActionMap[pType], REQUEST_ERROR));
+    return Promise.all([
+      dispatch(requestAction(fileUploadUrl, options, proofActionMap[pType], REQUEST_ERROR)),
+      dispatch({ type: REQUEST_COMPLETED})
+    ]);
     /*
       .then(saveFileUrl)
       .then(consumerKycFetch)
@@ -189,12 +195,14 @@ const uploadAndSave = (formData, proofType) => {
   };
 };
 
-const updateConsumerKyc = (id, status) => {
+const updateConsumerKyc = (id, status, userId) => {
   return (dispatch) => {
     const userUpdate = {};
     const url = Endpoints.db + '/table/consumer_kyc/update';
+    const currStatus = status;
+    const currUserId = userId;
     userUpdate.values = {
-      'status': status
+      'status': status,
     };
     userUpdate.returning = ['id'];
     userUpdate.where = {
@@ -208,19 +216,45 @@ const updateConsumerKyc = (id, status) => {
     };
     return dispatch(requestAction(url, queryObj))
       .then((resp) => {
+        /* If the KYC Status Update is successfull then update consumer level_id also */
         if (resp.returning.length > 0) {
-          alert('Consumer KYC Updated Successfully');
+          const consumerUpdate = {};
+          const consumerUrl = Endpoints.db + '/table/consumer/update';
+          consumerUpdate.values = {
+            'level_id': (currStatus === 'Verified') ? 2 : 1
+          };
+          consumerUpdate.where = {
+            'id': parseInt(currUserId, 10)
+          };
+          consumerUpdate.returning = ['id'];
+
+          const consumerQueryObj = {
+            method: 'POST',
+            body: JSON.stringify(consumerUpdate),
+            headers: { 'Content-Type': 'application/json' },
+            credentials: globalCookiePolicy
+          };
+          return dispatch(requestAction(consumerUrl, consumerQueryObj));
         }
+      })
+      .then( () => {
+        alert('Consumer Updated Successfully');
+      })
+      .catch( () => {
+        alert('Something went wrong while updating KYC');
       });
   };
 };
 
-const uploadKycsAndUpdate = (insertObjs, kycStatus, kycId) => {
+const uploadKycsAndUpdate = (insertObjs) => {
   return (dispatch) => {
     const url = Endpoints.db + '/table/kyc_files/insert';
     const insertObj = {};
+    /*
     const currentKycId = kycId;
     const currentKycStatus = kycStatus;
+    const currConsumerId = consumerId;
+    */
     let queryObj;
     insertObj.objects = insertObjs;
     insertObj.returning = ['id'];
@@ -234,7 +268,8 @@ const uploadKycsAndUpdate = (insertObjs, kycStatus, kycId) => {
     const updateKyc = (response) => {
       console.log('InsideUpdateKyc');
       console.log(response);
-      return dispatch(updateConsumerKyc(currentKycId, currentKycStatus));
+      // return response; // dispatch(updateConsumerKyc(currentKycId, currentKycStatus, currConsumerId));
+      dispatch({type: CLEAR_LOCAL_FILES});// (currentKycId, currentKycStatus, currConsumerId));
     };
 
     return dispatch(requestAction(url, queryObj))
@@ -304,18 +339,21 @@ const deleteFromServer = (id, imageIdentifier, userId) => {
     return dispatch(requestAction(url, queryObj))
       .then((resp) => {
         if (resp.returning.length > 0) {
-          alert('Image Successfully Deleted');
+          // alert('Image Successfully Deleted');
           return dispatch(getUserData(currentUserId));
         }
       });
   };
 };
 
-const updateExistingKycs = (requestObjs, id, status) => {
+const updateExistingKycs = (requestObjs) => {
   return (dispatch) => {
     const url = Endpoints.db + '/table/kyc_files/update';
+    /*
     const currId = id;
     const currStatus = status;
+    const currConsumerId = userId;
+    */
     /*
     let queryObj;
     let requestCount = 0;
@@ -334,7 +372,7 @@ const updateExistingKycs = (requestObjs, id, status) => {
         .then(() => {
           let currIndex;
           currIndex = index + 1;
-          return (currIndex === requestObjs.length) ? dispatch(updateConsumerKyc(currId, currStatus)) : executeInSeries(requestObjs[currIndex], currIndex);
+          return (currIndex === requestObjs.length) ? 'Success' : executeInSeries(requestObjs[currIndex], currIndex);
         })
         .catch(() => {
           console.log('error Creeped up');
@@ -343,9 +381,10 @@ const updateExistingKycs = (requestObjs, id, status) => {
 
     if (requestObjs.length > 0) {
       executeInSeries(requestObjs[0], 0);
-    } else {
-      return dispatch(updateConsumerKyc(currId, currStatus));
     }
+    /* else {
+      return dispatch(updateConsumerKyc(currId, currStatus, currConsumerId));
+    }*/
 
     /*
     requestObjs.forEach( (requestObj) => {
@@ -371,6 +410,47 @@ const updateExistingKycs = (requestObjs, id, status) => {
   };
 };
 
+/* Function to update */
+const updateKycs = (requestObjs, insertObjs, kycId, kycStatus, consumerId) => {
+  return (dispatch) => {
+    const currId = kycId;
+    const currStatus = kycStatus;
+    const currConsumerId = consumerId;
+
+    dispatch({ type: MAKE_REQUEST});
+    if (insertObjs.length > 0) {
+      return Promise.all([
+        dispatch(updateExistingKycs(requestObjs)),
+        dispatch(uploadKycsAndUpdate(insertObjs)),
+        dispatch(updateConsumerKyc(currId, currStatus, currConsumerId))
+      ])
+      .then( () => {
+        return Promise.all([
+          dispatch(getUserData(parseInt(currConsumerId, 10))),
+          dispatch({ type: REQUEST_COMPLETED})
+        ]);
+      })
+      .catch( () => {
+        console.log('Error Occured');
+      });
+    }
+    return Promise.all([
+      dispatch(updateExistingKycs(requestObjs)),
+      dispatch(updateConsumerKyc(currId, currStatus, currConsumerId))
+    ])
+    .then( () => {
+      return Promise.all([
+        dispatch(getUserData(parseInt(currConsumerId, 10))),
+        dispatch({ type: REQUEST_COMPLETED})
+      ]);
+    })
+    .catch( () => {
+      console.log('Error Occured');
+    });
+  };
+};
+/* End of it */
+
 /* End of Action Creators */
 
 /* ********************* REDUCER ************************** */
@@ -379,24 +459,34 @@ const kycReducer = (state = defaultKycState, action) => {
   let expr = [];
   let flag = false;
   switch (action.type) {
+    /* Reducer function for storing the recently uploaded picture */
     case ADD_CONSUMER_PIC:
       return {...state, consumerPIC: [...state.consumerPIC, action.data[0]], isConsumerPICUploaded: true};
     case ADD_ID_PROOF:
       return {...state, idProof: [...state.idProof, action.data[0]], isIdProofUploaded: true};
     case ADD_ADDRESS_PROOF:
       return {...state, addressProof: [...state.addressProof, action.data[0]], isAddressProofUploaded: true};
+    /* End of It */
+
+    /* For Showing/Hiding the comment box */
     case UPDATE_CONSUMER_COMMENT:
       return {...state, consumerCommentStatus: action.data};
     case UPDATE_ADDRESS_COMMENT:
       return {...state, addressCommentStatus: action.data};
     case UPDATE_ID_COMMENT:
       return {...state, idCommentStatus: action.data};
+    /* End of It */
+
+    /* For capturing values from all the comment boxes */
     case UPDATE_CONSUMER_COMMENT_DATA:
       return {...state, consumerPICVComment: action.data};
     case UPDATE_ID_COMMENT_DATA:
       return {...state, idProofVComment: action.data};
     case UPDATE_ADDRESS_COMMENT_DATA:
       return {...state, addressProofVComment: action.data};
+    /* End of it */
+
+    /* Reducer to manage proof pictures when consumer pic is added and removed without syncing with the server */
     case UPDATE_CONSUMER_PIC:
       expr = (action.data) ? [...state.consumerPIC.slice(0, action.data), ...state.consumerPIC.slice(action.data + 1) ] : [...state.consumerPIC.slice(action.data + 1)];
       /* If all the consumer pics are deleted disable the consumerPicUploaded Flag */
@@ -410,6 +500,9 @@ const kycReducer = (state = defaultKycState, action) => {
       expr = (action.data) ? [...state.addressProof.slice(0, action.data), ...state.addressProof.slice(action.data + 1) ] : [...state.addressProof.slice(action.data + 1)];
       flag = ( expr.length > 0) ? true : false;
       return {...state, addressProof: [...expr], isAddressProofUploaded: flag};
+    /* End of It */
+    case CLEAR_LOCAL_FILES:
+      return {...state, consumerPIC: [], idProof: [], addressProof: []};
     case RETRIEVE_INITIAL_STATUSES:
       let initialConsumerVStatus = false;
       let initialIdVStatus = false;
@@ -419,10 +512,15 @@ const kycReducer = (state = defaultKycState, action) => {
       let initialAddress2Value = '';
       let initialCityValue = '';
       let initialPincodeValue = '';
-      const addressProofInfo = {};
-      const consumerPICInfo = {};
-      const idProofInfo = {};
+      let addressProofInfo = {};
+      let consumerPICInfo = {};
+      let idProofInfo = {};
 
+      addressProofInfo = Object.assign({}, state.defaultAddressProof);
+      consumerPICInfo = Object.assign({}, state.defaultConsumerPIC);
+      idProofInfo = Object.assign({}, state.defaultIdProof);
+
+      /* If the data is already available, populate the value properly */
       if (action.data[0].kycs.length > 0) {
         const consumerPIC = action.data[0].kycs[0].files.filter( (file) => {
           return (file.proof_type === 'CONSUMERPIC');
@@ -478,7 +576,8 @@ const kycReducer = (state = defaultKycState, action) => {
 /* End of Reducer Definition */
 
 export default kycReducer;
-export {getUserData,
+export {
+  getUserData,
   loadCredentials,
   uploadAndSave,
   updateConsumerKyc,
@@ -493,5 +592,6 @@ export {getUserData,
   UPDATE_ADDRESS_COMMENT_DATA,
   UPDATE_CONSUMER_COMMENT_DATA,
   UPDATE_ID_COMMENT_DATA,
-  updateExistingKycs
+  updateExistingKycs,
+  updateKycs
 };

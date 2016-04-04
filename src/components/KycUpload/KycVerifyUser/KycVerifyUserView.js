@@ -1,34 +1,26 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import Loading from '../Common/Loading';
+import Loading from '../../Common/Loading';
 import {
   getUserData,
-  uploadAndSave,
   RESET,
   UPDATE_STATUSES,
   updateKycs,
-  /*
-  uploadKycsAndUpdate,
-  updateConsumerKyc,
-  updateExistingKycs,
-  */
   UPDATE_CONSUMER_COMMENT,
   UPDATE_ID_COMMENT,
   UPDATE_ADDRESS_COMMENT,
-  deleteFromLocal,
-  deleteFromServer,
   UPDATE_CONSUMER_COMMENT_DATA,
   UPDATE_ID_COMMENT_DATA,
   UPDATE_ADDRESS_COMMENT_DATA
-} from './KycUploadViewActions';
+} from '../KycUploadViewActions';
 // import { makeRequest} from '../FileUpload/Actions';
-import TableProfileHeader from './TableProfileHeader';
-import Endpoints from '../../Endpoints';
+import TableProfileHeader from '../TableProfileHeader';
+import Endpoints from '../../../Endpoints';
 
 // import TableHeader from './TableHeader';
 // import {editItem, E_ONGOING_REQ} from './EditActions';
 
-class KycUploadProfile extends Component {
+class KycVerifyProfile extends Component {
   componentWillMount() {
     // this.props.dispatch({type: GET_CONSUMER, data: this.props.params.Id});
     this.props.dispatch(getUserData(parseInt(this.props.params.Id, 10)));
@@ -36,52 +28,7 @@ class KycUploadProfile extends Component {
   componentWillUnmount() {
     this.props.dispatch({type: RESET});
   }
-  /* Function which listens on upload click on the page and dispatches it to the reducer */
-  onUploadClick(e) {
-    e.preventDefault();
-    // const { Id: consumerId } = this.props.params;
-    const idToTypeMap = {};
-    const idToFileMap = {};
-    const formData = new FormData();
-    let domId;
-    let fileDOM;
 
-    idToTypeMap.customer_upload = 'CONSUMERPIC';
-    idToTypeMap.id_proof = 'IDPROOF';
-    idToTypeMap.address_proof = 'ADDRESSPROOF';
-
-    idToFileMap.customer_upload = 'customer_upload';
-    idToFileMap.id_proof = 'id_proof';
-    idToFileMap.address_proof = 'address_proof';
-
-    domId = e.target.getAttribute('id');
-    fileDOM = document.querySelectorAll("[data-field-name='" + idToFileMap[domId] + "']")[0];
-
-    /* Check if the user has selected any files or not */
-    if (fileDOM.files[0]) {
-      formData.append('file', fileDOM.files[0]);
-
-      /* Call a function to upload the file then insert it into the consumer kyc Table
-       * */
-
-      this.props.dispatch(uploadAndSave(formData, idToTypeMap[domId]));
-    }
-  }
-  /* Function which handles image delete (Both from local and from the server)
-   * Local: Image uploaded but not synced with the server
-   * Server: Image present on the server
-   * */
-  onImageDelete(e) {
-    const deleteLoc = e.target.getAttribute('data-del-loc');
-    const deleteActionDictionary = {};
-    const imageId = parseInt(e.target.getAttribute('id'), 10);
-    const imageIdentifier = e.target.getAttribute('data-del-image');
-    const { Id: userId } = this.props.params;
-    deleteActionDictionary.local = deleteFromLocal;
-    deleteActionDictionary.server = deleteFromServer;
-
-    this.props.dispatch(deleteActionDictionary[deleteLoc](imageId, imageIdentifier, userId));
-  }
   onInputFieldChanges(e) {
     const updateObjs = {};
     const identi = e.target.getAttribute('data-field-name');
@@ -147,8 +94,6 @@ class KycUploadProfile extends Component {
     this.props.dispatch({type: idToActionMap[identi], 'data': selectStatus});
   }
   uploadKYCDetails() {
-    const { consumerPIC, idProof, addressProof, isConsumerPICUploaded, isIdProofUploaded, isAddressProofUploaded} = this.props;
-
     /* Consumer KYC need to exist first then id will be present */
     const kycId = this.props.lastSuccess[0].kycs[0].id;
     const { Id: userId } = this.props.params;
@@ -197,55 +142,7 @@ class KycUploadProfile extends Component {
     let updateConsumers = false;
     let updateIdProof = false;
     let updateAddressProof = false;
-
     /* End of It */
-
-    /* If isUploaded is true meaning we need to tag the file in kyc_files else no need for that step */
-    if (isConsumerPICUploaded || isIdProofUploaded || isAddressProofUploaded) {
-      consumerPIC.forEach((file) => {
-        const singleObj = {};
-        singleObj.proof_type = 'CONSUMERPIC';
-        singleObj.file = file;
-        singleObj.comment = consumerComment;
-        singleObj.status = consumerPICVerification;
-        singleObj.consumer_kyc_id = kycId;
-        singleObj.is_active = true;
-        singleObj.created_at = new Date().toISOString();
-        singleObj.updated_at = new Date().toISOString();
-        insertObjs.push(singleObj);
-      });
-      idProof.forEach((file) => {
-        const singleObj = {};
-        singleObj.proof_type = 'IDPROOF';
-        singleObj.file = file;
-        singleObj.comment = idComment;
-        singleObj.status = idProofVerification;
-        singleObj.consumer_kyc_id = kycId;
-        singleObj.created_at = new Date().toISOString();
-        singleObj.updated_at = new Date().toISOString();
-        singleObj.pan_number = panID;
-        singleObj.is_active = true;
-        insertObjs.push(singleObj);
-      });
-      addressProof.forEach((file) => {
-        const singleObj = {};
-        singleObj.proof_type = 'ADDRESSPROOF';
-        singleObj.file = file;
-        singleObj.comment = addressComment;
-        singleObj.status = addressProofVerification;
-        singleObj.consumer_kyc_id = kycId;
-        singleObj.created_at = new Date().toISOString();
-        singleObj.updated_at = new Date().toISOString();
-        singleObj.address1 = address1;
-        singleObj.address2 = address2;
-        singleObj.pin_code = pincode;
-        singleObj.id_type = proofType;
-        singleObj.city = city;
-        singleObj.is_active = true;
-        insertObjs.push(singleObj);
-      });
-//      this.props.dispatch(uploadKycsAndUpdate(insertObjs, consumerKYCStatus, kycId, userId));
-    }
 
     /* Check if there are any changes which needs to be updated */
     if (kycFiles.length > 0) {
@@ -325,7 +222,7 @@ class KycUploadProfile extends Component {
     this.props.dispatch( { type: commentActionMap[identi], data: commentVal });
   }
   render() {
-    const styles = require('./Table.scss');
+    const styles = require('./../Table.scss');
     let consumerPic;
     let idPic;
     let addressPic;
@@ -335,6 +232,9 @@ class KycUploadProfile extends Component {
     let hasConsumerPic = false;
     let hasIDProofPic = false;
     let hasAddressPic = false;
+    let isConsumerPICUploaded = false;
+    let isIdProofUploaded = false;
+    let isAddressProofUploaded = false;
 
     const reservationHtml = () => {
       return (
@@ -364,9 +264,6 @@ class KycUploadProfile extends Component {
       ongoingRequest,
       lastError,
       lastSuccess,
-      consumerPIC,
-      idProof,
-      addressProof,
       consumerCommentStatus,
       idCommentStatus,
       addressCommentStatus,
@@ -393,49 +290,12 @@ class KycUploadProfile extends Component {
       proofType
     } = this.props;
 
-    let {
-      isConsumerPICUploaded,
-      isIdProofUploaded,
-      isAddressProofUploaded
-    } = this.props;
-
     /*
      * Get the correct data (In the initial page load take the lastSuccess object and if the update happens (File upload happens) take that object)
      * */
 
     const populateImageHtml = () => {
-      if (isConsumerPICUploaded || isIdProofUploaded || isAddressProofUploaded) {
-        currentConsumerPic = consumerPIC.map((file, index) => {
-          const imgUrl = Endpoints.file_get + file;
-          hasConsumerPic = true;
-          return (
-            <div className={styles.image_actions} key={index} data-field-name="consumerPic">
-              <img key={index} src={ imgUrl } className="img-responsive"/>
-              <p className={styles.close} data-del-image="consumerPic" id={index} data-del-loc="local" onClick={ this.onImageDelete.bind(this) }>X</p>
-            </div>
-          );
-        });
-        currentIdPic = idProof.map((file, index) => {
-          const imgUrl = Endpoints.file_get + file;
-          hasIDProofPic = true;
-          return (
-            <div className={styles.image_actions} key={index}>
-              <img key={index} src={ imgUrl } className="img-responsive"/>
-              <p className={styles.close} id={index} data-del-image="idPic" data-del-loc="local" onClick={ this.onImageDelete.bind(this) }>X</p>
-            </div>
-          );
-        });
-        currentAddressPic = addressProof.map((file, index) => {
-          const imgUrl = Endpoints.file_get + file;
-          hasAddressPic = true;
-          return (
-            <div className={styles.image_actions} key={index} >
-              <img key={index} src={ imgUrl } className="img-responsive"/>
-              <p className={styles.close} data-del-loc="local" data-del-image="addressPic" id={index} onClick={ this.onImageDelete.bind(this) } >X</p>
-            </div>
-          );
-        });
-      } if (lastSuccess.length > 0) {
+      if (lastSuccess.length > 0) {
         if (lastSuccess[0].kycs) {
           consumerPic = lastSuccess[0].kycs[0].files.map((file, index) => {
             const imgUrl = Endpoints.file_get + file.file;
@@ -445,7 +305,6 @@ class KycUploadProfile extends Component {
               return (
                 <div className={styles.image_actions} key={index} >
                   <img key={index} src={ imgUrl } className="img-responsive"/>
-                  <p className={styles.close} id={file.id} data-del-image="consumerPic" data-del-loc="server" onClick={ this.onImageDelete.bind(this) }>X</p>
                 </div>
               );
             }
@@ -459,7 +318,6 @@ class KycUploadProfile extends Component {
               return (
                 <div className={styles.image_actions} key={index}>
                   <img key={index} src={ imgUrl } className="img-responsive"/>
-                  <p className={styles.close} id={file.id} data-del-image="idPic" data-del-loc="server" onClick={ this.onImageDelete.bind(this) }>X</p>
                 </div>
               );
             }
@@ -473,7 +331,6 @@ class KycUploadProfile extends Component {
               return (
                 <div className={styles.image_actions} key={index}>
                   <img key={index} src={ imgUrl } className="img-responsive"/>
-                  <p className={styles.close} id={file.id} data-del-image="addressPic" data-del-loc="server" onClick={ this.onImageDelete.bind(this) }>X</p>
                 </div>
               );
             }
@@ -770,6 +627,7 @@ class KycUploadProfile extends Component {
                 { consumerPic }
                 { currentConsumerPic }
               </div>
+              {/*
               <div className={styles.upload_actions}>
                 <input type="file" className="" data-field-name="customer_upload" placeholder="username" />
                 <div className={styles.upload_action_button}>
@@ -778,6 +636,7 @@ class KycUploadProfile extends Component {
                   </button>
                 </div>
               </div>
+              */}
             </div>
             <div className={styles.upload_white}>
               <p className={styles.upload_header}>
@@ -791,6 +650,7 @@ class KycUploadProfile extends Component {
                 <img src="" className="img-responsive"/>
                 */}
               </div>
+              {/*
               <div className={styles.upload_actions}>
                 <input type="file" className="" data-field-name="id_proof" placeholder="username" />
                 <div className={styles.upload_action_button}>
@@ -799,6 +659,7 @@ class KycUploadProfile extends Component {
                   </button>
                 </div>
               </div>
+              */}
             </div>
             <div className={styles.upload_white}>
               <p className={styles.upload_header}>
@@ -812,6 +673,7 @@ class KycUploadProfile extends Component {
                 <img src="" className="img-responsive"/>
                 */}
               </div>
+              {/*
               <div className={styles.upload_actions}>
                 <input type="file" className="" data-field-name="address_proof" placeholder="username" />
                 <div className={styles.upload_action_button}>
@@ -820,6 +682,7 @@ class KycUploadProfile extends Component {
                   </button>
                 </div>
               </div>
+              */}
             </div>
           </div>
         </div>
@@ -847,18 +710,12 @@ class KycUploadProfile extends Component {
   }
 }
 
-KycUploadProfile.propTypes = {
+KycVerifyProfile.propTypes = {
   params: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
   ongoingRequest: PropTypes.bool.isRequired,
   lastError: PropTypes.object.isRequired,
   lastSuccess: PropTypes.array.isRequired,
-  consumerPIC: PropTypes.array.isRequired,
-  idProof: PropTypes.array.isRequired,
-  addressProof: PropTypes.array.isRequired,
-  isConsumerPICUploaded: PropTypes.bool.isRequired,
-  isIdProofUploaded: PropTypes.bool.isRequired,
-  isAddressProofUploaded: PropTypes.bool.isRequired,
   consumerCommentStatus: PropTypes.string.isRequired,
   addressCommentStatus: PropTypes.string.isRequired,
   idCommentStatus: PropTypes.string.isRequired,
@@ -892,4 +749,4 @@ const mapStateToProps = (state) => {
   return {...state.kyc, ...state.page_data};
 };
 
-export default connect(mapStateToProps)(KycUploadProfile);
+export default connect(mapStateToProps)(KycVerifyProfile);

@@ -9,7 +9,7 @@ import defaultState from './DefaultState';
 const commonReducer = (state = defaultState, action) => {
   switch (action.type) {
     case MAKE_REQUEST:
-      return {...state, ongoingRequest: true, lastSuccess: [], lastError: {}};
+      return {...state, ongoingRequest: true};
     case REQUEST_SUCCESS:
       return {...state, ongoingRequest: false, lastSuccess: action.data, lastError: {}, credentials: action.data};
     case COUNT_FETCHED:

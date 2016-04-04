@@ -29,6 +29,7 @@ export Reservations from './Reservation/ViewProfile';
 // export ViewKyc from './KycUpload/ViewTable';
 // export ViewKycProfile from './Kyc/KycView';
 export KycViewUpload from './KycUpload/KycUploadViews';
+export KycViewVerify from './KycUpload/KycVerifyUser/KycVerifyUserView';
 export StateManagement from './SkuManagement/State/StateManagement';
 export GenreManagement from './SkuManagement/Genre/GenreManagement';
 export CategoryManagement from './SkuManagement/Category/CategoryManagement';

@@ -29,6 +29,7 @@ import {Login, Home, PageContainer,
   ViewStates,
   ViewState,
   KycViewUpload,
+  KycViewVerify,
   ViewSkus, ViewSku, ViewCart, Reservations, ViewDevice, RechargeHistory, StateManagement, CustomerTransaction,
   CreateNotepadEntry, Notepad, EditAccountDetails, Skus, Toppicks, AddToppicks, CreateSku, SkuManagementViewSkus,
   SkuManagementToppicks,
@@ -114,6 +115,7 @@ const main = (
         {/*
         */}
         <Route path="consumer/kycfunctions/upload_kyc/upload_kyc_profile/:Id" component={KycViewUpload} />
+        <Route path="consumer/kycfunctions/verify_kyc/view_kyc_profile/:Id" component={KycViewVerify} />
         {/*
         <Route path="consumer/kycfunctions/verify_kyc/view_kyc_profile/:Id" component={ViewKycProfile} />
         */}
