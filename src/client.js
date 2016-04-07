@@ -66,6 +66,9 @@ const _finalCreateStore = compose(
 
 const store = _finalCreateStore(reducer);
 
+console.log('Store is as follows');
+console.log(store);
+
 /* ****************************************************************** */
 
 // Enable hot reloading

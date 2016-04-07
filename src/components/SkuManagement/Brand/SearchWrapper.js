@@ -53,9 +53,9 @@ const SearchWrapper = ( {data} ) => {
                   <th> ID </th>
                   <th> State Name </th>
                   <th> Status </th>
-                  <th> Company </th>
                   <th> Category </th>
                   <th> Genre </th>
+                  <th> Company </th>
                   <th> Updated At </th>
                   <th> Created At </th>
                 </tr>

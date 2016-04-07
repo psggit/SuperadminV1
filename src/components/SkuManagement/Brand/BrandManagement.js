@@ -6,6 +6,26 @@ import SearchWrapper from './SearchWrapper';
 
 import PaginationContainer from '../../CustomerTransaction/components/Recharge/Pagination';
 
+/*
+function resetPreviousState(Component) {
+  const FeaturedComponent = React.createClass({
+    propTypes: {
+      dispatch: PropTypes.func.isRequired
+    },
+    componentWillUnmount() {
+      this.props.dispatch({ type: RESET });
+    },
+    render() {
+      console.log('I am inside this decorated Component');
+      return (
+          <Component {...this.props} {...this.states} />
+        );
+    }
+  });
+  return FeaturedComponent;
+}
+*/
+
 class BrandManagement extends React.Component { // eslint-disable-line no-unused-vars
   componentDidMount() {
     /* Fetch the state data */
@@ -162,4 +182,11 @@ const mapStateToProps = (state) => {
   return {...state.page_data};
 };
 
+/*
+const mapDispatchToProps = (dispatch) => {
+  return { actions: bindActionCreators([() => { return {type: RESET}; }], dispatch) };
+};*/
+
 export default connect(mapStateToProps)(BrandManagement);
+
+// export default resetPreviousState(connectedComponent);

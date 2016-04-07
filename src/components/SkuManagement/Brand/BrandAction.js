@@ -9,7 +9,7 @@ import { MAKE_REQUEST,
   REQUEST_COMPLETED,
   REQUEST_SUCCESS,
   COUNT_FETCHED,
-  REQUEST_ERROR } from '../../Common/Actions/Actions';
+  REQUEST_ERROR, RESET } from '../../Common/Actions/Actions';
 
 import { routeActions } from 'redux-simple-router';
 // import commonReducer from '../Common/Actions/CommonReducer';
@@ -271,6 +271,7 @@ export {
   fetchCompany,
   insertBrand,
   getBrandData,
-  getAllBrandData
+  getAllBrandData,
+  RESET
 };
 export default brandReducer;
