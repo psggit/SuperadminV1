@@ -236,6 +236,7 @@ const getAllBrandData = (page) => {
   return (dispatch) => {
     dispatch(getBrandCount())
       .then(() => {
+        console.log('GetBranDData Called Now');
         return dispatch(getBrandData(gotPage));
       })
       .then(() => {

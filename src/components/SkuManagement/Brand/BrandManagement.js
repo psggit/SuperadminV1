@@ -7,6 +7,14 @@ import SearchWrapper from './SearchWrapper';
 import PaginationContainer from '../../CustomerTransaction/components/Recharge/Pagination';
 
 /*
+ * Decorator which adds couple of use ful features like
+ * 1. Clearing the state on component unmount
+ * 2. Displaying/Hiding Loading icon on ajax fetch/complete
+*/
+import commonDecorator from '../../Common/CommonDecorator';
+import BreadCrumb from '../../Common/BreadCrumb';
+
+/*
 function resetPreviousState(Component) {
   const FeaturedComponent = React.createClass({
     propTypes: {
@@ -26,7 +34,33 @@ function resetPreviousState(Component) {
 }
 */
 
+/*
+ 1. Required Components:
+      a) Pagination
+      b) Loading Screen
+      c) Search
+      d) Header
+      e) Listing Component
+*/
+
+
 class BrandManagement extends React.Component { // eslint-disable-line no-unused-vars
+  constructor() {
+    super();
+    this.breadCrumbs = [];
+    this.breadCrumbs.push({
+      title: 'SKU Management',
+      sequence: 1,
+      link: '#',
+      disabled: true
+    });
+    this.breadCrumbs.push({
+      title: 'Manage Brand',
+      sequence: 2,
+      link: '#',
+      disabled: true
+    });
+  }
   componentDidMount() {
     /* Fetch the state data */
     const {query} = this.props.location;
@@ -43,18 +77,18 @@ class BrandManagement extends React.Component { // eslint-disable-line no-unused
   }
   render() {
     const styles = require('./BrandManagement.scss');
-    const { ongoingRequest, lastError, lastSuccess, count} = this.props;
+    const { lastSuccess, count } = this.props;
     const {query} = this.props.location;
     const page = (Object.keys(query).length > 0) ? parseInt(query.p, 10) : 1;
-    console.log(lastError);
-    console.log(ongoingRequest);
-    console.log(lastSuccess);
     // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
     return (
         <div className={styles.container}>
+          <BreadCrumb breadCrumbs={this.breadCrumbs} />
+          {/*
           <div className={styles.head_container}>
          		SKU Management / Manage Brand
          	</div>
+          */}
          	<div className={styles.search_wrapper + ' ' + styles.wd_100}>
          		<p>Search</p>
          		<div className={styles.search_form + ' ' + styles.wd_100}>
@@ -187,6 +221,9 @@ const mapDispatchToProps = (dispatch) => {
   return { actions: bindActionCreators([() => { return {type: RESET}; }], dispatch) };
 };*/
 
-export default connect(mapStateToProps)(BrandManagement);
+const decoratedConnectedComponent = commonDecorator(BrandManagement);// connect(mapStateToProps)(CommonDecorator);
+
+export default connect(mapStateToProps)(decoratedConnectedComponent);
+// export default decoratedConnectedComponent(BrandManagement);
 
 // export default resetPreviousState(connectedComponent);

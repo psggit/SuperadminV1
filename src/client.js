@@ -60,14 +60,15 @@ const DevTools = require('./helpers/DevTools/DevTools');
 const reduxSimpleRouterMiddleware = syncHistory(browserHistory);
 const _finalCreateStore = compose(
   applyMiddleware(thunk, reduxSimpleRouterMiddleware, createLogger()),
+  /* The following two lines are used for time travel and debug functionality
+   * So how it works
+   *  1. It connects to a store and sends the output to the dock monitor which is your chrome extension
+  */
   DevTools.instrument(),
   require('redux-devtools').persistState( window.location.href.match(/[?&]debug_session=([^&]+)\b/))
 )(createStore);
 
 const store = _finalCreateStore(reducer);
-
-console.log('Store is as follows');
-console.log(store);
 
 /* ****************************************************************** */
 
