@@ -164,19 +164,17 @@ const getBrandCount = () => {
   };
 };
 
-const getBrandData = (page) => {
+const getBrandData = (page, limit) => {
   return (dispatch) => {
     dispatch({ type: MAKE_REQUEST});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
     let offset = 0;
-    let limit = 0;
     // const count = currentProps.count;
 
     // limit = (page * 10) > count ? count : ((page) * 10);
     // limit = ((page) * 10);
-    limit = 10;
-    offset = (page - 1) * 10;
+    offset = (page - 1) * limit;
 
     const payload = {
       columns: ['*',
@@ -230,14 +228,14 @@ const getBrandData = (page) => {
   };
 };
 
-const getAllBrandData = (page) => {
+const getAllBrandData = (page, limit) => {
   const gotPage = page;
+  const gotLimit = limit;
   /* Dispatching first one */
   return (dispatch) => {
     dispatch(getBrandCount())
       .then(() => {
-        console.log('GetBranDData Called Now');
-        return dispatch(getBrandData(gotPage));
+        return dispatch(getBrandData(gotPage, gotLimit));
       })
       .then(() => {
         console.log('Brand Data fetched');

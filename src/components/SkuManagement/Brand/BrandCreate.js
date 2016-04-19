@@ -2,9 +2,32 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchGenre, fetchCategory, fetchCompany, insertBrand } from './BrandAction.js';
 
-import TableHeader from '../../Common/TableHeader';
+// import TableHeader from '../../Common/TableHeader';
+
+import commonDecorator from '../../Common/CommonDecorator';
+import BreadCrumb from '../../Common/BreadCrumb';
 
 class BrandCreate extends Component { // eslint-disable-line no-unused-vars
+  constructor() {
+    super();
+    /* Data required for the bread component to render correctly */
+    this.breadCrumbs = [];
+    this.breadCrumbs.push({
+      title: 'SKU Management',
+      sequence: 1,
+      link: '#'
+    });
+    this.breadCrumbs.push({
+      title: 'Manage Brand',
+      sequence: 2,
+      link: '/hadmin/brand_management'
+    });
+    this.breadCrumbs.push({
+      title: 'Create Brand',
+      sequence: 3,
+      link: '#'
+    });
+  }
   componentWillMount() {
     Promise.all([
       this.props.dispatch(fetchCompany()),
@@ -54,7 +77,7 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
     // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
     return (
       <div className={styles.container}>
-        <TableHeader title={'Sku Management/Brand Management/Create'} />
+        <BreadCrumb breadCrumbs={this.breadCrumbs} />
         <div className={styles.create_brand_container}>
           <div className={styles.heading + ' ' + styles.wd_100}>Create Brand</div>
             <ul>
@@ -198,4 +221,6 @@ const mapStateToProps = (state) => {
   return {...state.page_data, ...state.brand_data};
 };
 
-export default connect(mapStateToProps)(BrandCreate);
+
+const decoratedConnectedComponent = commonDecorator(BrandCreate);
+export default connect(mapStateToProps)(decoratedConnectedComponent);
