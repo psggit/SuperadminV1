@@ -51,24 +51,51 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
             <div className={styles.head_container}>
             	SKU Management / Edit State
             </div>
-            <div className={styles.create_state_wrapper}>
-              <p>
-                Edit State
-              </p>
-              <div className={styles.create_form}>
-                <div className={styles.indiv_form}>
-                	<label>State Name</label>
-                	<input type="text" data-field-name="state_name" onChange={this.inputOnChange.bind(this)} value={lastSuccess[0].state_name} />
+            <div className={styles.complete_container}>
+              <div className={styles.create_state_wrapper}>
+                <p>
+                  Edit State
+                </p>
+                <div className={styles.create_form}>
+                  <div className={styles.indiv_form}>
+                  	<label>State Name</label>
+                  	<input type="text" data-field-name="state_name" onChange={this.inputOnChange.bind(this)} value={lastSuccess[0].state_name} />
+                  </div>
+                  {/*
+                  <div className={styles.indiv_form}>
+                  	<label>Status</label>
+                  	<select>
+                  		<option>Pending</option>
+                  	</select>
+                  </div>
+                  */}
+                  <button className={styles.common_btn + ' ' + styles.create_btn } data-state-id={lastSuccess[0].id} onClick={this.onClickEdit.bind(this)}>Edit state</button>
                 </div>
-                {/*
-                <div className={styles.indiv_form}>
-                	<label>Status</label>
-                	<select>
-                		<option>Pending</option>
-                	</select>
+              </div>
+              <div className="clearfix"></div>
+              <div className={styles.cities_conatiner}>
+                <div className={styles.heading}>Cities</div>
+                <a className={styles.add_new}>+ Add New</a>
+                <ul>
+                  <li>
+                    <p>Chennai</p>
+                    <a>Edit</a>
+                  </li>
+                </ul>
+              </div>
+              <div className={styles.add_city_container}>
+                <div className={styles.heading}>Add new city</div>
+                <div className={styles.city_container}>
+                  <p>City Name</p>
+                  <input type="text"/>
                 </div>
-                */}
-                <button className={styles.common_btn + ' ' + styles.create_btn } data-state-id={lastSuccess[0].id} onClick={this.onClickEdit.bind(this)}>Edit state</button>
+                <div className={styles.user_actions}>
+                  <button className={styles.cancel_btn}>Delete</button>
+                  <button className={styles.save_btn}>Update</button>
+                </div>
+              </div>
+              <div className={styles.save_layout}>
+                <button className={styles.save_btn}>Save State</button>
               </div>
             </div>
           </div>
@@ -79,24 +106,50 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
           <div className={styles.head_container}>
           	SKU Management / Create State
           </div>
-          <div className={styles.create_state_wrapper}>
-            <p>
-              Create State
-            </p>
-            <div className={styles.create_form}>
-              <div className={styles.indiv_form}>
-              	<label>State Name</label>
-              	<input type="text" data-field-name="state_name" />
+          <div className={styles.complete_container}>
+            <div className={styles.create_state_wrapper}>
+              <p>
+                Create State
+              </p>
+              <div className={styles.create_form}>
+                <div className={styles.indiv_form}>
+                	<label>State Name</label>
+                	<input type="text" data-field-name="state_name" />
+                </div>
+                <div className={styles.indiv_form}>
+                	<label>Status</label>
+                	<select>
+                		<option>Pending</option>
+                	</select>
+                </div>
+                <button className={styles.common_btn + ' ' + styles.create_btn } onClick={this.onClickHandle.bind(this)} disabled={ongoingRequest ? true : false}>Create state</button>
               </div>
-              {/*
-              <div className={styles.indiv_form}>
-              	<label>Status</label>
-              	<select>
-              		<option>Pending</option>
-              	</select>
+            </div>
+            <div className="clearfix"></div>
+            <div className={styles.cities_conatiner}>
+              <div className={styles.heading}>Cities</div>
+              <a className={styles.add_new}>+ Add New</a>
+              <ul>
+                <li>
+                  <p>Chennai</p>
+                  <a>Edit</a>
+                </li>
+              </ul>
+            </div>
+            <div className={styles.add_city_container}>
+              <div className={styles.heading}>Add new city</div>
+              <div className={styles.city_container}>
+                <p>City Name</p>
+                <input type="text"/>
               </div>
-              */}
-              <button className={styles.common_btn + ' ' + styles.create_btn } onClick={this.onClickHandle.bind(this)} disabled={ongoingRequest ? true : false}>Create state</button>
+              <div className={styles.user_actions}>
+                <button className={styles.cancel_btn}>Cancel</button>
+                <button className={styles.save_btn}>Save</button>
+              </div>
+            </div>
+            <div className="clearfix"></div>
+            <div className={styles.save_layout}>
+              <button className={styles.save_btn}>Save State</button>
             </div>
           </div>
         </div>

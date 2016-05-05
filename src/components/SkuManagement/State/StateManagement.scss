@@ -21,6 +21,12 @@
 	width: 100%;
 	float: left;
 }
+.complete_container
+{
+	width: 100%;
+	float: left;
+	padding: 20px 45px;
+}
 .search_wrapper
 {
 	background: #FFF;
@@ -80,10 +86,10 @@
 {
 	padding: 10px 15px;
 	background: #FFF;
-	margin: 45px;
 	display: inline-block;
 	float: left;
 	font-size: 14px;
+	margin-bottom: 20px;
 	letter-spacing: 0.5px;
 	p
 	{
@@ -264,8 +270,172 @@
 		}
 	}
 }
-
-
+.cities_conatiner
+{
+	display: inline-block;
+	padding: 10px 15px;
+	background: #FFF;
+	float: left;
+	width: 300px;
+	margin-right: 25px;
+	.heading
+	{
+		color: rgba(0,0,0,0.38);
+		font-weight: 500;
+		margin-bottom: 10px;
+		text-transform: uppercase;
+		font-size: 13px;
+		letter-spacing: 0.3px;
+	}
+	.add_new
+	{
+		color: #FF7400;
+		margin-bottom: 10px;
+		float: left;
+		font-size: 13px;
+		&:hover, &:focus
+		{
+			text-decoration: none;
+		}
+	}
+	ul
+	{
+		list-style: none;
+		width: 100%;
+		float: left;
+		margin: 0;
+		height: 300px;
+		overflow: auto;
+		padding: 0;
+	}
+	li
+	{
+		margin-bottom: 15px;
+		width: 100%;
+		float: left;
+		p
+		{
+			font-weight: 400;
+			width: 80%;
+			float: left;
+			color: rgba(0,0,0,0.54);
+			margin-bottom: 0;
+			font-size: 13px;
+		}
+		a
+		{
+			color: #FF7400;
+			float: left;
+			width: 20%;
+			text-align: right;
+			font-size: 13px;
+			&:hover, &:focus
+			{
+				text-decoration: none;
+			}
+		}
+	}
+}
+.add_city_container
+{
+	padding: 10px 15px;
+	background: #FFF;
+	float: left;
+	width: 340px;
+	display: inline-block;
+	margin-left: 25px;
+	.heading
+	{
+		color: rgba(0,0,0,0.38);
+		font-weight: 500;
+		margin-bottom: 10px;
+		text-transform: uppercase;
+		letter-spacing: 0.3px;
+		font-size: 13px;
+	}
+	.city_container
+	{
+		width: 100%;
+		float: left;
+		p
+		{
+			font-weight: 400;
+			color: rgba(0,0,0,0.54);
+			font-size: 13px;
+			display: inline-block;
+			width: 140px;
+		}
+		input
+		{
+			display: inline-block;
+			width: 170px;
+			border: 1px solid #CCCCCC;
+			border-radius: 4px;
+			background: #FFF;
+			height: 30px;
+			padding: 0 10px;
+			color: #4c4c4c;
+			font-size: 12px;
+			font-weight: 400;
+			letter-spacing: 0.5px;
+			transition: all 0.2s linear;
+			&:focus
+			{
+				outline: none;
+				border: 1px solid #FF7400;
+			}
+		}
+	}
+	.user_actions
+	{
+		width: 100%;
+		float: left;
+		padding-top: 15px;
+		padding-bottom: 20px;
+	}
+	.cancel_btn
+	{
+		width: 48%;
+		margin-right: 2%; 
+		height: 30px;
+		color: rgba(255, 116, 0, 0.8);
+		border: 1px solid #FF7400;
+		border-radius: 4px;
+		background: #FFF;
+		cursor: pointer;
+		font-weight: 400;
+		text-align: center;
+		font-size: 13px;
+		letter-spacing: 0.5px;
+		transition: all 0.2s linear;
+		&:hover
+		{
+			color: rgba(255, 116, 0, 1); 
+		}
+		&:focus
+		{
+			outline: none;
+		}
+	}
+	.save_btn
+	{
+		@extend .cancel_btn;
+		margin-left: 2%;
+		margin-right: 0;
+	}
+}
+.save_layout
+{
+	width: 100%;
+	float: left;
+	padding-top: 20px;
+	text-align: center;
+	.save_btn
+	{
+		@extend .common_btn;
+		margin: auto;
+	}
+}
 
 
 
