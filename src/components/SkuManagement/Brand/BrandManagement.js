@@ -46,14 +46,18 @@ class BrandManagement extends React.Component { // eslint-disable-line no-unused
   triggerPageChange(clickedPage, limit) {
     this.props.dispatch(getBrandData(clickedPage, limit));
   }
+  get myName() {
+    return 'Karthik Venkateswaran';
+  }
   render() {
     const styles = require('./BrandManagement.scss');
     const { lastSuccess } = this.props;
 
+    console.log('my name is ');
+    console.log(this.myName);
     // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
     return (
         <div className={styles.container}>
-
           <BreadCrumb breadCrumbs={this.breadCrumbs} />
 
          	<div className={styles.search_wrapper + ' ' + styles.wd_100}>
@@ -71,10 +75,15 @@ class BrandManagement extends React.Component { // eslint-disable-line no-unused
               <button className={styles.common_btn}>Create Brand</button>
             </Link>
           </div>
-
           <SearchWrapper data={lastSuccess}/>
-
-          <PaginationWrapper {...this.props } fetchInitialData={ this.fetchInitialData.bind(this) } limit="10" triggerPageChange={ this.triggerPageChange.bind(this) } showMax="5" parentUrl="/hadmin/brand_management" />
+          <PaginationWrapper
+            {...this.props }
+            fetchInitialData = { this.fetchInitialData.bind(this) }
+            limit = "10"
+            triggerPageChange={ this.triggerPageChange.bind(this) }
+            showMax="5"
+            parentUrl="/hadmin/brand_management"
+          />
         </div>
       );
   }

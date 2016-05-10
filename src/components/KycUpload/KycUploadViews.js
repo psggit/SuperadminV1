@@ -37,13 +37,15 @@ class KycUploadProfile extends Component {
     this.props.dispatch({type: RESET});
   }
   /* Function which listens on upload click on the page and dispatches it to the reducer */
-  onUploadClick(e) {
+  onUploadClick(domId, e) {
+    console.log(e.target);
+    console.log(domId);
     e.preventDefault();
     // const { Id: consumerId } = this.props.params;
     const idToTypeMap = {};
     const idToFileMap = {};
     const formData = new FormData();
-    let domId;
+    // let domId;
     let fileDOM;
 
     idToTypeMap.customer_upload = 'CONSUMERPIC';
@@ -54,7 +56,7 @@ class KycUploadProfile extends Component {
     idToFileMap.id_proof = 'id_proof';
     idToFileMap.address_proof = 'address_proof';
 
-    domId = e.target.getAttribute('id');
+    // domId = e.target.getAttribute('id');
     fileDOM = document.querySelectorAll("[data-field-name='" + idToFileMap[domId] + "']")[0];
 
     /* Check if the user has selected any files or not */
@@ -773,7 +775,7 @@ class KycUploadProfile extends Component {
               <div className={styles.upload_actions}>
                 <input type="file" className="" data-field-name="customer_upload" placeholder="username" />
                 <div className={styles.upload_action_button}>
-                  <button className="" id="customer_upload" onClick={this.onUploadClick.bind(this)}>
+                  <button className="" id="customer_upload" onClick={this.onUploadClick.bind(this, 'customer_upload')}>
                   Upload
                   </button>
                 </div>
@@ -794,7 +796,7 @@ class KycUploadProfile extends Component {
               <div className={styles.upload_actions}>
                 <input type="file" className="" data-field-name="id_proof" placeholder="username" />
                 <div className={styles.upload_action_button}>
-                  <button className="" id="id_proof" onClick={this.onUploadClick.bind(this)}>
+                  <button className="" id="id_proof" onClick={this.onUploadClick.bind(this, 'id_proof')}>
                   Upload
                   </button>
                 </div>
@@ -815,7 +817,7 @@ class KycUploadProfile extends Component {
               <div className={styles.upload_actions}>
                 <input type="file" className="" data-field-name="address_proof" placeholder="username" />
                 <div className={styles.upload_action_button}>
-                  <button className="" id="address_proof" onClick={this.onUploadClick.bind(this)}>
+                  <button className="" id="address_proof" onClick={this.onUploadClick.bind(this, 'address_proof')}>
                   Upload
                   </button>
                 </div>

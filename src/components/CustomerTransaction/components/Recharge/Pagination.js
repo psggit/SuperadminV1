@@ -7,22 +7,26 @@ const Pagination = ({limit, currentPage, showMax, count, parentUrl, onClickHandl
   const currentLimit = parseInt(limit, 10);
   const spare = count % currentLimit;
   const pages = (spare) ? parseInt((count / currentLimit), 10) + 1 : parseInt((count / currentLimit), 10);
+
   let pageHtml;
   let leftPage;
   let rightPage;
   let isLeftPage;
   let isRightPage;
 
-  /* Compute maximum pagination links to be shown */
-  /* Logic
-   *  Compute the starting number and go till the showMax
-   * */
+  /*
+      Compute maximum pagination links to be shown
+      Logic
+      Compute the starting number and go till the showMax
+  */
   const currentIndex = parseInt(currentPage, 10);
   let currentShowMax = parseInt(showMax, 10);
 
-  /* Check if show Max is greater than the total pages
-   * if yes let it be else reduce the showMax to the number of pages available
-   * */
+  /*
+      Check if show Max is greater than the total pages
+      if yes let it be else reduce the showMax to the number of pages available
+  */
+
   currentShowMax = (currentShowMax > pages) ? pages : currentShowMax;
   /* Computation of lowest value to start with to go uptil the showMax */
   let compute = currentIndex - ((currentIndex + (currentShowMax - 1)) - pages);

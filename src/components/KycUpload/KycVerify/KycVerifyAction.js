@@ -32,7 +32,8 @@ const fetchConsumerCount = () => {
         'level_id': 2,
         'consumer': {
           'level_id': 1
-        }
+        },
+        'status': 'open'
       },
       'order_by': '+id'
     };
@@ -97,7 +98,8 @@ const fetchConsumer = (page) => {
       'level_id': 2,
       'consumer': {
         'level_id': 1
-      }
+      },
+      'status': 'open'
     };
     queryObj.limit = limit;
     queryObj.offset = offset;
