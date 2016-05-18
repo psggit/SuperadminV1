@@ -53,9 +53,13 @@ export SkuManagementToppicks from './SkuManagement/Skus/ToppicksIn/ToppicksIn';
 export AddCredit from './CustomerTransaction/components/Credits/CreateCredit';
 export ConfirmCredit from './CustomerTransaction/components/Credits/ConfirmCredits';
 export ViewCredits from './CustomerTransaction/components/Credits/ViewCredits';
-
+export HomepageManagementAds from './HomepageManagement/Ads';
+export HomepageManagementSelectAds from './HomepageManagement/SelectAds';
+export BrandManagerProfile from './BrandsOffersAndPromos/BrandManagerProfile/BrandManagerProfile';
+export CreateBrandManager from './BrandsOffersAndPromos/CreateBrandManager/CreateBrandManager';
 
 /* Consumer Transactions */
 
 export ConsumerRecharge from './CustomerTransaction/components/Recharge/Recharge';
 export ConsumerReservation from './CustomerTransaction/components/Reservation/Reservation';
+

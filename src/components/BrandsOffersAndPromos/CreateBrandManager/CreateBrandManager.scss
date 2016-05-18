@@ -8,14 +8,19 @@
 	width: 100%;
 	float: left;
 }
+.brand_wrapper
+{
+	width: 100%;
+	float: left;
+}
 .heading
 {
 	color: rgba(0,0,0,0.54);
 	font-weight: 500;
 	margin-bottom: 10px;
 	font-size: 14px; 
-	letter-spacing: 0.3px;
 	text-transform: uppercase;
+	letter-spacing: 0.3px;
 }
 .create_brand_container
 {
@@ -65,7 +70,7 @@
 		}
 	}
 }
-.region_wrapper
+.brands_wrapper
 {
 	width: 100%;
 	float: left;
@@ -136,7 +141,7 @@
     	color: rgba(255, 116, 0 , 1);
     }
 }
-.regions_container
+.brand_container
 {
 	background: #FFF;
 	padding: 15px 15px;
@@ -193,7 +198,7 @@
 		}
 	}	
 }
-.add_regions_container
+.select_brands_container
 {
 	background: #FFF;
 	padding: 15px 15px;
@@ -236,7 +241,7 @@
 			font-weight: 400;
 		}		
 	}
-	input[type="text"]
+	input[type="text"], select
 	{
 		border: 1px solid #CCC;
 		border-radius: 3px;
@@ -417,19 +422,3 @@
 	    }
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
