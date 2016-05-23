@@ -97,7 +97,8 @@ const getReservationData = (f) => {
             {
               'name': 'merchandise_items',
               'columns': ['*']
-            }
+            },
+            'created_at'
           ],
           'order_by': '-created_at',
           'limit': 1

@@ -123,9 +123,14 @@ class ViewConsumerProfile extends Component {
 
     const calculateCarts = (values) => {
       let returnVal = 0;
+      console.log('values');
+      console.log(values[0]);
       if (values.length > 0) {
+        console.log(Object.keys(values[0]));
         Object.keys(values[0]).forEach((val) => {
-          returnVal += values[0][val].length;
+          if ( typeof(values[0][val]) === 'object') {
+            returnVal += values[0][val].length;
+          }
         });
         return returnVal;
       }
