@@ -56,17 +56,21 @@ class ManageCategory extends React.Component { // eslint-disable-line no-unused-
               </p>
               <div className={styles.create_form}>
                 <div className={styles.indiv_form}>
+                  <label>Genre</label>
+                  <select>
+                    <option>Whiskey</option>
+                  </select>
+                </div>
+                <div className={styles.indiv_form}>
                 	<label>Category Name</label>
                 	<input type="text" data-field-name="category_name" onChange={this.inputOnChange.bind(this)} value={lastSuccess[0].name} />
                 </div>
-                {/*
                 <div className={styles.indiv_form}>
                 	<label>Status</label>
                 	<select>
                 		<option>Pending</option>
                 	</select>
                 </div>
-                */}
                 <button className={styles.common_btn + ' ' + styles.create_btn } data-category-id={lastSuccess[0].id} onClick={this.onClickEdit.bind(this)}>Edit Category</button>
               </div>
             </div>
@@ -84,17 +88,21 @@ class ManageCategory extends React.Component { // eslint-disable-line no-unused-
             </p>
             <div className={styles.create_form}>
               <div className={styles.indiv_form}>
+                <label>Genre</label>
+                <select>
+                  <option>Whiskey</option>
+                </select>
+              </div>
+              <div className={styles.indiv_form}>
               	<label>Category Name</label>
               	<input type="text" data-field-name="category_name" />
               </div>
-              {/*
               <div className={styles.indiv_form}>
               	<label>Status</label>
               	<select>
               		<option>Pending</option>
               	</select>
               </div>
-              */}
               <button className={styles.common_btn + ' ' + styles.create_btn } onClick={this.onClickHandle.bind(this)} disabled={ongoingRequest ? true : false}>Create Category</button>
             </div>
           </div>

@@ -1,23 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import CustomersList from '../CustomersList';
+import CompaniesList from './CompaniesList';
+import PaginationContainer from '../../CustomerTransaction/components/Recharge/Pagination';
 
 
-const BrandManagerProfile = () => { // eslint-disable-line no-unused-vars
-  const styles = require('./BrandManagerProfile.scss');
+const CompaniesManagement = () => { // eslint-disable-line no-unused-vars
+  const styles = require('./CompaniesManagement.scss');
   const car = [{
     id: '1',
-    name: 'Fiat',
-    email: 'sarath@34cross.in',
-    mobile: '+91 9600000000',
-    company: '34cross',
+    name: 'sasa',
+    status: 'Active',
     created: '9-11-2015',
     updated: '1-2-3010'
   }];
   return (
     <div className={styles.container}>
-      <div className={styles.profile_wrapper}>
+      <div className={styles.companies_wrapper}>
         <div className={styles.search_wrapper + ' ' + styles.wd_100}>
             <p>Search</p>
             <div className={styles.search_form + ' ' + styles.wd_100}>
@@ -28,13 +27,14 @@ const BrandManagerProfile = () => { // eslint-disable-line no-unused-vars
             </div>
         </div>
         <div className={styles.create_layout + ' ' + styles.wd_100}>
-          <Link to={'/hadmin/brands_offers_and_promos/create_brand_manager'}>
-            <button className={styles.common_btn}>Create BM</button>
+          <Link to={'/hadmin/companies_management/create'}>
+            <button className={styles.common_btn}>Create Company</button>
           </Link>
         </div>
-        <CustomersList data={car}/>
+        <CompaniesList data={car}/>
+        <PaginationContainer limit="10" showMax="5" parentUrl="/hadmin/companies_management" />
       </div>
     </div>);
 };
 
-export default connect()(BrandManagerProfile);
+export default connect()(CompaniesManagement);
