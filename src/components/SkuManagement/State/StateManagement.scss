@@ -29,6 +29,12 @@
 	font-size: 15px;
 	letter-spacing: 0.3px;
 }
+.pagination_wrapper
+{
+	width: 100%;
+	float: left;
+	padding-bottom: 30px;
+}
 .common_btn
 {
 	width: 130px;
@@ -90,6 +96,7 @@
 		color: rgba(0,0,0,0.38);
 		font-weight: 500;
 		margin-bottom: 15px;
+		text-transform: uppercase;
 	}
 	.create_form
 	{
@@ -264,6 +271,156 @@
 		}
 	}
 }
+.city_wrapper
+{
+	background: #FFF;
+	float: left;
+	display: block;
+	padding: 10px 15px;
+	margin: 0 45px 20px 45px;
+	width: 30%;
+	p
+	{
+		color: rgba(0,0,0,0.38);
+		font-weight: 500;
+		margin-bottom: 15px;
+	}
+	.add_new_btn
+	{
+		color: #FF7400;
+    	font-size: 13px;
+    	letter-spacing: 0.3px;
+    	float: left;
+    	font-weight: 400;
+    	cursor: pointer;
+	}
+	ul
+	{
+		margin: 0;
+		padding: 0;
+		width: 100%;
+		float: left;
+		list-style: none;
+		height: 250px;
+		overflow: auto;
+		li
+		{
+			margin-top: 10px;
+		}
+		label
+		{
+			width: 70%;
+		    color: rgba(0, 0, 0, 0.54);
+		    font-size: 13px;
+		    letter-spacing: 0.3px;
+		    float: left;
+		    font-weight: 400;
+		}
+		p
+		{
+			width: 30%;
+    		float: left;
+    		color: #FF7400;
+    		font-size: 13px;
+    		text-align: right;
+    		font-weight: 400;
+    		margin-bottom: 0;
+		}
+	}
+}
+.add_city_wrapper
+{
+	background: #FFF;
+	float: left;
+	display: inline-block;
+	padding: 10px 15px;
+	margin: 0 0 20px 0;
+	p
+	{
+		color: rgba(0,0,0,0.38);
+		font-weight: 500;
+		margin-bottom: 15px;
+		text-transform: uppercase;
+	}
+	.input_form
+	{
+		margin-bottom: 20px;
+		label
+		{
+			color: rgba(0, 0, 0, 0.54);
+		    font-size: 13px;
+		    letter-spacing: 0.3px;
+		    width: 100px;
+		    font-weight: 400;
+		    display: inline-block;
+		    vertical-align: middle;
+		}
+		input
+		{
+			display: inline-block;
+			width: 160px;
+			border: 1px solid #CCCCCC;
+			border-radius: 4px;
+			background: #FFF;
+			height: 30px;
+			padding: 0 10px;
+			color: #4c4c4c;
+			font-size: 12px;
+			font-weight: 400;
+			letter-spacing: 0.5px;
+			transition: all 0.2s linear;
+			&:focus
+			{
+				outline: none;
+				border: 1px solid #FF7400;
+			}
+		}
+	}
+	.user_actions
+	{
+		float: left;
+		margin-bottom: 10px;
+		.common_btn
+		{
+			width: 130px;
+			height: 30px;
+			color: rgba(255, 116, 0, 0.8);
+			border: 1px solid #FF7400;
+			border-radius: 4px;
+			background: #FFF;
+			cursor: pointer;
+			font-weight: 400;
+			text-align: center;
+			font-size: 13px;
+			letter-spacing: 0.5px;
+			transition: all 0.2s linear;
+			&:hover
+			{
+				color: rgba(255, 116, 0, 1); 
+			}
+			&:focus
+			{
+				outline: none;
+			}
+		}
+		.cancel_btn
+		{
+			margin-right: 5px;
+		}
+		.save_btn
+		{
+			margin-left: 5px;
+		}
+	}
+}
+.save_lay
+{
+	width: 100%;
+	float: left;
+	text-align: center;
+	padding: 40px 0;
+}
+
 
 
 

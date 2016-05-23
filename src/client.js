@@ -44,7 +44,8 @@ import {Login, Home, PageContainer,
   ManageCategory,
   AddCredit,
   ConfirmCredit,
-  ViewCredits
+  ViewCredits,
+  HomepageManagementAds, HomepageManagementSelectAds, BrandManagerProfile, CreateBrandManager
 } from './components'; // eslint-disable-line no-unused-vars
 import {AddTable} from './components';
 import {loadCredentials} from './components/Login/Actions';
@@ -171,6 +172,10 @@ const main = (
         <Route path="skus/create_sku" component={CreateSku} />
         <Route path="skus/view_sku" component={SkuManagementViewSkus} />
         <Route path="skus/top_picks" component={SkuManagementToppicks} />
+        <Route path="homepage_management/ads" component={HomepageManagementAds} />
+        <Route path="homepage_management/select_ads" component={HomepageManagementSelectAds} />
+        <Route path="brands_offers_and_promos/brand_manager_profile" component={BrandManagerProfile} />
+        <Route path="brands_offers_and_promos/create_brand_manager" component={CreateBrandManager} />
         /* End of SKU Management */
         {/*
         <Route path="notepad_entries" component={NotepadEntries} />

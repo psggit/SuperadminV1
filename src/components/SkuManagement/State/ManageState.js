@@ -88,16 +88,42 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
               	<label>State Name</label>
               	<input type="text" data-field-name="state_name" />
               </div>
-              {/*
               <div className={styles.indiv_form}>
               	<label>Status</label>
               	<select>
               		<option>Pending</option>
               	</select>
               </div>
-              */}
+              {/*
               <button className={styles.common_btn + ' ' + styles.create_btn } onClick={this.onClickHandle.bind(this)} disabled={ongoingRequest ? true : false}>Create state</button>
+              */}
             </div>
+          </div>
+          <div className="clearfix"></div>
+          <div className={styles.city_wrapper}>
+            <p>CITIES</p>
+            <label className={styles.add_new_btn}>+ Add New</label>
+            <ul>
+              <li>
+                <label>Chennai</label>
+                <p>3 Cities</p>
+              </li>
+            </ul>
+          </div>
+          <div className={styles.add_city_wrapper}>
+            <p>Add New City</p>
+            <div className={styles.input_form}>
+              <label>City Name</label>
+              <input type="text"/>
+            </div>
+            <div className={styles.user_actions}>
+              <button className={styles.cancel_btn + ' ' + styles.common_btn}>Cancel</button>
+              <button className={styles.save_btn + ' ' + styles.common_btn}>Save</button>
+            </div>
+          </div>
+          <div className="clearfix"></div>
+          <div className={styles.save_lay}>
+            <button className={styles.common_btn + ' ' + styles.create_btn }>Save state</button>
           </div>
         </div>
       );
