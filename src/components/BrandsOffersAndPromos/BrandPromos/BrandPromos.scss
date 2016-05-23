@@ -1,11 +1,18 @@
-.container {
-  padding: 0;
+.container
+{
+	width: 100%;
+	float: left;
 }
-.customer_transaction_wrapper {
+.wd_100
+{
+	width: 100%;
+	float: left;
+}
+.promos_wrapper {
   width: 100%;
   float: left;
 
-  .customer_transaction_links {
+  .promos_links {
     width: 60%;        /* float:left; */
     margin: 0 auto;
 

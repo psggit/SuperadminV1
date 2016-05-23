@@ -40,6 +40,9 @@ export CreateNotepadEntry from './NotepadEntries/CreateNotepadEntry';
 export Notepad from './NotepadEntries/Notepad';
 export EditAccountDetails from './Consumer/components/EditProfile/EditAccountDetails';
 export BrandManagement from './SkuManagement/Brand/BrandManagement';
+export CompaniesManagement from './SkuManagement/Companies/CompaniesManagement';
+export ManageCompanies from './SkuManagement/Companies/ManageCompanies';
+
 
 export BrandCreate from './SkuManagement/Brand/BrandCreate';
 export Skus from './SkuManagement/Skus/Skus';
@@ -57,6 +60,9 @@ export HomepageManagementAds from './HomepageManagement/Ads';
 export HomepageManagementSelectAds from './HomepageManagement/SelectAds';
 export BrandManagerProfile from './BrandsOffersAndPromos/BrandManagerProfile/BrandManagerProfile';
 export CreateBrandManager from './BrandsOffersAndPromos/CreateBrandManager/CreateBrandManager';
+export BrandAds from './BrandsOffersAndPromos/BrandAds/BrandAds';
+export BrandPromos from './BrandsOffersAndPromos/BrandPromos/BrandPromos';
+export PromosInstantCashback from './BrandsOffersAndPromos/PromosInstantCashback/PromosInstantCashback';
 
 /* Consumer Transactions */
 
