@@ -102,7 +102,7 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
                 </li>
                 <li className={styles.sidebar_list}>
                   <label>
-                    <Link to={'/hadmin/genre_management'}>Manage SKUs</Link>
+                    <Link to={'/hadmin/skus'}>Manage SKUs</Link>
                   </label>
                 </li>
               </ul>
