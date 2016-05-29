@@ -19,6 +19,8 @@ import defaultReducer from './components/Common/Actions/CommonReducer';
 import notepadReducer from './components/NotepadEntries/NotepadAction';
 import userDataReducer from './components/Consumer/components/EditProfile/EditAction';
 
+import createSKUReducer from './components/SkuManagement/Skus/CreateSku/CreateSkuActions';
+
 const reducer = combineReducers({
   loginState: loginReducer,
   tables: dataReducer,
@@ -36,7 +38,8 @@ const reducer = combineReducers({
   page_data: defaultReducer,
   notepad_data: notepadReducer,
   brand_data: brandReducer,
-  user_data: userDataReducer
+  user_data: userDataReducer,
+  create_sku_data: createSKUReducer
 });
 
 export default reducer;

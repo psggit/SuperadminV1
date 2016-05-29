@@ -48,7 +48,7 @@ export BrandCreate from './SkuManagement/Brand/BrandCreate';
 export Skus from './SkuManagement/Skus/Skus';
 export Toppicks from './SkuManagement/Skus/Toppicks/Toppicks';
 export AddToppicks from './SkuManagement/Skus/AddToppicks/AddToppicks';
-export CreateSku from './SkuManagement/Skus/CreateSku/CreateSku';
+export CreateSku from './SkuManagement/Skus/CreateSku/CreateSkuWrapper';
 export SkuManagementViewSkus from './SkuManagement/Skus/ViewSku/ViewSku';
 export SkuManagementToppicks from './SkuManagement/Skus/ToppicksIn/ToppicksIn';
 

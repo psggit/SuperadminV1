@@ -1,7 +1,23 @@
 import React from 'react';
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
+import BrandDropDown from './BrandDropDown';
+import StatesWrapper from './StatesWrapper';
+import StateOutlet from './StateOutlet';
+import StateCity from './StateCity';
+import CityRetailer from './CityRetailer';
 
-const CreateSku = () => { // eslint-disable-line no-unused-vars
+const CreateSku = ({ brandList
+    , stateList
+    , stateCityMapping
+    , cityRetailerMapping
+    , onStateSelect
+    , onStateView
+    , onCityView
+    , viewedState
+    , viewedCity
+    , onCityCheck
+    , onRetailerCheck
+  }) => { // eslint-disable-line no-unused-vars
   const styles = require('./CreateSku.scss');
   // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
   return (
@@ -10,9 +26,12 @@ const CreateSku = () => { // eslint-disable-line no-unused-vars
           <div className={styles.heading}>create sku</div>
           <div className={styles.indiv_element}>
             <label>Brand Name</label>
+            <BrandDropDown brandData={ brandList } />
+            {/*
             <select>
                 <option>Hoist</option>
             </select>
+            */}
           </div>
           <div className={styles.indiv_element}>
             <label>Volume in ml</label>
@@ -49,25 +68,7 @@ const CreateSku = () => { // eslint-disable-line no-unused-vars
             </select>
           </div>
         </div>
-        <div className={styles.available_states_wrapper}>
-          <div className={styles.heading}>Select Available states</div>
-          <div className={styles.states_list}>
-            <div className={styles.indiv_element}>
-              <label className={styles.check_box}>
-                <input type="checkbox"/> Jharkand
-              </label>
-              <input type="number" placeholder="MRP"/>
-              <input type="number" placeholder="Dutyfree"/>
-            </div>
-            <div className={styles.indiv_element}>
-              <label className={styles.check_box}>
-                <input type="checkbox"/> Jharkand
-              </label>
-              <input type="number" placeholder="MRP"/>
-              <input type="number" placeholder="Dutyfree"/>
-            </div>
-          </div>
-        </div>
+        <StatesWrapper stateData={stateList} stateCityMapping={stateCityMapping} onStateSelect={onStateSelect} />
         <div className="clearfix"></div>
         <div className={styles.upload_container}>
           <div className={styles.upload_lab}>Upload Images</div>
@@ -83,27 +84,10 @@ const CreateSku = () => { // eslint-disable-line no-unused-vars
           </div>
         </div>
         <div className={styles.outlets_lab}>Select Outlets</div>
-        <div className={styles.states_container}>
-          <div className={styles.heading}>Available states</div>
-          <ul>
-            <li>
-              <label>Tamil Nadu</label>
-              <p>10 Cites</p>
-            </li>
-            <li>
-              <label>Tamil Nadu</label>
-              <p>10 Cites</p>
-            </li>
-            <li>
-              <label>Tamil Nadu</label>
-              <p>10 Cites</p>
-            </li>
-            <li>
-              <label>Tamil Nadu</label>
-              <p>10 Cites</p>
-            </li>
-          </ul>
-        </div>
+        <StateOutlet stateCityMapping={stateCityMapping} onStateView={ onStateView } />
+        <StateCity viewedState={ viewedState } cityRetailerMapping={ cityRetailerMapping } onCityCheck={onCityCheck} onCityView={onCityView} />
+        <CityRetailer viewedCity={ viewedCity } onRetailerCheck={ onRetailerCheck }/>
+        {/*
         <div className={styles.cities_container}>
           <div className={styles.heading}>Cities in: <span>tamil nadu</span></div>
           <ul>
@@ -137,6 +121,8 @@ const CreateSku = () => { // eslint-disable-line no-unused-vars
             </li>
           </ul>
         </div>
+        */}
+        {/*
         <div className={styles.outlets_container}>
           <div className={styles.heading}>outlets in: <span>tamil nadu</span></div>
           <ul>
@@ -166,9 +152,11 @@ const CreateSku = () => { // eslint-disable-line no-unused-vars
             </li>
           </ul>
         </div>
+        */}
         <div className="clearfix"></div>
         <button className={styles.save_btn}>Save</button>
     </div>);
 };
 
-export default connect()(CreateSku);
+export default CreateSku;
+// export default connect()(CreateSku);

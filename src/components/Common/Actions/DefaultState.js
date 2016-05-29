@@ -17,6 +17,17 @@ const defaultBrandState = {
   categoryList: []
 };
 
+const defaultCreateSkuState = {
+  brandList: [],
+  stateList: [],
+  stateCityMapping: {},
+  cityRetailerMapping: {},
+  retailerMapping: {},
+  retailerStatus: {},
+  viewedState: {},
+  viewedCity: {}
+};
+
 const defaultConsumerState = {
   userData: []
 };
@@ -80,4 +91,4 @@ const defaultKycState = {
 };
 
 export default defaultState;
-export { defaultNotepadState, defaultBrandState, defaultConsumerState, defaultKycState};
+export { defaultNotepadState, defaultBrandState, defaultConsumerState, defaultKycState, defaultCreateSkuState};
