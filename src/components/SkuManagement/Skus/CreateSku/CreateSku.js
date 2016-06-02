@@ -1,10 +1,16 @@
 import React from 'react';
 // import { connect } from 'react-redux';
-import BrandDropDown from './BrandDropDown';
 import StatesWrapper from './StatesWrapper';
 import StateOutlet from './StateOutlet';
 import StateCity from './StateCity';
 import CityRetailer from './CityRetailer';
+
+import { IMAGE_UPLOAD_SUCCESS, IMAGE_UPLOAD_ERROR, CANCEL_IMAGE} from './CreateSkuActions';
+
+/* Image Upload component takes in two Actions OnResponseSuccess, OnResponseFailure */
+import ImageUpload from './ImageUpload';
+
+import SkuInfo from './SkuInfo';
 
 const CreateSku = ({ brandList
     , stateList
@@ -17,143 +23,55 @@ const CreateSku = ({ brandList
     , viewedCity
     , onCityCheck
     , onRetailerCheck
+    , skuImageUrl
+    , dispatch
   }) => { // eslint-disable-line no-unused-vars
   const styles = require('./CreateSku.scss');
   // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
   return (
     <div className={styles.container}>
-      <div className={styles.create_sku_wrapper}>
-        <div className={styles.heading}>create sku</div>
-        <div className={styles.indiv_element}>
-          <label>Brand Name</label>
-          <BrandDropDown brandData={ brandList } />
-          {/*
-          <select>
-              <option>Hoist</option>
-          </select>
-          */}
-        </div>
-        <div className={styles.indiv_element}>
-          <label>Volume in ml</label>
-          <input type="number"/>
-        </div>
-        <div className={styles.indiv_element}>
-          <label>Alcohol Percentage</label>
-          <input type="number"/>
-        </div>
-        <div className={styles.indiv_element}>
-          <label>Temperature</label>
-          <input type="number"/>
-        </div>
-        <div className={styles.indiv_element}>
-          <label>Place of Origin</label>
-          <input type="text"/>
-        </div>
-        <div className={styles.indiv_element}>
-          <label>Test Volume</label>
-          <input type="number"/>
-        </div>
-        <div className={styles.indiv_element}>
-          <label>Barcode</label>
-          <input type="text"/>
-        </div>
-        <div className={styles.indiv_element}>
-          <label>Description</label>
-          <textarea rows="4" cols="10"></textarea>
-        </div>
-        <div className={styles.indiv_element}>
-          <label>Status</label>
-          <select>
-            <option>Active</option>
-          </select>
-        </div>
-      </div>
+      {
+        /* Shows entry form for entering sku infomation */
+      }
+      <SkuInfo dispatch={ dispatch } brandList={brandList} />
+      {
+        /* Component to display the list of states and their corresponding prices */
+      }
       <StatesWrapper stateData={stateList} stateCityMapping={stateCityMapping} onStateSelect={onStateSelect} />
+      {
+        /* Some CSS Gotcha */
+      }
       <div className="clearfix"></div>
-      <div className={styles.upload_container}>
-        <div className={styles.upload_lab}>Upload Images</div>
-        <div className={styles.upload_images}>
-          <div className={styles.upload_id}>Upload New</div>
-          <div className={styles.file_upload}>
-            <img src="" className={styles.upload_img}/>
-            <input type="file"/>
-          </div>
-        </div>
-        <div className={styles.upload_btn_layout}>
-          <button className={styles.upload_btn}>Upload</button>
-        </div>
-      </div>
+      {
+        /*
+         Image Upload Component
+         Takes in two events
+          1. OnImageUploadSuccess
+          2. OnImageUploadFailure
+        */
+      }
+      <ImageUpload imageUrl={skuImageUrl} requestSuccess={IMAGE_UPLOAD_SUCCESS} requestError={ IMAGE_UPLOAD_ERROR } cancelImage={ CANCEL_IMAGE }/>
       <div className={styles.outlets_lab}>Select Outlets</div>
+      {
+        /* Component to render states and its corresponding information */
+      }
       <StateOutlet stateCityMapping={stateCityMapping} onStateView={ onStateView } />
+      {
+        /* Similar to the above component to render city and its corresponding information */
+      }
       <StateCity viewedState={ viewedState } cityRetailerMapping={ cityRetailerMapping } onCityCheck={onCityCheck} onCityView={onCityView} />
+      {
+        /* Component to render retailers of a particular city */
+      }
       <CityRetailer viewedCity={ viewedCity } onRetailerCheck={ onRetailerCheck }/>
-      {/*
-      <div className={styles.cities_container}>
-        <div className={styles.heading}>Cities in: <span>tamil nadu</span></div>
-        <ul>
-          <li>
-            <label>
-              <input type="checkbox"/>
-              Tamil Nadu
-            </label>
-            <p>10 Outlets</p>
-          </li>
-          <li>
-            <label>
-              <input type="checkbox"/>
-              Tamil Nadu
-            </label>
-            <p>10 Outlets</p>
-          </li>
-          <li>
-            <label>
-              <input type="checkbox"/>
-              Tamil Nadu
-            </label>
-            <p>10 Outlets</p>
-          </li>
-          <li>
-            <label>
-              <input type="checkbox"/>
-              Tamil Nadu
-            </label>
-            <p>10 Outlets</p>
-          </li>
-        </ul>
-      </div>
-      */}
-      {/*
-      <div className={styles.outlets_container}>
-        <div className={styles.heading}>outlets in: <span>tamil nadu</span></div>
-        <ul>
-          <li>
-            <label>
-              <input type="checkbox"/>
-              Tamil Nadu
-            </label>
-          </li>
-          <li>
-              <label>
-                  <input type="checkbox"/>
-                  Tamil Nadu
-              </label>
-          </li>
-          <li>
-            <label>
-              <input type="checkbox"/>
-              Tamil Nadu
-            </label>
-          </li>
-          <li>
-            <label>
-              <input type="checkbox"/>
-              Tamil Nadu
-            </label>
-          </li>
-        </ul>
-      </div>
-      */}
+
+      {
+        /* Again some CSS Gotcha */
+      }
       <div className="clearfix"></div>
+      {
+        /* Self Explaining */
+      }
       <button className={styles.save_btn}>Save</button>
     </div>);
 };

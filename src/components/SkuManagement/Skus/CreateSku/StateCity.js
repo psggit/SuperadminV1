@@ -16,7 +16,10 @@ const StateCity = ({ viewedState, cityRetailerMapping, onCityCheck, onCityView})
                   return (
                     <li key={index}>
                       <label>
+                        {/*
                         <input type="checkbox" data-city-id={city.id} type="checkbox" checked={ cityRetailerMapping[city.id].is_selected } onClick={onCityCheck} />
+                        */}
+                        <input type="checkbox" data-city-id={city.id} type="checkbox" checked={ viewedState.selected_cities[city.id] ? true : false } onClick={onCityCheck} />
                         { city.name }
                       </label>
                       <p onClick={ onCityView } data-view-city-id={city.id}>

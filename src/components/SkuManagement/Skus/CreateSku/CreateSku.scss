@@ -151,16 +151,43 @@
 	.upload_img
 	{
 		max-width: 100%;
-		max-height: 200px;
+		max-height: 100%;
+    margin: auto;
+    padding: 10px;
 	}
 	.file_upload
 	{
 		width: 100%;
+    position: relative;
 		float: left;
 		height: 200px;
 		background: #FFF;
 		display: flex;
 		align-items: center;
+
+    .img_wrapper {
+      text-align: center;
+      width: 100%;
+      float: left;
+      margin: 10px;
+      border: 1px solid #DDD;
+      height: 180px;
+      p {
+        position: absolute;
+        top: 2px;
+        right: 0px;
+        width: 20px;
+        height: 20px;
+        border-radius: 100%;
+        background: #353535;
+        color: #FFF;
+        font-size: 14px;
+        text-align: center;
+        cursor: pointer;
+        margin: 0;
+
+      }
+    }
 	}
 	input[type="file"]
 	{
@@ -253,7 +280,7 @@
 			font-weight: 400;
 			font-size: 13px;
 			color: rgba(0,0,0,0.54);
-			width: 60%;
+			width: 50%;
 			float: left;
 			margin-bottom: 0;
 			input[type="checkbox"]
@@ -265,7 +292,7 @@
 		{
 			color: #FF7400;
 			font-size: 13px;
-			width: 40%;
+			width: 50%;
 			float: left;
 			margin-bottom: 0;
 			/* text-align: right; */

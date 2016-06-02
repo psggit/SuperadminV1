@@ -31,8 +31,6 @@ const commonDecorator = ( Component ) => {
       const compHtml = (
         <Component {...this.props} />
       );
-      console.log('going requ');
-      console.log(this.props.ongoingRequest);
       return (
           <div style={styles.commonComponent} >
             <Loading displayStatus={ this.props.ongoingRequest ? '' : 'hide' } />

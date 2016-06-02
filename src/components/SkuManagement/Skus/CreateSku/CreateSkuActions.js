@@ -6,10 +6,8 @@ import { defaultCreateSkuState } from '../../../Common/Actions/DefaultState';
 import requestAction from '../../../Common/Actions/requestAction';
 
 import Endpoints, { globalCookiePolicy } from '../../../../Endpoints';
-import { MAKE_REQUEST,
-  REQUEST_COMPLETED,
+import {
   REQUEST_ERROR, RESET } from '../../../Common/Actions/Actions';
-
 
 const BRAND_FETCH = 'SKU/BRAND_FETCH';
 const STATE_FETCH_AND_COMPUTE_MAPPINGS = 'SKU/STATE_FETCH_AND_COMPUTE_MAPPINGS';
@@ -24,6 +22,12 @@ const UNMARK_RETAILER_SELECTED = 'SKU/UNMARK_RETAILER_SELECTED';
 
 const VIEW_STATE = 'SKU/VIEW_STATE';
 const VIEW_CITY = 'SKU/VIEW_CITY';
+
+const IMAGE_UPLOAD_SUCCESS = 'SKU/IMAGE_UPLOAD_SUCCESS';
+const IMAGE_UPLOAD_ERROR = 'SKU/IMAGE_UPLOAD_ERROR';
+const CANCEL_IMAGE = 'SKU/CANCEL_IMAGE';
+
+const SKU_INFORMATION_CHANGE = 'SKU/SKU_INFORMATION_CHANGE';
 
 const fetchBrand = () => {
   return (dispatch) => {
@@ -41,10 +45,9 @@ const fetchBrand = () => {
       body: JSON.stringify(queryObj),
     };
     /* Make a MAKE_REQUEST action */
-    dispatch({type: MAKE_REQUEST});
+    // dispatch({type: MAKE_REQUEST});
     return Promise.all([
-      dispatch(requestAction(url, options, BRAND_FETCH, REQUEST_ERROR)),
-      dispatch({type: REQUEST_COMPLETED})
+      dispatch(requestAction(url, options, BRAND_FETCH, REQUEST_ERROR))
     ]);
   };
 };
@@ -77,10 +80,9 @@ const fetchState = () => {
       body: JSON.stringify(queryObj),
     };
     /* Make a MAKE_REQUEST action */
-    dispatch({type: MAKE_REQUEST});
+    // dispatch({type: MAKE_REQUEST});
     return Promise.all([
-      dispatch(requestAction(url, options, STATE_FETCH_AND_COMPUTE_MAPPINGS, REQUEST_ERROR)),
-      dispatch({type: REQUEST_COMPLETED})
+      dispatch(requestAction(url, options, STATE_FETCH_AND_COMPUTE_MAPPINGS, REQUEST_ERROR))
     ]);
   };
 };
@@ -219,6 +221,8 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
         stateCityMapping[action.data[countState].id] = {
           is_selected: false,
           selected_cities: {},
+          duty_free: 0,
+          duty_paid: 0,
           cities: action.data[countState].cities,
           stateInfo: action.data[countState]
         };
@@ -245,6 +249,16 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
         countState++;
       }
       return {...state, stateList: action.data, stateCityMapping: stateCityMapping, cityRetailerMapping: cityRetailerMapping, retailerMapping: retailerMapping};
+    case IMAGE_UPLOAD_SUCCESS:
+      return { ...state, skuImageUrl: action.data[0]};
+    case IMAGE_UPLOAD_ERROR:
+      return { ...state, skuImageUrl: ''};
+    case CANCEL_IMAGE:
+      return { ...state, skuImageUrl: ''};
+    case SKU_INFORMATION_CHANGE:
+      const skuInfo = {};
+      skuInfo[action.data.key] = action.data.value;
+      return { ...state, skuReqObj: { ...state.skuReqObj, ...skuInfo }};
     default: return state;
   }
 };
@@ -262,7 +276,11 @@ export {
   markRetailerSelected,
   unMarkRetailerSelected,
   viewState,
-  viewCity
+  viewCity,
+  IMAGE_UPLOAD_SUCCESS,
+  IMAGE_UPLOAD_ERROR,
+  CANCEL_IMAGE,
+  SKU_INFORMATION_CHANGE
 };
 
 export default createSKUReducer;

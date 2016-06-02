@@ -17,6 +17,19 @@ const defaultBrandState = {
   categoryList: []
 };
 
+/* Response Objs =>
+ *  {
+ *    'sku': {
+ *      'id': 'sku_id'
+ *    }
+ *    sku_pricing': {
+ *      'state_id': {
+ *        'id': 'sku_pricing_id'
+ *      }
+ *    }
+ *  }
+*/
+
 const defaultCreateSkuState = {
   brandList: [],
   stateList: [],
@@ -25,7 +38,12 @@ const defaultCreateSkuState = {
   retailerMapping: {},
   retailerStatus: {},
   viewedState: {},
-  viewedCity: {}
+  viewedCity: {},
+  skuImageUrl: '',
+  responseObjs: {},
+  skuReqObj: {},
+  /* For each state in this mapping we need to create an entry in sku_pricing */
+  // stateMrpObj: {}
 };
 
 const defaultConsumerState = {

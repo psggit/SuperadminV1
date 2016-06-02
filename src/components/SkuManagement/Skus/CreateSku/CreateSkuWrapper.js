@@ -72,12 +72,23 @@ class SkuWrapper extends Component {
     this.props.dispatch(( e.target.checked ) ? markRetailerSelected(parseInt(retailerId, 10)) : unMarkRetailerSelected(parseInt(retailerId, 10)));
   }
 
+  onSkuInfoChange(e) {
+    console.log(e.target);
+  }
+
   render() {
     // const { brandList, stateList, stateCityMapping, viewedState, viewedCity} = this.props;
     return (
           <div className="sku_wrapper">
             <BreadCrumb breadCrumbs={this.breadCrumbs} />
-            <CreateSku {...this.props} onStateSelect={this.onStateSelect.bind(this)} onStateView={this.onStateView.bind(this)} onCityCheck={this.onCityCheck.bind(this)} onCityView={this.onCityView.bind(this) } onRetailerCheck={ this.onRetailerCheck.bind(this) }/>
+            <CreateSku {...this.props}
+              onStateSelect={this.onStateSelect.bind(this)}
+              onStateView={this.onStateView.bind(this)}
+              onCityCheck={this.onCityCheck.bind(this)}
+              onCityView={this.onCityView.bind(this) }
+              onRetailerCheck={ this.onRetailerCheck.bind(this) }
+              dispatch={ this.props.dispatch }
+            />
           </div>
         );
   }
