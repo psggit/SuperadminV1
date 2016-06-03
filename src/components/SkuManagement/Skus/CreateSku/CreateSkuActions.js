@@ -29,6 +29,8 @@ const CANCEL_IMAGE = 'SKU/CANCEL_IMAGE';
 
 const SKU_INFORMATION_CHANGE = 'SKU/SKU_INFORMATION_CHANGE';
 
+const STATE_MRP_INFORMATION = 'SKU/STATE_MRP_INFORMATION';
+
 const fetchBrand = () => {
   return (dispatch) => {
     /* Url */
@@ -259,6 +261,10 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
       const skuInfo = {};
       skuInfo[action.data.key] = action.data.value;
       return { ...state, skuReqObj: { ...state.skuReqObj, ...skuInfo }};
+    case STATE_MRP_INFORMATION:
+      console.log('Something S');
+      console.log(action);
+      return { ...state };
     default: return state;
   }
 };
@@ -280,7 +286,8 @@ export {
   IMAGE_UPLOAD_SUCCESS,
   IMAGE_UPLOAD_ERROR,
   CANCEL_IMAGE,
-  SKU_INFORMATION_CHANGE
+  SKU_INFORMATION_CHANGE,
+  STATE_MRP_INFORMATION
 };
 
 export default createSKUReducer;
