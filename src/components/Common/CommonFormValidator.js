@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react';
 
+/* Notes Written in CommonFormValidator.md */
+
 const commonFormValidator = ( Component, fieldName, fieldType, changeEmitter) => {
   if ( !fieldName ) {
     console.error('INITIALIZATIONERROR: Cannot enhance the component, initialize using commonFormValidator(<Component>, <attribute used to denote form fields>)');

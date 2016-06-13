@@ -59,12 +59,14 @@ class ManageGenre extends React.Component { // eslint-disable-line no-unused-var
                 	<label>Genre Name</label>
                 	<input type="text" data-field-name="genre_name" onChange={this.inputOnChange.bind(this)} value={lastSuccess[0].genre_name} />
                 </div>
+                {/*
                 <div className={styles.indiv_form}>
                 	<label>Status</label>
                 	<select>
                 		<option>Pending</option>
                 	</select>
                 </div>
+                */}
                 <button className={styles.common_btn + ' ' + styles.create_btn } data-genre-id={lastSuccess[0].id} onClick={this.onClickEdit.bind(this)}>Edit Genre</button>
               </div>
             </div>
@@ -85,12 +87,14 @@ class ManageGenre extends React.Component { // eslint-disable-line no-unused-var
               	<label>Genre Name</label>
               	<input type="text" data-field-name="genre_name" />
               </div>
+              {/*
               <div className={styles.indiv_form}>
               	<label>Status</label>
               	<select>
               		<option>Pending</option>
               	</select>
               </div>
+              */}
               <button className={styles.common_btn + ' ' + styles.create_btn } onClick={this.onClickHandle.bind(this)} disabled={ongoingRequest ? true : false}>Create Genre</button>
             </div>
           </div>

@@ -17,6 +17,18 @@ const defaultBrandState = {
   categoryList: []
 };
 
+const defaultStateManagementState = {
+  stateInput: '',
+  stateStatus: false,
+  cityInput: '',
+  hideCityComponent: true,
+  isCityEdit: false,
+  isCityLocal: false,
+  cityId: '0',
+  cities: {},
+  fromDB: []
+};
+
 /* Response Objs =>
  *  {
  *    'sku': {
@@ -109,4 +121,10 @@ const defaultKycState = {
 };
 
 export default defaultState;
-export { defaultNotepadState, defaultBrandState, defaultConsumerState, defaultKycState, defaultCreateSkuState};
+export { defaultNotepadState
+  , defaultBrandState
+  , defaultConsumerState
+  , defaultKycState
+  , defaultCreateSkuState
+  , defaultStateManagementState
+};

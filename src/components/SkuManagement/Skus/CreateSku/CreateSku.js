@@ -17,6 +17,7 @@ const CreateSku = ({ brandList
     , stateCityMapping
     , cityRetailerMapping
     , onStateSelect
+    , onStatePriceEntered
     , onStateView
     , onCityView
     , viewedState
@@ -37,7 +38,7 @@ const CreateSku = ({ brandList
       {
         /* Component to display the list of states and their corresponding prices */
       }
-      <StatesWrapper stateData={stateList} stateCityMapping={stateCityMapping} onStateSelect={onStateSelect} />
+      <StatesWrapper stateData={stateList} stateCityMapping={stateCityMapping} onStateSelect={onStateSelect} onStatePriceEntered={onStatePriceEntered}/>
       {
         /* Some CSS Gotcha */
       }

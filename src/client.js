@@ -59,6 +59,7 @@ import reducer from './reducer';
 
 // Create the store
 const DevTools = require('./helpers/DevTools/DevTools');
+console.log(DevTools);
 const reduxSimpleRouterMiddleware = syncHistory(browserHistory);
 const _finalCreateStore = compose(
   applyMiddleware(thunk, reduxSimpleRouterMiddleware, createLogger()),

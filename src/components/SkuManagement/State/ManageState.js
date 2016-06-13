@@ -1,6 +1,28 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { insertState, fetchState, updateState, updateStateText, resetState} from '../Action';
+import { insertState
+  , updateStateText
+  , resetState
+} from '../Action';
+
+import {
+  TOGGLE_CITY_COMPONENT,
+  CITY_INPUT_CHANGED,
+  STATE_INPUT_CHANGED,
+  STORE_CITY_LOCAL,
+  EDIT_CITY,
+  EDIT_SERVER_CITY,
+  UPDATE_CITY_LOCAL,
+  DELETE_CITY_LOCAL,
+  saveState,
+  fetchState,
+  saveCity,
+  updateStateSaveCity,
+  RESET,
+  deleteCity
+} from './StateActions';
+
+import commonDecorator from '../../Common/CommonDecorator';
 
 class ManageState extends React.Component { // eslint-disable-line no-unused-vars
   componentDidMount() {
@@ -13,6 +35,9 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
       this.props.dispatch(resetState());
     }
   }
+  componentWillUnmount() {
+    this.props.dispatch({ type: RESET });
+  }
   onClickHandle() {
     // e.preventDefault();
     const stateName = document.querySelectorAll('[data-field-name="state_name"]')[0].value;
@@ -23,29 +48,105 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
     stateObj.updated_at = new Date().toISOString();
     this.props.dispatch(insertState(stateObj));
   }
-  onClickEdit(e) {
+  onClickEdit() {
+    /*
     const stateName = document.querySelectorAll('[data-field-name="state_name"]')[0].value;
     const stateId = parseInt(e.target.getAttribute('data-state-id'), 10);
     const stateObj = {};
     stateObj.values = {};
     stateObj.values.state_name = stateName;
     stateObj.returning = ['id'];
-    this.props.dispatch(updateState(stateObj, stateId));
+    */
+    this.props.dispatch(updateStateSaveCity(this.props));
   }
+
   /* Function to update the Fetched State of this component so that input field is editable */
   inputOnChange(e) {
     e.target.value = e.target.value;
     this.props.dispatch(updateStateText(e.target.value));
   }
+  toggleCityComponent() {
+    this.props.dispatch({ type: TOGGLE_CITY_COMPONENT });
+  }
+  storeCityInput(e) {
+    this.props.dispatch({ type: CITY_INPUT_CHANGED, data: e.target.value });
+  }
+  storeStateInput(e) {
+    this.props.dispatch({ type: STATE_INPUT_CHANGED, data: e.target.value });
+  }
+  saveCityToLocal() {
+    this.props.dispatch({ type: STORE_CITY_LOCAL });
+  }
+  updateCityToLocal() {
+    this.props.dispatch({ type: UPDATE_CITY_LOCAL});
+  }
+  updateCityToServer() {
+    /* Check for no Data */
+    this.props.dispatch(saveCity(this.props.cityId, this.props.cityInput, this.props.fromDB[0].id));
+  }
+  deleteCityServer() {
+    this.props.dispatch(deleteCity(this.props.cityId, this.props.cityInput, this.props.fromDB[0].id));
+  }
+
+  deleteCityLocal() {
+    this.props.dispatch({ type: DELETE_CITY_LOCAL});
+  }
+  editCity(e) {
+    this.props.dispatch({ type: EDIT_CITY, data: {
+      'type': e.target.getAttribute('data-type'),
+      'id': e.target.getAttribute('data-city-id')
+    }});
+  }
+  editServerCity(e) {
+    this.props.dispatch({ type: EDIT_SERVER_CITY, data: {
+      'type': e.target.getAttribute('data-type'),
+      'id': e.target.getAttribute('data-city-id'),
+      'name': e.target.getAttribute('data-city-name')
+    }});
+  }
+  saveCurrentState() {
+    this.props.dispatch(saveState(this.props));
+  }
   render() {
     const styles = require('./StateManagement.scss');
 
-    const { ongoingRequest, lastError, lastSuccess } = this.props;
+    const { ongoingRequest, lastError, fromDB, hideCityComponent, cities, cityInput, isCityEdit, isCityLocal, stateInput } = this.props;
+    /* Handle Error */
     console.log(ongoingRequest);
     console.log(lastError);
 
+    const cityObjs = Object.keys(cities).map(
+        (city) => {
+          return (
+                <li key={ city } data-city-id={ city } type="local">
+                  <label data-city-id={ city } data-type="local"> { cities[city] } </label>
+                  <p data-city-name={ cities[city] } data-city-id={ city } data-type="local" onClick={ this.editCity.bind(this) }>Edit</p>
+                  {/*
+                  <p>3 Cities</p>
+                  */}
+                </li>
+              );
+        });
+
     const htmlContent = () => {
-      if (lastSuccess.length > 0) {
+      if (fromDB.length > 0) {
+        const serverCities = fromDB[0].cities;
+        let serverCityObjs = [];
+        serverCityObjs = serverCities.map((sCity) => {
+          return (
+                <li key={ sCity.id } data-city-id={ sCity.id} type="server">
+                  <label data-city-id={ sCity.id} data-type="server"> { sCity.name } </label>
+                  <p data-city-name={ sCity.name } data-city-id={ sCity.id } data-type="server" onClick={ this.editServerCity.bind(this) }>Edit</p>
+                  {/*
+                  <p>3 Cities</p>
+                  */}
+                </li>
+              );
+        });
+        cityObjs.map( (cityObj) => {
+          return serverCityObjs.push(cityObj);
+        });
+
         return (
           <div className={styles.wrapper}>
             <div className={styles.head_container}>
@@ -58,7 +159,7 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
               <div className={styles.create_form}>
                 <div className={styles.indiv_form}>
                 	<label>State Name</label>
-                	<input type="text" data-field-name="state_name" onChange={this.inputOnChange.bind(this)} value={lastSuccess[0].state_name} />
+                	<input type="text" data-field-name="state_name" onChange={this.storeStateInput.bind(this)} value={stateInput} />
                 </div>
                 {/*
                 <div className={styles.indiv_form}>
@@ -68,8 +169,45 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
                 	</select>
                 </div>
                 */}
-                <button className={styles.common_btn + ' ' + styles.create_btn } data-state-id={lastSuccess[0].id} onClick={this.onClickEdit.bind(this)}>Edit state</button>
+
               </div>
+            </div>
+            <div className="clearfix"></div>
+            <div className={styles.city_wrapper}>
+              <p>CITIES</p>
+              <label className={styles.add_new_btn} onClick={ this.toggleCityComponent.bind(this) }>+ Add New</label>
+              <ul>
+                { serverCityObjs }
+              </ul>
+            </div>
+            <div className={styles.add_city_wrapper + (( hideCityComponent ) ? ' hide' : '') }>
+              <p >Add New City</p>
+              <div className={styles.input_form}>
+                <label>City Name</label>
+                <input type="text" onChange={ this.storeCityInput.bind(this) } value= { cityInput } />
+              </div>
+              { (!isCityEdit ?
+                (
+                  <div className={styles.user_actions}>
+                    <button className={styles.cancel_btn + ' ' + styles.common_btn} onClick={ this.toggleCityComponent.bind(this) } >Cancel</button>
+                    <button className={styles.save_btn + ' ' + styles.common_btn} onClick={ this.saveCityToLocal.bind(this) } >Save</button>
+                  </div>
+                )
+                :
+                (
+                  <div className={styles.user_actions}>
+                    <button data-city-local= { isCityLocal } className={styles.cancel_btn + ' ' + styles.common_btn} onClick={ this.deleteCityServer.bind(this) } >Delete</button>
+                    <button data-city-local= { isCityLocal } className={styles.save_btn + ' ' + styles.common_btn} onClick={ this.updateCityToServer.bind(this) } >Update</button>
+                  </div>
+                ))
+              }
+            </div>
+            <div className="clearfix"></div>
+            <div className={styles.save_lay}>
+              {/*
+              <button onClick={ this.saveCurrentState.bind(this) } className={styles.common_btn + ' ' + styles.create_btn }>Save state</button>
+              */}
+             <button className={styles.common_btn + ' ' + styles.create_btn } data-state-id={fromDB[0].id} onClick={this.onClickEdit.bind(this)}>Edit state</button>
             </div>
           </div>
         );
@@ -86,14 +224,16 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
             <div className={styles.create_form}>
               <div className={styles.indiv_form}>
               	<label>State Name</label>
-              	<input type="text" data-field-name="state_name" />
+              	<input type="text" data-field-name="state_name" onChange={ this.storeStateInput.bind(this) }/>
               </div>
+              {/*
               <div className={styles.indiv_form}>
               	<label>Status</label>
               	<select>
               		<option>Pending</option>
               	</select>
               </div>
+              */}
               {/*
               <button className={styles.common_btn + ' ' + styles.create_btn } onClick={this.onClickHandle.bind(this)} disabled={ongoingRequest ? true : false}>Create state</button>
               */}
@@ -102,28 +242,36 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
           <div className="clearfix"></div>
           <div className={styles.city_wrapper}>
             <p>CITIES</p>
-            <label className={styles.add_new_btn}>+ Add New</label>
+            <label className={styles.add_new_btn} onClick={ this.toggleCityComponent.bind(this) }>+ Add New</label>
             <ul>
-              <li>
-                <label>Chennai</label>
-                <p>3 Cities</p>
-              </li>
+              { cityObjs }
             </ul>
           </div>
-          <div className={styles.add_city_wrapper}>
-            <p>Add New City</p>
+          <div className={styles.add_city_wrapper + (( hideCityComponent ) ? ' hide' : '') }>
+            <p >Add New City</p>
             <div className={styles.input_form}>
               <label>City Name</label>
-              <input type="text"/>
+              <input type="text" onChange={ this.storeCityInput.bind(this) } value= { cityInput } />
             </div>
-            <div className={styles.user_actions}>
-              <button className={styles.cancel_btn + ' ' + styles.common_btn}>Cancel</button>
-              <button className={styles.save_btn + ' ' + styles.common_btn}>Save</button>
-            </div>
+            { (!isCityEdit ?
+              (
+                <div className={styles.user_actions}>
+                  <button className={styles.cancel_btn + ' ' + styles.common_btn} onClick={ this.toggleCityComponent.bind(this) } >Cancel</button>
+                  <button className={styles.save_btn + ' ' + styles.common_btn} onClick={ this.saveCityToLocal.bind(this) } >Save</button>
+                </div>
+              )
+              :
+              (
+                <div className={styles.user_actions}>
+                  <button className={styles.cancel_btn + ' ' + styles.common_btn} onClick={ this.deleteCityLocal.bind(this) } >Delete</button>
+                  <button className={styles.save_btn + ' ' + styles.common_btn} onClick={ this.updateCityToLocal.bind(this) } >Update</button>
+                </div>
+              ))
+            }
           </div>
           <div className="clearfix"></div>
           <div className={styles.save_lay}>
-            <button className={styles.common_btn + ' ' + styles.create_btn }>Save state</button>
+            <button onClick={ this.saveCurrentState.bind(this) } className={styles.common_btn + ' ' + styles.create_btn }>Save state</button>
           </div>
         </div>
       );
@@ -142,14 +290,21 @@ ManageState.propTypes = {
   params: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
+  hideCityComponent: PropTypes.bool.isRequired,
+  cities: PropTypes.object.isRequired,
+  cityInput: PropTypes.string.isRequired,
+  stateInput: PropTypes.string.isRequired,
+  cityId: PropTypes.string.isRequired,
+  isCityEdit: PropTypes.bool.isRequired,
+  isCityLocal: PropTypes.bool.isRequired,
   ongoingRequest: PropTypes.bool.isRequired,
   lastError: PropTypes.object.isRequired,
-  lastSuccess: PropTypes.array.isRequired
+  lastSuccess: PropTypes.array.isRequired,
+  fromDB: PropTypes.array.isRequired
 };
 
 const mapStateToProps = (state) => {
-  return {...state.sku_data};
+  return {...state.sku_data, ...state.state_data, ...state.page_data};
 };
 
-export default connect(mapStateToProps)(ManageState);
-
+export default connect(mapStateToProps)(commonDecorator(ManageState));
