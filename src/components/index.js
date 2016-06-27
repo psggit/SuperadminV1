@@ -40,12 +40,15 @@ export CreateNotepadEntry from './NotepadEntries/CreateNotepadEntry';
 export Notepad from './NotepadEntries/Notepad';
 export EditAccountDetails from './Consumer/components/EditProfile/EditAccountDetails';
 export BrandManagement from './SkuManagement/Brand/BrandManagement';
+export CompaniesManagement from './SkuManagement/Companies/CompaniesManagement';
+export ManageCompanies from './SkuManagement/Companies/ManageCompanies';
+
 
 export BrandCreate from './SkuManagement/Brand/BrandCreate';
 export Skus from './SkuManagement/Skus/Skus';
 export Toppicks from './SkuManagement/Skus/Toppicks/Toppicks';
 export AddToppicks from './SkuManagement/Skus/AddToppicks/AddToppicks';
-export CreateSku from './SkuManagement/Skus/CreateSku/CreateSku';
+export CreateSku from './SkuManagement/Skus/CreateSku/CreateSkuWrapper';
 export SkuManagementViewSkus from './SkuManagement/Skus/ViewSku/ViewSku';
 export SkuManagementToppicks from './SkuManagement/Skus/ToppicksIn/ToppicksIn';
 
@@ -53,9 +56,16 @@ export SkuManagementToppicks from './SkuManagement/Skus/ToppicksIn/ToppicksIn';
 export AddCredit from './CustomerTransaction/components/Credits/CreateCredit';
 export ConfirmCredit from './CustomerTransaction/components/Credits/ConfirmCredits';
 export ViewCredits from './CustomerTransaction/components/Credits/ViewCredits';
-
+export HomepageManagementAds from './HomepageManagement/Ads';
+export HomepageManagementSelectAds from './HomepageManagement/SelectAds';
+export BrandManagerProfile from './BrandsOffersAndPromos/BrandManagerProfile/BrandManagerProfile';
+export CreateBrandManager from './BrandsOffersAndPromos/CreateBrandManager/CreateBrandManager';
+export BrandAds from './BrandsOffersAndPromos/BrandAds/BrandAds';
+export BrandPromos from './BrandsOffersAndPromos/BrandPromos/BrandPromos';
+export PromosInstantCashback from './BrandsOffersAndPromos/PromosInstantCashback/PromosInstantCashback';
 
 /* Consumer Transactions */
 
 export ConsumerRecharge from './CustomerTransaction/components/Recharge/Recharge';
 export ConsumerReservation from './CustomerTransaction/components/Reservation/Reservation';
+

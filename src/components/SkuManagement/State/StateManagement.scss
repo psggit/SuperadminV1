@@ -21,12 +21,6 @@
 	width: 100%;
 	float: left;
 }
-.complete_container
-{
-	width: 100%;
-	float: left;
-	padding: 20px 45px;
-}
 .search_wrapper
 {
 	background: #FFF;
@@ -34,6 +28,12 @@
 	color: rgba(0,0,0,0.54);
 	font-size: 15px;
 	letter-spacing: 0.3px;
+}
+.pagination_wrapper
+{
+	width: 100%;
+	float: left;
+	padding-bottom: 30px;
 }
 .common_btn
 {
@@ -86,16 +86,17 @@
 {
 	padding: 10px 15px;
 	background: #FFF;
+	margin: 45px;
 	display: inline-block;
 	float: left;
 	font-size: 14px;
-	margin-bottom: 20px;
 	letter-spacing: 0.5px;
 	p
 	{
 		color: rgba(0,0,0,0.38);
 		font-weight: 500;
 		margin-bottom: 15px;
+		text-transform: uppercase;
 	}
 	.create_form
 	{
@@ -270,105 +271,97 @@
 		}
 	}
 }
-.cities_conatiner
+.city_wrapper
 {
-	display: inline-block;
-	padding: 10px 15px;
 	background: #FFF;
 	float: left;
-	width: 300px;
-	margin-right: 25px;
-	.heading
+	display: block;
+	padding: 10px 15px;
+	margin: 0 45px 20px 45px;
+	width: 30%;
+	p
 	{
 		color: rgba(0,0,0,0.38);
 		font-weight: 500;
-		margin-bottom: 10px;
-		text-transform: uppercase;
-		font-size: 13px;
-		letter-spacing: 0.3px;
+		margin-bottom: 15px;
 	}
-	.add_new
+	.add_new_btn
 	{
 		color: #FF7400;
-		margin-bottom: 10px;
-		float: left;
-		font-size: 13px;
-		&:hover, &:focus
-		{
-			text-decoration: none;
-		}
+    	font-size: 13px;
+    	letter-spacing: 0.3px;
+    	float: left;
+    	font-weight: 400;
+    	cursor: pointer;
 	}
 	ul
 	{
-		list-style: none;
-		width: 100%;
-		float: left;
 		margin: 0;
-		height: 300px;
-		overflow: auto;
 		padding: 0;
-	}
-	li
-	{
-		margin-bottom: 15px;
 		width: 100%;
 		float: left;
+		list-style: none;
+		height: 250px;
+		overflow: auto;
+		li
+		{
+			margin-top: 10px;
+      padding-bottom: 20px;
+
+		}
+		label
+		{
+			width: 70%;
+		    color: rgba(0, 0, 0, 0.54);
+		    font-size: 13px;
+		    letter-spacing: 0.3px;
+		    float: left;
+		    font-weight: 400;
+		}
 		p
 		{
-			font-weight: 400;
-			width: 80%;
-			float: left;
-			color: rgba(0,0,0,0.54);
-			margin-bottom: 0;
-			font-size: 13px;
-		}
-		a
-		{
-			color: #FF7400;
-			float: left;
-			width: 20%;
-			text-align: right;
-			font-size: 13px;
-			&:hover, &:focus
-			{
-				text-decoration: none;
-			}
+			width: 30%;
+    		float: left;
+    		color: #FF7400;
+    		font-size: 13px;
+    		text-align: right;
+    		font-weight: 400;
+    		margin-bottom: 0;
+        cursor: pointer;
 		}
 	}
 }
-.add_city_container
+.add_city_wrapper
 {
-	padding: 10px 15px;
 	background: #FFF;
 	float: left;
-	width: 340px;
 	display: inline-block;
-	margin-left: 25px;
-	.heading
+	padding: 10px 15px;
+	margin: 0 0 20px 0;
+	p
 	{
 		color: rgba(0,0,0,0.38);
 		font-weight: 500;
-		margin-bottom: 10px;
+		margin-bottom: 15px;
 		text-transform: uppercase;
-		letter-spacing: 0.3px;
-		font-size: 13px;
 	}
-	.city_container
+	.input_form
 	{
-		width: 100%;
-		float: left;
-		p
+		margin-bottom: 20px;
+		label
 		{
-			font-weight: 400;
-			color: rgba(0,0,0,0.54);
-			font-size: 13px;
-			display: inline-block;
-			width: 140px;
+			color: rgba(0, 0, 0, 0.54);
+		    font-size: 13px;
+		    letter-spacing: 0.3px;
+		    width: 100px;
+		    font-weight: 400;
+		    display: inline-block;
+		    vertical-align: middle;
 		}
 		input
 		{
 			display: inline-block;
-			width: 170px;
+			width: 160px;
 			border: 1px solid #CCCCCC;
 			border-radius: 4px;
 			background: #FFF;
@@ -388,54 +381,52 @@
 	}
 	.user_actions
 	{
-		width: 100%;
 		float: left;
-		padding-top: 15px;
-		padding-bottom: 20px;
-	}
-	.cancel_btn
-	{
-		width: 48%;
-		margin-right: 2%; 
-		height: 30px;
-		color: rgba(255, 116, 0, 0.8);
-		border: 1px solid #FF7400;
-		border-radius: 4px;
-		background: #FFF;
-		cursor: pointer;
-		font-weight: 400;
-		text-align: center;
-		font-size: 13px;
-		letter-spacing: 0.5px;
-		transition: all 0.2s linear;
-		&:hover
+		margin-bottom: 10px;
+		.common_btn
 		{
-			color: rgba(255, 116, 0, 1); 
+			width: 130px;
+			height: 30px;
+			color: rgba(255, 116, 0, 0.8);
+			border: 1px solid #FF7400;
+			border-radius: 4px;
+			background: #FFF;
+			cursor: pointer;
+			font-weight: 400;
+			text-align: center;
+			font-size: 13px;
+			letter-spacing: 0.5px;
+			transition: all 0.2s linear;
+			&:hover
+			{
+				color: rgba(255, 116, 0, 1); 
+			}
+			&:focus
+			{
+				outline: none;
+			}
 		}
-		&:focus
+		.cancel_btn
 		{
-			outline: none;
+			margin-right: 5px;
 		}
-	}
-	.save_btn
-	{
-		@extend .cancel_btn;
-		margin-left: 2%;
-		margin-right: 0;
+		.save_btn
+		{
+			margin-left: 5px;
+		}
 	}
 }
-.save_layout
+.save_lay
 {
 	width: 100%;
 	float: left;
-	padding-top: 20px;
 	text-align: center;
-	.save_btn
-	{
-		@extend .common_btn;
-		margin: auto;
-	}
+	padding: 40px 0;
 }
+
+
+
+
 
 
 

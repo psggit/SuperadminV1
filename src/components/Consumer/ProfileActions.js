@@ -77,6 +77,7 @@ const getUserData = (f) => {
         {
           'name': 'carts',
           'columns': [
+            'created_at',
             {
               'name': 'normal_items',
               'columns': ['*']
@@ -282,7 +283,7 @@ const getCartData = (f) => {
               }, '*']
             }, '*']
           }, '*']
-        }],
+        }, 'created_at'],
         'order_by': '-created_at',
         'limit': 1
       }, {

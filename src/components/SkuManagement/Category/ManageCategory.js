@@ -56,6 +56,12 @@ class ManageCategory extends React.Component { // eslint-disable-line no-unused-
               </p>
               <div className={styles.create_form}>
                 <div className={styles.indiv_form}>
+                  <label>Genre</label>
+                  <select>
+                    <option>Whiskey</option>
+                  </select>
+                </div>
+                <div className={styles.indiv_form}>
                 	<label>Category Name</label>
                 	<input type="text" data-field-name="category_name" onChange={this.inputOnChange.bind(this)} value={lastSuccess[0].name} />
                 </div>
@@ -83,6 +89,12 @@ class ManageCategory extends React.Component { // eslint-disable-line no-unused-
               Create Category
             </p>
             <div className={styles.create_form}>
+              <div className={styles.indiv_form}>
+                <label>Genre</label>
+                <select>
+                  <option>Whiskey</option>
+                </select>
+              </div>
               <div className={styles.indiv_form}>
               	<label>Category Name</label>
               	<input type="text" data-field-name="category_name" />

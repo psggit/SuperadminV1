@@ -95,9 +95,51 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
                     <Link to={'/hadmin/genre_management'}>Manage Genres</Link>
                   </label>
                 </li>
+                <li className={styles.sidebar_list}>
+                  <label>
+                    <Link to={'/hadmin/companies_management'}>Manage Companies</Link>
+                  </label>
+                </li>
+                <li className={styles.sidebar_list}>
+                  <label>
+                    <Link to={'/hadmin/skus'}>Manage SKUs</Link>
+                  </label>
+                </li>
               </ul>
             </li>
           </ul>
+
+          <ul>
+            <li><input type="checkbox" id="cb4"/><label htmlFor="cb4">BRANDS OFFERS AND PROMOS</label>
+              <ul>
+              <li className={styles.sidebar_list}><label>
+                <Link to={'/hadmin/brands_offers_and_promos/brand_manager_profile'} className={ lastPathname === 'kycfunctions' ? styles.active : '' }>Brand Manager Profile</Link>
+              </label></li>
+              <li className={styles.sidebar_list}><label>
+                <Link to={'/hadmin/brands_offers_and_promos/promos'} className={ lastPathname === 'profiles' ? styles.active : '' }>Promos</Link>
+              </label></li>
+              <li className={styles.sidebar_list}><label>
+                <Link to={'/hadmin/brands_offers_and_promos/ads'} className={ lastPathname === 'consumer_transactions' ? styles.active : '' }>
+                    Ads
+                </Link>
+              </label></li>
+              </ul>
+            </li>
+          </ul>
+
+          <ul>
+            <li><input type="checkbox" id="cb5"/><label htmlFor="cb5">HOMEPAGE MANAGEMENT</label>
+              <ul>
+              <li className={styles.sidebar_list}><label>
+                <Link to={'/hadmin/'} className={ lastPathname === 'kycfunctions' ? styles.active : '' }>Top Picks</Link>
+              </label></li>
+              <li className={styles.sidebar_list}><label>
+                <Link to={'/hadmin/homepage_management/ads'} className={ lastPathname === 'profiles' ? styles.active : '' }>Ad Slots</Link>
+              </label></li>
+              </ul>
+            </li>
+          </ul>
+
           {/*
           <ul>
             <li><input type="checkbox" id="cb4"/><label htmlFor="cb4">RETAILER MANAGEMENT</label>

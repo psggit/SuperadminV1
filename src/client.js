@@ -44,7 +44,9 @@ import {Login, Home, PageContainer,
   ManageCategory,
   AddCredit,
   ConfirmCredit,
-  ViewCredits
+  ViewCredits,
+  HomepageManagementAds, HomepageManagementSelectAds, BrandManagerProfile, CreateBrandManager,
+  CompaniesManagement, ManageCompanies, BrandAds, BrandPromos, PromosInstantCashback
 } from './components'; // eslint-disable-line no-unused-vars
 import {AddTable} from './components';
 import {loadCredentials} from './components/Login/Actions';
@@ -57,6 +59,7 @@ import reducer from './reducer';
 
 // Create the store
 const DevTools = require('./helpers/DevTools/DevTools');
+console.log(DevTools);
 const reduxSimpleRouterMiddleware = syncHistory(browserHistory);
 const _finalCreateStore = compose(
   applyMiddleware(thunk, reduxSimpleRouterMiddleware, createLogger()),
@@ -165,12 +168,21 @@ const main = (
         <Route path="category_management/create" component={ManageCategory} />
         <Route path="brand_management" component={BrandManagement} />
         <Route path="brand_management/create" component={BrandCreate} />
+        <Route path="companies_management" component={CompaniesManagement} />
+        <Route path="companies_management/create" component={ManageCompanies} />
         <Route path="skus" component={Skus} />
         <Route path="skus/toppicks" component={Toppicks} />
         <Route path="skus/add_top_picks" component={AddToppicks} />
         <Route path="skus/create_sku" component={CreateSku} />
         <Route path="skus/view_sku" component={SkuManagementViewSkus} />
         <Route path="skus/top_picks" component={SkuManagementToppicks} />
+        <Route path="homepage_management/ads" component={HomepageManagementAds} />
+        <Route path="homepage_management/select_ads" component={HomepageManagementSelectAds} />
+        <Route path="brands_offers_and_promos/brand_manager_profile" component={BrandManagerProfile} />
+        <Route path="brands_offers_and_promos/create_brand_manager" component={CreateBrandManager} />
+        <Route path="brands_offers_and_promos/ads" component={BrandAds} />
+        <Route path="brands_offers_and_promos/promos" component={BrandPromos} />
+        <Route path="brands_offers_and_promos/promos/instant_cashback" component={PromosInstantCashback} />
         /* End of SKU Management */
         {/*
         <Route path="notepad_entries" component={NotepadEntries} />

@@ -142,7 +142,9 @@ class StateManagement extends React.Component { // eslint-disable-line no-unused
           </div>
           */}
           <SearchWrapper data={lastSuccess}/>
-          <PaginationContainer limit="10" onClickHandler={this.onClickHandle.bind(this)} currentPage={page} showMax="5" count={count} parentUrl="/hadmin/state_management" />
+          <div className={styles.pagination_wrapper}>
+            <PaginationContainer limit="10" onClickHandler={this.onClickHandle.bind(this)} currentPage={page} showMax="5" count={count} parentUrl="/hadmin/state_management" />
+          </div>
         </div>
       );
   }

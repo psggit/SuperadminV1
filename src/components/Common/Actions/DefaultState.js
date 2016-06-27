@@ -17,6 +17,47 @@ const defaultBrandState = {
   categoryList: []
 };
 
+const defaultStateManagementState = {
+  stateInput: '',
+  stateStatus: false,
+  cityInput: '',
+  hideCityComponent: true,
+  isCityEdit: false,
+  isCityLocal: false,
+  cityId: '0',
+  cities: {},
+  fromDB: []
+};
+
+/* Response Objs =>
+ *  {
+ *    'sku': {
+ *      'id': 'sku_id'
+ *    }
+ *    sku_pricing': {
+ *      'state_id': {
+ *        'id': 'sku_pricing_id'
+ *      }
+ *    }
+ *  }
+*/
+
+const defaultCreateSkuState = {
+  brandList: [],
+  stateList: [],
+  stateCityMapping: {},
+  cityRetailerMapping: {},
+  retailerMapping: {},
+  retailerStatus: {},
+  viewedState: {},
+  viewedCity: {},
+  skuImageUrl: '',
+  responseObjs: {},
+  skuReqObj: {},
+  /* For each state in this mapping we need to create an entry in sku_pricing */
+  // stateMrpObj: {}
+};
+
 const defaultConsumerState = {
   userData: []
 };
@@ -80,4 +121,10 @@ const defaultKycState = {
 };
 
 export default defaultState;
-export { defaultNotepadState, defaultBrandState, defaultConsumerState, defaultKycState};
+export { defaultNotepadState
+  , defaultBrandState
+  , defaultConsumerState
+  , defaultKycState
+  , defaultCreateSkuState
+  , defaultStateManagementState
+};

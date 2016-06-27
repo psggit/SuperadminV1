@@ -25,9 +25,9 @@ const fetchConsumerCount = () => {
     const payload = {
       'columns': ['id']
     };
-    payload.where = {
-      'status': 'open'
-    };
+    // payload.where = {
+    //   'status': 'open'
+    // };
     const url = Endpoints.db + '/table/' + 'consumer_kyc' + '/count';
     const options = {
       method: 'POST',
@@ -81,9 +81,9 @@ const fetchConsumer = (page) => {
         'columns': ['*']
       }
     ];
-    queryObj.where = {
-      'status': 'open'
-    };
+    // queryObj.where = {
+    //   'status': 'open'
+    // };
     queryObj.limit = limit;
     queryObj.offset = offset;
     queryObj.order_by = '+consumer.id';

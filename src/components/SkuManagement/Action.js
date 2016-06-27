@@ -242,7 +242,7 @@ const fetchState = (stateId) => {
     //
     const payload = {
       'where': {'id': stateId},
-      'columns': ['*']
+      'columns': ['*', { 'name': 'cities', 'columns': ['id', 'name', 'gps'] }]
     };
 
     const url = Endpoints.db + '/table/' + 'state' + '/select';
