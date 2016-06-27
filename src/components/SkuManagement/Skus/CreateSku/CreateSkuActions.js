@@ -71,10 +71,26 @@ const fetchState = () => {
               '*'
             ]
           }
-        ]
+        ],
+        'where': {
+          'retailers': {
+            'id': {
+              '$gt': 0
+            }
+          }
+        }
       }
     ];
     queryObj.order_by = '-state_name';
+    queryObj.where = {
+      'cities': {
+        'retailers': {
+          'id': {
+            '$gt': 0
+          }
+        }
+      }
+    };
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -264,7 +280,10 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
     case STATE_MRP_INFORMATION:
       console.log('Something S');
       console.log(action);
-      return { ...state };
+      const currentStateObj = {};
+      currentStateObj[action.data.state_id] = Object.assign( {}, state.stateCityMapping[action.data.state_id] );
+      currentStateObj[action.data.state_id][action.data.key] = action.data[action.data.key];
+      return { ...state, stateCityMapping: { ...state.stateCityMapping, ...currentStateObj }};
     default: return state;
   }
 };

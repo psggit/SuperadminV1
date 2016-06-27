@@ -46,9 +46,13 @@ class SkuWrapper extends Component {
   }
   onStatePriceEntered(e) {
     const changedValue = e.target.getAttribute('data-field-name');
+    const stateId = e.target.getAttribute('data-state-id');
+
     const data = {};
-    data[changedValue] = parseInt(e.target.value, 10);
-    this.props.dispatch({ type: STATE_MRP_INFORMATION, ...data});
+    data[changedValue] = parseFloat(e.target.value);
+    data.key = changedValue;
+    data.state_id = parseInt(stateId, 10);
+    this.props.dispatch({ type: STATE_MRP_INFORMATION, data: { ...data }});
   }
   onStateView(e) {
     const stateId = e.target.parentNode.getAttribute('data-view-state-id');
