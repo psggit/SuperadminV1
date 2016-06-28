@@ -17,6 +17,7 @@ import { fetchBrand
   , viewState
   , viewCity
   , STATE_MRP_INFORMATION
+  , onSave
 } from './CreateSkuActions';
 /* */
 
@@ -83,6 +84,10 @@ class SkuWrapper extends Component {
     this.props.dispatch(( e.target.checked ) ? markRetailerSelected(parseInt(retailerId, 10)) : unMarkRetailerSelected(parseInt(retailerId, 10)));
   }
 
+  onSaveClick() {
+    this.props.dispatch(onSave());
+  }
+
   onSkuInfoChange(e) {
     console.log(e.target);
   }
@@ -100,6 +105,7 @@ class SkuWrapper extends Component {
               onCityView={this.onCityView.bind(this) }
               onRetailerCheck={ this.onRetailerCheck.bind(this) }
               dispatch={ this.props.dispatch }
+              onSave = { this.onSaveClick.bind(this) }
             />
           </div>
         );

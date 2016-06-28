@@ -45,6 +45,7 @@ import {Login, Home, PageContainer,
   AddCredit,
   ConfirmCredit,
   ViewCredits,
+  ListSku,
   HomepageManagementAds, HomepageManagementSelectAds, BrandManagerProfile, CreateBrandManager,
   CompaniesManagement, ManageCompanies, BrandAds, BrandPromos, PromosInstantCashback
 } from './components'; // eslint-disable-line no-unused-vars
@@ -171,6 +172,7 @@ const main = (
         <Route path="companies_management" component={CompaniesManagement} />
         <Route path="companies_management/create" component={ManageCompanies} />
         <Route path="skus" component={Skus} />
+        <Route path="skus/list_sku" component={ListSku} />
         <Route path="skus/toppicks" component={Toppicks} />
         <Route path="skus/add_top_picks" component={AddToppicks} />
         <Route path="skus/create_sku" component={CreateSku} />

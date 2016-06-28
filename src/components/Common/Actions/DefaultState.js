@@ -54,6 +54,8 @@ const defaultCreateSkuState = {
   skuImageUrl: '', /* Uploaded image url is saved */
   responseObjs: {},
   skuReqObj: {}, /* Stores the request object for SKU creation */
+  sku_id: '',
+  sku_state_id: {},
   /* For each state in this mapping we need to create an entry in sku_pricing */
   // stateMrpObj: {}
 };
