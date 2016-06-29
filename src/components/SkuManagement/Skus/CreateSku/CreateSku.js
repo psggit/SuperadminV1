@@ -26,6 +26,7 @@ const CreateSku = ({ brandList
     , onRetailerCheck
     , skuImageUrl
     , dispatch
+    , onSave
   }) => { // eslint-disable-line no-unused-vars
   const styles = require('./CreateSku.scss');
   // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
@@ -73,7 +74,7 @@ const CreateSku = ({ brandList
       {
         /* Self Explaining */
       }
-      <button className={styles.save_btn}>Save</button>
+      <button className={styles.save_btn} onClick = { onSave } >Save</button>
     </div>);
 };
 

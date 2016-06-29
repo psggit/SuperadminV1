@@ -17,6 +17,7 @@ import { fetchBrand
   , viewState
   , viewCity
   , STATE_MRP_INFORMATION
+  , onSave
 } from './CreateSkuActions';
 /* */
 
@@ -46,9 +47,13 @@ class SkuWrapper extends Component {
   }
   onStatePriceEntered(e) {
     const changedValue = e.target.getAttribute('data-field-name');
+    const stateId = e.target.getAttribute('data-state-id');
+
     const data = {};
-    data[changedValue] = parseInt(e.target.value, 10);
-    this.props.dispatch({ type: STATE_MRP_INFORMATION, ...data});
+    data[changedValue] = parseFloat(e.target.value);
+    data.key = changedValue;
+    data.state_id = parseInt(stateId, 10);
+    this.props.dispatch({ type: STATE_MRP_INFORMATION, data: { ...data }});
   }
   onStateView(e) {
     const stateId = e.target.parentNode.getAttribute('data-view-state-id');
@@ -79,6 +84,10 @@ class SkuWrapper extends Component {
     this.props.dispatch(( e.target.checked ) ? markRetailerSelected(parseInt(retailerId, 10)) : unMarkRetailerSelected(parseInt(retailerId, 10)));
   }
 
+  onSaveClick() {
+    this.props.dispatch(onSave());
+  }
+
   onSkuInfoChange(e) {
     console.log(e.target);
   }
@@ -96,6 +105,7 @@ class SkuWrapper extends Component {
               onCityView={this.onCityView.bind(this) }
               onRetailerCheck={ this.onRetailerCheck.bind(this) }
               dispatch={ this.props.dispatch }
+              onSave = { this.onSaveClick.bind(this) }
             />
           </div>
         );

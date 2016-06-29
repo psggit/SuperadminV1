@@ -69,3 +69,5 @@ export PromosInstantCashback from './BrandsOffersAndPromos/PromosInstantCashback
 export ConsumerRecharge from './CustomerTransaction/components/Recharge/Recharge';
 export ConsumerReservation from './CustomerTransaction/components/Reservation/Reservation';
 
+/* SKU */
+export ListSku from './SkuManagement/Skus/ListSku/ListSku';
