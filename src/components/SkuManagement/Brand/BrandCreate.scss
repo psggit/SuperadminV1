@@ -309,9 +309,11 @@
 	li
 	{
 		margin-bottom: 10px;
+    width: 100%;
+    float: left;
 		label
 		{
-			width: 70%;
+			width: 50%;
 			font-weight: 400;
 			color: rgba(0,0,0,0.54);
 			font-size: 13px;
@@ -320,12 +322,13 @@
 		}
 		p
 		{
-			width: 30%;
+			width: 50%;
 			float: left;
 			color: #FF7400;
 			font-size: 13px;
 			text-align: right;
 			margin-bottom: 0;
+      cursor: pointer;
 		}
 	}	
 }
@@ -367,6 +370,8 @@
 	li
 	{
 		margin-bottom: 10px;
+    float: left;
+    width: 100%;
 		label
 		{
 			font-weight: 400;

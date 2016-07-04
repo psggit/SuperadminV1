@@ -4,13 +4,21 @@ import { fetchGenre,
   fetchCategory,
   fetchCompany,
   insertBrand,
-  fetchState
+  fetchState,
+  viewState,
+  TOGGLE_REGION_VISIBILITY,
+  REGION_INPUT_CHANGED,
+  MARK_CITY_SELECTED,
+  UNMARK_CITY_SELECTED
 } from './BrandAction.js';
 
 // import TableHeader from '../../Common/TableHeader';
 
 import commonDecorator from '../../Common/CommonDecorator';
 import BreadCrumb from '../../Common/BreadCrumb';
+
+import BrandState from './BrandState';
+import StateCity from './StateCity';
 
 class BrandCreate extends Component { // eslint-disable-line no-unused-vars
   constructor() {
@@ -58,10 +66,35 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
     /* Inserting brand */
     this.props.dispatch(insertBrand(brandObj));
   }
+  onStateView(e) {
+    const element = (e.target.tagName !== 'P') ? e.target.parentNode : e.target;
+    const stateId = element.getAttribute('data-view-state-id');
+    this.props.dispatch( viewState(parseInt(stateId, 10)));
+    console.log(stateId);
+  }
+  onCityCheck(e) {
+    const cityId = e.target.getAttribute('data-city-id');
+    this.props.dispatch(( e.target.checked ) ? { type: MARK_CITY_SELECTED, data: (parseInt(cityId, 10))} : { type: UNMARK_CITY_SELECTED, data: (parseInt(cityId, 10))});
+  }
+  onRegionInput(e) {
+    this.props.dispatch( { type: REGION_INPUT_CHANGED, data: e.target.value });
+  }
+  toggleRegion() {
+    /* Create a new Region data structure */
+    this.props.dispatch( { type: TOGGLE_REGION_VISIBILITY } );
+  }
   render() {
     const styles = require('./BrandCreate.scss');
 
-    const { ongoingRequest, genreList, categoryList, companyList } = this.props;
+    const { ongoingRequest,
+      genreList,
+      categoryList,
+      companyList,
+      stateCityMapping,
+      viewedState,
+      showRegionState,
+      regionInput
+    } = this.props;
 
     const genreHtml = genreList.map((genre, index) => {
       return (
@@ -153,10 +186,10 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
         </div>
         */}
         <div className="clearfix"></div>
-        <div className={styles.region_wrapper}>
+        <div className={styles.region_wrapper }>
           <div className={styles.regions_container}>
             <div className={styles.heading}>Regions</div>
-            <div className={styles.add_lab}>+ Add New</div>
+            <div className={styles.add_lab} onClick = { this.toggleRegion.bind(this) } >+ Add New</div>
             {/*
             <ul>
               <li>
@@ -166,11 +199,11 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
             </ul>
             */}
           </div>
-          <div className={styles.add_regions_container}>
+          <div className={styles.add_regions_container + ' ' + ( showRegionState ? '' : 'hide' )}>
             <div className={styles.heading}>Add new Regions</div>
             <div className={styles.wd_100}>
               <label className={styles.region_lab}>Region name</label>
-              <input type="text" />
+              <input type="text" data-field-name="name" onChange={ this.onRegionInput.bind(this) } value = { regionInput } />
             </div>
             <div className={styles.wd_100 + ' ' + styles.select_city}>
               <label className={styles.cites_lab}>
@@ -178,6 +211,12 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
                 <span className={styles.selected}>1 Selected</span>
               </label>
             </div>
+            {/*
+            <StateOutlet stateCityMapping={ stateCityMapping } onStateView = { this.onStateView.bind(this) } />
+            */}
+            <BrandState stateCityMapping={ stateCityMapping } onStateView = { this.onStateView.bind(this) } />
+            <StateCity viewedState = { viewedState } onCityCheck = { this.onCityCheck.bind(this) } />
+            {/*
             <div className={styles.available_states_container}>
               <div className={styles.heading}>
                   <label>Available states</label>
@@ -190,6 +229,8 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
                 </li>
               </ul>
             </div>
+            */}
+            {/*
             <div className={styles.cities_in_container}>
               <div className={styles.heading}>
                 Cities in: <span className={styles.state}>Tamil Nadu</span>
@@ -202,6 +243,7 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
                 </li>
               </ul>
             </div>
+            */}
             <div className="clearfix"></div>
             <div className={styles.user_actions}>
               <button>Cancel</button>
@@ -222,7 +264,11 @@ BrandCreate.propTypes = {
   dispatch: PropTypes.func.isRequired,
   categoryList: PropTypes.array.isRequired,
   genreList: PropTypes.array.isRequired,
-  companyList: PropTypes.array.isRequired
+  companyList: PropTypes.array.isRequired,
+  stateCityMapping: PropTypes.object.isRequired,
+  viewedState: PropTypes.object.isRequired,
+  showRegionState: PropTypes.bool.isRequired,
+  regionInput: PropTypes.string.isRequired
 };
 
 const mapStateToProps = (state) => {

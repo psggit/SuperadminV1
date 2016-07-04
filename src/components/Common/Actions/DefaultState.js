@@ -15,7 +15,10 @@ const defaultBrandState = {
   companyList: [],
   genreList: [],
   categoryList: [],
-  stateList: []
+  stateList: [],
+  stateCityMapping: {},
+  viewedState: {},
+  showRegionState: false,
 };
 
 const defaultStateManagementState = {
@@ -27,7 +30,8 @@ const defaultStateManagementState = {
   isCityLocal: false,
   cityId: '0',
   cities: {},
-  fromDB: []
+  fromDB: [],
+  regionInput: ''
 };
 
 /* Response Objs =>

@@ -19,6 +19,18 @@ const BRAND_GENRE_FETCH = 'BRAND/BRAND_GENRE_FETCH';
 const BRAND_COMPANY_FETCH = 'BRAND/BRAND_COMPANY_FETCH';
 const BRAND_STATE_FETCH = 'BRAND/BRAND_STATE_FETCH';
 
+
+const VIEW_STATE = 'BRAND/VIEW_STATE';
+const TOGGLE_REGION_VISIBILITY = 'BRAND/TOGGLE_REGION_VISIBILITY';
+const REGION_INPUT_CHANGED = 'BRAND/REGION_INPUT_CHANGED';
+
+/* Region Related */
+
+const MARK_CITY_SELECTED = 'BRAND/MARK_CITY_SELECTED';
+const UNMARK_CITY_SELECTED = 'BRAND/UNMARK_CITY_SELECTED';
+
+/* End of it */
+
 /* ****** Action Creators ******** */
 
 const fetchCategory = () => {
@@ -104,6 +116,13 @@ const fetchState = () => {
         ]
       }
     ];
+    queryObj.where = {
+      'cities': {
+        'id': {
+          '$gt': 0
+        }
+      }
+    };
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -117,6 +136,10 @@ const fetchState = () => {
       dispatch({type: REQUEST_COMPLETED})
     ]);
   };
+};
+
+const viewState = (stateId) => {
+  return { type: VIEW_STATE, data: stateId };
 };
 
 const insertBrand = (brandObj) => {
@@ -281,6 +304,8 @@ const getAllBrandData = (page, limit) => {
 /* ****************** REDUCER ********************************* */
 
 const brandReducer = (state = defaultBrandState, action) => {
+  let selectedState;
+  let modifiedState;
   switch (action.type) {
     case BRAND_CATEGORY_FETCH:
       return {...state, categoryList: action.data};
@@ -289,7 +314,60 @@ const brandReducer = (state = defaultBrandState, action) => {
     case BRAND_COMPANY_FETCH:
       return {...state, companyList: action.data};
     case BRAND_STATE_FETCH:
-      return {...state, stateList: action.data};
+      let countState = 0;
+      const stateCityMapping = {};
+      while ( countState < action.data.length) {
+        stateCityMapping[action.data[countState].id] = {
+          is_selected: true,
+          selected_cities: {},
+          duty_free: 0,
+          duty_paid: 0,
+          cities: action.data[countState].cities,
+          stateInfo: action.data[countState],
+          updatedCities: {}
+        };
+        countState++;
+      }
+      return {...state, stateList: action.data, stateCityMapping: stateCityMapping};
+    case VIEW_STATE:
+      return {...state, viewedState: state.stateCityMapping[action.data], viewedCity: {}};
+    case TOGGLE_REGION_VISIBILITY:
+      return { ...state, showRegionState: !state.showRegionState };
+    case REGION_INPUT_CHANGED:
+      return { ...state, regionInput: action.data };
+    case MARK_CITY_SELECTED:
+      /* Get the selected State right now */
+      selectedState = Object.assign( {}, state.viewedState);
+      modifiedState = {};
+      modifiedState[selectedState.stateInfo.id] = Object.assign({}, state.stateCityMapping[parseInt(selectedState.stateInfo.id, 10)]);
+      modifiedState[selectedState.stateInfo.id].selected_cities[action.data] = {
+        'id': action.data
+      };
+
+
+      if ( modifiedState[selectedState.stateInfo.id].updatedCities[action.data] ) {
+        if (modifiedState[selectedState.stateInfo.id].updatedCities[action.data].location === 'server') {
+          delete modifiedState[selectedState.stateInfo.id].updatedCities[action.data];
+        } else {
+          modifiedState[selectedState.stateInfo.id].updatedCities[action.data] = {
+            'action': 'INSERTED',
+            'location': 'local'
+          };
+        }
+      } else {
+        modifiedState[selectedState.stateInfo.id].updatedCities[action.data] = {
+          'action': 'INSERTED',
+          'location': 'local'
+        };
+      }
+      return {...state, stateCityMapping: { ...state.stateCityMapping, ...modifiedState }};
+    case UNMARK_CITY_SELECTED:
+      selectedState = Object.assign( {}, state.viewedState);
+      modifiedState = Object.assign({}, state.stateCityMapping[parseInt(selectedState.stateInfo.id, 10)]);
+      modifiedState.updatedCities[action.data] = { ...modifiedState.updatedCities[action.data], action: 'DELETED'};
+      delete modifiedState.selected_cities[action.data];
+
+      return {...state, stateCityMapping: { ...state.stateCityMapping, ...modifiedState }};
     default: return state;
   }
 };
@@ -304,6 +382,11 @@ export {
   getBrandData,
   getAllBrandData,
   fetchState,
-  RESET
+  RESET,
+  viewState,
+  TOGGLE_REGION_VISIBILITY,
+  REGION_INPUT_CHANGED,
+  MARK_CITY_SELECTED,
+  UNMARK_CITY_SELECTED
 };
 export default brandReducer;
