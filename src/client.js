@@ -46,7 +46,7 @@ import {Login, Home, PageContainer,
   ConfirmCredit,
   ViewCredits,
   HomepageManagementAds, HomepageManagementSelectAds, BrandManagerProfile, CreateBrandManager,
-  CompaniesManagement, ManageCompanies, BrandAds, BrandPromos, PromosInstantCashback
+  CompaniesManagement, ManageCompanies, BrandAds, BrandPromos, PromosInstantCashback, RetailerManagementCreate
 } from './components'; // eslint-disable-line no-unused-vars
 import {AddTable} from './components';
 import {loadCredentials} from './components/Login/Actions';
@@ -183,6 +183,7 @@ const main = (
         <Route path="brands_offers_and_promos/ads" component={BrandAds} />
         <Route path="brands_offers_and_promos/promos" component={BrandPromos} />
         <Route path="brands_offers_and_promos/promos/instant_cashback" component={PromosInstantCashback} />
+        <Route path="retailer_management/create_branch" component={RetailerManagementCreate} />
         /* End of SKU Management */
         {/*
         <Route path="notepad_entries" component={NotepadEntries} />

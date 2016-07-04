@@ -18,9 +18,14 @@
 	color: rgba(0,0,0,0.54);
 	font-weight: 500;
 	margin-bottom: 10px;
-	font-size: 14px; 
+	font-size: 13px; 
+	text-align: left;
 	text-transform: uppercase;
 	letter-spacing: 0.3px;
+}
+.padding_top
+{
+	padding-top: 15px;
 }
 .compaign_details
 {
@@ -29,6 +34,8 @@
 	display: inline-block;
 	vertical-align: top;
 	margin: 20px 45px;
+	width: 42%;
+	float: left;
 	ul
 	{
 		padding: 0;
@@ -39,6 +46,8 @@
 	li
 	{
 		margin-bottom: 15px;
+		width: 100%;
+		float: left;
 		label
 		{
 			width: 170px;
@@ -72,5 +81,490 @@
 	li:last-child
 	{
 		margin-bottom: 0;
+	}
+}
+.upload_report_container
+{
+	width: 43%;
+	background: #FFF;
+	float: left;
+	padding: 20px 15px;
+	margin: 20px 45px 20px 0;
+	.upload_report
+	{
+		width: 100%;
+		float: left;
+		text-align: center;
+		.input_title
+		{
+			width: 100%;
+			height: 35px;
+			border-radius: 3px;
+			border: 1px solid #DDD;
+			font-size: 13px;
+			color: rgba(0,0,0,0.54);
+			background: #FFF;
+			margin-bottom: 10px;
+			transition: all 0.2s;
+			padding: 0 5px;
+			&:focus
+			{
+				outline: none;
+				border: 1px solid #FF7400;
+			}
+		}
+		.input_upload
+		{
+			width: 250px;
+			padding: 10px;
+			border: 1px solid #DDD;
+			border-style: dashed;
+		}
+	}
+	.upload_btn
+	{
+		width: 130px;
+	    height: 30px;
+	    color: rgba(255, 116, 0, 0.8);
+	    border: 1px solid #FF7400;
+	    border-radius: 4px;
+	    background: #FFF;
+	    cursor: pointer;
+	    font-weight: 400;
+	    margin: auto;
+	    margin-top: 10px;
+	    display: inline-block;
+	    padding: 5px;
+	    text-align: center;
+	    font-size: 13px;
+	    margin-bottom: 10px;
+	    letter-spacing: 0.5px;
+	    margin-right: 10px;
+	    &:focus
+	    {
+	    	outline: none;
+	    }
+	    &:hover
+	    {
+	    	color: rgba(255, 116, 0 , 1);
+	    }
+	}
+	.report_history_container
+	{
+		width: 100%;
+		float: left;
+	}
+	.report_list
+	{
+		width: 100%;
+		float: left;
+		height: 120px;
+		overflow: auto;
+	}
+	.indiv_report
+	{
+		width: 100%;
+		float: left;
+		color: rgba(0,0,0,0.54);
+		font-size: 13px;
+		padding-top: 10px;
+		border-bottom: 1px solid #DDD;
+		p:first-child
+		{
+			width: 70%;
+			float: left;
+		}
+		p:nth-child(2)
+		{
+			width: 30%;
+			float: left;
+			text-align: right;
+			label
+			{
+				color: #FF7400;
+    			font-size: 13px;
+    			letter-spacing: 0.3px;
+    			font-weight: 400;
+    			margin-bottom: 0;
+    			cursor: pointer;
+			}
+		}
+	}
+	.upload_lab
+	{
+		width: 100%;
+		float: left;
+		color: rgba(0,0,0,0.54);
+		font-size: 12px;
+		font-weight: 400;
+	}
+}
+.promo_container
+{
+	width: 100%;
+	float: left;
+	padding: 10px 45px;
+	text-align: center;
+	.save_promo_lay
+	{
+		width: 100%;
+		float: left;
+		button
+		{
+			width: 130px;
+		    height: 30px;
+		    color: rgba(255, 116, 0, 0.8);
+		    border: 1px solid #FF7400;
+		    border-radius: 4px;
+		    background: #FFF;
+		    cursor: pointer;
+		    font-weight: 400;
+		    margin: auto;
+		    margin-top: 10px;
+		    display: inline-block;
+		    padding: 5px;
+		    text-align: center;
+		    font-size: 13px;
+		    margin-bottom: 10px;
+		    letter-spacing: 0.5px;
+		    margin-right: 10px;
+		    &:focus
+		    {
+		    	outline: none;
+		    }
+		    &:hover
+		    {
+		    	color: rgba(255, 116, 0 , 1);
+		    }
+		}
+	}
+}
+.promo_items_container
+{
+	width: 35%;
+	float: left;
+	background: #FFF;
+	padding: 20px 15px;
+	margin-right: 1%;
+	.add_promo_lab
+	{
+		color: #FF7400;
+    	font-size: 13px;
+    	letter-spacing: 0.3px;
+    	float: left;
+    	margin-bottom: 0;
+    	cursor: pointer;
+	}
+	.items_list_container
+	{
+		width: 100%;
+		float: left;
+		height: 500px;
+		overflow: auto;
+	}
+	.indiv_item
+	{
+		width: 100%;
+		float: left;
+		padding-top: 10px;
+		text-align: left;
+	}
+	.heading_container
+	{
+		width: 100%;
+		float: left;
+		.heading_lab
+		{
+			width: 70%;
+			float: left;
+			font-size: 13px;
+			color: rgba(0, 0, 0, 0.54);
+			margin-bottom: 2px;
+		}
+		.edit_lab
+		{
+			width: 30%;
+			float: left;
+			color: #FF7400;
+    		font-size: 13px;
+    		letter-spacing: 0.3px;
+    		cursor: pointer;
+    		text-align: center;
+    		margin-bottom: 2px;
+		}
+	}
+	.custom_table_td
+	{
+		border-bottom: 1px solid #CECECE;
+		margin-top: 5px;
+		padding-bottom: 5px;
+	}
+	.table_th
+	{
+		font-size: 11.5px;
+		color: rgba(0,0,0,0.54);
+		font-weight: 500;
+		margin-bottom: 2px;
+	}
+	.table_td
+	{
+		font-size: 12px;
+		color: rgba(0,0,0,0.54);
+	}
+}
+.promo_details_container
+{
+	width: 63%;
+	float: left;
+	margin-left: 1%;
+	background: #FFF;
+	padding: 20px 15px;
+	.success_msg_lab
+	{
+		color: rgba(0, 0, 0, 0.54);
+	    font-size: 13px;
+	    letter-spacing: 0.3px;
+	    width: 150px;
+	    float: left;
+	    text-align: left;
+	    font-weight: 400;
+	    display: inline-block;
+	    vertical-align: top;
+	}
+	.text_msg
+	{
+		float: left;
+		width: 300px;
+		border: 1px solid #DDD;
+		background: #FFF;
+		height: 100px;
+		resize: none;
+		border-radius: 3px;
+		&:focus
+		{
+			outline: none;
+		}
+	}
+	.custom_select
+	{
+		display: inline-block;
+		float: left;
+		vertical-align: middle;
+		border: 1px solid #DDD;
+		border-radius: 3px;
+		background: #FFF;
+		input
+		{
+			width: 100px;
+			background: #FFF;
+			height: 25px;
+			padding: 0 10px;
+			border: 0;
+			border-right: 1px solid #DDD;
+			&:focus
+			{
+				outline: none;
+			}
+		}
+		select
+		{
+			height: 30px;
+			width: 70px;
+			color: rgba(0,0,0,0.54);
+			font-size: 13px;
+			border: 0;
+			background: #FFF;
+		}
+	}
+	.select_container
+	{
+		width: 100%;
+		float: left;
+		padding-top: 10px;
+	}
+	.brand_container
+	{
+		width: 48%;
+		float: left;
+		margin-right: 2%;
+		padding: 15px 10px;
+		background: #FFF;
+		border: 1px solid #DDD;
+		.heading
+		{
+			color: rgba(0,0,0,0.4);
+			margin-bottom: 15px;
+			font-size: 13px; 
+			width: 100%;
+			float: left;
+			letter-spacing: 0.3px;
+			text-transform: uppercase;
+			label
+			{
+				display: inline-block;
+				vertical-align: top;
+				font-weight: 500;
+				margin-bottom: 0;
+			}
+			p
+			{
+				text-transform: none;
+				color: rgba(0,0,0,0.54);
+				font-weight: 400;
+				margin: 0;
+				font-weight: 500;
+				display: inline-block;
+				vertical-align: top;
+				float: right;
+				text-align: right;
+			}
+		}
+		ul
+		{
+			padding: 0;
+			margin: 0;
+			font-weight: 400;
+			width: 100%;
+			float: left;
+			list-style: none;
+			height: 374px;
+			overflow: auto;
+		}
+		li
+		{
+			margin-bottom: 10px;
+			width: 100%;
+			float: left;
+			label
+			{
+				width: 70%;
+				font-weight: 400;
+				color: rgba(0,0,0,0.54);
+				font-size: 13px;
+				letter-spacing: 0.3px;
+				float: left;
+				text-align: left;
+			}
+			p
+			{
+				width: 30%;
+				float: left;
+				color: #FF7400;
+				font-size: 13px;
+				text-align: right;
+				margin-bottom: 0;
+			}
+		}	
+	}
+	.product_ml_container
+	{
+		width: 48%;
+		float: left;
+		margin-left: 2%;
+		padding: 15px 10px;
+		background: #FFF;
+		border: 1px solid #DDD;
+		.heading
+		{
+			color: rgba(0,0,0,0.4);
+			margin-bottom: 15px;
+			font-size: 13px; 
+			width: 100%;
+			float: left;
+			letter-spacing: 0.3px;
+			text-transform: uppercase;
+			.state
+			{
+				text-transform: none;
+				font-weight: 400;
+			}
+		}
+		ul
+		{
+			padding: 0;
+			margin: 0;
+			font-weight: 400;
+			width: 100%;
+			float: left;
+			list-style: none;
+			height: 374px;
+			overflow: auto;
+		}
+		li
+		{
+			margin-bottom: 10px;
+			float: left;
+			width: 100%;
+			text-align: left;
+			label
+			{
+				font-weight: 400;
+				color: rgba(0,0,0,0.54);
+				font-size: 13px;
+				display: inline-block;
+				letter-spacing: 0.3px;
+				float: left;
+				width: 100%;
+			}
+			input[type="checkbox"]
+			{
+				margin-right: 5px;
+			}
+		}
+	}
+	.quantity_container
+	{
+		width: 100%;
+		float: left;
+		padding-top: 10px;
+	}
+	.input_val
+	{
+		width: 80px;
+		background: #FFF;
+		border: 1px solid #DDD;
+		border-radius: 3px;
+		padding: 10px;
+		height: 32px;
+		float: right;
+	}
+	.input_val:focus
+	{
+		outline: none;	
+	}
+	.user_actions
+	{
+		width: 100%;
+		float: left;
+		text-align: center;
+		padding-top: 10px;
+		button
+		{
+			width: 130px;
+		    height: 30px;
+		    color: rgba(255, 116, 0, 0.8);
+		    border: 1px solid #FF7400;
+		    border-radius: 4px;
+		    background: #FFF;
+		    cursor: pointer;
+		    font-weight: 400;
+		    margin: auto;
+		    margin-top: 10px;
+		    display: inline-block;
+		    padding: 5px;
+		    text-align: center;
+		    font-size: 13px;
+		    margin-bottom: 10px;
+		    letter-spacing: 0.5px;
+		    margin-right: 10px;
+		    &:focus
+		    {
+		    	outline: none;
+		    }
+		    &:hover
+		    {
+		    	color: rgba(255, 116, 0 , 1);
+		    }
+		}
 	}
 }
