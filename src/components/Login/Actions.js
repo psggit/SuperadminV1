@@ -10,7 +10,7 @@
 
 import fetch from 'isomorphic-fetch';
 import { routeActions } from 'redux-simple-router';
-import {setUsername} from '../Home/Actions';
+import Endpoints, {globalCookiePolicy} from '../../Endpoints';
 
 const MAKE_REQUEST = 'Login/MAKE_REQUEST';
 const REQUEST_SUCCESS = 'Login/REQUEST_SUCCESS';
@@ -22,14 +22,16 @@ const REQUEST_ERROR = 'Login/REQUEST_ERROR';
 // When the state is modified, anybody dependent on the state is asked to update
 // HTML Component is listening to state, hence re-renders
 
-const loginReducer = (state = {ongoingRequest: false, lastError: null, lastSuccess: null}, action) => {
+
+const defaultState = {ongoingRequest: false, lastError: null, lastSuccess: null, credentials: null };
+const loginReducer = (state = defaultState, action) => {
   switch (action.type) {
     case MAKE_REQUEST:
-      return {ongoingRequest: true, lastSuccess: null, lastError: null};
+      return {...state, ongoingRequest: true, lastSuccess: null, lastError: null};
     case REQUEST_SUCCESS:
-      return {ongoingRequest: false, lastSuccess: action.data, lastError: null};
+      return {...state, ongoingRequest: false, lastSuccess: action.data, lastError: null, credentials: action.data};
     case REQUEST_ERROR:
-      return {ongoingRequest: false, lastError: action.data, lastSuccess: null};
+      return {...state, ongoingRequest: false, lastError: action.data, lastSuccess: null};
     default: return state;
   }
 };
@@ -40,8 +42,13 @@ const requestFailed = (data) => ({type: REQUEST_ERROR, data: data});
 const makeRequest = (data) => {
   return (dispatch) => {
     dispatch({ type: MAKE_REQUEST, data });
-    dispatch(setUsername(data.username));
-    return fetch('//httpbin.org/ip')
+    const options = {
+      method: 'POST',
+      body: JSON.stringify(data),
+      credentials: globalCookiePolicy,
+      headers: { 'Content-Type': 'application/json' }
+    };
+    return fetch(Endpoints.login, options)
            .then(
              (response) => {
                if (response.ok) { // 2xx status
@@ -59,5 +66,29 @@ const makeRequest = (data) => {
   };
 };
 
+const loadCredentials = () => {
+  return (dispatch) => {
+    const p1 = new Promise((resolve, reject) => {
+      fetch(Endpoints.getCredentials, {credentials: globalCookiePolicy}).then(
+        (response) => {
+          if (response.ok) {
+            response.json().then(
+              (creds) => {
+                dispatch(requestSuccess(creds));
+                resolve();
+              },
+              () => { reject(); }
+            );
+          } else {
+            reject();
+          }
+        },
+        () => { reject(); }
+      );
+    });
+    return p1;
+  };
+};
+
 export default loginReducer;
-export {makeRequest, requestSuccess, requestFailed};
+export {makeRequest, requestSuccess, requestFailed, loadCredentials};

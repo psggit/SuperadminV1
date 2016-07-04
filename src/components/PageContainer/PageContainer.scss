@@ -1,0 +1,168 @@
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/variables";
+.right_wrapper  {
+    width:100%;
+    float:left;
+}
+
+.container {
+  padding: 0;
+  background: #eee;
+}
+
+.alert {
+  display:inline-block;
+}
+.menu_bg{
+  float:right ;
+  position:absolute;
+  width: 350px;
+  height: 200px;
+  left: 600px;
+  top: 215px;
+  background: #DFDFDF ;
+}
+
+
+.flexRow {
+  display: flex;
+}
+
+.add_btn {
+  margin: 10px 0;
+}
+
+.header_children {
+  height: 10vh;
+}
+
+.account {
+  padding: 20px 0;
+  line-height: 26px;
+}
+
+.sidebar {
+  font-family: 'Roboto';
+  font-weight: 500;
+  min-height: 100vh;
+  max-height: 100%;
+  position: relative;
+  background: #DFDFDF;
+  color: rgba(0,0,0,0.54);
+  overflow-y: scroll;
+  padding-left: 25px;
+  hr { margin: 0; }
+  ul{
+    list-style-type: none;
+    // margin: 3px;
+    padding-top: 3px;
+    border: 1px ;
+    border-radius: 3px;
+    list-style-type: none;
+    height: auto;
+    padding-left: 5px;
+    color: #777;
+    letter-spacing: 0.5px;
+    margin-bottom: 0;
+    margin-left: 10px;
+    li
+    {
+    }
+  }
+    ul li ul 
+    {
+      background: #ededed;
+      li
+      {
+        label
+        {
+          font-weight: 400;
+          margin-bottom: 0;
+          cursor: pointer;
+        }
+      }
+      li:last-child
+      {
+        margin-bottom: 5px;
+      }
+    }
+
+    p {
+      padding-bottom: 0px;
+    }
+    li {
+      padding: 5px 5px 5px 5px;
+      a {
+        color: rgba(0,0,0,0.54);
+        text-decoration: none;
+        display: block;
+      }
+      a:active {
+        color: #FF7400;
+        text-decoration: none;
+      }
+      a:hover {
+        color: rgba(0,0,0,0.87);
+        text-decoration: none;
+      }
+      a:visited {
+        text-decoration: none;
+      }
+      a.current{
+        color: #FF7400;
+      }
+    }
+    li:hover {
+      color: #5e5e5e;
+      transition: color 0.5s;
+      pointer: cursor;
+    }
+    li:active {
+      color: #FF7400;
+    }
+    input[type=checkbox] { display: none; }
+    input[type=checkbox] ~ ul {
+    	max-height: 0;
+    	max-width: 0;
+    	opacity: 0;
+    	overflow: hidden;
+      margin-left: 0;
+    	white-space: nowrap;
+       -webkit-transition:all 1s ease;
+       -moz-transition:all 1s ease;
+       -o-transition:all 1s ease;
+       transition:all 1s ease;
+    }
+    input[type=checkbox]:checked ~ ul {
+    	max-height: 100%;
+    	max-width: 100%;
+    	opacity: 1;
+    }
+    input[type=checkbox] + label:before {
+    	transform-origin:25% 50%;
+      border: 8px solid transparent;
+      border-width: 8px 10px;
+      border-left-color: #787878;
+      margin-left: -20px;
+    	width: 0;
+    	height: 0;
+    	display: inline-block;
+    	text-align: center;
+    	content: '';
+    	color: #AAAFAB;
+       -webkit-transition:all .5s ease;
+       -moz-transition:all .5s ease;
+       -o-transition:all .5s ease;
+       transition:all .5s ease;
+    	position: absolute;
+    	margin-top: 2px;
+    }
+    input[type=checkbox]:checked + label:before {
+    	transform: rotate(90deg);
+    	/*margin-top: 6px;
+      margin-left: -25px;*/
+    }
+
+}
+.main {
+  padding: 0;
+}

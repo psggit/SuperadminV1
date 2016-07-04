@@ -9,7 +9,7 @@
 */
 import defaultState from './State';
 
-const SET_USERNAME = 'Home/SET_USERNAME';
+const SET_USERNAME = 'PageContainer/SET_USERNAME';
 
 // HTML Component defines what state it needs
 // HTML Component should be able to emit actions

@@ -43,5 +43,5 @@ module.exports = Object.assign({
       ]
     }
   },
-
+  hasuradbEnpoint: 'http://130.211.255.73/db'
 }, environment);
