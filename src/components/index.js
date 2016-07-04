@@ -1,4 +1,4 @@
-/**
+/*
  *  Point of contact for component modules
  *
  *  ie: import { CounterButton, InfoBar } from 'components';
@@ -71,3 +71,5 @@ export RetailerManagementCreate from './RetailerManagement/CreateBranch/CreateBr
 export ConsumerRecharge from './CustomerTransaction/components/Recharge/Recharge';
 export ConsumerReservation from './CustomerTransaction/components/Reservation/Reservation';
 
+/* SKU */
+export ListSku from './SkuManagement/Skus/ListSku/ListSku';

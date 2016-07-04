@@ -1,40 +1,47 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-const CustomersList = ( {data} ) => {
-  const styles = require('./CustomersList.scss');
+const SearchWrapper = ( {data} ) => {
+  const styles = require('./SearchWrapper.scss');
   let tableBody;
   let objHtml;
 
   tableBody = data.map((dat, index) => {
+    let createdAt = dat.created_at;
+    let updatedAt = dat.updated_at;
+
+    createdAt = new Date(new Date(createdAt).getTime()).toLocaleString();
+    updatedAt = new Date(new Date(updatedAt).getTime()).toLocaleString();
     return (
           <tr key={index}>
             <td>
-              <Link to={'/hadmin/state_management/edit/' + dat.id}>
-                <button className={styles.edit_btn} data-state-id={dat.id}>
-                  Edit
+              <Link to={'/hadmin/skus/view_sku/' + dat.id}>
+                <button className={styles.edit_btn} data-genre-id={dat.id}>
+                  View
                 </button>
               </Link>
             </td>
             <td> { dat.id } </td>
             <td>
-                { dat.name }
+                { dat.brand.brand_name}
             </td>
             <td>
-                { dat.email }
+              Active
             </td>
             <td>
-                { dat.mobile }
+                { (dat.volume) ? dat.volume : 'N/A'}
             </td>
             <td>
-                { dat.company }
+                { (dat.alcohol_per) ? dat.alcohol_per : 'N/A'}
             </td>
             <td>
-                { dat.created }
+                { (dat.test_vol ) ? dat.test_vol : 'N/A'}
             </td>
             <td>
-                { dat.updated }
+                { (dat.bar_code ) ? dat.barcode : 'N/A'}
             </td>
+            <td> { createdAt } </td>
+            <td> { updatedAt } </td>
           </tr>
         );
   });
@@ -43,7 +50,7 @@ const CustomersList = ( {data} ) => {
     objHtml = () => {
       return (
         <div className={styles.error_message}>
-          Sorry no recharges
+          Sorry no Skus
         </div>
         );
     }();
@@ -55,12 +62,14 @@ const CustomersList = ( {data} ) => {
                 <tr>
                   <th> </th>
                   <th> ID </th>
-                  <th> Name </th>
-                  <th> Email </th>
-                  <th> Mobile </th>
-                  <th> Company </th>
-                  <th> Created At </th>
+                  <th> Brand Name </th>
+                  <th> Status </th>
+                  <th> Volume </th>
+                  <th> Alcohol Percentage </th>
+                  <th> Test Volume </th>
+                  <th> Bar Code </th>
                   <th> Updated At </th>
+                  <th> Created At </th>
                 </tr>
               </thead>
               <tbody>
@@ -74,7 +83,7 @@ const CustomersList = ( {data} ) => {
   return (
         <div className={styles.list_of_states_wrapper}>
           <label>
-            List of States
+            List of Skus
           </label>
           <div className={styles.wd_80}>
             {objHtml}
@@ -83,4 +92,4 @@ const CustomersList = ( {data} ) => {
       );
 };
 
-export default CustomersList;
+export default SearchWrapper;

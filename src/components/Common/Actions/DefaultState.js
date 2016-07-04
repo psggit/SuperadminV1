@@ -43,23 +43,37 @@ const defaultStateManagementState = {
 */
 
 const defaultCreateSkuState = {
-  brandList: [],
-  stateList: [],
-  stateCityMapping: {},
-  cityRetailerMapping: {},
+  brandList: [], /* Stores the brands fetched from the server */
+  stateList: [], /* Stores the states fetched from the server */
+  stateCityMapping: {}, /* Stores the state information of selected states and its corresponding cities */
+  cityRetailerMapping: {}, /* Stores the state information of selected cities and its corresponding retailers */
   retailerMapping: {},
   retailerStatus: {},
-  viewedState: {},
-  viewedCity: {},
-  skuImageUrl: '',
+  viewedState: {}, /* Stores viewed states id's */
+  viewedCity: {}, /* Stores viewed city id's */
+  skuImageUrl: '', /* Uploaded image url is saved */
   responseObjs: {},
-  skuReqObj: {},
+  skuReqObj: {}, /* Stores the request object for SKU creation */
+  sku_id: '',
+  sku_state_id: {},
   /* For each state in this mapping we need to create an entry in sku_pricing */
   // stateMrpObj: {}
 };
 
 const defaultConsumerState = {
   userData: []
+};
+
+const defaultBrandManagerProfileState = {
+  brandManagerList: []
+};
+
+const defaultCreateBrandManagerState = {
+  companyList: [],
+  selected_company: {},
+  companyBrands: [],
+  selectedBrand: {},
+  selectedBrandsList: []
 };
 
 const defaultKycState = {
@@ -123,6 +137,8 @@ const defaultKycState = {
 export default defaultState;
 export { defaultNotepadState
   , defaultBrandState
+  , defaultBrandManagerProfileState
+  , defaultCreateBrandManagerState
   , defaultConsumerState
   , defaultKycState
   , defaultCreateSkuState

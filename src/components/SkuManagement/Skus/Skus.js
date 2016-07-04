@@ -11,7 +11,7 @@ const Skus = () => { // eslint-disable-line no-unused-vars
             <div className={styles.skus_wrapper}>
                 <div className={styles.indiv_link + ' ' + styles.margin_right}>
                   <p>
-                    <Link to={'/hadmin/skus/create_sku'}>
+                    <Link to={'/hadmin/skus/list_sku'}>
                       All SKUs
                     </Link>
                   </p>
