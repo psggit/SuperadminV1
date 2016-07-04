@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-const CustomersList = ( {data} ) => {
-  const styles = require('./CustomersList.scss');
+const BrandManagersList = ( {data} ) => {
+  const styles = require('./BrandManagersList.scss');
   let tableBody;
   let objHtml;
 
@@ -10,7 +10,7 @@ const CustomersList = ( {data} ) => {
     return (
           <tr key={index}>
             <td>
-              <Link to={'/hadmin/state_management/edit/' + dat.id}>
+              <Link to={'/hadmin/brands_offers_and_promos/edit/' + dat.id}>
                 <button className={styles.edit_btn} data-state-id={dat.id}>
                   Edit
                 </button>
@@ -24,16 +24,22 @@ const CustomersList = ( {data} ) => {
                 { dat.email }
             </td>
             <td>
-                { dat.mobile }
+                { dat.mobile_number }
             </td>
             <td>
-                { dat.company }
+                { dat.brands[0].brand.company.name}
             </td>
             <td>
-                { dat.created }
+                { (dat.is_disabled) ? 'Disabled' : 'Active' }
             </td>
             <td>
-                { dat.updated }
+                { (dat.kyc_status) ? 'Kyc Done' : 'Pending' }
+            </td>
+            <td>
+                { dat.created_at }
+            </td>
+            <td>
+                { dat.updated_at }
             </td>
           </tr>
         );
@@ -59,6 +65,8 @@ const CustomersList = ( {data} ) => {
                   <th> Email </th>
                   <th> Mobile </th>
                   <th> Company </th>
+                  <th> Status </th>
+                  <th> KYC Status </th>
                   <th> Created At </th>
                   <th> Updated At </th>
                 </tr>
@@ -74,7 +82,7 @@ const CustomersList = ( {data} ) => {
   return (
         <div className={styles.list_of_states_wrapper}>
           <label>
-            List of States
+            List of Brand Managers
           </label>
           <div className={styles.wd_80}>
             {objHtml}
@@ -83,4 +91,4 @@ const CustomersList = ( {data} ) => {
       );
 };
 
-export default CustomersList;
+export default BrandManagersList;

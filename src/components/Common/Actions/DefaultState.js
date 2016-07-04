@@ -69,6 +69,18 @@ const defaultConsumerState = {
   userData: []
 };
 
+const defaultBrandManagerProfileState = {
+  brandManagerList: []
+};
+
+const defaultCreateBrandManagerState = {
+  companyList: [],
+  selected_company: {},
+  companyBrands: [],
+  selectedBrand: {},
+  selectedBrandsList: []
+};
+
 const defaultKycState = {
   isConsumerPICUploaded: false,
   isAddressProofUploaded: false,
@@ -130,6 +142,8 @@ const defaultKycState = {
 export default defaultState;
 export { defaultNotepadState
   , defaultBrandState
+  , defaultBrandManagerProfileState
+  , defaultCreateBrandManagerState
   , defaultConsumerState
   , defaultKycState
   , defaultCreateSkuState

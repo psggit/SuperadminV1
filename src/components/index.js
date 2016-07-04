@@ -1,4 +1,4 @@
-/**
+/*
  *  Point of contact for component modules
  *
  *  ie: import { CounterButton, InfoBar } from 'components';
@@ -63,6 +63,8 @@ export CreateBrandManager from './BrandsOffersAndPromos/CreateBrandManager/Creat
 export BrandAds from './BrandsOffersAndPromos/BrandAds/BrandAds';
 export BrandPromos from './BrandsOffersAndPromos/BrandPromos/BrandPromos';
 export PromosInstantCashback from './BrandsOffersAndPromos/PromosInstantCashback/PromosInstantCashback';
+export RetailerManagementCreate from './RetailerManagement/CreateBranch/CreateBranch';
+
 
 /* Consumer Transactions */
 

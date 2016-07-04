@@ -21,6 +21,8 @@ import userDataReducer from './components/Consumer/components/EditProfile/EditAc
 
 import createSKUReducer from './components/SkuManagement/Skus/CreateSku/CreateSkuActions';
 import stateManagementReducer from './components/SkuManagement/State/StateActions';
+import brandManagerProfileReducer from './components/BrandsOffersAndPromos/BrandManagerProfile/BrandManagerProfileActions';
+import createBrandManagerReducer from './components/BrandsOffersAndPromos/CreateBrandManager/createBMActions';
 
 const reducer = combineReducers({
   loginState: loginReducer,
@@ -41,7 +43,9 @@ const reducer = combineReducers({
   brand_data: brandReducer,
   user_data: userDataReducer,
   create_sku_data: createSKUReducer,
-  state_data: stateManagementReducer
+  state_data: stateManagementReducer,
+  brandmanagerprofile_data: brandManagerProfileReducer,
+  createbrandmanager_data: createBrandManagerReducer
 });
 
 export default reducer;
