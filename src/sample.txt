@@ -1,0 +1,33 @@
+Cases
+
+CurrentPage Pages Show      cp showMax
+1           7     5               (1 5)
+2           7     5               (2, 6)
+3           7     5               (3, 7)
+4           7     5               (3, 7)
+5           7     5               (3, 7)
+6           7     5               (3, 7)
+
+
+let compute = currentIndex - ((currentIndex + (currentShowMax - 1)) - pages);
+compute = (compute) ? compute : 1;
+let startVal = (currentIndex + (currentShowMax - 1)) <= pages ? currentIndex : compute;
+startVal = (startVal < 0) ? 1 : startVal;
+
+currentShowMax = (currentIndex + (currentShowMax - 1)) <= pages ? currentShowMax : pages - 1;
+
+To find:
+cp showMax
+given (1, 7, 5)
+
+(1 + (5 - 1)) > 7 ? = 1 
+(2 + (5 - 1)) > 7 ? = 2
+(3 + (5 - 1)) > 7 ? = 3
+(4 + (5 - 1)) > 7 ? = ((current Page - x + (5 - 1)) = 7)  Lowest value to subtract with which you can show 5 values
+
+4 - (4 + (5 - 1) - 7) = 3
+5 - (5 + (5 - 1) - 7) = 3
+
+
+(1, 3, 5) 
+
