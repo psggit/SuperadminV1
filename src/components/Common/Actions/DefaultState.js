@@ -14,7 +14,8 @@ const defaultNotepadState = {
 const defaultBrandState = {
   companyList: [],
   genreList: [],
-  categoryList: []
+  categoryList: [],
+  stateList: []
 };
 
 const defaultStateManagementState = {

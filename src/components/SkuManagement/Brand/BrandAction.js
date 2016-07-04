@@ -17,6 +17,7 @@ import { routeActions } from 'redux-simple-router';
 const BRAND_CATEGORY_FETCH = 'BRAND/BRAND_CATEGORY_FETCH';
 const BRAND_GENRE_FETCH = 'BRAND/BRAND_GENRE_FETCH';
 const BRAND_COMPANY_FETCH = 'BRAND/BRAND_COMPANY_FETCH';
+const BRAND_STATE_FETCH = 'BRAND/BRAND_STATE_FETCH';
 
 /* ****** Action Creators ******** */
 
@@ -84,6 +85,35 @@ const fetchCompany = () => {
     dispatch({type: MAKE_REQUEST});
     return Promise.all([
       dispatch(requestAction(url, options, BRAND_COMPANY_FETCH, REQUEST_ERROR)),
+      dispatch({type: REQUEST_COMPLETED})
+    ]);
+  };
+};
+
+const fetchState = () => {
+  return (dispatch) => {
+    /* Url */
+    const url = Endpoints.db + '/table/state/select';
+    const queryObj = {};
+    queryObj.columns = [
+      '*',
+      {
+        'name': 'cities',
+        'columns': [
+          '*'
+        ]
+      }
+    ];
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(queryObj),
+    };
+    /* Make a MAKE_REQUEST action */
+    dispatch({type: MAKE_REQUEST});
+    return Promise.all([
+      dispatch(requestAction(url, options, BRAND_STATE_FETCH, REQUEST_ERROR)),
       dispatch({type: REQUEST_COMPLETED})
     ]);
   };
@@ -258,6 +288,8 @@ const brandReducer = (state = defaultBrandState, action) => {
       return {...state, genreList: action.data};
     case BRAND_COMPANY_FETCH:
       return {...state, companyList: action.data};
+    case BRAND_STATE_FETCH:
+      return {...state, stateList: action.data};
     default: return state;
   }
 };
@@ -271,6 +303,7 @@ export {
   insertBrand,
   getBrandData,
   getAllBrandData,
+  fetchState,
   RESET
 };
 export default brandReducer;

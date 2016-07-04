@@ -1,6 +1,11 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchGenre, fetchCategory, fetchCompany, insertBrand } from './BrandAction.js';
+import { fetchGenre,
+  fetchCategory,
+  fetchCompany,
+  insertBrand,
+  fetchState
+} from './BrandAction.js';
 
 // import TableHeader from '../../Common/TableHeader';
 
@@ -32,7 +37,8 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
     Promise.all([
       this.props.dispatch(fetchCompany()),
       this.props.dispatch(fetchCategory()),
-      this.props.dispatch(fetchGenre())
+      this.props.dispatch(fetchGenre()),
+      this.props.dispatch(fetchState())
     ]);
   }
   onClickCreateBrand() {
@@ -151,12 +157,14 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
           <div className={styles.regions_container}>
             <div className={styles.heading}>Regions</div>
             <div className={styles.add_lab}>+ Add New</div>
+            {/*
             <ul>
               <li>
                 <label>South</label>
                 <p>3 Cities</p>
               </li>
             </ul>
+            */}
           </div>
           <div className={styles.add_regions_container}>
             <div className={styles.heading}>Add new Regions</div>
@@ -196,8 +204,8 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
             </div>
             <div className="clearfix"></div>
             <div className={styles.user_actions}>
-              <button>Delete</button>
-              <button>Update</button>
+              <button>Cancel</button>
+              <button>Save</button>
             </div>
           </div>
         </div>
