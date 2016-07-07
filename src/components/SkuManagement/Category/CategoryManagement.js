@@ -1,40 +1,53 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { getAllCategoryData, getCategorydata} from '../Action';
+import { getAllCategoryData, getCategoryData} from '../Action';
 import SearchWrapper from './SearchWrapper';
 
-import PaginationContainer from '../../CustomerTransaction/components/Recharge/Pagination';
+// import PaginationContainer from '../../CustomerTransaction/components/Recharge/Pagination';
+//
+
+import commonDecorator from '../../Common/CommonDecorator';
+import BreadCrumb from '../../Common/BreadCrumb';
+
+import PaginationWrapper from '../../Common/PaginationWrapper.js';
 
 class CategoryManagement extends React.Component { // eslint-disable-line no-unused-vars
-  componentDidMount() {
-    /* Fetch the state data */
-    const {query} = this.props.location;
-    const page = (Object.keys(query).length > 0) ? parseInt(query.p, 10) : 1;
+  constructor() {
+    super();
+    /* Data required for the bread component to render correctly */
+    this.breadCrumbs = [];
+    this.breadCrumbs.push({
+      title: 'SKU Management',
+      sequence: 1,
+      link: '#'
+    });
+    this.breadCrumbs.push({
+      title: 'Manage Category',
+      sequence: 2,
+      link: '#'
+    });
+  }
+  // Hook used by pagination wrapper to fetch the initial data
+  fetchInitialData(page, limit) {
+    this.props.dispatch(getAllCategoryData(page, limit));
+  }
+  triggerPageChange(clickedPage, limit) {
+    this.props.dispatch(getCategoryData(clickedPage, limit));
+  }
 
-    this.props.dispatch(getAllCategoryData(page));
-  }
-  onClickHandle(e) {
-    // e.preventDefault();
-    const currentPage = parseInt(e.target.href.split('?p=')[1], 10);
-    if (currentPage) {
-      this.props.dispatch(getCategorydata(currentPage));
-    }
-  }
   render() {
     const styles = require('./CategoryManagement.scss');
-    const { ongoingRequest, lastError, lastSuccess, count} = this.props;
-    const {query} = this.props.location;
-    const page = (Object.keys(query).length > 0) ? parseInt(query.p, 10) : 1;
+    const { ongoingRequest, lastError, lastSuccess } = this.props;
+    // const {query} = this.props.location;
+    // const page = (Object.keys(query).length > 0) ? parseInt(query.p, 10) : 1;
     console.log(lastError);
     console.log(ongoingRequest);
     console.log(lastSuccess);
     // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
     return (
         <div className={styles.container}>
-          <div className={styles.head_container}>
-         		SKU Management / Manage Category
-         	</div>
+          <BreadCrumb breadCrumbs={this.breadCrumbs} />
          	<div className={styles.search_wrapper + ' ' + styles.wd_100}>
          		<p>Search</p>
          		<div className={styles.search_form + ' ' + styles.wd_100}>
@@ -141,8 +154,20 @@ class CategoryManagement extends React.Component { // eslint-disable-line no-unu
             </div>
           </div>
           */}
+          {/*
           <SearchWrapper data={lastSuccess}/>
           <PaginationContainer limit="10" onClickHandler={this.onClickHandle.bind(this)} currentPage={page} showMax="5" count={count} parentUrl="/hadmin/category_management" />
+          */}
+          <SearchWrapper data={lastSuccess}/>
+          <PaginationWrapper
+            {...this.props }
+            fetchInitialData = { this.fetchInitialData.bind(this) }
+            limit = "10"
+            triggerPageChange={ this.triggerPageChange.bind(this) }
+            showMax="5"
+            parentUrl="/hadmin/category_management"
+          />
+
         </div>
       );
   }
@@ -162,4 +187,5 @@ const mapStateToProps = (state) => {
   return {...state.sku_data};
 };
 
-export default connect(mapStateToProps)(CategoryManagement);
+const decoratedConnectedComponent = commonDecorator(CategoryManagement);// connect(mapStateToProps)(CommonDecorator);
+export default connect(mapStateToProps)(decoratedConnectedComponent);

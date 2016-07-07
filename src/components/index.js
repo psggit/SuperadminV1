@@ -44,7 +44,11 @@ export CompaniesManagement from './SkuManagement/Companies/CompaniesManagement';
 export ManageCompanies from './SkuManagement/Companies/ManageCompanies';
 
 
+/* Brand Management */
 export BrandCreate from './SkuManagement/Brand/BrandCreate';
+export BrandEdit from './SkuManagement/Brand/BrandEdit';
+/* End of it */
+
 export Skus from './SkuManagement/Skus/Skus';
 export Toppicks from './SkuManagement/Skus/Toppicks/Toppicks';
 export AddToppicks from './SkuManagement/Skus/AddToppicks/AddToppicks';

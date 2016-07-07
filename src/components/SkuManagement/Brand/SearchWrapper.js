@@ -1,5 +1,5 @@
 import React from 'react';
-// import { Link } from 'react-router';
+import { Link } from 'react-router';
 
 const SearchWrapper = ( {data} ) => {
   const styles = require('./SearchWrapper.scss');
@@ -14,6 +14,13 @@ const SearchWrapper = ( {data} ) => {
     updatedAt = new Date(new Date(updatedAt).getTime()).toLocaleString();
     return (
           <tr key={index}>
+            <td>
+              <Link to={'/hadmin/brand_management/edit/' + dat.id}>
+                <button className={styles.edit_btn} data-genre-id={dat.id}>
+                  View
+                </button>
+              </Link>
+            </td>
             <td> { dat.id } </td>
             <td>
                 { dat.brand_name}
@@ -50,6 +57,7 @@ const SearchWrapper = ( {data} ) => {
             <table className={'table table-striped'}>
               <thead>
                 <tr>
+                  <th> </th>
                   <th> ID </th>
                   <th> State Name </th>
                   <th> Status </th>

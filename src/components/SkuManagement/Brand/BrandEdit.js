@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import { fetchGenre,
   fetchCategory,
   fetchCompany,
-  insertBrand,
+/*  insertBrand,*/
   fetchState,
+  fetchBrand,
   viewState,
   TOGGLE_REGION_VISIBILITY,
   REGION_INPUT_CHANGED,
@@ -12,7 +13,11 @@ import { fetchGenre,
   UNMARK_CITY_SELECTED,
   SAVE_TO_LOCAL,
   VIEW_REGION,
-  DELETE_REGION
+  DELETE_REGION,
+  CANCEL_REGION,
+  deleteRegionFromServer,
+  updateBrand,
+  updateRegion
 } from './BrandAction.js';
 
 // import TableHeader from '../../Common/TableHeader';
@@ -23,9 +28,9 @@ import BreadCrumb from '../../Common/BreadCrumb';
 import BrandState from './BrandState';
 import StateCity from './StateCity';
 
-class BrandCreate extends Component { // eslint-disable-line no-unused-vars
-  constructor() {
-    super();
+class BrandEdit extends Component { // eslint-disable-line no-unused-vars
+  constructor(props) {
+    super(props);
     /* Data required for the bread component to render correctly */
     this.breadCrumbs = [];
     this.breadCrumbs.push({
@@ -39,8 +44,13 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
       link: '/hadmin/brand_management'
     });
     this.breadCrumbs.push({
-      title: 'Create Brand',
+      title: 'View Brand',
       sequence: 3,
+      link: '#'
+    });
+    this.breadCrumbs.push({
+      title: this.props.params.Id,
+      sequence: 4,
       link: '#'
     });
   }
@@ -49,10 +59,11 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
       this.props.dispatch(fetchCompany()),
       this.props.dispatch(fetchCategory()),
       this.props.dispatch(fetchGenre()),
-      this.props.dispatch(fetchState())
+      this.props.dispatch(fetchState()),
+      this.props.dispatch(fetchBrand(this.props.params.Id))
     ]);
   }
-  onClickCreateBrand() {
+  onClickUpdateBrand() {
     const brandObj = {};
     const companyId = document.querySelectorAll('[data-field-name="company_id"] option:checked')[0].value;
     const categoryId = document.querySelectorAll('[data-field-name="category_id"] option:checked')[0].value;
@@ -67,7 +78,7 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
     brandObj.brand_name = brandName;
 
     /* Inserting brand */
-    this.props.dispatch(insertBrand(brandObj));
+    this.props.dispatch(updateBrand(brandObj));
   }
   onStateView(e) {
     const element = (e.target.tagName !== 'P') ? e.target.parentNode : e.target;
@@ -92,11 +103,34 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
   deleteRegion(e) {
     /* Create a new Region data structure */
     const regionId = parseInt(e.target.getAttribute('data-current-region'), 10);
-    this.props.dispatch({ type: DELETE_REGION, data: { id: regionId }});
+    const dataModifyLocation = e.target.getAttribute('data-modify-location');
+    if ( dataModifyLocation === 'local') {
+      this.props.dispatch({ type: DELETE_REGION, data: { id: regionId }});
+    } else {
+      alert('Server Delete Initiated');
+      this.props.dispatch( deleteRegionFromServer() );
+      // this.props.dispatch({ type: DELETE_REGION_SERVER, data: { id: regionId }});
+      // this.props.dispatch({ type: SAVE_TO_SERVER, data: { id: regionId }});
+    }
+  }
+  cancelRegion(e) {
+    /* Create a new Region data structure */
+    const regionId = parseInt(e.target.getAttribute('data-current-region'), 10);
+    this.props.dispatch({ type: CANCEL_REGION, data: { id: regionId }});
   }
   saveToLocal(e) {
     const regionId = parseInt(e.target.getAttribute('data-current-region'), 10);
     this.props.dispatch({ type: SAVE_TO_LOCAL, data: { id: regionId }});
+  }
+  saveRegion(e) {
+    const regionId = parseInt(e.target.getAttribute('data-current-region'), 10);
+    const dataModifyLocation = e.target.getAttribute('data-modify-location');
+    if ( dataModifyLocation === 'local') {
+      this.props.dispatch({ type: SAVE_TO_LOCAL, data: { id: regionId }});
+    } else {
+      this.props.dispatch(updateRegion());
+      // this.props.dispatch({ type: SAVE_TO_SERVER, data: { id: regionId }});
+    }
   }
   viewRegion(e) {
     const element = e.target.tagName === 'P' ? e.target : e.target.parentNode;
@@ -116,7 +150,12 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
       viewedRegionId,
       regionCity,
       region,
-      isEdit
+      isEdit,
+      brandObj,
+      baseLocalRegionId,
+      updatedRegions,
+      updatedRegionReference,
+      regionCityUpdated
     } = this.props;
 
     let regionHtml = Object.keys(region).map( (reg, index) => {
@@ -156,25 +195,25 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
             <ul>
               <li>
                 <label>Brand Name</label>
-                <input data-field-name="brand_name" type="text" />
+                <input data-field-name="brand_name" type="text" value={ brandObj.brand_name ? brandObj.brand_name : ''} />
               </li>
               <li>
                 <label>Company Name</label>
-                <select data-field-name="company_id">
+                <select data-field-name="company_id" value={ brandObj.company_id }>
                   <option>Select Company</option>
                   { companyHtml }
                 </select>
               </li>
               <li>
                 <label>Category</label>
-                <select data-field-name="category_id">
+                <select data-field-name="category_id" value={ brandObj.category_id }>
                   <option>Select Category</option>
                   { categoryHtml }
                 </select>
               </li>
               <li>
                 <label>Genre</label>
-                <select data-field-name="genre_id">
+                <select data-field-name="genre_id" value={ brandObj.genre_id }>
                   <option>Select Genre</option>
                   { genreHtml }
                 </select>
@@ -238,7 +277,11 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
             <div className={styles.heading}>Add new Regions</div>
             <div className={styles.wd_100}>
               <label className={styles.region_lab}>Region name</label>
-              <input type="text" data-field-name="name" onChange={ this.onRegionInput.bind(this) } data-current-region = { viewedRegionId } value = { region[viewedRegionId] } />
+              <input type="text" data-field-name="name" onChange={ this.onRegionInput.bind(this) } data-current-region = { viewedRegionId } value = {
+                ( viewedRegionId in updatedRegions )
+                ? updatedRegionReference[updatedRegions[viewedRegionId]]
+                : region[viewedRegionId]
+              } />
             </div>
             <div className={styles.wd_100 + ' ' + styles.select_city}>
               <label className={styles.cites_lab}>
@@ -249,9 +292,8 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
             {/*
             <StateOutlet stateCityMapping={ stateCityMapping } onStateView = { this.onStateView.bind(this) } />
             */}
-            { console.log( viewedRegionId) }
-            <BrandState stateCityMapping={ stateCityMapping } onStateView = { this.onStateView.bind(this) } regionObj={ regionCity[viewedRegionId] } />
-            <StateCity viewedState = { viewedState } onCityCheck = { this.onCityCheck.bind(this) } viewedRegionId={ viewedRegionId } regionObj={ regionCity[viewedRegionId] }/>
+            <BrandState viewedRegionId = { viewedRegionId } updatedRegions = { updatedRegions } stateCityMapping={ stateCityMapping } onStateView = { this.onStateView.bind(this) } regionObj={ regionCity[viewedRegionId] } regionCityUpdated = { regionCityUpdated } />
+            <StateCity viewedState = { viewedState } onCityCheck = { this.onCityCheck.bind(this) } viewedRegionId={ viewedRegionId } regionObj={ regionCity[viewedRegionId] } regionCityObjs={ regionCityUpdated } updatedRegions={ updatedRegions }/>
             {/*
             <div className={styles.available_states_container}>
               <div className={styles.heading}>
@@ -284,29 +326,30 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
             { (!isEdit) ?
               (
                 <div className={styles.user_actions}>
-                  <button data-current-region={ viewedRegionId } onClick={ this.deleteRegion.bind(this) } >Cancel</button>
+                  <button data-current-region={ viewedRegionId } onClick={ this.deleteRegion.bind(this) } data-modify-location="local" >Cancel</button>
                   <button data-current-region={ viewedRegionId } onClick={ this.saveToLocal.bind(this) } >Save</button>
                 </div>
               )
             :
               (
                 <div className={styles.user_actions}>
-                  <button data-current-region={ viewedRegionId } onClick={ this.deleteRegion.bind(this) } >Delete</button>
-                  <button data-current-region={ viewedRegionId } onClick={ this.saveToLocal.bind(this) } >Update</button>
+                  <button data-current-region={ viewedRegionId } onClick={ this.cancelRegion.bind(this) } >Cancel</button>
+                  <button data-current-region={ viewedRegionId } onClick={ this.deleteRegion.bind(this) } data-modify-location={ viewedRegionId < baseLocalRegionId ? 'server' : 'local' } >Delete</button>
+                  <button data-current-region={ viewedRegionId } onClick={ this.saveRegion.bind(this) } data-modify-location={ viewedRegionId < baseLocalRegionId ? 'server' : 'local' } >Update</button>
                 </div>
               )
             }
           </div>
         </div>
         <div className="clearfix"></div>
-        <button className={styles.edit_brand_btn} disabled={ ongoingRequest ? true : false} onClick={this.onClickCreateBrand.bind(this)}>
-          Create Brand
+        <button className={styles.edit_brand_btn} disabled={ ongoingRequest ? true : false} onClick={this.onClickUpdateBrand.bind(this)}>
+          Update Brand
         </button>
       </div>);
   }
 }
 
-BrandCreate.propTypes = {
+BrandEdit.propTypes = {
   ongoingRequest: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
   categoryList: PropTypes.array.isRequired,
@@ -319,7 +362,12 @@ BrandCreate.propTypes = {
   region: PropTypes.object.isRequired,
   regionCity: PropTypes.object.isRequired,
   regionCityUpdated: PropTypes.object.isRequired,
-  isEdit: PropTypes.bool.isRequired
+  isEdit: PropTypes.bool.isRequired,
+  brandObj: PropTypes.object.isRequired,
+  params: PropTypes.object.isRequired,
+  baseLocalRegionId: PropTypes.number.isRequired,
+  updatedRegionReference: PropTypes.object.isRequired,
+  updatedRegions: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) => {
@@ -327,5 +375,5 @@ const mapStateToProps = (state) => {
 };
 
 
-const decoratedConnectedComponent = commonDecorator(BrandCreate);
+const decoratedConnectedComponent = commonDecorator(BrandEdit);
 export default connect(mapStateToProps)(decoratedConnectedComponent);

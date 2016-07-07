@@ -391,18 +391,18 @@ const getGenreCount = () => {
   };
 };
 
-const getGenreData = (page) => {
+const getGenreData = (page, limit) => {
   return (dispatch) => {
     dispatch({ type: MAKE_REQUEST});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
     let offset = 0;
-    let limit = 0;
+    // let limit = 0;
     // const count = currentProps.count;
 
     // limit = (page * 10) > count ? count : ((page) * 10);
     // limit = ((page) * 10);
-    limit = 10;
+    // limit = 10;
     offset = (page - 1) * 10;
 
     const payload = {
@@ -592,13 +592,13 @@ const updateGenre = (updateObj, genreId) => {
   };
 };
 
-const getAllGenreData = (page) => {
+const getAllGenreData = (page, limit) => {
   const gotPage = page;
   /* Dispatching first one */
   return (dispatch) => {
     dispatch(getGenreCount())
       .then(() => {
-        return dispatch(getGenreData(gotPage));
+        return dispatch(getGenreData(gotPage, limit));
       })
       .then(() => {
         console.log('Recharge Data fetched');
@@ -652,22 +652,22 @@ const getCategoryCount = () => {
   };
 };
 
-const getCategoryData = (page) => {
+const getCategoryData = (page, limit) => {
   return (dispatch) => {
     dispatch({ type: MAKE_REQUEST});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
     let offset = 0;
-    let limit = 0;
+    // let limit = 0;
     // const count = currentProps.count;
 
     // limit = (page * 10) > count ? count : ((page) * 10);
     // limit = ((page) * 10);
-    limit = 10;
+    // limit = 10;
     offset = (page - 1) * 10;
 
     const payload = {
-      columns: ['*'],
+      columns: ['*', { 'name': 'genre', 'columns': ['*']}],
       limit: limit,
       offset: offset,
       order_by: '+id'
@@ -853,13 +853,14 @@ const updateCategory = (updateObj, categoryId) => {
   };
 };
 
-const getAllCategoryData = (page) => {
+const getAllCategoryData = (page, limit) => {
   const gotPage = page;
+  const localLimit = limit;
   /* Dispatching first one */
   return (dispatch) => {
     dispatch(getCategoryCount())
       .then(() => {
-        return dispatch(getCategoryData(gotPage));
+        return dispatch(getCategoryData(gotPage, localLimit));
       })
       .then(() => {
         console.log('Recharge Data fetched');

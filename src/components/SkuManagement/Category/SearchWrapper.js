@@ -25,6 +25,11 @@ const SearchWrapper = ( {data} ) => {
             <td>
                 { dat.name}
             </td>
+            <td>
+              <Link to={ ( dat.genre ) ? '/hadmin/genre_management/edit/' + dat.genre.id : '' }>
+                { (dat.genre) ? dat.genre.genre_name : 'N/A'}
+              </Link>
+            </td>
             <td> { createdAt } </td>
             <td> { updatedAt } </td>
           </tr>
@@ -35,7 +40,7 @@ const SearchWrapper = ( {data} ) => {
     objHtml = () => {
       return (
         <div className={styles.error_message}>
-          Sorry no recharges
+          Sorry no categories
         </div>
         );
     }();
@@ -48,6 +53,7 @@ const SearchWrapper = ( {data} ) => {
                   <th> </th>
                   <th> ID </th>
                   <th> Category Name </th>
+                  <th> Genre Name </th>
                   <th> Updated At </th>
                   <th> Created At </th>
                 </tr>

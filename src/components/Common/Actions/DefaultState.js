@@ -19,6 +19,17 @@ const defaultBrandState = {
   stateCityMapping: {},
   viewedState: {},
   showRegionState: false,
+  region: {},
+  regionCity: {},
+  regionCityUpdated: {},
+  viewedRegionId: 0,
+  regionId: 100000000,
+  baseLocalRegionId: 100000000,
+  isEdit: false,
+  brandId: 0,
+  brandObj: {},
+  updatedRegions: {},
+  updatedRegionReference: {}
 };
 
 const defaultStateManagementState = {
@@ -139,6 +150,13 @@ const defaultKycState = {
 
 };
 
+const defaultCategoryState = {
+  genreList: [],
+  name: '',
+  genreId: 0,
+  categoryId: 0
+};
+
 export default defaultState;
 export { defaultNotepadState
   , defaultBrandState
@@ -148,4 +166,5 @@ export { defaultNotepadState
   , defaultKycState
   , defaultCreateSkuState
   , defaultStateManagementState
+  , defaultCategoryState
 };
