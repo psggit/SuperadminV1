@@ -173,6 +173,7 @@ const main = (
         <Route path="brand_management/edit/:Id" component={BrandEdit} />
         <Route path="companies_management" component={CompaniesManagement} />
         <Route path="companies_management/create" component={ManageCompanies} />
+        <Route path="companies_management/edit/:Id" component={ManageCompanies} />
         <Route path="skus" component={Skus} />
         <Route path="skus/list_sku" component={ListSku} />
         <Route path="skus/toppicks" component={Toppicks} />

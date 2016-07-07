@@ -7,10 +7,15 @@ const CompaniesList = ( {data} ) => {
   let objHtml;
 
   tableBody = data.map((dat, index) => {
+    let createdAt = dat.created_at;
+    let updatedAt = dat.updated_at;
+
+    createdAt = new Date(new Date(createdAt).getTime()).toLocaleString();
+    updatedAt = new Date(new Date(updatedAt).getTime()).toLocaleString();
     return (
           <tr key={index}>
             <td>
-              <Link to={'/hadmin/state_management/edit/' + dat.id}>
+              <Link to={'/hadmin/companies_management/edit/' + dat.id}>
                 <button className={styles.edit_btn} data-state-id={dat.id}>
                   Edit
                 </button>
@@ -21,13 +26,19 @@ const CompaniesList = ( {data} ) => {
                 { dat.name }
             </td>
             <td>
-                { dat.status }
+                { dat.address }
             </td>
             <td>
-                { dat.created }
+                { dat.pin_code }
             </td>
             <td>
-                { dat.updated }
+                { dat.status ? dat.status : 'N/A' }
+            </td>
+            <td>
+                { createdAt }
+            </td>
+            <td>
+                { updatedAt }
             </td>
           </tr>
         );
@@ -37,7 +48,7 @@ const CompaniesList = ( {data} ) => {
     objHtml = () => {
       return (
         <div className={styles.error_message}>
-          Sorry no recharges
+          Sorry no companies
         </div>
         );
     }();
@@ -50,6 +61,8 @@ const CompaniesList = ( {data} ) => {
                   <th> </th>
                   <th> ID </th>
                   <th> Company Name </th>
+                  <th> Address </th>
+                  <th> Pin Code </th>
                   <th> Status </th>
                   <th> Created At </th>
                   <th> Updated At </th>
@@ -66,7 +79,7 @@ const CompaniesList = ( {data} ) => {
   return (
         <div className={styles.list_of_states_wrapper}>
           <label>
-            List of States
+            List of Companies
           </label>
           <div className={styles.wd_80}>
             {objHtml}

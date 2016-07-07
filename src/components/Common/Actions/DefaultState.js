@@ -157,6 +157,17 @@ const defaultCategoryState = {
   categoryId: 0
 };
 
+const defaultCompanyState = {
+  cityList: [],
+  stateList: [],
+  companyId: 0,
+  name: '',
+  address: '',
+  pinCode: 0,
+  cityId: 0,
+  stateId: 0
+};
+
 export default defaultState;
 export { defaultNotepadState
   , defaultBrandState
@@ -167,4 +178,5 @@ export { defaultNotepadState
   , defaultCreateSkuState
   , defaultStateManagementState
   , defaultCategoryState
+  , defaultCompanyState
 };
