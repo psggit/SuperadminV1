@@ -17,10 +17,14 @@ import { fetchGenre,
   CANCEL_REGION,
   deleteRegionFromServer,
   updateBrand,
-  updateRegion
+  updateRegion,
+  INPUT_VALUE_CHANGED,
+  RESET
 } from './BrandAction.js';
 
 // import TableHeader from '../../Common/TableHeader';
+
+import formValidator from '../../Common/CommonFormValidator';
 
 import commonDecorator from '../../Common/CommonDecorator';
 import BreadCrumb from '../../Common/BreadCrumb';
@@ -63,7 +67,11 @@ class BrandEdit extends Component { // eslint-disable-line no-unused-vars
       this.props.dispatch(fetchBrand(this.props.params.Id))
     ]);
   }
+  componentWillUnmount() {
+    this.props.dispatch({ type: RESET });
+  }
   onClickUpdateBrand() {
+    /*
     const brandObj = {};
     const companyId = document.querySelectorAll('[data-field-name="company_id"] option:checked')[0].value;
     const categoryId = document.querySelectorAll('[data-field-name="category_id"] option:checked')[0].value;
@@ -76,9 +84,10 @@ class BrandEdit extends Component { // eslint-disable-line no-unused-vars
     brandObj.category_id = parseInt(categoryId, 10);
     brandObj.genre_id = parseInt(genreId, 10);
     brandObj.brand_name = brandName;
+    */
 
     /* Inserting brand */
-    this.props.dispatch(updateBrand(brandObj));
+    this.props.dispatch(updateBrand());
   }
   onStateView(e) {
     const element = (e.target.tagName !== 'P') ? e.target.parentNode : e.target;
@@ -151,11 +160,14 @@ class BrandEdit extends Component { // eslint-disable-line no-unused-vars
       regionCity,
       region,
       isEdit,
-      brandObj,
       baseLocalRegionId,
       updatedRegions,
       updatedRegionReference,
-      regionCityUpdated
+      regionCityUpdated,
+      brandName,
+      companyId,
+      genreId,
+      categoryId
     } = this.props;
 
     let regionHtml = Object.keys(region).map( (reg, index) => {
@@ -175,7 +187,10 @@ class BrandEdit extends Component { // eslint-disable-line no-unused-vars
         );
     });
 
-    const categoryHtml = categoryList.map((category, index) => {
+    const filteredCategoryList = categoryList.filter( (category) => {
+      return (genreId ) ? ( category.genre_id === genreId ) : true;
+    });
+    const categoryHtml = filteredCategoryList.map((category, index) => {
       return (
           <option key={index} value={category.id}>{category.name}</option>
         );
@@ -195,27 +210,27 @@ class BrandEdit extends Component { // eslint-disable-line no-unused-vars
             <ul>
               <li>
                 <label>Brand Name</label>
-                <input data-field-name="brand_name" type="text" value={ brandObj.brand_name ? brandObj.brand_name : ''} />
+                <input data-field-name="brandName" data-field-type="text" type="text" value={ brandName } />
               </li>
               <li>
                 <label>Company Name</label>
-                <select data-field-name="company_id" value={ brandObj.company_id }>
+                <select data-field-name="companyId" data-field-type="int" value={ companyId }>
                   <option>Select Company</option>
                   { companyHtml }
                 </select>
               </li>
               <li>
-                <label>Category</label>
-                <select data-field-name="category_id" value={ brandObj.category_id }>
-                  <option>Select Category</option>
-                  { categoryHtml }
+                <label>Genre</label>
+                <select data-field-name="genreId" data-field-type="int" value={ genreId }>
+                  <option>Select Genre</option>
+                  { genreHtml }
                 </select>
               </li>
               <li>
-                <label>Genre</label>
-                <select data-field-name="genre_id" value={ brandObj.genre_id }>
-                  <option>Select Genre</option>
-                  { genreHtml }
+                <label>Category</label>
+                <select data-field-name="categoryId" data-field-type="int" value={ categoryId }>
+                  <option>Select Category</option>
+                  { categoryHtml }
                 </select>
               </li>
               {/*
@@ -224,6 +239,7 @@ class BrandEdit extends Component { // eslint-disable-line no-unused-vars
                 <input type="email" />
               </li>
               */}
+              {/*
               <li>
                 <label>Status</label>
                 <select data-field-name="status">
@@ -232,6 +248,7 @@ class BrandEdit extends Component { // eslint-disable-line no-unused-vars
                   <option data-field-name="status" data-field-value="inactive">InActive</option>
                 </select>
               </li>
+              */}
             </ul>
         </div>
         {/*
@@ -277,7 +294,7 @@ class BrandEdit extends Component { // eslint-disable-line no-unused-vars
             <div className={styles.heading}>Add new Regions</div>
             <div className={styles.wd_100}>
               <label className={styles.region_lab}>Region name</label>
-              <input type="text" data-field-name="name" onChange={ this.onRegionInput.bind(this) } data-current-region = { viewedRegionId } value = {
+              <input type="text" onChange={ this.onRegionInput.bind(this) } data-current-region = { viewedRegionId } value = {
                 ( viewedRegionId in updatedRegions )
                 ? updatedRegionReference[updatedRegions[viewedRegionId]]
                 : region[viewedRegionId]
@@ -367,7 +384,11 @@ BrandEdit.propTypes = {
   params: PropTypes.object.isRequired,
   baseLocalRegionId: PropTypes.number.isRequired,
   updatedRegionReference: PropTypes.object.isRequired,
-  updatedRegions: PropTypes.object.isRequired
+  updatedRegions: PropTypes.object.isRequired,
+  brandName: PropTypes.string.isRequired,
+  companyId: PropTypes.number.isRequired,
+  genreId: PropTypes.number.isRequired,
+  categoryId: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -375,5 +396,6 @@ const mapStateToProps = (state) => {
 };
 
 
-const decoratedConnectedComponent = commonDecorator(BrandEdit);
+const decoratedOne = formValidator(BrandEdit, 'data-field-name', 'data-field-type', INPUT_VALUE_CHANGED);
+const decoratedConnectedComponent = commonDecorator(decoratedOne);
 export default connect(mapStateToProps)(decoratedConnectedComponent);

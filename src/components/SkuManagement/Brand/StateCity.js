@@ -6,9 +6,12 @@ const StateCity = ({ viewedState, onCityCheck, viewedRegionId, regionObj, region
 
   const cityHtml = ( Object.keys(viewedState).length > 0) ?
     () => {
-      const dummyRegionObj = (updatedRegions[viewedRegionId]) ? updatedRegions[viewedRegionId] : 0;
+      let dummyRegionObj;
+      if ( updatedRegions ) {
+        dummyRegionObj = (updatedRegions[viewedRegionId]) ? updatedRegions[viewedRegionId] : 0;
+      }
       const findNewInserted = (id) => {
-        if ( regionCityObjs[dummyRegionObj] ) {
+        if ( regionCityObjs && regionCityObjs[dummyRegionObj] ) {
           if ( regionCityObjs[dummyRegionObj].insertedCities ) {
             return ( ( id in regionCityObjs[dummyRegionObj].insertedCities ) ) ? true : false;
           }
@@ -17,7 +20,7 @@ const StateCity = ({ viewedState, onCityCheck, viewedRegionId, regionObj, region
         return false;
       };
       const findOldDeleted = (id) => {
-        if ( regionCityObjs[dummyRegionObj] ) {
+        if ( regionCityObjs && regionCityObjs[dummyRegionObj] ) {
           if ( regionCityObjs[dummyRegionObj].deletedCities) {
             return ( ( id in regionCityObjs[dummyRegionObj].deletedCities ) ) ? true : false;
           }

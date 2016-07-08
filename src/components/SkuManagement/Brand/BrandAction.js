@@ -42,6 +42,8 @@ const BRAND_FETCHED = 'Brand/BRAND_FETCHED';
 const NOTHING_CHANGED = 'Brand/NOTHING_CHANGED';
 const CLEAR_STORED_LOCAL_UPDATED_REGIONS = 'Brand/CLEAR_STORED_LOCAL_UPDATED_REGIONS';
 
+const INPUT_VALUE_CHANGED = '@category/INPUT_VALUE_CHANGED';
+
 /* End of it */
 
 /* ****** Action Creators ******** */
@@ -194,11 +196,25 @@ const viewState = (stateId) => {
   return { type: VIEW_STATE, data: stateId };
 };
 
-const insertBrand = (brandObj) => {
+const insertBrand = () => {
   return (dispatch, getState) => {
     const url = Endpoints.db + '/table/brand/insert';
     const insertObj = {};
     const currState = getState().brand_data;
+
+    const brandObj = {};
+    brandObj.brand_name = currState.brandName;
+    brandObj.company_id = parseInt(currState.companyId, 10);
+    brandObj.genre_id = parseInt(currState.genreId, 10);
+    brandObj.category_id = parseInt(currState.categoryId, 10);
+    brandObj.created_at = new Date().toISOString();
+    brandObj.updated_at = new Date().toISOString();
+
+    if ( Object.keys(brandObj).filter( ( element ) => { console.log(Object.keys(brandObj)); console.log(brandObj[element]); return !brandObj[element];}).length >= 1 ) {
+      alert('All the entries are important for brand creation');
+      return dispatch({ type: NOTHING_CHANGED });
+    }
+
 
     insertObj.objects = [brandObj];
     insertObj.returning = ['id'];
@@ -300,11 +316,18 @@ const insertBrand = (brandObj) => {
   };
 };
 
-const updateBrand = (brandObj) => {
+const updateBrand = () => {
   return (dispatch, getState) => {
     const url = Endpoints.db + '/table/brand/update';
     const updateObj = {};
     const currState = getState().brand_data;
+
+    const brandObj = {};
+    brandObj.brand_name = currState.brandName;
+    brandObj.company_id = parseInt(currState.companyId, 10);
+    brandObj.genre_id = parseInt(currState.genreId, 10);
+    brandObj.category_id = parseInt(currState.categoryId, 10);
+    brandObj.updated_at = new Date().toISOString();
 
     updateObj.values = brandObj;
     updateObj.where = {
@@ -349,6 +372,11 @@ const updateBrand = (brandObj) => {
               regionObjs.objects.push(regionObj);
             }
           });
+          /* If regions are not updated then exit here */
+          if ( regionObjs.objects.length === 0) {
+            alert('Brand Successfully Updated');
+            return dispatch(fetchBrand(brandId));
+          }
           options = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -678,7 +706,10 @@ const deleteRegionFromServer = () => {
       .then( (resp) => {
         if ( resp.returning.length > 0 ) {
           alert('successfully deleted');
-          return dispatch(fetchBrand(currState.brandId));
+          return Promise.all([
+            dispatch({ type: CANCEL_REGION }),
+            dispatch(fetchBrand(currState.brandId))
+          ]);
         }
         throw Error('something went wrong while deleting region');
       })
@@ -1034,7 +1065,7 @@ const brandReducer = (state = defaultBrandState, action) => {
         regionObj = {};
         regionCity = {};
       }
-      return { ...state, brandObj: brandObj, region: { ...regionObj }, regionCity: { ...regionCity }, brandId: brandObj.id };
+      return { ...state, brandObj: brandObj, region: { ...regionObj }, regionCity: { ...regionCity }, brandId: brandObj.id, brandName: brandObj.brand_name, companyId: brandObj.company_id, categoryId: brandObj.category_id, genreId: brandObj.genre_id };
     case CANCEL_REGION:
       /* TODO: If existing region is viewed and modified ?
        * clear all the modifications if cancel is pressed
@@ -1044,9 +1075,14 @@ const brandReducer = (state = defaultBrandState, action) => {
       return { ...state, showRegionState: false, isEdit: false, viewedRegionId: 0, updatedRegions: {}, updatedRegionReference: {}, regionCityUpdated: {}};
     case NOTHING_CHANGED:
       return { ...state, showRegionState: false, isEdit: false, viewedRegionId: 0};
-
+    case INPUT_VALUE_CHANGED:
+      const categoryInfo = {};
+      categoryInfo[action.data.key] = action.data.value;
+      return { ...state, ...categoryInfo };
     case CLEAR_STORED_LOCAL_UPDATED_REGIONS:
       return { ...state, showRegionState: false, isEdit: false, viewedRegionId: 0, updatedRegions: {}, updatedRegionReference: {}, regionCityUpdated: {}};
+    case RESET:
+      return { ...defaultBrandState };
     default: return state;
   }
 };
@@ -1074,6 +1110,7 @@ export {
   CANCEL_REGION,
   fetchBrand,
   deleteRegionFromServer,
-  updateRegion
+  updateRegion,
+  INPUT_VALUE_CHANGED
 };
 export default brandReducer;

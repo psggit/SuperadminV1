@@ -29,7 +29,11 @@ const defaultBrandState = {
   brandId: 0,
   brandObj: {},
   updatedRegions: {},
-  updatedRegionReference: {}
+  updatedRegionReference: {},
+  brandName: '',
+  companyId: 0,
+  categoryId: 0,
+  genreId: 0
 };
 
 const defaultStateManagementState = {

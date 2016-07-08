@@ -8,7 +8,7 @@ import Endpoints, { globalCookiePolicy } from '../../../Endpoints';
 
 import { MAKE_REQUEST,
   REQUEST_COMPLETED,
-  REQUEST_ERROR, RESET } from '../../Common/Actions/Actions';
+  REQUEST_ERROR } from '../../Common/Actions/Actions';
 
 import { routeActions } from 'redux-simple-router';
 // import commonReducer from '../Common/Actions/CommonReducer';
@@ -19,6 +19,7 @@ import { routeActions } from 'redux-simple-router';
 
 const GENRE_FETCHED = '@category/GENRE_FETCHED';
 const CATEGORY_FETCHED = '@category/CATEGORY_FETCHED';
+const RESET = '@category/RESET';
 
 const INPUT_VALUE_CHANGED = '@category/INPUT_VALUE_CHANGED';
 
@@ -172,6 +173,8 @@ const categoryReducer = (state = defaultCategoryState, action) => {
       return { ...state, ...categoryInfo };
     case CATEGORY_FETCHED:
       return { ...state, name: action.data[0].name, genreId: action.data[0].genre_id, categoryId: action.data[0].id};
+    case RESET:
+      return { ...defaultCategoryState };
     default:
       return { ...state };
   }
@@ -182,9 +185,9 @@ const categoryReducer = (state = defaultCategoryState, action) => {
 export {
   fetchCategory,
   fetchGenre,
-  RESET,
   INPUT_VALUE_CHANGED,
   insertCategory,
-  updateCategory
+  updateCategory,
+  RESET
 };
 export default categoryReducer;

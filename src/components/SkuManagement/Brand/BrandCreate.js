@@ -12,10 +12,13 @@ import { fetchGenre,
   UNMARK_CITY_SELECTED,
   SAVE_TO_LOCAL,
   VIEW_REGION,
-  DELETE_REGION
+  DELETE_REGION,
+  INPUT_VALUE_CHANGED
 } from './BrandAction.js';
 
 // import TableHeader from '../../Common/TableHeader';
+
+import formValidator from '../../Common/CommonFormValidator';
 
 import commonDecorator from '../../Common/CommonDecorator';
 import BreadCrumb from '../../Common/BreadCrumb';
@@ -53,6 +56,7 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
     ]);
   }
   onClickCreateBrand() {
+    /*
     const brandObj = {};
     const companyId = document.querySelectorAll('[data-field-name="company_id"] option:checked')[0].value;
     const categoryId = document.querySelectorAll('[data-field-name="category_id"] option:checked')[0].value;
@@ -65,9 +69,10 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
     brandObj.category_id = parseInt(categoryId, 10);
     brandObj.genre_id = parseInt(genreId, 10);
     brandObj.brand_name = brandName;
+    */
 
     /* Inserting brand */
-    this.props.dispatch(insertBrand(brandObj));
+    this.props.dispatch(insertBrand());
   }
   onStateView(e) {
     const element = (e.target.tagName !== 'P') ? e.target.parentNode : e.target;
@@ -81,6 +86,7 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
     this.props.dispatch(( e.target.checked ) ? { type: MARK_CITY_SELECTED, data: { cityId: cityId, regionId: regionId }} : { type: UNMARK_CITY_SELECTED, data: { cityId: cityId, regionId: regionId}});
   }
   onRegionInput(e) {
+    e.preventDefault();
     const regionId = parseInt(e.target.getAttribute('data-current-region'), 10);
     this.props.dispatch( { type: REGION_INPUT_CHANGED, data: { id: regionId, value: e.target.value }});
   }
@@ -116,7 +122,11 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
       viewedRegionId,
       regionCity,
       region,
-      isEdit
+      isEdit,
+      brandName,
+      companyId,
+      genreId,
+      categoryId
     } = this.props;
 
     let regionHtml = Object.keys(region).map( (reg, index) => {
@@ -136,7 +146,10 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
         );
     });
 
-    const categoryHtml = categoryList.map((category, index) => {
+    const filteredCategoryList = categoryList.filter( (category) => {
+      return (genreId ) ? ( category.genre_id === genreId ) : true;
+    });
+    const categoryHtml = filteredCategoryList.map((category, index) => {
       return (
           <option key={index} value={category.id}>{category.name}</option>
         );
@@ -156,27 +169,27 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
             <ul>
               <li>
                 <label>Brand Name</label>
-                <input data-field-name="brand_name" type="text" />
+                <input data-field-name="brandName" type="text" data-field-type="text" value={ brandName } />
               </li>
               <li>
                 <label>Company Name</label>
-                <select data-field-name="company_id">
+                <select data-field-name="companyId" data-field-type="int" value={ companyId }>
                   <option>Select Company</option>
                   { companyHtml }
                 </select>
               </li>
               <li>
-                <label>Category</label>
-                <select data-field-name="category_id">
-                  <option>Select Category</option>
-                  { categoryHtml }
+                <label>Genre</label>
+                <select data-field-name="genreId" data-field-type="int" value={ genreId }>
+                  <option>Select Genre</option>
+                  { genreHtml }
                 </select>
               </li>
               <li>
-                <label>Genre</label>
-                <select data-field-name="genre_id">
-                  <option>Select Genre</option>
-                  { genreHtml }
+                <label>Category</label>
+                <select data-field-name="categoryId" data-field-type="int" value={ categoryId } >
+                  <option>Select Category</option>
+                  { categoryHtml }
                 </select>
               </li>
               {/*
@@ -185,6 +198,7 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
                 <input type="email" />
               </li>
               */}
+              {/*
               <li>
                 <label>Status</label>
                 <select data-field-name="status">
@@ -193,6 +207,7 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
                   <option data-field-name="status" data-field-value="inactive">InActive</option>
                 </select>
               </li>
+              */}
             </ul>
         </div>
         {/*
@@ -238,7 +253,7 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
             <div className={styles.heading}>Add new Regions</div>
             <div className={styles.wd_100}>
               <label className={styles.region_lab}>Region name</label>
-              <input type="text" data-field-name="name" onChange={ this.onRegionInput.bind(this) } data-current-region = { viewedRegionId } value = { region[viewedRegionId] } />
+              <input type="text" onChange={ this.onRegionInput.bind(this) } data-current-region = { viewedRegionId } value = { region[viewedRegionId] } />
             </div>
             <div className={styles.wd_100 + ' ' + styles.select_city}>
               <label className={styles.cites_lab}>
@@ -319,13 +334,17 @@ BrandCreate.propTypes = {
   region: PropTypes.object.isRequired,
   regionCity: PropTypes.object.isRequired,
   regionCityUpdated: PropTypes.object.isRequired,
-  isEdit: PropTypes.bool.isRequired
+  isEdit: PropTypes.bool.isRequired,
+  brandName: PropTypes.string.isRequired,
+  companyId: PropTypes.number.isRequired,
+  genreId: PropTypes.number.isRequired,
+  categoryId: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => {
   return {...state.page_data, ...state.brand_data};
 };
 
-
-const decoratedConnectedComponent = commonDecorator(BrandCreate);
+const decoratedOne = formValidator(BrandCreate, 'data-field-name', 'data-field-type', INPUT_VALUE_CHANGED);
+const decoratedConnectedComponent = commonDecorator(decoratedOne);
 export default connect(mapStateToProps)(decoratedConnectedComponent);

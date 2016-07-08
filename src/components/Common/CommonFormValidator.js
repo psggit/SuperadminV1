@@ -32,7 +32,7 @@ const commonFormValidator = ( Component, fieldName, fieldType, changeEmitter) =>
       if (!fieldN) {
         const typeOf = '<' + e.target.nodeName.toLowerCase() + '>' + ' form tag';
         const message = this.eventHandlers.lookFor + ' attribute missing for the changed tag (' + typeOf + ')';
-        console.error('FORMVALIDATORERROR: ' + message);
+        console.warn('FORMVALIDATORERROR: ' + message);
         return false;
       }
       data.key = fieldN;

@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { updateCategoryText, resetCategory} from '../Action';
 
-import { updateCategory, fetchGenre, INPUT_VALUE_CHANGED, insertCategory, fetchCategory} from './CategoryAction';
+import { updateCategory, fetchGenre, INPUT_VALUE_CHANGED, insertCategory, fetchCategory, RESET} from './CategoryAction';
 
 import formValidator from '../../Common/CommonFormValidator';
 
@@ -41,6 +41,9 @@ class ManageCategory extends React.Component { // eslint-disable-line no-unused-
       this.props.dispatch(resetCategory());
       this.props.dispatch(fetchGenre());
     }
+  }
+  componentWillUnmount() {
+    this.props.dispatch({ type: RESET });
   }
   createCategory() {
     /*
@@ -92,8 +95,8 @@ class ManageCategory extends React.Component { // eslint-disable-line no-unused-
               <div className={styles.create_form}>
                 <div className={styles.indiv_form}>
                   <label>Genre</label>
-                  <select value = { genreId } data-field-name="genreId" data-field-type="text" >
-                    <option>Whiskey</option>
+                  <select value = { genreId } data-field-name="genreId" data-field-type="int" >
+                    <option>Select Genre Type</option>
                     { genreHtml }
                   </select>
                 </div>

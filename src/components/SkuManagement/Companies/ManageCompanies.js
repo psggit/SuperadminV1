@@ -108,12 +108,14 @@ class ManageCompanies extends React.Component { // eslint-disable-line no-unused
                   <li>
                     <label>City</label>
                     <select data-field-name="cityId" data-field-type="int" value={ cityId }>
+                      <option > Select City </option>
                       { cityHtml }
                     </select>
                   </li>
                   <li>
                     <label>State</label>
                     <select data-field-name="stateId" data-field-type="int" value={ stateId }>
+                      <option > Select State </option>
                       { stateHtml }
                     </select>
                   </li>
