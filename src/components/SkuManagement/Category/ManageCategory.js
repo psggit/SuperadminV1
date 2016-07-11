@@ -1,35 +1,63 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { insertCategory, fetchCategory, updateCategory, updateCategoryText, resetCategory} from '../Action';
+import { updateCategoryText, resetCategory} from '../Action';
+
+import { updateCategory, fetchGenre, INPUT_VALUE_CHANGED, insertCategory, fetchCategory, RESET} from './CategoryAction';
+
+import formValidator from '../../Common/CommonFormValidator';
+
+import commonDecorator from '../../Common/CommonDecorator';
+import BreadCrumb from '../../Common/BreadCrumb';
 
 class ManageCategory extends React.Component { // eslint-disable-line no-unused-vars
+  constructor() {
+    super();
+    /* Data required for the bread component to render correctly */
+    this.breadCrumbs = [];
+    this.breadCrumbs.push({
+      title: 'SKU Management',
+      sequence: 1,
+      link: '#'
+    });
+    this.breadCrumbs.push({
+      title: 'Manage Category',
+      sequence: 2,
+      link: '/hadmin/category_management'
+    });
+    this.breadCrumbs.push({
+      title: 'Create/Edit Category',
+      sequence: 3,
+      link: '#'
+    });
+  }
   componentDidMount() {
     /* If On edit operation */
     let CategoryId = this.props.params.Id;
     if (CategoryId) {
       CategoryId = parseInt(CategoryId, 10);
       this.props.dispatch(fetchCategory(CategoryId));
+      this.props.dispatch(fetchGenre());
     } else {
       this.props.dispatch(resetCategory());
+      this.props.dispatch(fetchGenre());
     }
   }
-  onClickHandle() {
+  componentWillUnmount() {
+    this.props.dispatch({ type: RESET });
+  }
+  createCategory() {
+    /*
     // e.preventDefault();
     const CategoryName = document.querySelectorAll('[data-field-name="category_name"]')[0].value;
     const CategoryObj = {};
     CategoryObj.name = CategoryName;
     CategoryObj.created_at = new Date().toISOString();
     CategoryObj.updated_at = new Date().toISOString();
-    this.props.dispatch(insertCategory(CategoryObj));
+    */
+    this.props.dispatch(insertCategory());
   }
-  onClickEdit(e) {
-    const CategoryName = document.querySelectorAll('[data-field-name="category_name"]')[0].value;
-    const CategoryId = parseInt(e.target.getAttribute('data-category-id'), 10);
-    const CategoryObj = {};
-    CategoryObj.values = {};
-    CategoryObj.values.name = CategoryName;
-    CategoryObj.returning = ['id'];
-    this.props.dispatch(updateCategory(CategoryObj, CategoryId));
+  updateCategory() {
+    this.props.dispatch(updateCategory());
   }
   /* Function to update the Fetched Category of this component so that input field is editable */
   inputOnChange(e) {
@@ -39,17 +67,27 @@ class ManageCategory extends React.Component { // eslint-disable-line no-unused-
   render() {
     const styles = require('./CategoryManagement.scss');
 
-    const { ongoingRequest, lastError, lastSuccess } = this.props;
+    const { ongoingRequest,
+      lastError,
+      genreList,
+      genreId,
+      name,
+      categoryId
+    } = this.props;
     console.log(ongoingRequest);
     console.log(lastError);
 
+    const genreHtml = genreList.map((genre, index) => {
+      return (
+          <option key={index} value={genre.id}>{genre.genre_name}</option>
+        );
+    });
+
     const htmlContent = () => {
-      if (lastSuccess.length > 0) {
+      if (categoryId) {
         return (
           <div className={styles.wrapper}>
-            <div className={styles.head_container}>
-            	SKU Management / Edit Category
-            </div>
+            <BreadCrumb breadCrumbs={this.breadCrumbs} />
             <div className={styles.create_state_wrapper}>
               <p>
                 Edit Category
@@ -57,13 +95,14 @@ class ManageCategory extends React.Component { // eslint-disable-line no-unused-
               <div className={styles.create_form}>
                 <div className={styles.indiv_form}>
                   <label>Genre</label>
-                  <select>
-                    <option>Whiskey</option>
+                  <select value = { genreId } data-field-name="genreId" data-field-type="int" >
+                    <option>Select Genre Type</option>
+                    { genreHtml }
                   </select>
                 </div>
                 <div className={styles.indiv_form}>
                 	<label>Category Name</label>
-                	<input type="text" data-field-name="category_name" onChange={this.inputOnChange.bind(this)} value={lastSuccess[0].name} />
+                	<input type="text" value={ name } data-field-name="name" data-field-type="text" />
                 </div>
                 {/*
                 <div className={styles.indiv_form}>
@@ -73,7 +112,7 @@ class ManageCategory extends React.Component { // eslint-disable-line no-unused-
                 	</select>
                 </div>
                 */}
-                <button className={styles.common_btn + ' ' + styles.create_btn } data-category-id={lastSuccess[0].id} onClick={this.onClickEdit.bind(this)}>Edit Category</button>
+                <button className={styles.common_btn + ' ' + styles.create_btn } onClick={this.updateCategory.bind(this)}>Edit Category</button>
               </div>
             </div>
           </div>
@@ -81,9 +120,7 @@ class ManageCategory extends React.Component { // eslint-disable-line no-unused-
       }
       return (
         <div className={styles.wrapper}>
-          <div className={styles.head_container}>
-          	SKU Management / Create Category
-          </div>
+          <BreadCrumb breadCrumbs={this.breadCrumbs} />
           <div className={styles.create_state_wrapper}>
             <p>
               Create Category
@@ -91,13 +128,16 @@ class ManageCategory extends React.Component { // eslint-disable-line no-unused-
             <div className={styles.create_form}>
               <div className={styles.indiv_form}>
                 <label>Genre</label>
-                <select>
-                  <option>Whiskey</option>
+                <select data-field-name="genreId" data-field-type="text">
+                  <option value="default">
+                    Select Genre
+                  </option>
+                  { genreHtml }
                 </select>
               </div>
               <div className={styles.indiv_form}>
               	<label>Category Name</label>
-              	<input type="text" data-field-name="category_name" />
+              	<input type="text" data-field-name="name" data-field-type="text"/>
               </div>
               {/*
               <div className={styles.indiv_form}>
@@ -107,7 +147,7 @@ class ManageCategory extends React.Component { // eslint-disable-line no-unused-
               	</select>
               </div>
               */}
-              <button className={styles.common_btn + ' ' + styles.create_btn } onClick={this.onClickHandle.bind(this)} disabled={ongoingRequest ? true : false}>Create Category</button>
+              <button className={styles.common_btn + ' ' + styles.create_btn } onClick={this.createCategory.bind(this)} disabled={ongoingRequest ? true : false}>Create Category</button>
             </div>
           </div>
         </div>
@@ -129,11 +169,18 @@ ManageCategory.propTypes = {
   dispatch: PropTypes.func.isRequired,
   ongoingRequest: PropTypes.bool.isRequired,
   lastError: PropTypes.object.isRequired,
-  lastSuccess: PropTypes.array.isRequired
+  lastSuccess: PropTypes.array.isRequired,
+  genreList: PropTypes.array.isRequired,
+  genreId: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  categoryId: PropTypes.string.isRequired
 };
 
 const mapStateToProps = (state) => {
-  return {...state.sku_data};
+  return {...state.sku_data, ...state.category_data};
 };
 
-export default connect(mapStateToProps)(ManageCategory);
+const decoratedOne = formValidator(ManageCategory, 'data-field-name', 'data-field-type', INPUT_VALUE_CHANGED);
+
+const decoratedConnectedComponent = commonDecorator(decoratedOne);// connect(mapStateToProps)(CommonDecorator);
+export default connect(mapStateToProps)(decoratedConnectedComponent);

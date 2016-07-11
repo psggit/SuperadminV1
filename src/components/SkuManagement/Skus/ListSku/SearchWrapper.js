@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
+// import { Link } from 'react-router';
 
 const SearchWrapper = ( {data} ) => {
   const styles = require('./SearchWrapper.scss');
@@ -15,11 +15,13 @@ const SearchWrapper = ( {data} ) => {
     return (
           <tr key={index}>
             <td>
+              {/*
               <Link to={'/hadmin/skus/view_sku/' + dat.id}>
                 <button className={styles.edit_btn} data-genre-id={dat.id}>
                   View
                 </button>
               </Link>
+              */}
             </td>
             <td> { dat.id } </td>
             <td>
@@ -38,7 +40,7 @@ const SearchWrapper = ( {data} ) => {
                 { (dat.test_vol ) ? dat.test_vol : 'N/A'}
             </td>
             <td>
-                { (dat.bar_code ) ? dat.barcode : 'N/A'}
+                { (dat.barcode ) ? dat.barcode : 'N/A'}
             </td>
             <td> { createdAt } </td>
             <td> { updatedAt } </td>

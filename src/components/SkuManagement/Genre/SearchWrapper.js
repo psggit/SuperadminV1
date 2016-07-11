@@ -35,7 +35,7 @@ const SearchWrapper = ( {data} ) => {
     objHtml = () => {
       return (
         <div className={styles.error_message}>
-          Sorry no recharges
+          Sorry no genres added
         </div>
         );
     }();

@@ -35,6 +35,7 @@ import {Login, Home, PageContainer,
   SkuManagementToppicks,
   ConsumerRecharge,
   BrandCreate,
+  BrandEdit,
   BrandManagement,
   ConsumerReservation,
   ManageState,
@@ -173,8 +174,10 @@ const main = (
         <Route path="category_management/create" component={ManageCategory} />
         <Route path="brand_management" component={BrandManagement} />
         <Route path="brand_management/create" component={BrandCreate} />
+        <Route path="brand_management/edit/:Id" component={BrandEdit} />
         <Route path="companies_management" component={CompaniesManagement} />
         <Route path="companies_management/create" component={ManageCompanies} />
+        <Route path="companies_management/edit/:Id" component={ManageCompanies} />
         <Route path="skus" component={Skus} />
         <Route path="skus/list_sku" component={ListSku} />
         <Route path="skus/toppicks" component={Toppicks} />

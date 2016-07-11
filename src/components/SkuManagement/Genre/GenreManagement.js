@@ -4,37 +4,45 @@ import { Link } from 'react-router';
 import { getAllGenreData, getGenreData } from '../Action';
 import SearchWrapper from './SearchWrapper';
 
-import PaginationContainer from '../../CustomerTransaction/components/Recharge/Pagination';
+import commonDecorator from '../../Common/CommonDecorator';
+import BreadCrumb from '../../Common/BreadCrumb';
+
+import PaginationWrapper from '../../Common/PaginationWrapper.js';
 
 class GenreManagement extends React.Component { // eslint-disable-line no-unused-vars
-  componentDidMount() {
-    /* Fetch the state data */
-    const {query} = this.props.location;
-    const page = (Object.keys(query).length > 0) ? parseInt(query.p, 10) : 1;
+  constructor() {
+    super();
+    /* Data required for the bread component to render correctly */
+    this.breadCrumbs = [];
+    this.breadCrumbs.push({
+      title: 'SKU Management',
+      sequence: 1,
+      link: '#'
+    });
+    this.breadCrumbs.push({
+      title: 'Manage Genre',
+      sequence: 2,
+      link: '#'
+    });
+  }
+  // Hook used by pagination wrapper to fetch the initial data
+  fetchInitialData(page, limit) {
+    this.props.dispatch(getAllGenreData(page, limit));
+  }
+  triggerPageChange(clickedPage, limit) {
+    this.props.dispatch(getGenreData(clickedPage, limit));
+  }
 
-    this.props.dispatch(getAllGenreData(page));
-  }
-  onClickHandle(e) {
-    // e.preventDefault();
-    const currentPage = parseInt(e.target.href.split('?p=')[1], 10);
-    if (currentPage) {
-      this.props.dispatch(getGenreData(currentPage));
-    }
-  }
   render() {
     const styles = require('./GenreManagement.scss');
-    const { ongoingRequest, lastError, lastSuccess, count} = this.props;
-    const {query} = this.props.location;
-    const page = (Object.keys(query).length > 0) ? parseInt(query.p, 10) : 1;
+    const { ongoingRequest, lastError, lastSuccess} = this.props;
     console.log(lastError);
     console.log(ongoingRequest);
     console.log(lastSuccess);
     // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
     return (
         <div className={styles.container}>
-          <div className={styles.head_container}>
-         		SKU Management / Manage Genre
-         	</div>
+          <BreadCrumb breadCrumbs={this.breadCrumbs} />
          	<div className={styles.search_wrapper + ' ' + styles.wd_100}>
          		<p>Search</p>
          		<div className={styles.search_form + ' ' + styles.wd_100}>
@@ -142,7 +150,14 @@ class GenreManagement extends React.Component { // eslint-disable-line no-unused
           </div>
           */}
           <SearchWrapper data={lastSuccess}/>
-          <PaginationContainer limit="10" onClickHandler={this.onClickHandle.bind(this)} currentPage={page} showMax="5" count={count} parentUrl="/hadmin/genre_management" />
+          <PaginationWrapper
+            {...this.props }
+            fetchInitialData = { this.fetchInitialData.bind(this) }
+            limit = "10"
+            triggerPageChange={ this.triggerPageChange.bind(this) }
+            showMax="5"
+            parentUrl="/hadmin/genre_management"
+          />
         </div>
       );
   }
@@ -162,4 +177,5 @@ const mapStateToProps = (state) => {
   return {...state.sku_data};
 };
 
-export default connect(mapStateToProps)(GenreManagement);
+const decoratedConnectedComponent = commonDecorator(GenreManagement);// connect(mapStateToProps)(CommonDecorator);
+export default connect(mapStateToProps)(decoratedConnectedComponent);
