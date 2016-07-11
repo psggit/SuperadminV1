@@ -2,3 +2,4 @@ sample.txt
 *.md
 components/KycUpload/NotUsed/*
 components/KycUpload/old/*
+client.js~

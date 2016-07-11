@@ -22,7 +22,7 @@ import userDataReducer from './components/Consumer/components/EditProfile/EditAc
 import createSKUReducer from './components/SkuManagement/Skus/CreateSku/CreateSkuActions';
 import stateManagementReducer from './components/SkuManagement/State/StateActions';
 import brandManagerProfileReducer from './components/BrandsOffersAndPromos/BrandManagerProfile/BrandManagerProfileActions';
-import createBrandManagerReducer from './components/BrandsOffersAndPromos/CreateBrandManager/createBMActions';
+import createBrandManagerReducer from './components/BrandsOffersAndPromos/CreateBrandManager/CreateBMActions';
 
 const reducer = combineReducers({
   loginState: loginReducer,

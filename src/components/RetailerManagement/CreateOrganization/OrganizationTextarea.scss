@@ -1,0 +1,35 @@
+  .constitution_organisation_textarea_container
+  {
+    width: 50%;
+    display: inline-block;
+    margin-bottom: 20px;
+    vertical-align: top;
+    .constitution_organisation_textarea_left
+    {
+      width: 50%;
+      display: inline-block;
+      color: #9F9E9E;
+      vertical-align: top;
+    }
+    .constitution_organisation_textarea_right
+    {
+      width: 50%;
+      display: inline-block;
+      color: #9F9E9E;
+      textarea
+      {
+        color: #9F9E9E;
+        width: 170px;
+        padding: 5px 10px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        height: 90px;
+        font-size: 13px;
+      }
+      textarea:focus
+      {
+        outline: none;
+        border: 1px solid #FF7400;
+      }
+    }
+  }
