@@ -23,7 +23,6 @@ import createSKUReducer from './components/SkuManagement/Skus/CreateSku/CreateSk
 import stateManagementReducer from './components/SkuManagement/State/StateActions';
 import brandManagerProfileReducer from './components/BrandsOffersAndPromos/BrandManagerProfile/BrandManagerProfileActions';
 import createBrandManagerReducer from './components/BrandsOffersAndPromos/CreateBrandManager/CreateBMActions';
-
 import categoryReducer from './components/SkuManagement/Category/CategoryAction';
 import companyReducer from './components/SkuManagement/Companies/CompanyAction';
 

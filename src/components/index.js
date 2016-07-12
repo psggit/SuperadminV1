@@ -68,7 +68,11 @@ export BrandAds from './BrandsOffersAndPromos/BrandAds/BrandAds';
 export BrandPromos from './BrandsOffersAndPromos/BrandPromos/BrandPromos';
 export PromosInstantCashback from './BrandsOffersAndPromos/PromosInstantCashback/PromosInstantCashback';
 export RetailerManagementCreate from './RetailerManagement/CreateBranch/CreateBranch';
-
+export RetailerManagementSettlementDetails from './RetailerManagement/RedemptionHistory/SettlementDetails';
+export RetailerManagementDeviceDetail from './RetailerManagement/DeviceDetail/DeviceDetail';
+export RetailerManagementDisableDevice from './RetailerManagement/DisableDevice/DisableDevice';
+export RetailerManagementTransactions from './RetailerManagement/Transactions/Transactions';
+export RetailerManagementCreateOrganization from './RetailerManagement/CreateOrganization/CreateOrganization';
 
 /* Consumer Transactions */
 
