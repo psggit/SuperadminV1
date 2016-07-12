@@ -56,7 +56,6 @@ export CreateSku from './SkuManagement/Skus/CreateSku/CreateSkuWrapper';
 export SkuManagementViewSkus from './SkuManagement/Skus/ViewSku/ViewSku';
 export SkuManagementToppicks from './SkuManagement/Skus/ToppicksIn/ToppicksIn';
 
-
 export AddCredit from './CustomerTransaction/components/Credits/CreateCredit';
 export ConfirmCredit from './CustomerTransaction/components/Credits/ConfirmCredits';
 export ViewCredits from './CustomerTransaction/components/Credits/ViewCredits';
@@ -71,7 +70,7 @@ export RetailerManagementCreate from './RetailerManagement/CreateBranch/CreateBr
 export RetailerManagementSettlementDetails from './RetailerManagement/RedemptionHistory/SettlementDetails';
 export RetailerManagementDeviceDetail from './RetailerManagement/DeviceDetail/DeviceDetail';
 export RetailerManagementDisableDevice from './RetailerManagement/DisableDevice/DisableDevice';
-export RetailerManagementTransactions from './RetailerManagement/Transactions/Transactions';
+export RetailerManagementTransactions from './Sku/Transactions/Transactions';
 export RetailerManagementCreateOrganization from './RetailerManagement/CreateOrganization/CreateOrganization';
 
 /* Consumer Transactions */
