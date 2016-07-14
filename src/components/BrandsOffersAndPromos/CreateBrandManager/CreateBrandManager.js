@@ -1,13 +1,15 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 // import { Link } from 'react-router';
-import { fetchCompany, fetchBrands } from './CreateBMActions';
+import { fetchCompany, fetchBrands, brandContainerVisibility, setContainerType, createBrandManager} from './CreateBMActions';
+import BrandContainer from './BrandContainer';
 
 /*
  * Decorator which adds couple of use ful features like
  * 1. Clearing the state on component unmount
  * 2. Displaying/Hiding Loading icon on ajax fetch/complete
 */
+
 import commonDecorator from '../../Common/CommonDecorator';
 import BreadCrumb from '../../Common/BreadCrumb';
 
@@ -34,29 +36,53 @@ class CreateBrandManager extends Component { // eslint-disable-line no-unused-va
     ]);
   }
   onClickShowBrandContainer() {
+    Promise.all([
+      this.props.dispatch(brandContainerVisibility()),
+      this.props.dispatch(setContainerType(false))
+    ]);
   }
   onSelectCompany() {
     const companyId = parseInt(document.querySelectorAll('[data-field-name="company_id"] option:checked')[0].value, 10);
     this.props.dispatch(fetchBrands(companyId));
-    console.log('dispatched');
   }
 
+  onClickExistingBrand(bid) {
+    let brand = {};
+    const sbl = [...this.props.selectedBrandsList];
+    sbl.map((b) => {
+      if (b.id === bid) {
+        brand = {...b};
+      }});
+    Promise.all([
+      this.props.dispatch(setContainerType(true)),
+      this.props.dispatch(brandContainerVisibility(brand))
+    ]);
+  }
+  onSaveBrandManager() {
+    Promise.all([
+      this.props.dispatch(createBrandManager())
+    ]);
+  }
   render() {
     const styles = require('./CreateBrandManager.scss');
 
-    const { companyList, companyBrands, selectedBrandsList } = this.props;
+    const { companyList, selectedBrandsList } = this.props;
+    const props_ = { ...this.props };
 
-    const brandHtml = companyBrands.map((brand, index) => {
-      return (
-          <option key={index} value={brand.id}>{brand.brand_name}</option>
-      );
-    });
+    const getActiveRegionCount = (regions) => {
+      let count = 0;
+      regions.map((region) => {
+        count = (region.is_selected) ? count + 1 : count + 0;
+      });
+      return count;
+    };
 
     const selectedBrandsHtml = selectedBrandsList.map((sb) => {
+      const count = getActiveRegionCount([...sb.regions]);
       return (
         <li>
-          <label>{sb.name}</label>
-          <p>{sb.regions.length} Regions</p>
+          <label>{sb.brand_name}</label>
+          <p className={styles.pointer_click} onClick={this.onClickExistingBrand.bind(this, sb.id)}>{count} {(count !== 1) ? 'Regions' : 'Region' }</p>
         </li>
       );
     });
@@ -97,15 +123,17 @@ class CreateBrandManager extends Component { // eslint-disable-line no-unused-va
                 <li>
                   <label>Status</label>
                   <select data-field-name="status">
-                    <option>Select Status</option>
+                    <option disable selected value> -- select status -- </option>
                     <option data-field-name="status" data-field-value="active">Active</option>
                     <option data-field-name="status" data-field-value="inactive">InActive</option>
                   </select>
                 </li>
                 <li>
                   <label>KYC Status</label>
-                  <select data-field-name="">
-                    <option>Select</option>
+                  <select data-field-name="kyc_status">
+                    <option disable selected value> -- select -- </option>
+                    <option>Verified</option>
+                    <option>Pending</option>
                   </select>
                 </li>
               </ul>
@@ -114,58 +142,15 @@ class CreateBrandManager extends Component { // eslint-disable-line no-unused-va
           <div className={styles.brands_wrapper}>
             <div className={styles.brand_container}>
               <div className={styles.heading}>Brands</div>
-              <div className={styles.add_lab} onClick={this.onClickShowBrandContainer.bind(this)}>+ Select Brand</div>
+              <div className={styles.add_lab} onClick={this.onClickShowBrandContainer.bind(this)}>+ Add Brand</div>
               <ul>
                 { selectedBrandsHtml }
               </ul>
             </div>
-            <div className={styles.select_brands_container}>
-              <div className={styles.heading}>Select Brand</div>
-              <div className={styles.wd_100}>
-                <label className={styles.region_lab}>Brand name</label>
-                <select data-field-name="selected_brand_id">
-                  <option disabled selected value > -- Select Brand -- </option>
-                  { brandHtml }
-                </select>
-              </div>
-              <div className={styles.wd_100 + ' ' + styles.select_city}>
-                <label className={styles.cites_lab}>
-                  SELECT REGIONS
-                  <span className={styles.selected}>1 Selected</span>
-                </label>
-              </div>
-              <div className={styles.available_states_container}>
-                <div className={styles.heading}>
-                    <label>Available regions</label>
-                </div>
-                <ul>
-                  <li>
-                    <label>
-                      <input type="checkbox"/> Tamil nadu
-                    </label>
-                    <p>3 Cities</p>
-                  </li>
-                </ul>
-              </div>
-              <div className={styles.cities_in_container}>
-                <div className={styles.heading}>
-                  Cities in: <span className={styles.state}>Tamil Nadu</span>
-                </div>
-                <ul>
-                  <li>
-                    <label> Chennai </label>
-                  </li>
-                </ul>
-              </div>
-              <div className="clearfix"></div>
-              <div className={styles.user_actions}>
-                <button>Delete</button>
-                <button>Update</button>
-              </div>
-            </div>
+            <BrandContainer props={props_}/>
           </div>
           <div className="clearfix"></div>
-          <button className={styles.edit_brand_btn}>
+          <button className={styles.edit_brand_btn} onClick={this.onSaveBrandManager.bind(this)}>
             Save BM
           </button>
         </div>
@@ -183,13 +168,16 @@ CreateBrandManager.propTypes = {
   count: PropTypes.number.isRequired,
   companyList: PropTypes.array.isRequired,
   companyBrands: PropTypes.array.isRequired,
-  selectedBrandsList: PropTypes.array.isRequired
+  selectedBrandsList: PropTypes.array.isRequired,
+  showBrandContainer: PropTypes.bool.isRequired,
+  selectedBrand: PropTypes.object.isRequired,
+  regionCitiesView: PropTypes.object.isRequired,
+  isExistingBrand: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = (state) => {
-  return {...state.page_data, ...state.createbrandmanager_data };
+  return {...state.page_data, ...state.createbrandmanager_data};
 };
-
 
 const decoratedConnectedComponent = commonDecorator(CreateBrandManager);// connect(mapStateToProps)(CommonDecorator);
 export default connect(mapStateToProps)(decoratedConnectedComponent);

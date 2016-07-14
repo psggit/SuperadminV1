@@ -14,68 +14,25 @@ import { MAKE_REQUEST,
 import { routeActions } from 'redux-simple-router';
 // import commonReducer from '../Common/Actions/CommonReducer';
 
-const BRAND_CATEGORY_FETCH = 'BRAND/BRAND_CATEGORY_FETCH';
-const BRAND_GENRE_FETCH = 'BRAND/BRAND_GENRE_FETCH';
 const COMPANY_FETCH = 'BM_MANAGEMENT/BRAND_COMPANY_FETCH';
 const BRANDS_FETCH = 'BM_MANAGEMENT/BRANDS_FETCH';
+const BRAND_CONTAINER_VISIBILITY = 'BM_MANAGEMENT/BRAND_CONTAINER_VISIBILITY';
+const BRAND_CURRENT_SELECTION = 'BM_MANAGEMENT/BRAND_CURRENT_SELECTION';
+const REGION_CITIES_VIEW = 'BM_MANAGEMENT/REGION_CITIES_VIEW';
+const SET_CONTAINER_TYPE = 'BM_MANAGEMENT/SET_CONTAINER_TYPE';
+const UPDATE_REGION_SELECTION = 'BM_MANAGEMENT/UPDATE_REGION_SELECTION';
+const UPDATE_SELECTED_BRANDS_LIST = 'BM_MANAGEMENT/UPDATE_SELECTED_BRANDS_LIST';
 
 /* ****** Action Creators ******** */
-
-const fetchCategory = () => {
-  return (dispatch) => {
-    /* Url */
-    const url = Endpoints.db + '/table/category/select';
-    const queryObj = {};
-    queryObj.columns = [
-      '*'
-    ];
-    const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(queryObj),
-    };
-    /* Make a MAKE_REQUEST action */
-    dispatch({type: MAKE_REQUEST});
-    return Promise.all([
-      dispatch(requestAction(url, options, BRAND_CATEGORY_FETCH, REQUEST_ERROR)),
-      dispatch({type: REQUEST_COMPLETED})
-    ]);
-  };
-};
-
-const fetchGenre = () => {
-  return (dispatch) => {
-    /* Url */
-    const url = Endpoints.db + '/table/genre/select';
-    const queryObj = {};
-    queryObj.columns = [
-      '*'
-    ];
-    const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(queryObj),
-    };
-    /* Make a MAKE_REQUEST action */
-    dispatch({type: MAKE_REQUEST});
-    return Promise.all([
-      dispatch(requestAction(url, options, BRAND_GENRE_FETCH, REQUEST_ERROR)),
-      dispatch({type: REQUEST_COMPLETED})
-    ]);
-  };
-};
 
 const fetchBrands = (companyId) => {
   return (dispatch) => {
     /* Url */
     const url = Endpoints.db + '/table/brand/select';
     const queryObj = {};
-    queryObj.columns = [
-      '*'
-    ];
-    queryObj.where = {'company_id': companyId};
+    // queryObj.columns = [ '*' ];
+    queryObj.columns = ['*', {'name': 'regions', 'columns': ['region_name', 'id', { 'name': 'cities', 'columns': [{'name': 'city', 'columns': ['*', {'name': 'state', 'columns': ['id', 'state_name']}]}]}]}];
+    queryObj.where = {'company_id': companyId, 'regions': {'id': {'$gt': 0}}};
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -147,6 +104,39 @@ const insertBrand = (brandObj) => {
   };
 };
 
+const brandContainerVisibility = (sb = false) => {
+  return (dispatch) => {
+    return Promise.all([
+      dispatch({type: BRAND_CONTAINER_VISIBILITY}),
+      dispatch({type: BRAND_CURRENT_SELECTION, data: (sb !== false) ? sb : {}}),
+      dispatch({type: REGION_CITIES_VIEW, data: (sb !== false) ? sb : {}})
+    ]);
+  };
+};
+
+const setRegionCities = (brand) => {
+  return (dispatch) => {
+    return Promise.all([
+      dispatch({type: BRAND_CURRENT_SELECTION, data: {...brand}})
+    ]);
+  };
+};
+
+const setViewCities = (region) => {
+  return (dispatch) => {
+    return Promise.all([
+      dispatch({type: REGION_CITIES_VIEW, data: region})
+    ]);
+  };
+};
+
+const createBrandManager = () => {
+  return () => {
+    return Promise.all([
+    ]);
+  };
+};
+
 /* Action Creators for Brand Management Listing */
 
 const getBrandCount = () => {
@@ -167,26 +157,25 @@ const getBrandCount = () => {
     };
     // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
 
-    return fetch(url, options)
-           .then(
-             (response) => {
-               if (response.ok) { // 2xx status
-                 response.json().then(
-                   (d) => {
-                     return dispatch({type: COUNT_FETCHED, data: d});
-                   },
-                   () => {
-                     return dispatch({type: REQUEST_ERROR, data: 'Error.Try again'});
-                   }
-                 );
-               } else {
-                 return dispatch({type: REQUEST_ERROR, data: 'Error.Try again'});
-               }
-             },
-             (error) => {
-               console.log(error);
-               return dispatch({type: REQUEST_ERROR, data: 'Error.Try again'});
-             });
+    return fetch(url, options).then(
+      (response) => {
+        if (response.ok) { // 2xx status
+          response.json().then(
+            (d) => {
+              return dispatch({type: COUNT_FETCHED, data: d});
+            },
+            () => {
+              return dispatch({type: REQUEST_ERROR, data: 'Error.Try again'});
+            }
+          );
+        } else {
+          return dispatch({type: REQUEST_ERROR, data: 'Error.Try again'});
+        }
+      },
+      (error) => {
+        console.log(error);
+        return dispatch({type: REQUEST_ERROR, data: 'Error.Try again'});
+      });
   };
 };
 
@@ -269,10 +258,54 @@ const getAllBrandData = (page, limit) => {
   };
 };
 
-/* End of it */
+const updateRegions = (sb, rid) => {
+  const regionObj = [];
+  sb.regions.forEach((region) => {
+    let localReg = {};
+    localReg = {...region};
+    localReg.is_selected = (localReg.id === rid) ? !localReg.is_selected : localReg.is_selected;
+    regionObj.push(localReg);
+  });
+  return regionObj;
+};
 
+const updateRegionSelection = (regionId, selectedBrand) => {
+  return (dispatch) => {
+    return Promise.all([
+      dispatch({type: UPDATE_REGION_SELECTION, data: {sb: {...selectedBrand}, rid: regionId}})
+    ]);
+  };
+};
 
-/* ****************** END OF ACTION CREATORS ****************** */
+const setContainerType = (t) => {
+  return (dispatch) => {
+    return dispatch({type: SET_CONTAINER_TYPE, data: t});
+  };
+};
+
+const updateSelectedBrandsList = (selectedBrand, selectedBrandsList) => {
+  return (dispatch) => {
+    // push or update the selectedBrandsList object
+    let updatedBrandsList;
+    updatedBrandsList = [];
+    if (selectedBrandsList.length === 0) {
+      updatedBrandsList.push({...selectedBrand});
+    } else {
+      selectedBrandsList.map((brand) => {
+        if (brand.id === selectedBrand.id) {
+          updatedBrandsList.push({...selectedBrand});
+        } else {
+          updatedBrandsList.push({...brand});
+        }
+      });
+    }
+    return Promise.all([
+      dispatch({type: UPDATE_SELECTED_BRANDS_LIST, data: updatedBrandsList}),
+      dispatch({type: BRAND_CONTAINER_VISIBILITY})
+    ]);
+  };
+};
+
 
 /* ****************** REDUCER ********************************* */
 
@@ -280,10 +313,20 @@ const createBrandManagerReducer = (state = defaultCreateBrandManagerState, actio
   switch (action.type) {
     case COMPANY_FETCH:
       return {...state, companyList: action.data};
-    case BRAND_GENRE_FETCH:
-      return {...state, genreList: action.data};
     case BRANDS_FETCH:
-      return {...state, companyBrands: action.data};
+      return {...state, companyBrands: action.data, showBrandContainer: false};
+    case BRAND_CONTAINER_VISIBILITY:
+      return {...state, showBrandContainer: !state.showBrandContainer};
+    case BRAND_CURRENT_SELECTION:
+      return {...state, selectedBrand: action.data};
+    case REGION_CITIES_VIEW:
+      return {...state, regionCitiesView: action.data};
+    case SET_CONTAINER_TYPE:
+      return {...state, isExistingBrand: action.data};
+    case UPDATE_REGION_SELECTION:
+      return {...state, selectedBrand: { ...state.selectedBrand, regions: updateRegions(action.data.sb, action.data.rid)}};
+    case UPDATE_SELECTED_BRANDS_LIST:
+      return {...state, selectedBrandsList: action.data, selectedBrand: {}};
     default: return state;
   }
 };
@@ -291,13 +334,19 @@ const createBrandManagerReducer = (state = defaultCreateBrandManagerState, actio
 /* ****************** END OF REDUCER ************************** */
 
 export {
-  fetchCategory,
-  fetchGenre,
   fetchCompany,
   insertBrand,
   fetchBrands,
   getBrandData,
   getAllBrandData,
+  brandContainerVisibility,
+  setRegionCities,
+  setViewCities,
+  updateRegionSelection,
+  updateSelectedBrandsList,
+  setContainerType,
+  createBrandManager,
   RESET
 };
+
 export default createBrandManagerReducer;

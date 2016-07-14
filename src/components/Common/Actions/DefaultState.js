@@ -73,7 +73,10 @@ const defaultCreateBrandManagerState = {
   selected_company: {},
   companyBrands: [],
   selectedBrand: {},
-  selectedBrandsList: []
+  selectedBrandsList: [],
+  regionCitiesView: {},
+  showBrandContainer: false,
+  isExistingBrand: false
 };
 
 const defaultKycState = {
