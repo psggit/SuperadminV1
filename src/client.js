@@ -35,6 +35,7 @@ import {Login, Home, PageContainer,
   SkuManagementToppicks,
   ConsumerRecharge,
   BrandCreate,
+  BrandEdit,
   BrandManagement,
   ConsumerReservation,
   ManageState,
@@ -47,7 +48,9 @@ import {Login, Home, PageContainer,
   ViewCredits,
   ListSku,
   HomepageManagementAds, HomepageManagementSelectAds, BrandManagerProfile, CreateBrandManager,
-  CompaniesManagement, ManageCompanies, BrandAds, BrandPromos, PromosInstantCashback
+  CompaniesManagement, ManageCompanies, BrandAds, BrandPromos, PromosInstantCashback, RetailerManagementCreate,
+  RetailerManagementSettlementDetails, RetailerManagementDeviceDetail, RetailerManagementDisableDevice,
+  RetailerManagementTransactions, RetailerManagementCreateOrganization
 } from './components'; // eslint-disable-line no-unused-vars
 import {AddTable} from './components';
 import {loadCredentials} from './components/Login/Actions';
@@ -109,10 +112,12 @@ const requireLoginAndSchema = (nextState, replaceState, cb) => {
     }
   );
 };
+
+console.log(requireLoginAndSchema);
 const main = (
     <Router history={browserHistory}>
       <Route path="/hadmin/login" component={Login} />
-      <Route path="/hadmin" component={PageContainer} onEnter={requireLoginAndSchema}>
+      <Route path="/hadmin" component={PageContainer}>
         <IndexRoute component={Home} />
         <Route path="tables/add" component={AddTable} />
         <Route path="upload_file" component={FileUpload} />
@@ -169,8 +174,10 @@ const main = (
         <Route path="category_management/create" component={ManageCategory} />
         <Route path="brand_management" component={BrandManagement} />
         <Route path="brand_management/create" component={BrandCreate} />
+        <Route path="brand_management/edit/:Id" component={BrandEdit} />
         <Route path="companies_management" component={CompaniesManagement} />
         <Route path="companies_management/create" component={ManageCompanies} />
+        <Route path="companies_management/edit/:Id" component={ManageCompanies} />
         <Route path="skus" component={Skus} />
         <Route path="skus/list_sku" component={ListSku} />
         <Route path="skus/toppicks" component={Toppicks} />
@@ -185,6 +192,12 @@ const main = (
         <Route path="brands_offers_and_promos/ads" component={BrandAds} />
         <Route path="brands_offers_and_promos/promos" component={BrandPromos} />
         <Route path="brands_offers_and_promos/promos/instant_cashback" component={PromosInstantCashback} />
+        <Route path="retailer_management/create_branch" component={RetailerManagementCreate} />
+        <Route path="retailer_management/settlement_details" component={RetailerManagementSettlementDetails} />
+        <Route path="retailer_management/device_details" component={RetailerManagementDeviceDetail} />
+        <Route path="retailer_management/disable_device" component={RetailerManagementDisableDevice} />
+        <Route path="retailer_management/transactions" component={RetailerManagementTransactions} />
+        <Route path="retailer_management/create_organization" component={RetailerManagementCreateOrganization} />
         /* End of SKU Management */
         {/*
         <Route path="notepad_entries" component={NotepadEntries} />

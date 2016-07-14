@@ -44,14 +44,17 @@ export CompaniesManagement from './SkuManagement/Companies/CompaniesManagement';
 export ManageCompanies from './SkuManagement/Companies/ManageCompanies';
 
 
+/* Brand Management */
 export BrandCreate from './SkuManagement/Brand/BrandCreate';
+export BrandEdit from './SkuManagement/Brand/BrandEdit';
+/* End of it */
+
 export Skus from './SkuManagement/Skus/Skus';
 export Toppicks from './SkuManagement/Skus/Toppicks/Toppicks';
 export AddToppicks from './SkuManagement/Skus/AddToppicks/AddToppicks';
 export CreateSku from './SkuManagement/Skus/CreateSku/CreateSkuWrapper';
 export SkuManagementViewSkus from './SkuManagement/Skus/ViewSku/ViewSku';
 export SkuManagementToppicks from './SkuManagement/Skus/ToppicksIn/ToppicksIn';
-
 
 export AddCredit from './CustomerTransaction/components/Credits/CreateCredit';
 export ConfirmCredit from './CustomerTransaction/components/Credits/ConfirmCredits';
@@ -63,6 +66,12 @@ export CreateBrandManager from './BrandsOffersAndPromos/CreateBrandManager/Creat
 export BrandAds from './BrandsOffersAndPromos/BrandAds/BrandAds';
 export BrandPromos from './BrandsOffersAndPromos/BrandPromos/BrandPromos';
 export PromosInstantCashback from './BrandsOffersAndPromos/PromosInstantCashback/PromosInstantCashback';
+export RetailerManagementCreate from './RetailerManagement/CreateBranch/CreateBranch';
+export RetailerManagementSettlementDetails from './RetailerManagement/RedemptionHistory/SettlementDetails';
+export RetailerManagementDeviceDetail from './RetailerManagement/DeviceDetail/DeviceDetail';
+export RetailerManagementDisableDevice from './RetailerManagement/DisableDevice/DisableDevice';
+export RetailerManagementTransactions from './Sku/Transactions/Transactions';
+export RetailerManagementCreateOrganization from './RetailerManagement/CreateOrganization/CreateOrganization';
 
 /* Consumer Transactions */
 

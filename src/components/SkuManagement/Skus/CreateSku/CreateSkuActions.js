@@ -9,6 +9,9 @@ import Endpoints, { globalCookiePolicy } from '../../../../Endpoints';
 import {
   REQUEST_ERROR, RESET } from '../../../Common/Actions/Actions';
 
+import { routeActions } from 'redux-simple-router';
+
+/* Action Constants */
 const BRAND_FETCH = 'SKU/BRAND_FETCH';
 const STATE_FETCH_AND_COMPUTE_MAPPINGS = 'SKU/STATE_FETCH_AND_COMPUTE_MAPPINGS';
 const MARK_STATE_SELECTED = 'SKU/MARK_STATE_SELECTED';
@@ -117,6 +120,11 @@ const onSave = () => {
     const currState = getState();
     const skuInsertObj = {};
     const skuUrl = Endpoints.db + '/table/sku/insert';
+
+    const brandListingObjs = {};
+    let brandListingObj = {};
+    const brandListingUrl = Endpoints.db + '/table/brand_listing/insert';
+
     let options = {};
     let skuReqObj = {};
     skuReqObj = currState.create_sku_data.skuReqObj;
@@ -141,9 +149,9 @@ const onSave = () => {
       body: JSON.stringify(skuInsertObj),
     };
 
-    console.log(skuReqObj);
-    console.log('jON');
-    console.log(JSON.stringify(skuInsertObj));
+    // console.log(skuReqObj);
+    // console.log('jON');
+    // console.log(JSON.stringify(skuInsertObj));
     return dispatch(requestAction(skuUrl, options))
       .then((resp) => {
         const spiObjs = {};
@@ -153,6 +161,9 @@ const onSave = () => {
         let spiObj = {};
         spiObjs.objects = [];
         spiObjs.returning = ['state_id', 'id'];
+
+        brandListingObjs.objects = [];
+        brandListingObjs.returning = ['id'];
 
         /* Dispatch an update for sku_id */
         dispatch({ type: SKU_ID_CREATED, data: resp.returning[0].id });
@@ -173,8 +184,18 @@ const onSave = () => {
           spiObj.state_id = pricing.stateInfo.id;
           spiObj.sku_id = resp.returning[0].id;
           spiObjs.objects.push(spiObj);
-        });
 
+          brandListingObj = {};
+          /* Creating brand listing objects */
+          brandListingObj.brand_id = currState.create_sku_data.skuReqObj.brand_id;
+          brandListingObj.display_order = 10000;
+          brandListingObj.is_top_pick = false;
+          brandListingObj.display_order_top_pick = 10000;
+          brandListingObj.state_id = pricing.stateInfo.id;
+          brandListingObj.created_at = new Date().toISOString();
+          brandListingObj.updated_at = new Date().toISOString();
+          brandListingObjs.objects.push(brandListingObj);
+        });
         console.log('stateObjs');
         console.log(spiObjs);
         console.log(JSON.stringify(spiObjs));
@@ -189,50 +210,69 @@ const onSave = () => {
       })
       .then(( pricingResp ) => {
         /* Update pricing ids */
-        dispatch( { type: SKU_PRICING_ID_CREATED, data: pricingResp.returning });
+        if ( pricingResp.returning.length > 0) {
+          dispatch( { type: SKU_PRICING_ID_CREATED, data: pricingResp.returning });
 
+          options = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: globalCookiePolicy,
+            body: JSON.stringify(brandListingObjs),
+          };
+          return dispatch(requestAction(brandListingUrl, options));
+        }
+        throw Error('Something went wrong while creating sku states');
+      })
+      .then( (resp) => {
         /* Variables for this retailers */
-        const skuCityObjs = [];
-        const rObjs = {};
-        const inventoryRetailerUrl = Endpoints.db + '/table/inventory/insert';
-        let rObj = {};
-        rObjs.objects = [];
-        rObjs.returning = ['id', 'retailer_id', 'sku_pricing_id'];
-        /* Create inventory for retailers */
+        if ( resp.returning.length > 0) {
+          const skuCityObjs = [];
+          const rObjs = {};
+          const inventoryRetailerUrl = Endpoints.db + '/table/inventory/insert';
+          let rObj = {};
+          rObjs.objects = [];
+          rObjs.returning = ['id', 'retailer_id', 'sku_pricing_id'];
+          /* Create inventory for retailers */
 
-        Object.keys(currState.create_sku_data.cityRetailerMapping).forEach( ( key ) => {
-          if ( currState.create_sku_data.cityRetailerMapping[key].is_selected && (Object.keys(currState.create_sku_data.cityRetailerMapping[key].selected_retailers)).length > 0 ) {
-            skuCityObjs.push(currState.create_sku_data.cityRetailerMapping[key]);
-          }
-        });
-
-        skuCityObjs.map( ( cityObj ) => {
-          Object.keys(cityObj.selected_retailers).forEach( ( retailer ) => {
-            rObj = {};
-            rObj.retailer_id = parseInt(retailer, 10);
-            rObj.sku_pricing_id = getState().create_sku_data.sku_state_id[ cityObj.cityInfo.state_id ];
-            rObj.inventory_status_id = 3;
-            rObj.created_at = new Date().toISOString();
-            rObj.updated_at = new Date().toISOString();
-            rObjs.objects.push(rObj);
+          Object.keys(currState.create_sku_data.cityRetailerMapping).forEach( ( key ) => {
+            if ( currState.create_sku_data.cityRetailerMapping[key].is_selected && (Object.keys(currState.create_sku_data.cityRetailerMapping[key].selected_retailers)).length > 0 ) {
+              skuCityObjs.push(currState.create_sku_data.cityRetailerMapping[key]);
+            }
           });
-        });
 
-        /* Check for empty thing */
+          skuCityObjs.map( ( cityObj ) => {
+            Object.keys(cityObj.selected_retailers).forEach( ( retailer ) => {
+              rObj = {};
+              rObj.retailer_id = parseInt(retailer, 10);
+              rObj.sku_pricing_id = getState().create_sku_data.sku_state_id[ cityObj.cityInfo.state_id ];
+              rObj.inventory_status_id = 3;
+              rObj.stock = 5;
+              rObj.created_at = new Date().toISOString();
+              rObj.updated_at = new Date().toISOString();
+              rObjs.objects.push(rObj);
+            });
+          });
 
-        options = {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: globalCookiePolicy,
-          body: JSON.stringify(rObjs),
-        };
-        return dispatch(requestAction(inventoryRetailerUrl, options));
+          /* Check for empty thing */
+
+          options = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: globalCookiePolicy,
+            body: JSON.stringify(rObjs),
+          };
+          return dispatch(requestAction(inventoryRetailerUrl, options));
+        }
+        throw Error('Something went wrong while creating inventory');
       })
       .then(() => {
         alert('SKU Updated Successfully');
+        /* Add an entry to brand listing table too */
+
+        return dispatch(routeActions.push('/hadmin/skus/list_sku'));
       })
       .catch((resp) => {
-        alert('Error: ' + resp);
+        alert('Error: ' + resp.error);
       });
   };
 };

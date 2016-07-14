@@ -48,6 +48,7 @@ const SkuInfo = ({ brandList }) => {
             <label>Description</label>
             <textarea rows="4" cols="10" data-field-name="description" data-field-type="string"></textarea>
           </div>
+          {/*
           <div className={styles.indiv_element}>
             <label>Status</label>
             <select data-field-name="status" data-field-type="boolean">
@@ -55,6 +56,7 @@ const SkuInfo = ({ brandList }) => {
               <option value="0">InActive</option>
             </select>
           </div>
+          */}
         </div>
       );
 };

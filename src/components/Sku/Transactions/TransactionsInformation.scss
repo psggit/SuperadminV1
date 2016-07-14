@@ -1,0 +1,36 @@
+.transactions_information
+{
+  padding-bottom: 10px;
+  .information_leftpanel
+  {
+    width: 40%;
+    display: inline-block;
+    color: #9F9E9E;
+    font-weight: 400;
+  }
+  .information_rightpanel
+  {
+    width: 60%;
+    display: inline-block;
+    color: #9F9E9E;
+    font-weight: 400;
+    select
+    {
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 5px 10px;
+      background-color: #fff;
+      font-size: 13px;
+      height: 30px;
+      color: #9F9E9E;
+      width: 120px;
+      transition: all 0.2s;
+    }
+    select:focus
+    {
+      outline: none;
+      border: 1px solid #FF7400;
+      color: #FF7400;
+    }
+  }
+}

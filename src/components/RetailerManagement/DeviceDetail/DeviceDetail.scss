@@ -1,0 +1,51 @@
+.container
+{
+	width: 100%;
+	float: left;
+}
+.wrapper {
+  width: 100%;
+  float: left;
+}
+.device_details_wrapper
+{
+  width: 35%;
+  margin-left: 45px;
+  margin-top: 20px;
+	margin-bottom: 10px;
+  float: left;
+  background-color: #fff;
+  overflow: auto;
+  padding: 20px 15px;
+  .device_details_head
+  {
+    font-size: 14px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    text-align: left;
+    color: #9F9E9E;
+    font-weight: 500;
+    padding-bottom: 10px;
+  }
+}
+.device_disable_btn
+{
+	width: 35%;
+	text-align: center;
+	button
+	{
+		width: 130px;
+		height: 30px;
+		color: #FF7400;
+		border: 1px solid #FF7400;
+		border-radius: 4px;
+		background-color: #fff;
+		cursor: pointer;
+		font-weight: 400;
+		margin-left: 45px;
+		display: inline-block;
+		padding: 5px;
+		text-align: center;
+
+	}
+}

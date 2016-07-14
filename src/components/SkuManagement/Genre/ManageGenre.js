@@ -2,7 +2,30 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { insertGenre, fetchGenre, updateGenre, updateGenreText, resetGenre} from '../Action';
 
+import commonDecorator from '../../Common/CommonDecorator';
+import BreadCrumb from '../../Common/BreadCrumb';
+
 class ManageGenre extends React.Component { // eslint-disable-line no-unused-vars
+  constructor() {
+    super();
+    /* Data required for the bread component to render correctly */
+    this.breadCrumbs = [];
+    this.breadCrumbs.push({
+      title: 'SKU Management',
+      sequence: 1,
+      link: '#'
+    });
+    this.breadCrumbs.push({
+      title: 'Manage Genre',
+      sequence: 2,
+      link: '/hadmin/genre_management'
+    });
+    this.breadCrumbs.push({
+      title: 'Create/Edit Genre',
+      sequence: 3,
+      link: '#'
+    });
+  }
   componentDidMount() {
     /* If On edit operation */
     let genreId = this.props.params.Id;
@@ -47,9 +70,7 @@ class ManageGenre extends React.Component { // eslint-disable-line no-unused-var
       if (lastSuccess.length > 0) {
         return (
           <div className={styles.wrapper}>
-            <div className={styles.head_container}>
-            	SKU Management / Edit Genre
-            </div>
+            <BreadCrumb breadCrumbs={this.breadCrumbs} />
             <div className={styles.create_state_wrapper}>
               <p>
                 Edit Genre
@@ -75,9 +96,7 @@ class ManageGenre extends React.Component { // eslint-disable-line no-unused-var
       }
       return (
         <div className={styles.wrapper}>
-          <div className={styles.head_container}>
-          	SKU Management / Create Genre
-          </div>
+          <BreadCrumb breadCrumbs={this.breadCrumbs} />
           <div className={styles.create_state_wrapper}>
             <p>
               Create Genre
@@ -124,4 +143,5 @@ const mapStateToProps = (state) => {
   return {...state.sku_data};
 };
 
-export default connect(mapStateToProps)(ManageGenre);
+const decoratedConnectedComponent = commonDecorator(ManageGenre);// connect(mapStateToProps)(CommonDecorator);
+export default connect(mapStateToProps)(decoratedConnectedComponent);

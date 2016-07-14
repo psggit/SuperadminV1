@@ -391,18 +391,18 @@ const getGenreCount = () => {
   };
 };
 
-const getGenreData = (page) => {
+const getGenreData = (page, limit) => {
   return (dispatch) => {
     dispatch({ type: MAKE_REQUEST});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
     let offset = 0;
-    let limit = 0;
+    // let limit = 0;
     // const count = currentProps.count;
 
     // limit = (page * 10) > count ? count : ((page) * 10);
     // limit = ((page) * 10);
-    limit = 10;
+    // limit = 10;
     offset = (page - 1) * 10;
 
     const payload = {
@@ -592,13 +592,13 @@ const updateGenre = (updateObj, genreId) => {
   };
 };
 
-const getAllGenreData = (page) => {
+const getAllGenreData = (page, limit) => {
   const gotPage = page;
   /* Dispatching first one */
   return (dispatch) => {
     dispatch(getGenreCount())
       .then(() => {
-        return dispatch(getGenreData(gotPage));
+        return dispatch(getGenreData(gotPage, limit));
       })
       .then(() => {
         console.log('Recharge Data fetched');
@@ -652,22 +652,22 @@ const getCategoryCount = () => {
   };
 };
 
-const getCategoryData = (page) => {
+const getCategoryData = (page, limit) => {
   return (dispatch) => {
     dispatch({ type: MAKE_REQUEST});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
     let offset = 0;
-    let limit = 0;
+    // let limit = 0;
     // const count = currentProps.count;
 
     // limit = (page * 10) > count ? count : ((page) * 10);
     // limit = ((page) * 10);
-    limit = 10;
+    // limit = 10;
     offset = (page - 1) * 10;
 
     const payload = {
-      columns: ['*'],
+      columns: ['*', { 'name': 'genre', 'columns': ['*']}],
       limit: limit,
       offset: offset,
       order_by: '+id'
@@ -808,6 +808,12 @@ const resetCategory = () => {
   };
 };
 
+const resetCompany = () => {
+  return (dispatch) => {
+    dispatch({type: RESET});
+  };
+};
+
 const updateCategory = (updateObj, categoryId) => {
   return (dispatch) => {
     dispatch({ type: MAKE_REQUEST});
@@ -853,13 +859,14 @@ const updateCategory = (updateObj, categoryId) => {
   };
 };
 
-const getAllCategoryData = (page) => {
+const getAllCategoryData = (page, limit) => {
   const gotPage = page;
+  const localLimit = limit;
   /* Dispatching first one */
   return (dispatch) => {
     dispatch(getCategoryCount())
       .then(() => {
-        return dispatch(getCategoryData(gotPage));
+        return dispatch(getCategoryData(gotPage, localLimit));
       })
       .then(() => {
         console.log('Recharge Data fetched');
@@ -867,6 +874,118 @@ const getAllCategoryData = (page) => {
   };
 };
 
+
+/* End of it */
+
+/* Get Companies */
+const getCompanyCount = () => {
+  return (dispatch) => {
+    dispatch({ type: MAKE_REQUEST});
+    //
+    /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
+    const payload = {
+      'columns': ['*']
+    };
+
+    const url = Endpoints.db + '/table/' + 'company' + '/count';
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(payload),
+    };
+    // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
+
+    return fetch(url, options)
+           .then(
+             (response) => {
+               if (response.ok) { // 2xx status
+                 response.json().then(
+                   (d) => {
+                     return dispatch({type: COUNT_FETCHED, data: d});
+                   },
+                   () => {
+                     return dispatch(requestFailed('Error. Try again!'));
+                   }
+                 );
+               } else {
+                 return dispatch(requestFailed('Error. Try again!'));
+               }
+             },
+             (error) => {
+               console.log(error);
+               return dispatch(requestFailed(error.text));
+             });
+  };
+};
+
+const getCompanyData = (page, limit) => {
+  return (dispatch) => {
+    dispatch({ type: MAKE_REQUEST});
+    //
+    /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
+    let offset = 0;
+    // let limit = 0;
+    // const count = currentProps.count;
+
+    // limit = (page * 10) > count ? count : ((page) * 10);
+    // limit = ((page) * 10);
+    // limit = 10;
+    offset = (page - 1) * 10;
+
+    const payload = {
+      columns: ['*'],
+      limit: limit,
+      offset: offset,
+      order_by: '+id'
+    };
+
+    const url = Endpoints.db + '/table/' + 'company' + '/select';
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(payload),
+    };
+    // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
+
+    return fetch(url, options)
+           .then(
+             (response) => {
+               if (response.ok) { // 2xx status
+                 response.json().then(
+                   (d) => {
+                     return dispatch({type: REQUEST_SUCCESS, data: d});
+                   },
+                   () => {
+                     return dispatch(requestFailed('Error. Try again!'));
+                   }
+                 );
+               } else {
+                 return dispatch(requestFailed('Error. Try again!'));
+               }
+             },
+             (error) => {
+               console.log(error);
+               return dispatch(requestFailed(error.text));
+             });
+  };
+};
+
+const getAllCompanyData = (page, limit) => {
+  const gotPage = page;
+  const localLimit = limit;
+  /* Dispatching first one */
+  return (dispatch) => {
+    dispatch(getCompanyCount())
+      .then(() => {
+        return dispatch(getCompanyData(gotPage, localLimit));
+      })
+      .then(() => {
+        console.log('Company Data fetched');
+      });
+  };
+};
 
 /* End of it */
 
@@ -889,6 +1008,7 @@ export {requestSuccess,
   updateGenre,
   updateGenreText,
   resetState,
+  resetCompany,
   resetGenre,
   getAllCategoryData,
   getCategoryData,
@@ -897,4 +1017,7 @@ export {requestSuccess,
   updateCategory,
   updateCategoryText,
   resetCategory,
+  getCompanyData,
+  getCompanyCount,
+  getAllCompanyData
 };

@@ -28,6 +28,15 @@
 			font-size: 13px;
 			letter-spacing: 0.3px;
 			padding: 10px 8px;
+		  a
+		  {
+		  	color: #FF7400;
+		  	display: inline-block;
+		  	&:hover, &:focus
+		  	{
+		  		text-decoration: none;
+		  	}
+		  }
 		}
 		.id
 		{
