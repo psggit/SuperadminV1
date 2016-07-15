@@ -96,7 +96,8 @@ const defaultCreateBrandManagerState = {
   selectedBrandsList: [],
   regionCitiesView: {},
   showBrandContainer: false,
-  isExistingBrand: false
+  isExistingBrand: false,
+  brandManagerInfo: {}
 };
 
 const defaultKycState = {

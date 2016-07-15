@@ -1,8 +1,8 @@
 import React from 'react';
-import {setRegionCities, setViewCities, updateRegionSelection, updateSelectedBrandsList} from './CreateBMActions';
+import {setRegionCities, setViewCities, updateRegionSelection, updateSelectedBrandsList, brandContainerVisibility, setContainerType} from './CreateBMActions';
 
 /*
-TODO: Cancel, Delete and Create Brand Manager
+TODO: Cancel, 0Bug, Create Brand Manager
 */
 
 const brandHtml = (companyBrands) => {
@@ -62,22 +62,33 @@ const onChangeBrand = (companyBrands, dispatch) => {
   });
 };
 
+const onDelete = (selectedBrand, selectedBrandsList, dispatch) => {
+  dispatch(updateSelectedBrandsList({...selectedBrand}, [...selectedBrandsList], true));
+};
+
 const onSave = (selectedBrand, selectedBrandsList, dispatch) => {
-  dispatch(updateSelectedBrandsList({...selectedBrand}, selectedBrandsList));
+  dispatch(updateSelectedBrandsList({...selectedBrand}, [...selectedBrandsList]));
 };
 
 const onUpdate = (selectedBrand, selectedBrandsList, dispatch) => {
-  dispatch(updateSelectedBrandsList({...selectedBrand}, selectedBrandsList));
+  dispatch(updateSelectedBrandsList({...selectedBrand}, [...selectedBrandsList]));
+};
+
+const onCancel = (dispatch) => {
+  Promise.all([
+    dispatch(brandContainerVisibility()),
+    dispatch(setContainerType(false))
+  ]);
 };
 
 const actionHtml = (isExistingBrand, styles, selectedBrand, selectedBrandsList, dispatch) => {
   return (isExistingBrand) ? (
       <div className={styles.user_actions}>
-        <button>Delete</button>
+        <button onClick={onDelete.bind(this, selectedBrand, selectedBrandsList, dispatch)}>Delete</button>
         <button onClick={onUpdate.bind(this, selectedBrand, selectedBrandsList, dispatch)}>Update</button>
       </div> ) : (
       <div className={styles.user_actions}>
-        <button>Cancel</button>
+        <button onClick={onCancel.bind(this, dispatch)}>Cancel</button>
         <button onClick={onSave.bind(this, selectedBrand, selectedBrandsList, dispatch)}>Save</button>
       </div>
       );

@@ -22,6 +22,7 @@ const REGION_CITIES_VIEW = 'BM_MANAGEMENT/REGION_CITIES_VIEW';
 const SET_CONTAINER_TYPE = 'BM_MANAGEMENT/SET_CONTAINER_TYPE';
 const UPDATE_REGION_SELECTION = 'BM_MANAGEMENT/UPDATE_REGION_SELECTION';
 const UPDATE_SELECTED_BRANDS_LIST = 'BM_MANAGEMENT/UPDATE_SELECTED_BRANDS_LIST';
+const BRAND_MANAGER_INFO_CHANGE = 'BM_MANAGEMENT/BRAND_MANAGER_INFO_CHANGE';
 
 /* ****** Action Creators ******** */
 
@@ -92,7 +93,6 @@ const insertBrand = (brandObj) => {
       .then((resp) => {
         if (resp.returning.length > 0) {
           console.log(resp);
-          alert('Brand Entry Created');
           dispatch(routeActions.push('/hadmin/brand_management'));
         }
       })
@@ -130,9 +130,80 @@ const setViewCities = (region) => {
   };
 };
 
-const createBrandManager = () => {
-  return () => {
+const sbListToOptions = (sbList, bmId) => {
+  const brData = {};
+  brData.objects = [];
+  sbList.forEach((brand)=> {
+    brand.regions.forEach((region) => {
+      if (region.is_selected) {
+        const obj = {};
+        obj.brand_id = brand.id;
+        obj.brand_manager_id = bmId;
+        obj.region_id = region.id;
+        obj.created_at = new Date().toISOString();
+        obj.updated_at = new Date().toISOString();
+        brData.objects.push(obj);
+      }
+    });
+  });
+  const brOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: globalCookiePolicy,
+    body: JSON.stringify(brData),
+  };
+  return brOptions;
+};
+
+const bmInfoToOptions = (bmInfo) => {
+  delete bmInfo.company_id;
+  bmInfo.is_disabled = (bmInfo.is_disabled === 'true') ? true : false;
+  bmInfo.tm_id = 123456789;
+  bmInfo.created_at = new Date().toISOString();
+  bmInfo.updated_at = new Date().toISOString();
+  const bmData = {};
+  bmData.objects = [bmInfo];
+  bmData.returning = ['id'];
+  const options = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: globalCookiePolicy,
+    body: JSON.stringify(bmData),
+  };
+  return options;
+};
+
+const createBM = (bmInfo, sbList) => {
+  return (dispatch) => {
+    const bmUrl = Endpoints.db + '/table/brand_manager/insert';
+    const bmOptions = bmInfoToOptions(bmInfo);
+    return dispatch(requestAction(bmUrl, bmOptions)).then((response) => {
+      if (response.returning !== undefined) {
+        console.log('Brand Manager Saved!!');
+        const brUrl = Endpoints.db + '/table/managers/insert';
+        const brOptions = sbListToOptions(sbList, response.returning[0].id);
+        dispatch(requestAction(brUrl, brOptions)).then((resp) => {
+          console.log('Brand Map Saved!!');
+          console.log(resp);
+        }).catch((brResp) => {
+          alert(JSON.stringify(brResp));
+          return dispatch({type: REQUEST_COMPLETED});
+        });
+      }
+    }).catch((bmResponse) => {
+      alert(JSON.stringify(bmResponse));
+      return Promise.all([
+        dispatch(routeActions.push('/hadmin/brands_offers_and_promos/brand_manager_profile')),
+        dispatch({type: REQUEST_COMPLETED})
+      ]);
+    });
+  };
+};
+
+const createBrandManager = (bmInfo, sbList) => {
+  return (dispatch) => {
     return Promise.all([
+      dispatch(createBM(bmInfo, sbList))
     ]);
   };
 };
@@ -283,17 +354,18 @@ const setContainerType = (t) => {
   };
 };
 
-const updateSelectedBrandsList = (selectedBrand, selectedBrandsList) => {
+const updateSelectedBrandsList = (selectedBrand, selectedBrandsList, isDelete = false) => {
   return (dispatch) => {
     // push or update the selectedBrandsList object
-    let updatedBrandsList;
-    updatedBrandsList = [];
+    const updatedBrandsList = [];
     if (selectedBrandsList.length === 0) {
       updatedBrandsList.push({...selectedBrand});
     } else {
       selectedBrandsList.map((brand) => {
         if (brand.id === selectedBrand.id) {
-          updatedBrandsList.push({...selectedBrand});
+          if (!isDelete) {
+            updatedBrandsList.push({...selectedBrand});
+          }
         } else {
           updatedBrandsList.push({...brand});
         }
@@ -305,7 +377,6 @@ const updateSelectedBrandsList = (selectedBrand, selectedBrandsList) => {
     ]);
   };
 };
-
 
 /* ****************** REDUCER ********************************* */
 
@@ -327,6 +398,10 @@ const createBrandManagerReducer = (state = defaultCreateBrandManagerState, actio
       return {...state, selectedBrand: { ...state.selectedBrand, regions: updateRegions(action.data.sb, action.data.rid)}};
     case UPDATE_SELECTED_BRANDS_LIST:
       return {...state, selectedBrandsList: action.data, selectedBrand: {}};
+    case BRAND_MANAGER_INFO_CHANGE:
+      const bmInfo = {};
+      bmInfo[action.data.key] = action.data.value;
+      return { ...state, brandManagerInfo: { ...state.brandManagerInfo, ...bmInfo}};
     default: return state;
   }
 };
@@ -346,6 +421,7 @@ export {
   updateSelectedBrandsList,
   setContainerType,
   createBrandManager,
+  BRAND_MANAGER_INFO_CHANGE,
   RESET
 };
 
