@@ -73,7 +73,7 @@ class BrandManagerProfile extends Component { // eslint-disable-line no-unused-v
           <BrandManagersList data={lastSuccess}/>
         </div>
           <PaginationWrapper
-            {...this.props }
+            {...this.props}
             fetchInitialData = { this.fetchInitialData.bind(this) }
             limit = "10"
             triggerPageChange={ this.triggerPageChange.bind(this) }

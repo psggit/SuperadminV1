@@ -100,6 +100,18 @@ const defaultCreateBrandManagerState = {
   brandManagerInfo: {}
 };
 
+const defaultViewBrandManagerState = {
+  companyList: [],
+  selected_company: {},
+  companyBrands: [],
+  selectedBrand: {},
+  selectedBrandsList: [],
+  regionCitiesView: {},
+  showBrandContainer: false,
+  isExistingBrand: false,
+  brandManagerInfo: {'company': {}}
+};
+
 const defaultKycState = {
   isConsumerPICUploaded: false,
   isAddressProofUploaded: false,
@@ -181,6 +193,7 @@ export { defaultNotepadState
   , defaultBrandState
   , defaultBrandManagerProfileState
   , defaultCreateBrandManagerState
+  , defaultViewBrandManagerState
   , defaultConsumerState
   , defaultKycState
   , defaultCreateSkuState
