@@ -17,7 +17,7 @@ const BrandManagerInfo = ({dispatch, companyList}) => {
   });
   return (
       <div className={styles.create_brand_container}>
-        <div className={styles.heading + ' ' + styles.wd_100}>Create Brand</div>
+        <div className={styles.heading + ' ' + styles.wd_100}>Create BrandManager</div>
         <ul>
           <li>
             <label>Name</label>

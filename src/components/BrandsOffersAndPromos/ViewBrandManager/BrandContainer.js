@@ -24,7 +24,7 @@ const regionsHtml = (styles, selectedBrand, dispatch) => {
   return (selectedBrand.regions === undefined ) ? (<li></li>) : selectedBrand.regions.map((region) => (
     <li>
       <label>
-        <input type="checkbox" defaultChecked={(region.is_selected === undefined | region.is_selected === false) ? false : true} value={region.id} data-field-name="selected_region_id" /> {region.region_name}
+        <input type="checkbox" checked={(region.is_selected === undefined | region.is_selected === false) ? false : true} value={region.id} data-field-name="selected_region_id" /> {region.region_name}
       </label>
       <p className={styles.pointer_click} onClick={onViewCities.bind(this, region, dispatch)}>{region.cities.length} {(region.cities.length > 1) ? 'Cities' : 'City'}</p>
     </li>

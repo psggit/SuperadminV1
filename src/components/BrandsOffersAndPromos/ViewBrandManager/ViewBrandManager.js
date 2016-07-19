@@ -37,14 +37,6 @@ class ViewBrandManager extends Component { // eslint-disable-line no-unused-vars
       this.props.dispatch(fetchBManager(parseInt(this.props.params.Id, 10)))
     ]);
   }
-  // Let it be
-  onClickShowBrandContainer() {
-    Promise.all([
-      this.props.dispatch(brandContainerVisibility()),
-      this.props.dispatch(setContainerType(false))
-    ]);
-  }
-
   // Change the selectedBrandsList structure ???
   onClickExistingBrand(bid) {
     let brand = {};
@@ -98,7 +90,6 @@ class ViewBrandManager extends Component { // eslint-disable-line no-unused-vars
           <div className={styles.brands_wrapper}>
             <div className={styles.brand_container}>
               <div className={styles.heading}>Brands</div>
-              <div className={styles.add_lab} onClick={this.onClickShowBrandContainer.bind(this)}>+ Add Brand</div>
               <ul>
                 { selectedBrandsHtml }
               </ul>
