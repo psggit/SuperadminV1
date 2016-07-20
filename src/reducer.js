@@ -25,6 +25,8 @@ import brandManagerProfileReducer from './components/BrandsOffersAndPromos/Brand
 import createBrandManagerReducer from './components/BrandsOffersAndPromos/CreateBrandManager/CreateBMActions';
 import categoryReducer from './components/SkuManagement/Category/CategoryAction';
 import companyReducer from './components/SkuManagement/Companies/CompanyAction';
+import freshDeskReducer from './components/CustomerSupport/FreshdeskTicketList/FreshDeskAction';
+import InstantCallbackHistoryReducer from './components/CustomerSupport/InstantCallbackHistory/InstantCallbackHistoryAction';
 
 const reducer = combineReducers({
   loginState: loginReducer,
@@ -49,7 +51,9 @@ const reducer = combineReducers({
   brandmanagerprofile_data: brandManagerProfileReducer,
   createbrandmanager_data: createBrandManagerReducer,
   category_data: categoryReducer,
-  company_data: companyReducer
+  company_data: companyReducer,
+  freshdesk_ticket_data: freshDeskReducer,
+  instant_callback_history_data: InstantCallbackHistoryReducer
 });
 
 export default reducer;

@@ -71,9 +71,14 @@ export RetailerManagementCreate from './RetailerManagement/CreateBranch/CreateBr
 export RetailerManagementSettlementDetails from './RetailerManagement/RedemptionHistory/SettlementDetails';
 export RetailerManagementDeviceDetail from './RetailerManagement/DeviceDetail/DeviceDetail';
 export RetailerManagementDisableDevice from './RetailerManagement/DisableDevice/DisableDevice';
-export RetailerManagementTransactions from './RetailerManagement/Transactions/Transactions';
+export RetailerManagementTransactions from './Sku/Transactions/Transactions';
 export RetailerManagementCreateOrganization from './RetailerManagement/CreateOrganization/CreateOrganization';
-
+export CustomerSupportCustomerProfile from './CustomerSupport/CustomerProfile/CustomerProfile';
+export CustomerSupportFreshdeskTicket from './CustomerSupport/FreshdeskTicket/FreshdeskTicket';
+export CustomerSupportIssueHistory from './CustomerSupport/IssueHistory/IssueHistory';
+export CustomerSupportSupport from './CustomerSupport/Support/Support';
+export CustomerSupportFreshdeskTicketList from './CustomerSupport/FreshdeskTicketList/FreshdeskTicketList';
+export CustomerSupportInstantCallbackHistory from './CustomerSupport/InstantCallbackHistory/InstantCallbackHistory';
 /* Consumer Transactions */
 
 export ConsumerRecharge from './CustomerTransaction/components/Recharge/Recharge';

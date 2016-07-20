@@ -50,7 +50,9 @@ import {Login, Home, PageContainer,
   HomepageManagementAds, HomepageManagementSelectAds, BrandManagerProfile, CreateBrandManager,
   CompaniesManagement, ManageCompanies, BrandAds, BrandPromos, PromosInstantCashback, RetailerManagementCreate,
   RetailerManagementSettlementDetails, RetailerManagementDeviceDetail, RetailerManagementDisableDevice,
-  RetailerManagementTransactions, RetailerManagementCreateOrganization
+  RetailerManagementTransactions, RetailerManagementCreateOrganization, CustomerSupportCustomerProfile,
+  CustomerSupportFreshdeskTicket, CustomerSupportIssueHistory, CustomerSupportSupport, CustomerSupportFreshdeskTicketList,
+  CustomerSupportInstantCallbackHistory
 } from './components'; // eslint-disable-line no-unused-vars
 import {AddTable} from './components';
 import {loadCredentials} from './components/Login/Actions';
@@ -115,9 +117,9 @@ const requireLoginAndSchema = (nextState, replaceState, cb) => {
 
 console.log(requireLoginAndSchema);
 const main = (
-    <Router history={browserHistory}>
+    <Router history={browserHistory} >
       <Route path="/hadmin/login" component={Login} />
-      <Route path="/hadmin" component={PageContainer}>
+      <Route path="/hadmin" component={PageContainer} onEnter={ requireLoginAndSchema }>
         <IndexRoute component={Home} />
         <Route path="tables/add" component={AddTable} />
         <Route path="upload_file" component={FileUpload} />
@@ -198,6 +200,12 @@ const main = (
         <Route path="retailer_management/disable_device" component={RetailerManagementDisableDevice} />
         <Route path="retailer_management/transactions" component={RetailerManagementTransactions} />
         <Route path="retailer_management/create_organization" component={RetailerManagementCreateOrganization} />
+        <Route path="customer_support/customer_profile" component={CustomerSupportCustomerProfile} />
+        <Route path="customer_support/freshdesk_ticket" component={CustomerSupportFreshdeskTicket} />
+        <Route path="customer_support/issue_history" component={CustomerSupportIssueHistory} />
+        <Route path="customer_support/support" component={CustomerSupportSupport} />
+        <Route path="customer_support/freshdeskticketlist" component={CustomerSupportFreshdeskTicketList} />
+        <Route path="customer_support/instant_callback_history" component={CustomerSupportInstantCallbackHistory} />
         /* End of SKU Management */
         {/*
         <Route path="notepad_entries" component={NotepadEntries} />
