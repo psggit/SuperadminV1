@@ -57,7 +57,7 @@ const reducer = combineReducers({
   company_data: companyReducer,
   sku_top_picks_data: topPicksReducer,
   sku_top_picks_state_genre_data: topPicksStateGenreReducer,
-  add_top_picks_data: addTopPickReducer
+  add_top_picks_data: addTopPickReducer,
   view_bm_data: viewBrandManagerReducer
 });
 
