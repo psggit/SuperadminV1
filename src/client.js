@@ -31,8 +31,8 @@ import {Login, Home, PageContainer,
   KycViewUpload,
   KycViewVerify,
   ViewSkus, ViewSku, ViewCart, Reservations, ViewDevice, RechargeHistory, StateManagement, CustomerTransaction,
-  CreateNotepadEntry, Notepad, EditAccountDetails, Skus, Toppicks, AddToppicks, CreateSku, SkuManagementViewSkus,
-  SkuManagementToppicks,
+  CreateNotepadEntry, Notepad, EditAccountDetails, Skus, Toppicks, AddTopPicks, CreateSku, SkuManagementViewSkus,
+  TopPicksInWrapper,
   ConsumerRecharge,
   BrandCreate,
   BrandEdit,
@@ -53,6 +53,9 @@ import {Login, Home, PageContainer,
   RetailerManagementTransactions, RetailerManagementCreateOrganization, CustomerSupportCustomerProfile,
   CustomerSupportFreshdeskTicket, CustomerSupportIssueHistory, CustomerSupportSupport, CustomerSupportFreshdeskTicketList,
   CustomerSupportInstantCallbackHistory
+  RetailerManagementTransactions, RetailerManagementCreateOrganization,
+  ViewBrandManager,
+  EditBrandManager
 } from './components'; // eslint-disable-line no-unused-vars
 import {AddTable} from './components';
 import {loadCredentials} from './components/Login/Actions';
@@ -115,7 +118,6 @@ const requireLoginAndSchema = (nextState, replaceState, cb) => {
   );
 };
 
-console.log(requireLoginAndSchema);
 const main = (
     <Router history={browserHistory} >
       <Route path="/hadmin/login" component={Login} />
@@ -183,13 +185,15 @@ const main = (
         <Route path="skus" component={Skus} />
         <Route path="skus/list_sku" component={ListSku} />
         <Route path="skus/toppicks" component={Toppicks} />
-        <Route path="skus/add_top_picks" component={AddToppicks} />
+        <Route path="skus/top_picks/:stateId/:genreId/add_top_picks" component={AddTopPicks} />
         <Route path="skus/create_sku" component={CreateSku} />
         <Route path="skus/view_sku" component={SkuManagementViewSkus} />
-        <Route path="skus/top_picks" component={SkuManagementToppicks} />
+        <Route path="skus/top_picks/:stateId/:genreId" component={TopPicksInWrapper} />
         <Route path="homepage_management/ads" component={HomepageManagementAds} />
         <Route path="homepage_management/select_ads" component={HomepageManagementSelectAds} />
-        <Route path="brands_offers_and_promos/brand_manager_profile" component={BrandManagerProfile} />
+        <Route path="brands_offers_and_promos/brand_managers_list" component={BrandManagerProfile} />
+        <Route path="brands_offers_and_promos/brand_manager_view/:Id" component={ViewBrandManager} />
+        <Route path="brands_offers_and_promos/brand_manager_edit/:Id" component={EditBrandManager} />
         <Route path="brands_offers_and_promos/create_brand_manager" component={CreateBrandManager} />
         <Route path="brands_offers_and_promos/ads" component={BrandAds} />
         <Route path="brands_offers_and_promos/promos" component={BrandPromos} />

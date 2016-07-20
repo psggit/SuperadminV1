@@ -108,13 +108,11 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
               </ul>
             </li>
           </ul>
-          {/*
-
           <ul>
             <li><input type="checkbox" id="cb4"/><label htmlFor="cb4">BRANDS OFFERS AND PROMOS</label>
               <ul>
               <li className={styles.sidebar_list}><label>
-                <Link to={'/hadmin/brands_offers_and_promos/brand_manager_profile'} className={ lastPathname === 'kycfunctions' ? styles.active : '' }>Brand Manager Profile</Link>
+                <Link to={'/hadmin/brands_offers_and_promos/brand_managers_list'} className={ lastPathname === 'kycfunctions' ? styles.active : '' }>Brand Manager Profile</Link>
               </label></li>
               <li className={styles.sidebar_list}><label>
                 <Link to={'/hadmin/brands_offers_and_promos/promos'} className={ lastPathname === 'profiles' ? styles.active : '' }>Promos</Link>
@@ -140,7 +138,6 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
               </ul>
             </li>
           </ul>
-          */}
 
           {/*
           <ul>

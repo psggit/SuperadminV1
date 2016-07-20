@@ -2,7 +2,7 @@
  * Will receive default state from Common
  * */
 
-import { defaultCreateBrandManagerState } from '../../Common/Actions/DefaultState';
+import { defaultViewBrandManagerState } from '../../Common/Actions/DefaultState';
 import requestAction from '../../Common/Actions/requestAction';
 import Endpoints, { globalCookiePolicy } from '../../../Endpoints';
 import { MAKE_REQUEST,
@@ -14,17 +14,57 @@ import { MAKE_REQUEST,
 import { routeActions } from 'redux-simple-router';
 // import commonReducer from '../Common/Actions/CommonReducer';
 
-const COMPANY_FETCH = 'BM_MANAGEMENT/BRAND_COMPANY_FETCH';
-const BRANDS_FETCH = 'BM_MANAGEMENT/BRANDS_FETCH';
-const BRAND_CONTAINER_VISIBILITY = 'BM_MANAGEMENT/BRAND_CONTAINER_VISIBILITY';
-const BRAND_CURRENT_SELECTION = 'BM_MANAGEMENT/BRAND_CURRENT_SELECTION';
-const REGION_CITIES_VIEW = 'BM_MANAGEMENT/REGION_CITIES_VIEW';
-const SET_CONTAINER_TYPE = 'BM_MANAGEMENT/SET_CONTAINER_TYPE';
-const UPDATE_REGION_SELECTION = 'BM_MANAGEMENT/UPDATE_REGION_SELECTION';
-const UPDATE_SELECTED_BRANDS_LIST = 'BM_MANAGEMENT/UPDATE_SELECTED_BRANDS_LIST';
-const BRAND_MANAGER_INFO_CHANGE = 'BM_MANAGEMENT/BRAND_MANAGER_INFO_CHANGE';
+const COMPANY_FETCH = 'VIEW_BM/BRAND_COMPANY_FETCH';
+const BRANDS_FETCH = 'VIEW_BM/BRANDS_FETCH';
+const BRAND_CONTAINER_VISIBILITY = 'VIEW_BM/BRAND_CONTAINER_VISIBILITY';
+const BRAND_CURRENT_SELECTION = 'VIEW_BM/BRAND_CURRENT_SELECTION';
+const REGION_CITIES_VIEW = 'VIEW_BM/REGION_CITIES_VIEW';
+const SET_CONTAINER_TYPE = 'VIEW_BM/SET_CONTAINER_TYPE';
+const UPDATE_REGION_SELECTION = 'VIEW_BM/UPDATE_REGION_SELECTION';
+const UPDATE_SELECTED_BRANDS_LIST = 'VIEW_BM/UPDATE_SELECTED_BRANDS_LIST';
+const BRAND_MANAGER_INFO_CHANGE = 'VIEW_BM/BRAND_MANAGER_INFO_CHANGE';
+const BRAND_MANAGER_FETCH = 'VIEW_BM/BRAND_MANAGER_FETCH';
 
 /* ****** Action Creators ******** */
+
+const fetchBManager = (bmId) => {
+  return (dispatch) => {
+    const url = Endpoints.db + '/table/brand_manager/select';
+    console.log(bmId);
+    const queryObj = {};
+    queryObj.columns = ['*', {
+      'name': 'brands',
+      'columns': ['*', {
+        'name': 'brand',
+        'columns': ['*']
+      }, {
+        'name': 'region',
+        'columns': ['*', {
+          'name': 'cities',
+          'columns': ['*', {
+            'name': 'city',
+            'columns': ['*']
+          }]
+        }]
+      }]
+    }, {
+      'name': 'company',
+      'columns': ['*']
+    }];
+    queryObj.where = {'id': bmId};
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(queryObj),
+    };
+    dispatch({type: MAKE_REQUEST});
+    return Promise.all([
+      dispatch(requestAction(url, options, BRAND_MANAGER_FETCH, REQUEST_ERROR)),
+      dispatch({type: REQUEST_COMPLETED})
+    ]);
+  };
+};
 
 const fetchBrands = (companyId) => {
   return (dispatch) => {
@@ -32,8 +72,19 @@ const fetchBrands = (companyId) => {
     const url = Endpoints.db + '/table/brand/select';
     const queryObj = {};
     // queryObj.columns = [ '*' ];
-    queryObj.columns = ['*', {'name': 'regions', 'columns': ['region_name', 'id', { 'name': 'cities', 'columns': [{'name': 'city', 'columns': ['*', {'name': 'state', 'columns': ['id', 'state_name']}]}]}]}];
     queryObj.where = {'company_id': companyId, 'regions': {'id': {'$gt': 0}}};
+    queryObj.columns = ['*', {
+      'name': 'brands', 'columns': ['*', { 'name': 'brand', 'columns': ['*']
+      }, {
+        'name': 'region', 'columns': ['*', { 'name': 'cities', 'columns': ['*', {
+          'name': 'city', 'columns': ['*']
+        }]
+        }]
+      }]
+    }, {
+      'name': 'company',
+      'columns': ['*']
+    }];
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -384,7 +435,39 @@ const updateSelectedBrandsList = (selectedBrand, selectedBrandsList, isDelete = 
 
 /* ****************** REDUCER ********************************* */
 
-const createBrandManagerReducer = (state = defaultCreateBrandManagerState, action) => {
+const getBMInfo = (respArr) => {
+  const respObj = {...respArr[0]};
+  delete respObj.brands;
+  delete respObj.tm_id;
+  return {...respObj};
+};
+
+const getSBList = (respArr) => {
+  const regionsList = [...respArr[0].brands];
+  const tempObj = {};
+  regionsList.forEach((region) => {
+    const bid = region.brand.id;
+    if (tempObj[bid] === undefined) {
+      tempObj[bid] = {...region.brand};
+      const r = {...region.region};
+      r.is_selected = true;
+      tempObj[bid].regions = [{...r}];
+    } else {
+      delete region.brand;
+      const r = {...region.region};
+      r.is_selected = true;
+      tempObj[bid].regions.push({...r});
+    }
+  });
+  const finalArr = [];
+  Object.keys(tempObj).forEach((key) => {
+    finalArr.push(tempObj[key]);
+  });
+  console.log(finalArr);
+  return finalArr;
+};
+
+const viewBrandManagerReducer = (state = defaultViewBrandManagerState, action) => {
   switch (action.type) {
     case COMPANY_FETCH:
       return {...state, companyList: action.data};
@@ -406,6 +489,11 @@ const createBrandManagerReducer = (state = defaultCreateBrandManagerState, actio
       const bmInfo = {};
       bmInfo[action.data.key] = action.data.value;
       return { ...state, brandManagerInfo: { ...state.brandManagerInfo, ...bmInfo}};
+    case BRAND_MANAGER_FETCH:
+      // Here we are!!
+      const bmInfo_ = getBMInfo([...action.data]);
+      const sbList = getSBList([...action.data]);
+      return {...state, brandManagerInfo: bmInfo_, selectedBrandsList: sbList};
     default: return state;
   }
 };
@@ -426,7 +514,8 @@ export {
   setContainerType,
   createBrandManager,
   BRAND_MANAGER_INFO_CHANGE,
+  fetchBManager,
   RESET
 };
 
-export default createBrandManagerReducer;
+export default viewBrandManagerReducer;

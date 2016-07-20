@@ -50,12 +50,15 @@ export BrandEdit from './SkuManagement/Brand/BrandEdit';
 /* End of it */
 
 export Skus from './SkuManagement/Skus/Skus';
-export Toppicks from './SkuManagement/Skus/Toppicks/Toppicks';
-export AddToppicks from './SkuManagement/Skus/AddToppicks/AddToppicks';
+// export Toppicks from './SkuManagement/Skus/Toppicks/Toppicks';
+export Toppicks from './SkuManagement/Skus/Toppicks/TopPicksWrapper';
+export TopPicksInWrapper from './SkuManagement/Skus/ToppicksIn/TopPicksInWrapper';
+
+// export AddToppicks from './SkuManagement/Skus/AddToppicks/AddToppicks';
+export AddTopPicks from './SkuManagement/Skus/AddTopPicks/AddTopPicksWrapper';
 export CreateSku from './SkuManagement/Skus/CreateSku/CreateSkuWrapper';
 export SkuManagementViewSkus from './SkuManagement/Skus/ViewSku/ViewSku';
-export SkuManagementToppicks from './SkuManagement/Skus/ToppicksIn/ToppicksIn';
-
+// export SkuManagementToppicks from './SkuManagement/Skus/ToppicksIn/ToppicksIn';
 
 export AddCredit from './CustomerTransaction/components/Credits/CreateCredit';
 export ConfirmCredit from './CustomerTransaction/components/Credits/ConfirmCredits';
@@ -83,6 +86,10 @@ export CustomerSupportInstantCallbackHistory from './CustomerSupport/InstantCall
 
 export ConsumerRecharge from './CustomerTransaction/components/Recharge/Recharge';
 export ConsumerReservation from './CustomerTransaction/components/Reservation/Reservation';
+
+/* ViewBrandManager */
+export ViewBrandManager from './BrandsOffersAndPromos/ViewBrandManager/ViewBrandManager';
+export EditBrandManager from './BrandsOffersAndPromos/EditBrandManager/EditBrandManager';
 
 /* SKU */
 export ListSku from './SkuManagement/Skus/ListSku/ListSku';

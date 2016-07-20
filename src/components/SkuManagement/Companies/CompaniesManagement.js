@@ -80,12 +80,7 @@ CompaniesManagement.propTypes = {
   dispatch: PropTypes.func.isRequired,
   ongoingRequest: PropTypes.bool.isRequired,
   lastError: PropTypes.object.isRequired,
-  lastSuccess: PropTypes.array.isRequired,
-  cityId: PropTypes.number.isRequired,
-  stateId: PropTypes.number.isRequired,
-  address: PropTypes.string.isRequired,
-  pinCode: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired
+  lastSuccess: PropTypes.array.isRequired
 };
 
 const mapStateToProps = (state) => {

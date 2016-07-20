@@ -30,12 +30,7 @@ const getBrandManagerData = (page, limit) => {
     offset = (page - 1) * limit;
 
     const payload = {
-      columns: ['*',
-        {
-          'name': 'brands',
-          'columns': ['*', { 'name': 'brand', 'columns': [{ 'name': 'company', 'columns': ['*']}]}]
-        }
-      ],
+      columns: ['*', {'name': 'company', 'columns': ['*']}],
       limit: limit,
       offset: offset,
       order_by: '+id'
