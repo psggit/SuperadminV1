@@ -50,6 +50,9 @@ import {Login, Home, PageContainer,
   HomepageManagementAds, HomepageManagementSelectAds, BrandManagerProfile, CreateBrandManager,
   CompaniesManagement, ManageCompanies, BrandAds, BrandPromos, PromosInstantCashback, RetailerManagementCreate,
   RetailerManagementSettlementDetails, RetailerManagementDeviceDetail, RetailerManagementDisableDevice,
+  RetailerManagementTransactions, RetailerManagementCreateOrganization, CustomerSupportCustomerProfile,
+  CustomerSupportFreshdeskTicket, CustomerSupportIssueHistory, CustomerSupportSupport, CustomerSupportFreshdeskTicketList,
+  CustomerSupportInstantCallbackHistory
   RetailerManagementTransactions, RetailerManagementCreateOrganization,
   ViewBrandManager,
   EditBrandManager
@@ -116,7 +119,7 @@ const requireLoginAndSchema = (nextState, replaceState, cb) => {
 };
 
 const main = (
-    <Router history={browserHistory}>
+    <Router history={browserHistory} >
       <Route path="/hadmin/login" component={Login} />
       <Route path="/hadmin" component={PageContainer} onEnter={ requireLoginAndSchema }>
         <IndexRoute component={Home} />
@@ -201,6 +204,12 @@ const main = (
         <Route path="retailer_management/disable_device" component={RetailerManagementDisableDevice} />
         <Route path="retailer_management/transactions" component={RetailerManagementTransactions} />
         <Route path="retailer_management/create_organization" component={RetailerManagementCreateOrganization} />
+        <Route path="customer_support/customer_profile" component={CustomerSupportCustomerProfile} />
+        <Route path="customer_support/freshdesk_ticket" component={CustomerSupportFreshdeskTicket} />
+        <Route path="customer_support/issue_history" component={CustomerSupportIssueHistory} />
+        <Route path="customer_support/support" component={CustomerSupportSupport} />
+        <Route path="customer_support/freshdeskticketlist" component={CustomerSupportFreshdeskTicketList} />
+        <Route path="customer_support/instant_callback_history" component={CustomerSupportInstantCallbackHistory} />
         /* End of SKU Management */
         {/*
         <Route path="notepad_entries" component={NotepadEntries} />

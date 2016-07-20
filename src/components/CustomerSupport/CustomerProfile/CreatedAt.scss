@@ -1,0 +1,71 @@
+.makername_container
+{
+  width: 100%;
+  float: left;
+  color: #000;
+  border-bottom: 2px solid #000;
+  opacity: .54;
+  margin-bottom: 20px;
+  .makersname_information
+  {
+    width: 50%;
+    padding-bottom: 10px;
+    display: inline-block;
+    .makersname_leftpanel
+    {
+      width: 35%;
+      display: inline-block;
+      color: #000;
+      font-size: 14px;
+      font-weight: 400;
+      vertical-align: top;
+    }
+
+    .makersname_rightpanel
+    {
+      width: 65%;
+      display: inline-block;
+      color: #000;
+      font-size: 14px;
+      font-weight: 400;
+    }
+  }
+  .makername_time_information
+  {
+    width: 50%;
+    padding-bottom: 10px;
+    display: inline-block;
+    .makersname_time_leftpanel
+    {
+      width: 40%;
+      display: inline-block;
+      color: #000;
+      font-size: 14px;
+      font-weight: 400;
+      vertical-align: top;
+    }
+    .makersname_time_rightpanel
+    {
+      width: 60%;
+      display: inline-block;
+      color: #000;
+      font-size: 14px;
+      font-weight: 400;
+    }
+  }
+  .makers_id_container
+  {
+    width: 100%;
+    float: left;
+    margin-bottom: 10px;
+    .makers_id_name
+    {
+      width: 15%;
+      display: inline-block;
+    }
+    .makers_id
+    {
+      display: inline-block;
+    }
+  }
+}
