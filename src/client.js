@@ -52,7 +52,7 @@ import {Login, Home, PageContainer,
   RetailerManagementSettlementDetails, RetailerManagementDeviceDetail, RetailerManagementDisableDevice,
   RetailerManagementTransactions, RetailerManagementCreateOrganization, CustomerSupportCustomerProfile,
   CustomerSupportFreshdeskTicket, CustomerSupportIssueHistory, CustomerSupportSupport, CustomerSupportFreshdeskTicketList,
-  CustomerSupportInstantCallbackHistory
+  CustomerSupportInstantCallbackHistory,
   RetailerManagementTransactions, RetailerManagementCreateOrganization,
   ViewBrandManager,
   EditBrandManager
