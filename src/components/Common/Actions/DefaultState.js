@@ -172,6 +172,26 @@ const defaultCompanyState = {
   stateId: 0
 };
 
+const defaultTopPicksSelectState = {
+  stateList: [],
+  stateMapping: {},
+  selectedState: {},
+  showGenre: false
+};
+
+const defaultTopPicksState = {
+  state: '',
+  genre: '',
+  stateId: 0,
+  genreId: 0
+};
+
+const defaultAddTopPickData = {
+  brandList: [],
+  selectedBrand: {},
+  skuPricingId: 0
+};
+
 export default defaultState;
 export { defaultNotepadState
   , defaultBrandState
@@ -183,4 +203,7 @@ export { defaultNotepadState
   , defaultStateManagementState
   , defaultCategoryState
   , defaultCompanyState
+  , defaultTopPicksSelectState
+  , defaultTopPicksState
+  , defaultAddTopPickData
 };

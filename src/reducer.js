@@ -26,6 +26,10 @@ import createBrandManagerReducer from './components/BrandsOffersAndPromos/Create
 import categoryReducer from './components/SkuManagement/Category/CategoryAction';
 import companyReducer from './components/SkuManagement/Companies/CompanyAction';
 
+import topPicksReducer from './components/SkuManagement/Skus/Toppicks/TopPicksAction';
+import topPicksStateGenreReducer from './components/SkuManagement/Skus/ToppicksIn/TopPicksInAction';
+import addTopPickReducer from './components/SkuManagement/Skus/AddTopPicks/AddTopPickAction';
+
 const reducer = combineReducers({
   loginState: loginReducer,
   tables: dataReducer,
@@ -49,7 +53,10 @@ const reducer = combineReducers({
   brandmanagerprofile_data: brandManagerProfileReducer,
   createbrandmanager_data: createBrandManagerReducer,
   category_data: categoryReducer,
-  company_data: companyReducer
+  company_data: companyReducer,
+  sku_top_picks_data: topPicksReducer,
+  sku_top_picks_state_genre_data: topPicksStateGenreReducer,
+  add_top_picks_data: addTopPickReducer
 });
 
 export default reducer;
