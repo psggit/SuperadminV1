@@ -40,11 +40,17 @@ class BreadCrumb extends Component {
         }
       }
     };
-
+    /* If a < b keep a before b
+     * Else if a > b keep a after b
+     * Else leave it dont do anything
+     * */
+    const breadCrumbSorted = this.props.breadCrumbs.sort( (a, b) => {
+      return (a.sequence < b.sequence) ? -1 : 1;
+    });
     return (
           <div style={ style.bWrapper }>
             {
-              this.props.breadCrumbs.map( (bc, index) => {
+              breadCrumbSorted.map( (bc, index) => {
                 return (
                   <div key={index} style={ style.wrapper }>
                     <span >

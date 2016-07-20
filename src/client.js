@@ -31,8 +31,8 @@ import {Login, Home, PageContainer,
   KycViewUpload,
   KycViewVerify,
   ViewSkus, ViewSku, ViewCart, Reservations, ViewDevice, RechargeHistory, StateManagement, CustomerTransaction,
-  CreateNotepadEntry, Notepad, EditAccountDetails, Skus, Toppicks, AddToppicks, CreateSku, SkuManagementViewSkus,
-  SkuManagementToppicks,
+  CreateNotepadEntry, Notepad, EditAccountDetails, Skus, Toppicks, AddTopPicks, CreateSku, SkuManagementViewSkus,
+  TopPicksInWrapper,
   ConsumerRecharge,
   BrandCreate,
   BrandEdit,
@@ -114,12 +114,11 @@ const requireLoginAndSchema = (nextState, replaceState, cb) => {
     }
   );
 };
-console.log(requireLoginAndSchema);
 
 const main = (
     <Router history={browserHistory}>
       <Route path="/hadmin/login" component={Login} />
-      <Route path="/hadmin" component={PageContainer}>
+      <Route path="/hadmin" component={PageContainer} onEnter={ requireLoginAndSchema }>
         <IndexRoute component={Home} />
         <Route path="tables/add" component={AddTable} />
         <Route path="upload_file" component={FileUpload} />
@@ -183,10 +182,10 @@ const main = (
         <Route path="skus" component={Skus} />
         <Route path="skus/list_sku" component={ListSku} />
         <Route path="skus/toppicks" component={Toppicks} />
-        <Route path="skus/add_top_picks" component={AddToppicks} />
+        <Route path="skus/top_picks/:stateId/:genreId/add_top_picks" component={AddTopPicks} />
         <Route path="skus/create_sku" component={CreateSku} />
         <Route path="skus/view_sku" component={SkuManagementViewSkus} />
-        <Route path="skus/top_picks" component={SkuManagementToppicks} />
+        <Route path="skus/top_picks/:stateId/:genreId" component={TopPicksInWrapper} />
         <Route path="homepage_management/ads" component={HomepageManagementAds} />
         <Route path="homepage_management/select_ads" component={HomepageManagementSelectAds} />
         <Route path="brands_offers_and_promos/brand_managers_list" component={BrandManagerProfile} />
