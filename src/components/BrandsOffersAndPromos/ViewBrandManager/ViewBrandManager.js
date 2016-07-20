@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-// import { Link } from 'react-router';
-import { fetchCompany, brandContainerVisibility, setContainerType, createBrandManager} from './CreateBMActions';
+import { Link } from 'react-router';
+import { fetchBManager, brandContainerVisibility, setContainerType, createBrandManager} from './ViewBMActions';
 import BrandContainer from './BrandContainer';
 import BrandManagerInfo from './BrandManagerInfo';
 
@@ -15,7 +15,7 @@ import commonDecorator from '../../Common/CommonDecorator';
 import BreadCrumb from '../../Common/BreadCrumb';
 
 
-class CreateBrandManager extends Component { // eslint-disable-line no-unused-vars
+class ViewBrandManager extends Component { // eslint-disable-line no-unused-vars
   constructor() {
     super();
     /* Data required for the bread component to render correctly */
@@ -31,18 +31,13 @@ class CreateBrandManager extends Component { // eslint-disable-line no-unused-va
       link: '#' // TODO
     });
   }
+  // Fetch brand manager from the db with region_managers and make selected brands list
   componentWillMount() {
     Promise.all([
-      this.props.dispatch(fetchCompany())
+      this.props.dispatch(fetchBManager(parseInt(this.props.params.Id, 10)))
     ]);
   }
-  onClickShowBrandContainer() {
-    Promise.all([
-      this.props.dispatch(brandContainerVisibility()),
-      this.props.dispatch(setContainerType(false))
-    ]);
-  }
-
+  // Change the selectedBrandsList structure ???
   onClickExistingBrand(bid) {
     let brand = {};
     const sbl = [...this.props.selectedBrandsList];
@@ -55,17 +50,18 @@ class CreateBrandManager extends Component { // eslint-disable-line no-unused-va
       this.props.dispatch(brandContainerVisibility(brand))
     ]);
   }
+  // No save
   onSaveBrandManager() {
     Promise.all([
       this.props.dispatch(createBrandManager(this.props.brandManagerInfo, this.props.selectedBrandsList))
     ]);
   }
   render() {
-    const styles = require('./CreateBrandManager.scss');
+    const styles = require('./ViewBrandManager.scss');
 
-    const { companyList, selectedBrandsList } = this.props;
+    const { brandManagerInfo, selectedBrandsList } = this.props;
     const props_ = { ...this.props };
-
+    // Remains same
     const getActiveRegionCount = (regions) => {
       let count = 0;
       regions.map((region) => {
@@ -73,7 +69,7 @@ class CreateBrandManager extends Component { // eslint-disable-line no-unused-va
       });
       return count;
     };
-
+    // Remains same, fill it when component mounts
     const selectedBrandsHtml = selectedBrandsList.map((sb) => {
       const count = getActiveRegionCount([...sb.regions]);
       return (
@@ -89,12 +85,11 @@ class CreateBrandManager extends Component { // eslint-disable-line no-unused-va
       <div className={styles.container}>
         <BreadCrumb breadCrumbs={this.breadCrumbs} />
         <div className={styles.brand_wrapper}>
-          <BrandManagerInfo dispatch={this.props.dispatch} companyList={companyList} />
+          <BrandManagerInfo dispatch={this.props.dispatch} brandManagerInfo={brandManagerInfo} />
           <div className="clearfix"></div>
           <div className={styles.brands_wrapper}>
             <div className={styles.brand_container}>
               <div className={styles.heading}>Brands</div>
-              <div className={styles.add_lab} onClick={this.onClickShowBrandContainer.bind(this)}>+ Add Brand</div>
               <ul>
                 { selectedBrandsHtml }
               </ul>
@@ -102,15 +97,17 @@ class CreateBrandManager extends Component { // eslint-disable-line no-unused-va
             <BrandContainer props={props_}/>
           </div>
           <div className="clearfix"></div>
-          <button className={styles.edit_brand_btn} onClick={this.onSaveBrandManager.bind(this)}>
-            Save BM
-          </button>
+          <Link to={'/hadmin/brands_offers_and_promos/brand_manager_edit/' + brandManagerInfo.id}>
+            <button className={styles.edit_brand_btn}>
+              Edit BM
+            </button>
+          </Link>
         </div>
       </div>);
   }
 }
 
-CreateBrandManager.propTypes = {
+ViewBrandManager.propTypes = {
   params: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
@@ -129,8 +126,8 @@ CreateBrandManager.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  return {...state.page_data, ...state.createbrandmanager_data};
+  return {...state.page_data, ...state.view_bm_data};
 };
 
-const decoratedConnectedComponent = commonDecorator(CreateBrandManager);// connect(mapStateToProps)(CommonDecorator);
+const decoratedConnectedComponent = commonDecorator(ViewBrandManager);// connect(mapStateToProps)(CommonDecorator);
 export default connect(mapStateToProps)(decoratedConnectedComponent);

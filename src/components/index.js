@@ -82,5 +82,8 @@ export RetailerManagementCreateOrganization from './RetailerManagement/CreateOrg
 export ConsumerRecharge from './CustomerTransaction/components/Recharge/Recharge';
 export ConsumerReservation from './CustomerTransaction/components/Reservation/Reservation';
 
+/* ViewBrandManager */
+export ViewBrandManager from './BrandsOffersAndPromos/ViewBrandManager/ViewBrandManager';
+
 /* SKU */
 export ListSku from './SkuManagement/Skus/ListSku/ListSku';

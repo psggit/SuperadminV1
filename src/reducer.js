@@ -25,6 +25,7 @@ import brandManagerProfileReducer from './components/BrandsOffersAndPromos/Brand
 import createBrandManagerReducer from './components/BrandsOffersAndPromos/CreateBrandManager/CreateBMActions';
 import categoryReducer from './components/SkuManagement/Category/CategoryAction';
 import companyReducer from './components/SkuManagement/Companies/CompanyAction';
+import viewBrandManagerReducer from './components/BrandsOffersAndPromos/ViewBrandManager/ViewBMActions';
 
 import topPicksReducer from './components/SkuManagement/Skus/Toppicks/TopPicksAction';
 import topPicksStateGenreReducer from './components/SkuManagement/Skus/ToppicksIn/TopPicksInAction';
@@ -57,6 +58,7 @@ const reducer = combineReducers({
   sku_top_picks_data: topPicksReducer,
   sku_top_picks_state_genre_data: topPicksStateGenreReducer,
   add_top_picks_data: addTopPickReducer
+  view_bm_data: viewBrandManagerReducer
 });
 
 export default reducer;
