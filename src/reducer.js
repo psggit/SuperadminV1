@@ -59,13 +59,12 @@ const reducer = combineReducers({
   category_data: categoryReducer,
   company_data: companyReducer,
   freshdesk_ticket_data: freshDeskReducer,
-  instant_callback_history_data: InstantCallbackHistoryReducer
+  instant_callback_history_data: InstantCallbackHistoryReducer,
   view_bm_data: viewBrandManagerReducer,
   edit_bm_data: editBrandManagerReducer,
   sku_top_picks_data: topPicksReducer,
   sku_top_picks_state_genre_data: topPicksStateGenreReducer,
-  add_top_picks_data: addTopPickReducer,
-  view_bm_data: viewBrandManagerReducer
+  add_top_picks_data: addTopPickReducer
 });
 
 export default reducer;

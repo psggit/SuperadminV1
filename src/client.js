@@ -53,7 +53,6 @@ import {Login, Home, PageContainer,
   RetailerManagementTransactions, RetailerManagementCreateOrganization, CustomerSupportCustomerProfile,
   CustomerSupportFreshdeskTicket, CustomerSupportIssueHistory, CustomerSupportSupport, CustomerSupportFreshdeskTicketList,
   CustomerSupportInstantCallbackHistory,
-  RetailerManagementTransactions, RetailerManagementCreateOrganization,
   ViewBrandManager,
   EditBrandManager
 } from './components'; // eslint-disable-line no-unused-vars
