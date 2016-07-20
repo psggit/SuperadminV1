@@ -26,6 +26,7 @@ import createBrandManagerReducer from './components/BrandsOffersAndPromos/Create
 import categoryReducer from './components/SkuManagement/Category/CategoryAction';
 import companyReducer from './components/SkuManagement/Companies/CompanyAction';
 import viewBrandManagerReducer from './components/BrandsOffersAndPromos/ViewBrandManager/ViewBMActions';
+import editBrandManagerReducer from './components/BrandsOffersAndPromos/EditBrandManager/EditBMActions';
 
 const reducer = combineReducers({
   loginState: loginReducer,
@@ -51,7 +52,8 @@ const reducer = combineReducers({
   createbrandmanager_data: createBrandManagerReducer,
   category_data: categoryReducer,
   company_data: companyReducer,
-  view_bm_data: viewBrandManagerReducer
+  view_bm_data: viewBrandManagerReducer,
+  edit_bm_data: editBrandManagerReducer
 });
 
 export default reducer;

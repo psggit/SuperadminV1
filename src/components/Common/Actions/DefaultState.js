@@ -100,6 +100,18 @@ const defaultCreateBrandManagerState = {
   brandManagerInfo: {}
 };
 
+const defaultEditBrandManagerState = {
+  companyList: [],
+  selected_company: {},
+  companyBrands: [],
+  selectedBrand: {},
+  selectedBrandsList: [],
+  regionCitiesView: {},
+  showBrandContainer: false,
+  isExistingBrand: false,
+  brandManagerInfo: {'company': {}}
+};
+
 const defaultViewBrandManagerState = {
   companyList: [],
   selected_company: {},
@@ -194,6 +206,7 @@ export { defaultNotepadState
   , defaultBrandManagerProfileState
   , defaultCreateBrandManagerState
   , defaultViewBrandManagerState
+  , defaultEditBrandManagerState
   , defaultConsumerState
   , defaultKycState
   , defaultCreateSkuState

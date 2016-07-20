@@ -51,7 +51,8 @@ import {Login, Home, PageContainer,
   CompaniesManagement, ManageCompanies, BrandAds, BrandPromos, PromosInstantCashback, RetailerManagementCreate,
   RetailerManagementSettlementDetails, RetailerManagementDeviceDetail, RetailerManagementDisableDevice,
   RetailerManagementTransactions, RetailerManagementCreateOrganization,
-  ViewBrandManager
+  ViewBrandManager,
+  EditBrandManager
 } from './components'; // eslint-disable-line no-unused-vars
 import {AddTable} from './components';
 import {loadCredentials} from './components/Login/Actions';
@@ -113,8 +114,8 @@ const requireLoginAndSchema = (nextState, replaceState, cb) => {
     }
   );
 };
-
 console.log(requireLoginAndSchema);
+
 const main = (
     <Router history={browserHistory}>
       <Route path="/hadmin/login" component={Login} />
@@ -190,7 +191,7 @@ const main = (
         <Route path="homepage_management/select_ads" component={HomepageManagementSelectAds} />
         <Route path="brands_offers_and_promos/brand_managers_list" component={BrandManagerProfile} />
         <Route path="brands_offers_and_promos/brand_manager_view/:Id" component={ViewBrandManager} />
-        <Route path="brands_offers_and_promos/brand_manager_edit/:Id" component={ViewBrandManager} />
+        <Route path="brands_offers_and_promos/brand_manager_edit/:Id" component={EditBrandManager} />
         <Route path="brands_offers_and_promos/create_brand_manager" component={CreateBrandManager} />
         <Route path="brands_offers_and_promos/ads" component={BrandAds} />
         <Route path="brands_offers_and_promos/promos" component={BrandPromos} />

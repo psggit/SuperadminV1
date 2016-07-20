@@ -80,6 +80,7 @@ export ConsumerReservation from './CustomerTransaction/components/Reservation/Re
 
 /* ViewBrandManager */
 export ViewBrandManager from './BrandsOffersAndPromos/ViewBrandManager/ViewBrandManager';
+export EditBrandManager from './BrandsOffersAndPromos/EditBrandManager/EditBrandManager';
 
 /* SKU */
 export ListSku from './SkuManagement/Skus/ListSku/ListSku';
