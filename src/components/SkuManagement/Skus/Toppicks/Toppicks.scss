@@ -1,14 +1,15 @@
 .container
 {
-	width: 100%;
+	/* width: 100%; */
+  width: 40%;
 	float: left;
 }
 .genres_container
 {
 	background: #FFF;
-	width: 250px;
+	width: 300px;
 	height: 600px;
-	overflow: auto;
+	/* overflow: auto; */
 	padding: 15px 10px;
 	margin: 20px 45px;
 	.hd
@@ -58,6 +59,7 @@
 			width: 30%;
 			float: left;
 			color: rgba(255, 116, 0, 0.9);
+      cursor: pointer;
 		}
 	}
 	li:last-child

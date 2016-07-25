@@ -10,9 +10,9 @@ const BrandManagersList = ( {data} ) => {
     return (
           <tr key={index}>
             <td>
-              <Link to={'/hadmin/brands_offers_and_promos/edit/' + dat.id}>
+              <Link to={'/hadmin/brands_offers_and_promos/brand_manager_view/' + dat.id}>
                 <button className={styles.edit_btn} data-state-id={dat.id}>
-                  Edit
+                  View
                 </button>
               </Link>
             </td>
@@ -27,13 +27,13 @@ const BrandManagersList = ( {data} ) => {
                 { dat.mobile_number }
             </td>
             <td>
-                { dat.brands[0].brand.company.name}
+                { dat.company.name}
             </td>
             <td>
                 { (dat.is_disabled) ? 'Disabled' : 'Active' }
             </td>
             <td>
-                { (dat.kyc_status) ? 'Kyc Done' : 'Pending' }
+                { (dat.kyc_status) ? 'Done' : 'Pending' }
             </td>
             <td>
                 { dat.created_at }

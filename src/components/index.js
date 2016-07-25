@@ -50,11 +50,15 @@ export BrandEdit from './SkuManagement/Brand/BrandEdit';
 /* End of it */
 
 export Skus from './SkuManagement/Skus/Skus';
-export Toppicks from './SkuManagement/Skus/Toppicks/Toppicks';
-export AddToppicks from './SkuManagement/Skus/AddToppicks/AddToppicks';
+// export Toppicks from './SkuManagement/Skus/Toppicks/Toppicks';
+export Toppicks from './SkuManagement/Skus/Toppicks/TopPicksWrapper';
+export TopPicksInWrapper from './SkuManagement/Skus/ToppicksIn/TopPicksInWrapper';
+
+// export AddToppicks from './SkuManagement/Skus/AddToppicks/AddToppicks';
+export AddTopPicks from './SkuManagement/Skus/AddTopPicks/AddTopPicksWrapper';
 export CreateSku from './SkuManagement/Skus/CreateSku/CreateSkuWrapper';
 export SkuManagementViewSkus from './SkuManagement/Skus/ViewSku/ViewSku';
-export SkuManagementToppicks from './SkuManagement/Skus/ToppicksIn/ToppicksIn';
+// export SkuManagementToppicks from './SkuManagement/Skus/ToppicksIn/ToppicksIn';
 
 export AddCredit from './CustomerTransaction/components/Credits/CreateCredit';
 export ConfirmCredit from './CustomerTransaction/components/Credits/ConfirmCredits';
@@ -72,11 +76,20 @@ export RetailerManagementDeviceDetail from './RetailerManagement/DeviceDetail/De
 export RetailerManagementDisableDevice from './RetailerManagement/DisableDevice/DisableDevice';
 export RetailerManagementTransactions from './Sku/Transactions/Transactions';
 export RetailerManagementCreateOrganization from './RetailerManagement/CreateOrganization/CreateOrganization';
-
+export CustomerSupportCustomerProfile from './CustomerSupport/CustomerProfile/CustomerProfile';
+export CustomerSupportFreshdeskTicket from './CustomerSupport/FreshdeskTicket/FreshdeskTicket';
+export CustomerSupportIssueHistory from './CustomerSupport/IssueHistory/IssueHistory';
+export CustomerSupportSupport from './CustomerSupport/Support/Support';
+export CustomerSupportFreshdeskTicketList from './CustomerSupport/FreshdeskTicketList/FreshdeskTicketList';
+export CustomerSupportInstantCallbackHistory from './CustomerSupport/InstantCallbackHistory/InstantCallbackHistory';
 /* Consumer Transactions */
 
 export ConsumerRecharge from './CustomerTransaction/components/Recharge/Recharge';
 export ConsumerReservation from './CustomerTransaction/components/Reservation/Reservation';
+
+/* ViewBrandManager */
+export ViewBrandManager from './BrandsOffersAndPromos/ViewBrandManager/ViewBrandManager';
+export EditBrandManager from './BrandsOffersAndPromos/EditBrandManager/EditBrandManager';
 
 /* SKU */
 export ListSku from './SkuManagement/Skus/ListSku/ListSku';

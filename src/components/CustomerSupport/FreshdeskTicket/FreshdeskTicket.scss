@@ -1,0 +1,191 @@
+.container
+{
+	width: 100%;
+	float: left;
+}
+.wrapper {
+  width: 100%;
+  float: left;
+}
+
+.assigned_issue_container
+{
+
+	.close_issue_wrapper
+	{
+		width: 58%;
+		margin-left: 2%;
+	  margin-top: 20px;
+	  float: left;
+	  background-color: #fff;
+	  overflow: auto;
+	  padding: 20px 15px;
+		.close_issue_head
+		{
+			font-size: 14px;
+			text-transform: uppercase;
+			margin-bottom: 10px;
+			text-align: left;
+			font-weight: 500;
+			padding-bottom: 10px;
+			color: #000;
+			opacity: .54;
+		}
+		.close_issue_btn
+		{
+			width: 100%;
+			text-align: center;
+			button
+			{
+				margin-right: 25px;
+				width: 130px;
+				height: 30px;
+				color: #FF7400;
+				border: 1px solid #FF7400;
+				border-radius: 4px;
+				background-color: #FFF;
+				padding: 5px;
+				font-size: 13px;
+			}
+		}
+	}
+	.account_create_noted_container
+	{
+		width: 100%;
+		float: left;
+		.create_noted_wrapper
+		{
+			width: 80%;
+			margin-left: 2%;
+		  margin-top: 20px;
+		  float: left;
+		  background-color: #fff;
+		  overflow: auto;
+		  padding: 20px 15px;
+			.divider_bottom
+			{
+				border-bottom: 1px solid #000;
+				opacity: .54;
+				margin-bottom: 20px;
+			}
+		}
+		.create_noted_head
+		{
+			font-size: 14px;
+			text-transform: uppercase;
+			margin-bottom: 10px;
+			text-align: left;
+			color: #9F9E9E;
+			font-weight: 500;
+			padding-bottom: 10px;
+		}
+		.close_issue_btn
+		{
+			button
+			{
+				margin-right: 25px;
+				width: 130px;
+				height: 30px;
+				color: #FF7400;
+				border: 1px solid #FF7400;
+				border-radius: 4px;
+				background-color: #FFF;
+				padding: 5px;
+				font-size: 13px;
+				display: inline-block;
+			}
+		}
+	}
+}
+.history_container
+{
+	width: 100%;
+	float: left;
+	.notepad_history_wrapper
+	{
+		width: 49%;
+		margin-top: 20px;
+		float: left;
+		background-color: #fff;
+		height: 600px;
+		overflow: auto;
+		padding: 20px 15px;
+		.notepad_history_head
+		{
+			font-size: 14px;
+			text-transform: uppercase;
+			margin-bottom: 10px;
+			text-align: left;
+			color: #000;
+			opacity: .54;
+			font-weight: 500;
+			padding-bottom: 10px;
+		}
+	}
+	.issue_history_wrapper
+	{
+		width: 49%;
+		margin-left: 2%;
+		margin-top: 20px;
+		float: left;
+		background-color: #fff;
+		height: 600px;
+		overflow: auto;
+		padding: 20px 15px;
+	}
+	.issue_history_head
+	{
+		font-size: 14px;
+		text-transform: uppercase;
+		margin-bottom: 10px;
+		text-align: left;
+		color: #9F9E9E;
+		font-weight: 500;
+		padding-bottom: 10px;
+	}
+}
+.freshdesk_ticket_container
+{
+	width: 100%;
+	float: left;
+	.freshdesk_ticket_wrapper
+	{
+		width: 49%;
+		margin-top: 20px;
+		float: left;
+		background-color: #fff;
+		height: 600px;
+		overflow: auto;
+		padding: 20px 15px;
+		.freshdesk_ticket_head
+		{
+			font-size: 14px;
+			text-transform: uppercase;
+			margin-bottom: 10px;
+			text-align: left;
+			color: #000;
+			opacity: .54;
+			font-weight: 500;
+			padding-bottom: 10px;
+		}
+	}
+}
+.organisation_details_btn
+{
+	width: 100%;
+	text-align: center;
+	button
+	{
+		margin-top: 25px;
+		margin-right: 25px;
+		margin-bottom: 25px;
+		width: 130px;
+		height: 30px;
+		color: #FF7400;
+		border: 1px solid #FF7400;
+		border-radius: 4px;
+		background-color: #FFF;
+		padding: 5px;
+		font-size: 13px;
+	}
+}

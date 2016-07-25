@@ -102,8 +102,8 @@ class SkuWrapper extends Component {
               onStatePriceEntered={this.onStatePriceEntered.bind(this)}
               onStateView={this.onStateView.bind(this)}
               onCityCheck={this.onCityCheck.bind(this)}
-              onCityView={this.onCityView.bind(this) }
-              onRetailerCheck={ this.onRetailerCheck.bind(this) }
+              onCityView={this.onCityView.bind(this)}
+              onRetailerCheck={this.onRetailerCheck.bind(this)}
               dispatch={ this.props.dispatch }
               onSave = { this.onSaveClick.bind(this) }
             />

@@ -93,7 +93,35 @@ const defaultCreateBrandManagerState = {
   selected_company: {},
   companyBrands: [],
   selectedBrand: {},
-  selectedBrandsList: []
+  selectedBrandsList: [],
+  regionCitiesView: {},
+  showBrandContainer: false,
+  isExistingBrand: false,
+  brandManagerInfo: {}
+};
+
+const defaultEditBrandManagerState = {
+  companyList: [],
+  selected_company: {},
+  companyBrands: [],
+  selectedBrand: {},
+  selectedBrandsList: [],
+  regionCitiesView: {},
+  showBrandContainer: false,
+  isExistingBrand: false,
+  brandManagerInfo: {'company': {}}
+};
+
+const defaultViewBrandManagerState = {
+  companyList: [],
+  selected_company: {},
+  companyBrands: [],
+  selectedBrand: {},
+  selectedBrandsList: [],
+  regionCitiesView: {},
+  showBrandContainer: false,
+  isExistingBrand: false,
+  brandManagerInfo: {'company': {}}
 };
 
 const defaultKycState = {
@@ -172,15 +200,40 @@ const defaultCompanyState = {
   stateId: 0
 };
 
+const defaultTopPicksSelectState = {
+  stateList: [],
+  stateMapping: {},
+  selectedState: {},
+  showGenre: false
+};
+
+const defaultTopPicksState = {
+  state: '',
+  genre: '',
+  stateId: 0,
+  genreId: 0
+};
+
+const defaultAddTopPickData = {
+  brandList: [],
+  selectedBrand: {},
+  skuPricingId: 0
+};
+
 export default defaultState;
 export { defaultNotepadState
   , defaultBrandState
   , defaultBrandManagerProfileState
   , defaultCreateBrandManagerState
+  , defaultViewBrandManagerState
+  , defaultEditBrandManagerState
   , defaultConsumerState
   , defaultKycState
   , defaultCreateSkuState
   , defaultStateManagementState
   , defaultCategoryState
   , defaultCompanyState
+  , defaultTopPicksSelectState
+  , defaultTopPicksState
+  , defaultAddTopPickData
 };
