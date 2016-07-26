@@ -6,9 +6,7 @@ import { defaultTopPicksSelectState } from '../../../Common/Actions/DefaultState
 import requestAction from '../../../Common/Actions/requestAction';
 import Endpoints, { globalCookiePolicy } from '../../../../Endpoints';
 import {
-  MAKE_REQUEST
-  , REQUEST_COMPLETED
-  , REQUEST_ERROR
+  REQUEST_ERROR
 } from '../../../Common/Actions/Actions';
 
 // import { routeActions } from 'redux-simple-router';
@@ -24,6 +22,7 @@ const RESET = '@sku_top_picks/RESET';
 
 const fetchStateGenre = () => {
   return (dispatch) => {
+    /* Make a MAKE_REQUEST action */
     /* Url */
     const url = Endpoints.db + '/table/state_genre_count/select';
     const queryObj = {};
@@ -36,12 +35,7 @@ const fetchStateGenre = () => {
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
-    /* Make a MAKE_REQUEST action */
-    dispatch({type: MAKE_REQUEST});
-    return Promise.all([
-      dispatch(requestAction(url, options, STATE_GENRE_FETCHED, REQUEST_ERROR)),
-      dispatch({type: REQUEST_COMPLETED})
-    ]);
+    return dispatch(requestAction(url, options, STATE_GENRE_FETCHED, REQUEST_ERROR));
   };
 };
 
