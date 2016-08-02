@@ -11,8 +11,8 @@ const StateElement = ({ stateInfo, stateCityMapping, onStateSelect, onStatePrice
           (stateCityMapping.is_selected) ?
             (
               <div className="input_wrapper">
-                <input type="number" data-state-id={ stateInfo.id } placeholder="MRP" data-field-name="duty_paid" data-field-type="int" onChange={ onStatePriceEntered }/>
-                <input type="number" data-state-id={ stateInfo.id } placeholder="Dutyfree" data-field-name="duty_free" data-field-type="int" onChange={ onStatePriceEntered }/>
+                <input type="number" data-state-id={ stateInfo.id } placeholder="MRP" data-field-name="duty_paid" data-field-type="int" value={ stateCityMapping.duty_paid ? stateCityMapping.duty_paid : '' } onChange={ onStatePriceEntered }/>
+                <input type="number" data-state-id={ stateInfo.id } placeholder="Dutyfree" data-field-name="duty_free" value={ stateCityMapping.duty_free ? stateCityMapping.duty_free : '' } data-field-type="int" onChange={ onStatePriceEntered }/>
               </div>
             ) : ''
         }

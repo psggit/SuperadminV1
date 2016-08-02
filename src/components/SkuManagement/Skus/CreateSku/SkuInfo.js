@@ -11,42 +11,46 @@ import { SKU_INFORMATION_CHANGE } from './CreateSkuActions';
  *  formValidator will take these two attributes to retrieve values and create an object out of it.
  *  It also takes in Action using which the HOC can dispatch to update the Models
  *  */
-const SkuInfo = ({ brandList }) => {
+
+const returnValue = (obj, key) => {
+  return ( obj[key] ? obj[key] : '' );
+};
+const SkuInfo = ({ brandList, skuReqObj }) => {
   const styles = require('./CreateSku.scss');
   return (
         <div className={styles.create_sku_wrapper}>
           <div className={styles.heading}>Create Sku</div>
           <div className={styles.indiv_element}>
             <label>Brand Name</label>
-            <BrandDropDown brandData={ brandList } />
+            <BrandDropDown brandData={ brandList } value={ returnValue(skuReqObj, 'brand_id') }/>
           </div>
           <div className={styles.indiv_element}>
             <label>Volume in ml</label>
-            <input type="number" data-field-name="volume" data-field-type="int"/>
+            <input type="number" data-field-name="volume" data-field-type="int" value = {parseInt(returnValue(skuReqObj, 'volume'), 10) ? parseInt(returnValue(skuReqObj, 'volume'), 10) : '' } />
           </div>
           <div className={styles.indiv_element}>
             <label>Alcohol Percentage</label>
-            <input type="number" data-field-name="alcohol_per" data-field-type="float"/>
+            <input type="number" data-field-name="alcohol_per" data-field-type="float" value = {parseFloat(returnValue(skuReqObj, 'alcohol_per')) ? parseFloat(returnValue(skuReqObj, 'alcohol_per')) : '' } />
           </div>
           <div className={styles.indiv_element}>
             <label>Temperature</label>
-            <input type="text" data-field-name="temperature" data-field-type="string"/>
+            <input type="text" data-field-name="temperature" data-field-type="string" value = {(returnValue(skuReqObj, 'temperature'))}/>
           </div>
           <div className={styles.indiv_element} >
             <label>Place of Origin</label>
-            <input type="text" data-field-name="origin" data-field-type="string"/>
+            <input type="text" data-field-name="origin" data-field-type="string" value = {(returnValue(skuReqObj, 'origin'))}/>
           </div>
           <div className={styles.indiv_element}>
             <label>Test Volume</label>
-            <input type="number" data-field-name="test_vol" data-field-type="int"/>
+            <input type="number" data-field-name="test_vol" data-field-type="int" value = {parseInt(returnValue(skuReqObj, 'test_vol'), 10) ? parseInt(returnValue(skuReqObj, 'test_vol'), 10) : ''}/>
           </div>
           <div className={styles.indiv_element}>
             <label>Barcode</label>
-            <input type="text" data-field-name="barcode" />
+            <input type="text" data-field-name="barcode" value = {(returnValue(skuReqObj, 'barcode'))}/>
           </div>
           <div className={styles.indiv_element}>
             <label>Description</label>
-            <textarea rows="4" cols="10" data-field-name="description" data-field-type="string"></textarea>
+            <textarea rows="4" cols="10" data-field-name="description" data-field-type="string" value = {(returnValue(skuReqObj, 'description'))}></textarea>
           </div>
           {/*
           <div className={styles.indiv_element}>

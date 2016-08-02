@@ -28,7 +28,7 @@ class ImageUpload extends Component {
                 (imageUrl.length > 0) ?
                   (
                    <div className={ styles.img_wrapper }>
-                    <img src={ '/file_upload/get?fs_url=' + imageUrl } className={styles.upload_img}/>
+                    <img src={ 'http://130.211.246.199/file_upload/get?fs_url=' + imageUrl } className={styles.upload_img}/>
                     <p className={ styles.close } onClick={ this.onCancelClick.bind(this) }>X</p>
                   </div>
                   )

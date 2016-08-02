@@ -7,12 +7,14 @@ import requestAction from '../../../Common/Actions/requestAction';
 
 import Endpoints, { globalCookiePolicy } from '../../../../Endpoints';
 import {
-  REQUEST_ERROR, RESET } from '../../../Common/Actions/Actions';
+  REQUEST_ERROR
+} from '../../../Common/Actions/Actions';
 
 import { routeActions } from 'redux-simple-router';
 
 /* Action Constants */
 const BRAND_FETCH = 'SKU/BRAND_FETCH';
+const RESET = 'SKU/RESET';
 const STATE_FETCH_AND_COMPUTE_MAPPINGS = 'SKU/STATE_FETCH_AND_COMPUTE_MAPPINGS';
 const MARK_STATE_SELECTED = 'SKU/MARK_STATE_SELECTED';
 const UNMARK_STATE_SELECTED = 'SKU/UNMARK_STATE_SELECTED';
@@ -33,6 +35,9 @@ const CANCEL_IMAGE = 'SKU/CANCEL_IMAGE';
 const SKU_INFORMATION_CHANGE = 'SKU/SKU_INFORMATION_CHANGE';
 
 const STATE_MRP_INFORMATION = 'SKU/STATE_MRP_INFORMATION';
+
+const UPDATE_COMPONENT_STATE = 'SKU/UPDATE_COMPONENT_STATE';
+const POPULATE_SKU_DATA = 'SKU/POPULATE_SKU_DATA';
 
 /* Insert Actions */
 
@@ -62,8 +67,56 @@ const fetchBrand = () => {
   };
 };
 
+const hydrateStateObj = () => {
+  return ( dispatch, getState) => {
+    /* Now fetch the sku information */
+    const skuUrl = Endpoints.db + '/table/sku/select';
+    const skuId = getState().create_sku_data.sku_id;
+    const skuReqObj = {
+      'columns': [
+        '*',
+        {
+          'name': 'pricings',
+          'columns': [
+            '*',
+            {
+              'name': 'sku_inventories',
+              'columns': ['*',
+                {
+                  'name': 'retailer',
+                  'columns': ['*',
+                    {
+                      'name': 'kycs',
+                      'columns': [
+                        '*'
+                      ],
+                      'order_by': '-created_at',
+                      'limit': 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      'where': {
+        'id': skuId
+      }
+    };
+    /* Check for empty thing */
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(skuReqObj),
+    };
+    return dispatch(requestAction(skuUrl, options, POPULATE_SKU_DATA, REQUEST_ERROR));
+  };
+};
+
 const fetchState = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/state/select';
     const queryObj = {};
@@ -107,9 +160,15 @@ const fetchState = () => {
     };
     /* Make a MAKE_REQUEST action */
     // dispatch({type: MAKE_REQUEST});
-    return Promise.all([
-      dispatch(requestAction(url, options, STATE_FETCH_AND_COMPUTE_MAPPINGS, REQUEST_ERROR))
-    ]);
+    // return Promise.all([
+    return dispatch(requestAction(url, options))
+      .then( ( data ) => {
+        dispatch({ type: STATE_FETCH_AND_COMPUTE_MAPPINGS, data: data });
+        // , REQUEST_ERROR))
+        if ( getState().create_sku_data.currentPage === 'edit_page') {
+          return dispatch( hydrateStateObj() );
+        }
+      });
   };
 };
 
@@ -152,6 +211,8 @@ const onSave = () => {
     // console.log(skuReqObj);
     // console.log('jON');
     // console.log(JSON.stringify(skuInsertObj));
+    // 1st Point for failure
+    //  Effect: Nothing
     return dispatch(requestAction(skuUrl, options))
       .then((resp) => {
         const spiObjs = {};
@@ -185,6 +246,8 @@ const onSave = () => {
           spiObj.sku_id = resp.returning[0].id;
           spiObjs.objects.push(spiObj);
 
+          // Need to create a brand listing entry for each brand in each state if it is not created
+
           brandListingObj = {};
           /* Creating brand listing objects */
           brandListingObj.brand_id = currState.create_sku_data.skuReqObj.brand_id;
@@ -196,16 +259,14 @@ const onSave = () => {
           brandListingObj.updated_at = new Date().toISOString();
           brandListingObjs.objects.push(brandListingObj);
         });
-        console.log('stateObjs');
-        console.log(spiObjs);
-        console.log(JSON.stringify(spiObjs));
-
         options = {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: globalCookiePolicy,
           body: JSON.stringify(spiObjs),
         };
+        // 2nd Point of Failure
+        //  Effect: This will end up in creation of SKU but not its prices in respective states
         return dispatch(requestAction(skuPricingUrl, options));
       })
       .then(( pricingResp ) => {
@@ -233,7 +294,6 @@ const onSave = () => {
           rObjs.objects = [];
           rObjs.returning = ['id', 'retailer_id', 'sku_pricing_id'];
           /* Create inventory for retailers */
-
           Object.keys(currState.create_sku_data.cityRetailerMapping).forEach( ( key ) => {
             if ( currState.create_sku_data.cityRetailerMapping[key].is_selected && (Object.keys(currState.create_sku_data.cityRetailerMapping[key].selected_retailers)).length > 0 ) {
               skuCityObjs.push(currState.create_sku_data.cityRetailerMapping[key]);
@@ -254,7 +314,6 @@ const onSave = () => {
           });
 
           /* Check for empty thing */
-
           options = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -312,6 +371,13 @@ const viewState = (stateId) => {
 const viewCity = (cityId) => {
   return { type: VIEW_CITY, data: cityId};
 };
+
+const updateComponentState = ( page, id ) => {
+  return ( dispatch ) => {
+    dispatch({ type: UPDATE_COMPONENT_STATE, data: { 'page': page, 'id': id }});
+  };
+};
+
 /* End of it */
 
 /* Reducer Definition */
@@ -329,6 +395,10 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
       const currState = {};
       currState[action.data] = Object.assign({}, state.stateCityMapping[parseInt(action.data, 10)]);
       currState[action.data].is_selected = true;
+      /* Check for updated server values */
+      if ( currState[action.data].is_fetched ) {
+        currState[action.data].is_updated = ( currState[action.data].duty_free !== currState[action.data].serverValues.duty_free ) || ( currState[action.data].duty_paid !== currState[action.data].serverValues.duty_paid );
+      }
       return {...state, stateCityMapping: { ...state.stateCityMapping, ...currState }};
     case MARK_RETAILER_SELECTED:
       /* Get the selected State right now */
@@ -399,6 +469,9 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
       } else {
         viewedState = {};
       }
+      if ( currState1[action.data].is_fetched ) {
+        currState1[action.data].is_updated = true;
+      }
       return {...state, stateCityMapping: { ...state.stateCityMapping, ...currState1 }, viewedState: viewedState};
     case STATE_FETCH_AND_COMPUTE_MAPPINGS:
       /* Map states to cities */
@@ -419,7 +492,6 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
           cities: action.data[countState].cities,
           stateInfo: action.data[countState]
         };
-
         while (countCity < action.data[countState].cities.length) {
           const currCity = action.data[countState].cities;
           const retailers = currCity[countCity].retailers;
@@ -441,6 +513,8 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
         }
         countState++;
       }
+      // Hydrate view object
+      // hydrateStateObj();
       return {...state, stateList: action.data, stateCityMapping: stateCityMapping, cityRetailerMapping: cityRetailerMapping, retailerMapping: retailerMapping};
     case IMAGE_UPLOAD_SUCCESS:
       return { ...state, skuImageUrl: action.data[0]};
@@ -453,11 +527,13 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
       skuInfo[action.data.key] = action.data.value;
       return { ...state, skuReqObj: { ...state.skuReqObj, ...skuInfo }};
     case STATE_MRP_INFORMATION:
-      console.log('Something S');
-      console.log(action);
       const currentStateObj = {};
       currentStateObj[action.data.state_id] = Object.assign( {}, state.stateCityMapping[action.data.state_id] );
       currentStateObj[action.data.state_id][action.data.key] = action.data[action.data.key];
+      if ( currentStateObj[action.data.state_id].is_fetched ) {
+        currentStateObj[action.data.state_id].is_updated = ( currentStateObj[action.data.state_id].duty_free !== currentStateObj[action.data.state_id].serverValues.duty_free ) || ( currentStateObj[action.data.state_id].duty_paid !== currentStateObj[action.data.state_id].serverValues.duty_paid );
+      }
+
       return { ...state, stateCityMapping: { ...state.stateCityMapping, ...currentStateObj }};
     case SKU_ID_CREATED:
       return { ...state, sku_id: action.data };
@@ -467,6 +543,43 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
         skuPricingIdMap[pricing.state_id] = pricing.id;
       });
       return { ...state, sku_state_id: skuPricingIdMap };
+    case UPDATE_COMPONENT_STATE:
+      return { ...state, currentPage: action.data.page, sku_id: action.data.id };
+    case RESET:
+      return { ...defaultCreateSkuState };
+    case POPULATE_SKU_DATA:
+      const localSkuInfo = { ...action.data[0] };
+      const selectedStates = [ ...localSkuInfo.pricings ];
+      const localStateCityMapping = { ...state.stateCityMapping };
+      const localCityRetailerMapping = { ...state.cityRetailerMapping };
+      const localRetailerMapping = { ...state.retailerMapping };
+      delete localSkuInfo.pricings;
+      selectedStates.forEach( ( sState ) => {
+        /* Check if the retailer exists in the state */
+        /* To avoid error data */
+        if ( localStateCityMapping[sState.state_id] ) {
+          localStateCityMapping[sState.state_id].is_selected = true;
+          localStateCityMapping[sState.state_id].duty_free = sState.duty_free;
+          localStateCityMapping[sState.state_id].duty_paid = sState.duty_paid;
+          localStateCityMapping[sState.state_id].is_fetched = true;
+          localStateCityMapping[sState.state_id].is_updated = false;
+          localStateCityMapping[sState.state_id].serverValues = {
+            'duty_free': sState.duty_free,
+            'duty_paid': sState.duty_paid
+          };
+          sState.sku_inventories.forEach( ( inventory ) => {
+            const cityId = inventory.retailer.kycs[0].city_id;
+            const retailerId = inventory.retailer.kycs[0].id;
+            localStateCityMapping[sState.state_id].selected_cities[cityId] = { ...state.cityRetailerMapping[cityId], is_selected: false};
+            localRetailerMapping[retailerId].is_selected = true;
+            localCityRetailerMapping[cityId].is_selected = true;
+            localCityRetailerMapping[cityId].selected_retailers[retailerId] = localRetailerMapping[retailerId];
+          });
+        }
+      });
+      /* for each state price loop and get the selected states */
+      /* for each retailer get the selected city */
+      return { ...state, skuReqObj: { ...localSkuInfo }, stateCityMapping: { ...localStateCityMapping }, cityRetailerMapping: { ...localCityRetailerMapping }, retailerMapping: { ...localRetailerMapping }, skuImageUrl: (localSkuInfo.image ? localSkuInfo.image : '')};
     default: return state;
   }
 };
@@ -490,7 +603,8 @@ export {
   CANCEL_IMAGE,
   SKU_INFORMATION_CHANGE,
   STATE_MRP_INFORMATION,
-  onSave
+  onSave,
+  updateComponentState
 };
 
 export default createSKUReducer;

@@ -18,21 +18,23 @@ import { fetchBrand
   , viewCity
   , STATE_MRP_INFORMATION
   , onSave
+  , updateComponentState
+  , RESET
 } from './CreateSkuActions';
 /* */
 
 class SkuWrapper extends Component {
-  constructor() {
+  constructor(props) {
     super();
     /* Data required for the bread component to render correctly */
     this.breadCrumbs = [];
     this.breadCrumbs.push({
       title: 'SKU Management',
       sequence: 1,
-      link: '#'
+      link: '/hadmin/skus/list_sku'
     });
     this.breadCrumbs.push({
-      title: 'Create SKU',
+      title: ((props.params.Id) ? 'Edit SKU' : 'Create SKU'),
       sequence: 2,
       link: '#'
     });
@@ -40,6 +42,17 @@ class SkuWrapper extends Component {
   componentDidMount() {
     this.props.dispatch(fetchBrand());
     this.props.dispatch(fetchState());
+    /* Check if its a view request */
+    /* Load more information incase of view/edit page */
+    const { Id } = this.props.params;
+
+    /* If a particular page is requested then load the page */
+    if ( Id ) {
+      this.props.dispatch(updateComponentState('edit_page', parseInt(Id, 10)));
+    }
+  }
+  componentWillUnmount() {
+    this.props.dispatch({ type: RESET });
   }
   onStateSelect(e) {
     const stateId = e.target.getAttribute('data-state-id');
@@ -87,7 +100,9 @@ class SkuWrapper extends Component {
   onSaveClick() {
     this.props.dispatch(onSave());
   }
-
+  onUpdateClick() {
+    console.log('updating');
+  }
   onSkuInfoChange(e) {
     console.log(e.target);
   }
@@ -106,6 +121,9 @@ class SkuWrapper extends Component {
               onRetailerCheck={this.onRetailerCheck.bind(this)}
               dispatch={ this.props.dispatch }
               onSave = { this.onSaveClick.bind(this) }
+              skuReqObj = { this.props.skuReqObj }
+              page = { this.props.currentPage }
+              onUpdate = { this.onUpdateClick.bind(this) }
             />
           </div>
         );
@@ -125,9 +143,11 @@ SkuWrapper.propTypes = {
   cityRetailerMapping: PropTypes.object.isRequired,
   viewedCity: PropTypes.object.isRequired,
   viewedState: PropTypes.object.isRequired,
+  skuReqObj: PropTypes.object.isRequired,
   ongoingRequest: PropTypes.bool.isRequired,
   lastError: PropTypes.object.isRequired,
   lastSuccess: PropTypes.array.isRequired,
+  currentPage: PropTypes.string.isRequired
 };
 const decoratedConnectedComponent = commonDecorator(SkuWrapper);
 export default connect( mapStateToProps )(decoratedConnectedComponent);
