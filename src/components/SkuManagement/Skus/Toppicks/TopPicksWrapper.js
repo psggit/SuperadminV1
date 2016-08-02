@@ -56,6 +56,9 @@ class TopPicksSkuWrapper extends Component {
       showGenre,
       selectedState
     } = this.props;
+
+    console.log('the pros values ');
+    console.log(this.props);
     // const { brandList, stateList, stateCityMapping, viewedState, viewedCity} = this.props;
     const genreComponent = ( showGenre ) ?
       (

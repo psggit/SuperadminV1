@@ -17,7 +17,9 @@ const Skus = () => { // eslint-disable-line no-unused-vars
                   </p>
                 </div>
                 <div className={styles.indiv_link}>
+                  <Link to={'/hadmin/skus/toppicks'}>
                     <p>Top Picks List</p>
+                  </Link>
                 </div><br/>
             </div>
         </div>

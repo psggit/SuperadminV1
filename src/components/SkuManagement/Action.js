@@ -13,6 +13,8 @@ import Endpoints, {globalCookiePolicy} from '../../Endpoints';
 
 import { routeActions } from 'redux-simple-router';
 
+import requestAction from '../Common/Actions/requestAction';
+
 /* Actions */
 
 const MAKE_REQUEST = 'CTSKU/MAKE_REQUEST';
@@ -162,27 +164,7 @@ const getStateData = (page) => {
       body: JSON.stringify(payload),
     };
     // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
-
-    return fetch(url, options)
-           .then(
-             (response) => {
-               if (response.ok) { // 2xx status
-                 response.json().then(
-                   (d) => {
-                     return dispatch({type: REQUEST_SUCCESS, data: d});
-                   },
-                   () => {
-                     return dispatch(requestFailed('Error. Try again!'));
-                   }
-                 );
-               } else {
-                 return dispatch(requestFailed('Error. Try again!'));
-               }
-             },
-             (error) => {
-               console.log(error);
-               return dispatch(requestFailed(error.text));
-             });
+    return dispatch( requestAction(url, options, REQUEST_SUCCESS, REQUEST_ERROR));
   };
 };
 

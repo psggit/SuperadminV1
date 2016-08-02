@@ -63,11 +63,7 @@ const fetchCategory = () => {
       body: JSON.stringify(queryObj),
     };
     /* Make a MAKE_REQUEST action */
-    dispatch({type: MAKE_REQUEST});
-    return Promise.all([
-      dispatch(requestAction(url, options, BRAND_CATEGORY_FETCH, REQUEST_ERROR)),
-      dispatch({type: REQUEST_COMPLETED})
-    ]);
+    dispatch(requestAction(url, options, BRAND_CATEGORY_FETCH, REQUEST_ERROR));
   };
 };
 
@@ -85,12 +81,7 @@ const fetchGenre = () => {
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
-    /* Make a MAKE_REQUEST action */
-    dispatch({type: MAKE_REQUEST});
-    return Promise.all([
-      dispatch(requestAction(url, options, BRAND_GENRE_FETCH, REQUEST_ERROR)),
-      dispatch({type: REQUEST_COMPLETED})
-    ]);
+    dispatch(requestAction(url, options, BRAND_GENRE_FETCH, REQUEST_ERROR));
   };
 };
 
@@ -109,11 +100,8 @@ const fetchCompany = () => {
       body: JSON.stringify(queryObj),
     };
     /* Make a MAKE_REQUEST action */
-    dispatch({type: MAKE_REQUEST});
-    return Promise.all([
-      dispatch(requestAction(url, options, BRAND_COMPANY_FETCH, REQUEST_ERROR)),
-      dispatch({type: REQUEST_COMPLETED})
-    ]);
+    // dispatch({type: MAKE_REQUEST});
+    dispatch(requestAction(url, options, BRAND_COMPANY_FETCH, REQUEST_ERROR));
   };
 };
 
@@ -145,11 +133,8 @@ const fetchState = () => {
       body: JSON.stringify(queryObj),
     };
     /* Make a MAKE_REQUEST action */
-    dispatch({type: MAKE_REQUEST});
-    return Promise.all([
-      dispatch(requestAction(url, options, BRAND_STATE_FETCH, REQUEST_ERROR)),
-      dispatch({type: REQUEST_COMPLETED})
-    ]);
+    // dispatch({type: MAKE_REQUEST});
+    dispatch(requestAction(url, options, BRAND_STATE_FETCH, REQUEST_ERROR));
   };
 };
 
@@ -184,11 +169,7 @@ const fetchBrand = (Id) => {
       body: JSON.stringify(queryObj),
     };
     /* Make a MAKE_REQUEST action */
-    dispatch({type: MAKE_REQUEST});
-    return Promise.all([
-      dispatch(requestAction(url, options, BRAND_FETCHED, REQUEST_ERROR)),
-      dispatch({type: REQUEST_COMPLETED})
-    ]);
+    dispatch(requestAction(url, options, BRAND_FETCHED, REQUEST_ERROR));
   };
 };
 
