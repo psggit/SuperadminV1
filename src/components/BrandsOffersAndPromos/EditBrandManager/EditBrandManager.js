@@ -45,10 +45,40 @@ class EditBrandManager extends Component { // eslint-disable-line no-unused-vars
   onClickExistingBrand(bid) {
     let brand = {};
     const sbl = [...this.props.selectedBrandsList];
-    sbl.map((b) => {
+    sbl.forEach((b) => {
       if (b.id === bid) {
         brand = {...b};
-      }});
+      }
+    });
+    const cbl = [...this.props.companyBrands];
+    let cbrand = {};
+    cbl.forEach((b) => {
+      if (b.id === bid) {
+        cbrand = b;
+      }
+    });
+    const fregions = [];
+    let isp = false;
+    cbrand.regions.forEach((cr) => {
+      isp = false;
+      brand.regions.forEach((sr) => {
+        if (sr.in_db) {
+          if (cr.id === sr.oid) {
+            isp = true;
+            fregions.push({...sr});
+          }
+        } else {
+          if (cr.id === sr.id) {
+            isp = true;
+            fregions.push({...sr});
+          }
+        }
+      });
+      if (isp === false) {
+        fregions.push({...cr});
+      }
+    });
+    brand.regions = [...fregions];
     Promise.all([
       this.props.dispatch(setContainerType(true)),
       this.props.dispatch(brandContainerVisibility(brand))
@@ -68,14 +98,14 @@ class EditBrandManager extends Component { // eslint-disable-line no-unused-vars
     const getActiveRegionCount = (regions) => {
       let count = 0;
       regions.map((region) => {
-        count = (region.is_selected) ? count + 1 : count + 0;
+        count = (region.is_selected) ? count + 1 : count;
       });
       return count;
     };
 
     const selectedBrandsHtml = selectedBrandsList.map((sb) => {
       const count = getActiveRegionCount([...sb.regions]);
-      return (
+      return (sb.is_deleted) ? ('') : (
         <li>
           <label>{sb.brand_name}</label>
           <p className={styles.pointer_click} onClick={this.onClickExistingBrand.bind(this, sb.id)}>{count} {(count !== 1) ? 'Regions' : 'Region' }</p>
