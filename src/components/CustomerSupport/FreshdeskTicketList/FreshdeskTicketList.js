@@ -77,7 +77,7 @@ class FreshdeskTicketList extends React.Component { // eslint-disable-line no-un
             limit = "10"
             triggerPageChange={ this.triggerPageChange.bind(this) }
             showMax="5"
-            parentUrl="/hadmin/customer_support/freshdeskticketlist"
+            parentUrl="/hadmin/customer_support/freshdesk_ticketlist"
           />
         </div>
       );

@@ -25,7 +25,7 @@ const Support = ({dispatch}) => { // eslint-disable-line no-unused-vars
                     <div className={styles.squarecontent}>
                         <div>
                             <span>
-                                <Link to={'#'}>Freshdesk Issue History</Link>
+                              <Link to={'/hadmin/customer_support/freshdesk_ticketlist'}>Freshdesk Issue History</Link>
                             </span>
                         </div>
                     </div>

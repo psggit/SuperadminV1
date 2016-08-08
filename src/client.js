@@ -22,10 +22,6 @@ import {Login, Home, PageContainer,
   Kycfunctions,
   VerifyKycs,
   UploadKycs,
-  /*
-  ViewKyc,
-  ViewKycProfile,
-  */
   ViewStates,
   ViewState,
   KycViewUpload,
@@ -203,11 +199,11 @@ const main = (
         <Route path="retailer_management/disable_device" component={RetailerManagementDisableDevice} />
         <Route path="retailer_management/transactions" component={RetailerManagementTransactions} />
         <Route path="retailer_management/create_organization" component={RetailerManagementCreateOrganization} />
+        <Route path="customer_support" component={CustomerSupportSupport} />
         <Route path="customer_support/customer_profile" component={CustomerSupportCustomerProfile} />
         <Route path="customer_support/freshdesk_ticket" component={CustomerSupportFreshdeskTicket} />
         <Route path="customer_support/issue_history" component={CustomerSupportIssueHistory} />
-        <Route path="customer_support/support" component={CustomerSupportSupport} />
-        <Route path="customer_support/freshdeskticketlist" component={CustomerSupportFreshdeskTicketList} />
+        <Route path="customer_support/freshdesk_ticketlist" component={CustomerSupportFreshdeskTicketList} />
         <Route path="customer_support/instant_callback_history" component={CustomerSupportInstantCallbackHistory} />
         /* End of SKU Management */
         {/*
