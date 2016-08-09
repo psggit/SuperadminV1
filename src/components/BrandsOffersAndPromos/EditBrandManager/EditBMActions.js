@@ -200,6 +200,24 @@ const sbListToOptions = (sbList, bmId) => {
   return brOptions;
 };
 
+const bmInfoUpdateOptions = (bmInfo) => {
+  bmInfo.is_disabled = (bmInfo.is_disabled === 'true') ? true : false;
+  bmInfo.updated_at = new Date().toISOString();
+  console.log(bmInfo);
+  const bmData = {};
+  bmData.values = bmInfo;
+  bmData.where = {'id': bmInfo.id};
+  delete bmInfo.id;
+  bmData.returning = ['id'];
+  const options = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: globalCookiePolicy,
+    body: JSON.stringify(bmData),
+  };
+  return options;
+};
+
 const bmInfoToOptions = (bmInfo) => {
   bmInfo.is_disabled = (bmInfo.is_disabled === 'true') ? true : false;
   bmInfo.tm_id = 123456789;
@@ -256,14 +274,95 @@ const createBrandManager = (bmInfo, sbList) => {
   };
 };
 
-const regionsUpdateOrDelete = (mod) => {
-  const modArr = {...mod};
-  console.log(modArr);
+const updateBM = (mod) => {
+  return (dispatch) => {
+    const bmUrl = Endpoints.db + '/table/brand_manager/update';
+    const bmOptions = bmInfoUpdateOptions({...mod});
+    return dispatch(requestAction(bmUrl, bmOptions)).then((response) => {
+      console.log(response);
+    });
+  };
 };
 
-const updateBM = (mod) => {
-  const modObj = {...mod};
-  console.log(modObj);
+const deleteRegionsFunc = (dArr) => {
+  return (dispatch) => {
+    const delRegionUrl = Endpoints.db + '/table/managers/delete';
+    const dataArr = dArr.map((dId) => ({'id': dId}));
+    const data = {};
+    data.where = {'$or': dataArr};
+    data.returning = ['id'];
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(data),
+    };
+    console.log(options);
+    console.log('Starters!');
+    return dispatch(requestAction(delRegionUrl, options)).then((response) => {
+      console.log(response);
+    }).catch((resp) => {
+      console.log(resp);
+    });
+  };
+};
+
+const insertRegionsFunc = (srList) => {
+  return (dispatch) => {
+    const insertRegionUrl = Endpoints.db + '/table/managers/insert';
+    const brData = {};
+    brData.objects = srList;
+    brData.returning = ['id'];
+    const brOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(brData),
+    };
+    return dispatch(requestAction(insertRegionUrl, brOptions)).then((response) => {
+      console.log(response);
+    }).catch((resp) => {
+      console.log(resp);
+    });
+  };
+};
+
+const regionsUpdateOrDelete = (mod, bmId) => {
+  return (dispatch) => {
+    const modArr = [...mod];
+    const srListForCreate = [];     // array of region objects
+    const deleteRegionIds = [];     // array of region ids
+    modArr.forEach((brand) => {
+      if (brand.is_deleted) {
+        brand.regions.forEach((region) => {
+          deleteRegionIds.push(region.id);
+        });
+      } else {
+        brand.regions.forEach((region) => {
+          if (region.is_selected && region.in_db === undefined) {
+            // Create new
+            const obj = {};
+            obj.brand_id = brand.id;
+            obj.brand_manager_id = bmId;
+            obj.region_id = region.id;
+            obj.created_at = new Date().toISOString();
+            obj.updated_at = new Date().toISOString();
+            srListForCreate.push(obj);
+          }
+          if (!region.is_selected && region.in_db !== undefined) {
+            // Delete existing
+            deleteRegionIds.push(region.id);
+          }
+        });
+      }
+    });
+    console.log('The Main course.');
+    return Promise.all([
+      dispatch(deleteRegionsFunc([...deleteRegionIds])).then(
+        dispatch(insertRegionsFunc([...srListForCreate]))
+      )
+    ]);
+  };
 };
 
 const updateBrandManager = () => {
@@ -271,10 +370,14 @@ const updateBrandManager = () => {
   // insert or delete Managers
   return (dispatch, getState) => {
     const state_ = {...getState().edit_bm_data};
-    const modSBList = {...state_.selectedBrandsList};
+    const modSBList = [...state_.selectedBrandsList];
     const modBMInfo = {...state_.brandManagerInfo};
-    updateBM(modBMInfo);
-    regionsUpdateOrDelete(modSBList);
+    delete modBMInfo.company;
+    console.log('Desert Time!');
+    return Promise.all([
+      dispatch(updateBM(modBMInfo)),
+      dispatch(regionsUpdateOrDelete(modSBList, modBMInfo.id))
+    ]);
   };
 };
 
@@ -283,12 +386,8 @@ const updateBrandManager = () => {
 const getBrandCount = () => {
   return (dispatch) => {
     dispatch({ type: MAKE_REQUEST});
-    //
-    /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
-    const payload = {
-      'columns': ['*']
-    };
-
+    // const payload = {'where': {'id': f}, 'columns': ['*']};
+    const payload = {'columns': ['*']};
     const url = Endpoints.db + '/table/' + 'brand' + '/count';
     const options = {
       method: 'POST',
@@ -297,7 +396,6 @@ const getBrandCount = () => {
       body: JSON.stringify(payload),
     };
     // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
-
     return fetch(url, options).then(
       (response) => {
         if (response.ok) { // 2xx status
@@ -323,15 +421,12 @@ const getBrandCount = () => {
 const getBrandData = (page, limit) => {
   return (dispatch) => {
     dispatch({ type: MAKE_REQUEST});
-    //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
     let offset = 0;
     // const count = currentProps.count;
-
     // limit = (page * 10) > count ? count : ((page) * 10);
     // limit = ((page) * 10);
     offset = (page - 1) * limit;
-
     const payload = {
       columns: ['*',
         {
@@ -404,6 +499,15 @@ const updateRegions = (sb, rid) => {
   sb.regions.forEach((region) => {
     let localReg = {};
     localReg = {...region};
+    /*
+    if (localReg.in_db) {
+      localReg.is_selected = (localReg.oid === rid) ? !localReg.is_selected : localReg.is_selected;
+    } else {
+      localReg.is_selected = (localReg.id === rid) ? !localReg.is_selected : localReg.is_selected;
+    }
+    */
+    console.log('this is a goat fucker!');
+    console.log(sb, rid);
     localReg.is_selected = (localReg.id === rid) ? !localReg.is_selected : localReg.is_selected;
     regionObj.push(localReg);
   });
@@ -435,6 +539,8 @@ const updateSelectedBrandsList = (selectedBrand, selectedBrandsList, isDelete = 
         if (brand.id === selectedBrand.id) {
           if (!isDelete) {
             updatedBrandsList.push({...selectedBrand});
+          } else {
+            updatedBrandsList.push({...selectedBrand, is_deleted: true});
           }
         } else {
           updatedBrandsList.push({...brand});
@@ -464,11 +570,17 @@ const getSBList = (respArr) => {
       tempObj[bid] = {...region.brand};
       const r = {...region.region};
       r.is_selected = true;
+      r.in_db = true;
+      r.oid = r.id;
+      r.id = region.id;
       tempObj[bid].regions = [{...r}];
     } else {
       delete region.brand;
       const r = {...region.region};
       r.is_selected = true;
+      r.in_db = true;
+      r.oid = r.id;
+      r.id = region.id;
       tempObj[bid].regions.push({...r});
     }
   });
@@ -530,6 +642,8 @@ export {
   updateBrandManager,
   BRAND_MANAGER_INFO_CHANGE,
   fetchBManager,
+  updateBM,
+  insertRegionsFunc,
   RESET
 };
 

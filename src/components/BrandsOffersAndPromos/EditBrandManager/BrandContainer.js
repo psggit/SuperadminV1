@@ -5,8 +5,24 @@ import {setRegionCities, setViewCities, updateRegionSelection, updateSelectedBra
 TODO: Cancel, 0Bug, Create Brand Manager
 */
 
-const brandHtml = (companyBrands) => {
-  return companyBrands.map((brand, index) => (
+const brandHtml = (companyBrands, selectedBrandsList) => {
+  console.log('this is a goat fucker!');
+  console.log(companyBrands, selectedBrandsList);
+  const finalBrands = [];
+  if (selectedBrandsList.length < 1) {
+    companyBrands.forEach((brand) => {
+      finalBrands.push(brand);
+    });
+  } else {
+    companyBrands.forEach((cb) => {
+      selectedBrandsList.forEach((sb) => {
+        if (sb.id !== cb.id || sb.is_deleted) {
+          finalBrands.push(cb);
+        }
+      });
+    });
+  }
+  return finalBrands.map((brand, index) => (
     <option key={index} value={brand.id}>{brand.brand_name}</option>
   ));
 };
@@ -62,12 +78,16 @@ const onChangeBrand = (companyBrands, dispatch) => {
   });
 };
 
-const onDelete = (selectedBrand, selectedBrandsList, dispatch) => {
-  dispatch(updateSelectedBrandsList({...selectedBrand}, [...selectedBrandsList], true));
+const onDelete = (selectedBrand, selectedBrandsList, companyBrands, dispatch) => {
+  Promise.all([
+    dispatch(updateSelectedBrandsList({...selectedBrand}, [...selectedBrandsList], true))
+  ]);
 };
 
-const onSave = (selectedBrand, selectedBrandsList, dispatch) => {
-  dispatch(updateSelectedBrandsList({...selectedBrand}, [...selectedBrandsList]));
+const onSave = (selectedBrand, selectedBrandsList, companyBrands, dispatch) => {
+  Promise.all([
+    dispatch(updateSelectedBrandsList({...selectedBrand}, [...selectedBrandsList]))
+  ]);
 };
 
 const onUpdate = (selectedBrand, selectedBrandsList, dispatch) => {
@@ -81,24 +101,25 @@ const onCancel = (dispatch) => {
   ]);
 };
 
-const actionHtml = (isExistingBrand, styles, selectedBrand, selectedBrandsList, dispatch) => {
+const actionHtml = (isExistingBrand, styles, selectedBrand, selectedBrandsList, companyBrands, dispatch) => {
   return (isExistingBrand) ? (
       <div className={styles.user_actions}>
-        <button onClick={onDelete.bind(this, selectedBrand, selectedBrandsList, dispatch)}>Delete</button>
+        <button onClick={onDelete.bind(this, selectedBrand, selectedBrandsList, companyBrands, dispatch)}>Delete</button>
         <button onClick={onUpdate.bind(this, selectedBrand, selectedBrandsList, dispatch)}>Update</button>
       </div> ) : (
       <div className={styles.user_actions}>
         <button onClick={onCancel.bind(this, dispatch)}>Cancel</button>
-        <button onClick={onSave.bind(this, selectedBrand, selectedBrandsList, dispatch)}>Save</button>
+        <button onClick={onSave.bind(this, selectedBrand, selectedBrandsList, companyBrands, dispatch)}>Save</button>
       </div>
       );
 };
 
-const brandOptions = (isExistingBrand, selectedBrand, companyBrands, dispatch) => {
+
+const brandOptions = (isExistingBrand, selectedBrand, companyBrands, selectedBrandsList, dispatch) => {
   return (!isExistingBrand) ? (
   <select name="selected_brand_id" data-field-name="selected_brand_id" onChange={onChangeBrand.bind(this, companyBrands, dispatch)}>
     <option disabled selected value > -- Select Brand -- </option>
-    { brandHtml(companyBrands) }
+    { brandHtml(companyBrands, selectedBrandsList) }
   </select>) : (
   <select name="selected_brand_id" data-field-name="selected_brand_id" onChange={onChangeBrand.bind(this, companyBrands, dispatch)}>
     <option value={selectedBrand.id}>{selectedBrand.brand_name}</option>
@@ -109,9 +130,9 @@ const BrandContainer = ({props}) => {
   const { companyBrands
       , showBrandContainer
       , selectedBrand
+      , selectedBrandsList
       , regionCitiesView
       , isExistingBrand
-      , selectedBrandsList
       , dispatch } = props;
   const styles = require('./EditBrandManager.scss');
   console.log('selected brand');
@@ -121,7 +142,7 @@ const BrandContainer = ({props}) => {
       <div className={styles.heading}>Select Brand</div>
       <div className={styles.wd_100}>
         <label className={styles.region_lab}>Brand name</label>
-        {brandOptions(isExistingBrand, selectedBrand, companyBrands, dispatch)}
+        {brandOptions(isExistingBrand, selectedBrand, companyBrands, selectedBrandsList, dispatch)}
       </div>
       <div className={styles.wd_100 + ' ' + styles.select_city}>
         <label className={styles.cites_lab}>
@@ -139,7 +160,7 @@ const BrandContainer = ({props}) => {
       </div>
       {citiesContainer(regionCitiesView, styles)}
       <div className="clearfix"></div>
-      { actionHtml(isExistingBrand, styles, selectedBrand, selectedBrandsList, dispatch) }
+      { actionHtml(isExistingBrand, styles, selectedBrand, selectedBrandsList, companyBrands, dispatch) }
     </div>
     );
   return (html);

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { routeActions } from 'redux-simple-router';
 
-const PageContainer = ({schema, location, children, dispatch}) => { // eslint-disable-line no-unused-vars
+const PageContainer = ({location, children, dispatch}) => { // eslint-disable-line no-unused-vars
   const styles = require('./PageContainer.scss');
 
   let lastPathname = location.pathname.split('/');
@@ -45,7 +45,9 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
                 </Link>
               </label></li>
               <li className={styles.sidebar_list}><label>
-                <a href="#"> Support </a>
+                <Link to={'/hadmin/customer_support'} className={ lastPathname === 'customer_support' ? styles.active : '' }>
+                    Customer Support
+                </Link>
               </label></li>
               </ul>
             </li>
@@ -65,7 +67,7 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
                 <a href="#"> Customer Transactions</a>
               </label></li>
               <li className={styles.sidebar_list}><label>
-                <a href="#"> Support </a>
+                <Link to={'/customer_support/freshdesk_ticketlist'} className={ lastPathname === 'freshdesk_ticketlist' ? styles.active : '' }>Support</Link>
               </label></li>
               </ul>
             </li>
@@ -180,7 +182,6 @@ const PageContainer = ({schema, location, children, dispatch}) => { // eslint-di
 
 const mapStateToProps = (state) => {
   return {
-    schema: state.tables.allSchemas,
     location: state.routing.location
   };
 };

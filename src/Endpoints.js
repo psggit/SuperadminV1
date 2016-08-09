@@ -9,6 +9,7 @@ const Endpoints = {
   getCredentials: base + '/hauth/get_credentials',
   file_upload: base + '/file_upload/upload',
   file_get: base + 'file_upload/get?fs_url=',
+  integrations_base: 'http://localhost:5000',
   baseUrl: base
 };
 const globalCookiePolicy = 'include';
