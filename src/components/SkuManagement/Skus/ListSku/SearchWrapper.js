@@ -17,7 +17,7 @@ const SearchWrapper = ( {data} ) => {
             <td>
               <Link to={'/hadmin/skus/edit_sku/' + dat.id}>
                 <button className={styles.edit_btn} data-genre-id={dat.id}>
-                  View
+                  Edit
                 </button>
               </Link>
             </td>

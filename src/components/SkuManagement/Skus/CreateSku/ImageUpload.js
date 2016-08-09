@@ -27,6 +27,7 @@ class ImageUpload extends Component {
           <div className={styles.upload_images}>
             <div className={styles.upload_id}>Upload</div>
             <div className={styles.file_upload}>
+            {/* http://130.211.246.199 */}
               {
                 (imageUrl.length > 0) ?
                   (

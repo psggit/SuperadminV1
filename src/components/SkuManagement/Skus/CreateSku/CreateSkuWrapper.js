@@ -18,6 +18,7 @@ import { fetchBrand
   , viewCity
   , STATE_MRP_INFORMATION
   , onSave
+  , onUpdate
   , updateComponentState
   , RESET
 } from './CreateSkuActions';
@@ -102,6 +103,7 @@ class SkuWrapper extends Component {
   }
   onUpdateClick() {
     console.log('updating');
+    this.props.dispatch(onUpdate());
   }
   onSkuInfoChange(e) {
     console.log(e.target);
