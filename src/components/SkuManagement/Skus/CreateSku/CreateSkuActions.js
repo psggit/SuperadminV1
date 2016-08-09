@@ -182,7 +182,9 @@ const onSave = () => {
 
     const brandListingObjs = {};
     let brandListingObj = {};
+    const brandListingSelectObj = {};
     const brandListingUrl = Endpoints.db + '/table/brand_listing/insert';
+    const brandListingSelectUrl = Endpoints.db + '/table/brand_listing/select';
 
     let options = {};
     let skuReqObj = {};
@@ -226,6 +228,11 @@ const onSave = () => {
         brandListingObjs.objects = [];
         brandListingObjs.returning = ['id'];
 
+        brandListingSelectObj.columns = ['brand_id', 'id', 'state_id'];
+        brandListingSelectObj.where = {
+          '$or': []
+        };
+
         /* Dispatch an update for sku_id */
         dispatch({ type: SKU_ID_CREATED, data: resp.returning[0].id });
         /* Create SKU_PRICING OBJECTS */
@@ -258,6 +265,13 @@ const onSave = () => {
           brandListingObj.created_at = new Date().toISOString();
           brandListingObj.updated_at = new Date().toISOString();
           brandListingObjs.objects.push(brandListingObj);
+
+          brandListingSelectObj.where.$or.push(
+            {
+              'brand_id': parseInt(brandListingObj.brand_id, 10),
+              'state_id': parseInt(brandListingObj.state_id, 10)
+            }
+          );
         });
         options = {
           method: 'POST',
@@ -269,24 +283,10 @@ const onSave = () => {
         //  Effect: This will end up in creation of SKU but not its prices in respective states
         return dispatch(requestAction(skuPricingUrl, options));
       })
-      .then(( pricingResp ) => {
-        /* Update pricing ids */
+      .then( (pricingResp) => {
+        /* Variables for this retailers */
         if ( pricingResp.returning.length > 0) {
           dispatch( { type: SKU_PRICING_ID_CREATED, data: pricingResp.returning });
-
-          options = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: globalCookiePolicy,
-            body: JSON.stringify(brandListingObjs),
-          };
-          return dispatch(requestAction(brandListingUrl, options));
-        }
-        throw Error('Something went wrong while creating sku states');
-      })
-      .then( (resp) => {
-        /* Variables for this retailers */
-        if ( resp.returning.length > 0) {
           const skuCityObjs = [];
           const rObjs = {};
           const inventoryRetailerUrl = Endpoints.db + '/table/inventory/insert';
@@ -320,18 +320,115 @@ const onSave = () => {
             credentials: globalCookiePolicy,
             body: JSON.stringify(rObjs),
           };
+          // 3rd point of failure
+          //  Effect: The sku wouldn't have gotten tagged with the relevant retailers
           return dispatch(requestAction(inventoryRetailerUrl, options));
         }
         throw Error('Something went wrong while creating inventory');
       })
+      .then(( resp ) => {
+        /* Update pricing ids */
+        /* Check whether the brand listing entry is already there or no */
+        console.log(resp);
+        options = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: globalCookiePolicy,
+          body: JSON.stringify(brandListingSelectObj)
+        };
+        return dispatch(requestAction(brandListingSelectUrl, options));
+      })
+      .then( ( resp ) => {
+        const existingMap = {};
+        if ( resp.length === brandListingObjs.objects.length ) {
+          return true;
+        }
+        /* Remove the already created brandLising objects */
+        resp.forEach( ( r ) => {
+          existingMap[r.brand_id + ',' + r.state_id] = true;
+        });
+
+        const updatedBrandListingObjs = [];
+        brandListingObjs.objects.forEach( ( bl ) => {
+          if ( !existingMap[bl.brand_id + ',' + bl.state_id] ) {
+            updatedBrandListingObjs.push(bl);
+          }
+        });
+        brandListingObjs.objects = [ ...updatedBrandListingObjs ];
+
+        if ( brandListingObjs.objects.length === 0) {
+          return true;
+        }
+        options = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: globalCookiePolicy,
+          body: JSON.stringify(brandListingObjs),
+        };
+        return dispatch(requestAction(brandListingUrl, options));
+      })
       .then(() => {
         alert('SKU Updated Successfully');
         /* Add an entry to brand listing table too */
-
         return dispatch(routeActions.push('/hadmin/skus/list_sku'));
       })
       .catch((resp) => {
         alert('Error: ' + resp.error);
+        return dispatch(routeActions.push('/hadmin/skus/list_sku'));
+      });
+  };
+};
+
+/* onUpdate */
+
+const onUpdate = () => {
+  return (dispatch, getState) => {
+    // console.log(getState());
+    const currState = getState();
+    const skuInsertObj = {};
+    const skuUrl = Endpoints.db + '/table/sku/update';
+
+    let options = {};
+    let skuReqObj = {};
+    skuReqObj = currState.create_sku_data.skuReqObj;
+    skuReqObj.image = (currState.create_sku_data.skuImageUrl.length > 0) ? currState.create_sku_data.skuImageUrl : null;
+    skuReqObj.created_at = new Date().toISOString();
+    skuReqObj.updated_at = new Date().toISOString();
+
+    /* Deleting status field as that is not required for the SKU */
+    delete skuReqObj.status;
+
+    /* SKU insert object creation */
+    skuInsertObj.values = {
+      ...skuReqObj
+    };
+    skuInsertObj.where = {
+      'id': currState.create_sku_data.sku_id
+    };
+    skuInsertObj.returning = ['id'];
+    /* End of it */
+
+    options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(skuInsertObj),
+    };
+
+    // console.log(skuReqObj);
+    // console.log('jON');
+    // console.log(JSON.stringify(skuInsertObj));
+    // 1st Point for failure
+    //  Effect: Nothing
+    return dispatch(requestAction(skuUrl, options))
+      .then(() => {
+        alert('SKU Updated Successfully');
+        /* Add an entry to brand listing table too */
+        return dispatch(routeActions.push('/hadmin/skus/list_sku'));
+      })
+      .catch((resp) => {
+        alert('Error: ' + resp.error);
+        return dispatch(routeActions.push('/hadmin/skus/list_sku'));
       });
   };
 };
@@ -503,7 +600,7 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
             cityInfo: currCity[countCity]
           };
           while ( countRetailer < retailers.length) {
-            retailerMapping[retailers[countRetailer].id] = {
+            retailerMapping[retailers[countRetailer].retailer_id] = {
               is_selected: false,
               retailerInfo: retailers[countRetailer]
             };
@@ -569,7 +666,7 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
           };
           sState.sku_inventories.forEach( ( inventory ) => {
             const cityId = inventory.retailer.kycs[0].city_id;
-            const retailerId = inventory.retailer.kycs[0].id;
+            const retailerId = inventory.retailer_id;
             localStateCityMapping[sState.state_id].selected_cities[cityId] = { ...state.cityRetailerMapping[cityId], is_selected: false};
             localRetailerMapping[retailerId].is_selected = true;
             localCityRetailerMapping[cityId].is_selected = true;
@@ -604,6 +701,7 @@ export {
   SKU_INFORMATION_CHANGE,
   STATE_MRP_INFORMATION,
   onSave,
+  onUpdate,
   updateComponentState
 };
 
