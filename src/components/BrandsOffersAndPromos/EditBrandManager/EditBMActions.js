@@ -30,7 +30,6 @@ const BRAND_MANAGER_FETCH = 'EDIT_BM/BRAND_MANAGER_FETCH';
 const fetchBrands = (companyId) => {
   return (dispatch) => {
     /* Url */
-    console.log('this mother fucker is getting it!!');
     const url = Endpoints.db + '/table/brand/select';
     const queryObj = {};
     // queryObj.columns = [ '*' ];
@@ -54,7 +53,6 @@ const fetchBrands = (companyId) => {
 const fetchBManager = (bmId) => {
   return (dispatch) => {
     const url = Endpoints.db + '/table/brand_manager/select';
-    console.log(bmId);
     const queryObj = {};
     queryObj.columns = ['*', {
       'name': 'brands',
@@ -137,7 +135,6 @@ const insertBrand = (brandObj) => {
     return dispatch(requestAction(url, options))
       .then((resp) => {
         if (resp.returning.length > 0) {
-          console.log(resp);
           dispatch(routeActions.push('/hadmin/brand_management'));
         }
       })
@@ -203,7 +200,6 @@ const sbListToOptions = (sbList, bmId) => {
 const bmInfoUpdateOptions = (bmInfo) => {
   bmInfo.is_disabled = (bmInfo.is_disabled === 'true') ? true : false;
   bmInfo.updated_at = new Date().toISOString();
-  console.log(bmInfo);
   const bmData = {};
   bmData.values = bmInfo;
   bmData.where = {'id': bmInfo.id};
@@ -223,7 +219,6 @@ const bmInfoToOptions = (bmInfo) => {
   bmInfo.tm_id = 123456789;
   bmInfo.created_at = new Date().toISOString();
   bmInfo.updated_at = new Date().toISOString();
-  console.log(bmInfo);
   const bmData = {};
   bmData.objects = [bmInfo];
   bmData.returning = ['id'];
@@ -242,11 +237,9 @@ const createBM = (bmInfo, sbList) => {
     const bmOptions = bmInfoToOptions(bmInfo);
     return dispatch(requestAction(bmUrl, bmOptions)).then((response) => {
       if (response.returning !== undefined) {
-        console.log('Brand Manager Saved!!');
         const brUrl = Endpoints.db + '/table/managers/insert';
         const brOptions = sbListToOptions(sbList, response.returning[0].id);
         dispatch(requestAction(brUrl, brOptions)).then((resp) => {
-          console.log('Brand Map Saved!!');
           console.log(resp);
           return Promise.all([
             dispatch(routeActions.push('/hadmin/brands_offers_and_promos/brand_manager_profile')),
@@ -298,7 +291,6 @@ const deleteRegionsFunc = (dArr) => {
       body: JSON.stringify(data),
     };
     console.log(options);
-    console.log('Starters!');
     return dispatch(requestAction(delRegionUrl, options)).then((response) => {
       console.log(response);
     }).catch((resp) => {
@@ -356,7 +348,6 @@ const regionsUpdateOrDelete = (mod, bmId) => {
         });
       }
     });
-    console.log('The Main course.');
     return Promise.all([
       dispatch(deleteRegionsFunc([...deleteRegionIds])).then(
         dispatch(insertRegionsFunc([...srListForCreate]))
@@ -373,7 +364,6 @@ const updateBrandManager = () => {
     const modSBList = [...state_.selectedBrandsList];
     const modBMInfo = {...state_.brandManagerInfo};
     delete modBMInfo.company;
-    console.log('Desert Time!');
     return Promise.all([
       dispatch(updateBM(modBMInfo)),
       dispatch(regionsUpdateOrDelete(modSBList, modBMInfo.id))
@@ -506,7 +496,6 @@ const updateRegions = (sb, rid) => {
       localReg.is_selected = (localReg.id === rid) ? !localReg.is_selected : localReg.is_selected;
     }
     */
-    console.log('this is a goat fucker!');
     console.log(sb, rid);
     localReg.is_selected = (localReg.id === rid) ? !localReg.is_selected : localReg.is_selected;
     regionObj.push(localReg);
@@ -532,11 +521,13 @@ const updateSelectedBrandsList = (selectedBrand, selectedBrandsList, isDelete = 
   return (dispatch) => {
     // push or update the selectedBrandsList object
     const updatedBrandsList = [];
+    let isPush = true;
     if (selectedBrandsList.length === 0) {
       updatedBrandsList.push({...selectedBrand});
     } else {
       selectedBrandsList.map((brand) => {
         if (brand.id === selectedBrand.id) {
+          isPush = false;
           if (!isDelete) {
             updatedBrandsList.push({...selectedBrand});
           } else {
@@ -546,6 +537,9 @@ const updateSelectedBrandsList = (selectedBrand, selectedBrandsList, isDelete = 
           updatedBrandsList.push({...brand});
         }
       });
+    }
+    if (isPush) {
+      updatedBrandsList.push({...selectedBrand});
     }
     return Promise.all([
       dispatch({type: UPDATE_SELECTED_BRANDS_LIST, data: updatedBrandsList}),
@@ -588,7 +582,6 @@ const getSBList = (respArr) => {
   Object.keys(tempObj).forEach((key) => {
     finalArr.push(tempObj[key]);
   });
-  console.log(finalArr);
   return finalArr;
 };
 
