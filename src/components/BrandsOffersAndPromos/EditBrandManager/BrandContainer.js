@@ -6,8 +6,6 @@ TODO: Cancel, 0Bug, Create Brand Manager
 */
 
 const brandHtml = (companyBrands, selectedBrandsList) => {
-  console.log('this is a goat fucker!');
-  console.log(companyBrands, selectedBrandsList);
   const finalBrands = [];
   if (selectedBrandsList.length < 1) {
     companyBrands.forEach((brand) => {
@@ -15,13 +13,24 @@ const brandHtml = (companyBrands, selectedBrandsList) => {
     });
   } else {
     companyBrands.forEach((cb) => {
+      let inSb = false;
+      let isDeleted = false;
       selectedBrandsList.forEach((sb) => {
-        if (sb.id !== cb.id || sb.is_deleted) {
-          finalBrands.push(cb);
+        if (sb.id === cb.id) {
+          inSb = true;
+        }
+        if (sb.id === cb.id && sb.is_deleted) {
+          isDeleted = true;
         }
       });
+      if (!inSb) {
+        finalBrands.push(cb);
+      } else if (isDeleted) {
+        finalBrands.push(cb);
+      }
     });
   }
+  console.log(finalBrands);
   return finalBrands.map((brand, index) => (
     <option key={index} value={brand.id}>{brand.brand_name}</option>
   ));
