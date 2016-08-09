@@ -388,6 +388,7 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
   let selectedCity;
   let currRetailer;
   let modifiedCityRetailerMapping;
+  let retailersObj;
   switch (action.type) {
     case BRAND_FETCH:
       return {...state, brandList: action.data};
@@ -401,6 +402,9 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
       }
       return {...state, stateCityMapping: { ...state.stateCityMapping, ...currState }};
     case MARK_RETAILER_SELECTED:
+      /* Flow */
+      /* If the retailer is getting selected for the first time then proceed with the normal flow else apply the update logic */
+
       /* Get the selected State right now */
       currRetailer = {};
       currRetailer[action.data] = Object.assign({}, state.retailerMapping[action.data]);
@@ -411,6 +415,10 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
       // modifiedCity[selectedCity.cityInfo.id].selected_retailers[action.data] = currRetailer[action.data];
       modifiedCityRetailerMapping = Object.assign({}, state.cityRetailerMapping);
       modifiedCityRetailerMapping[parseInt(selectedCity.cityInfo.id, 10)].selected_retailers[action.data] = currRetailer[action.data];
+
+      /* Update module */
+      currRetailer[action.data].is_updated = currRetailer[action.data].is_fetched ? false : true;
+      /* End of it */
       return {...state, cityRetailerMapping: { ...modifiedCityRetailerMapping }, retailerMapping: {...state.retailerMapping, ...currRetailer }};
     case UNMARK_RETAILER_SELECTED:
       currRetailer = {};
@@ -421,6 +429,9 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
       modifiedCityRetailerMapping = Object.assign({}, state.cityRetailerMapping);
       delete modifiedCityRetailerMapping[parseInt(selectedCity.cityInfo.id, 10)].selected_retailers[action.data];
 
+      /* Update module */
+      currRetailer[action.data].is_updated = currRetailer[action.data].is_fetched ? true : false;
+      /* End of it */
       return {...state, cityRetailerMapping: { ...modifiedCityRetailerMapping }, retailerMapping: {...state.retailerMapping, ...currRetailer }};
     case MARK_CITY_SELECTED:
       const currCity2 = {};
@@ -431,13 +442,17 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
       modifiedState = {};
       modifiedState[selectedState.stateInfo.id] = Object.assign({}, state.stateCityMapping[parseInt(selectedState.stateInfo.id, 10)]);
       modifiedState[selectedState.stateInfo.id].selected_cities[action.data] = currCity2[action.data];
+
+      /* Update module */
+      currCity2[action.data].is_updated = !currCity2[action.data].is_fetched ? true : false;
+      /* End of it */
+
       return {...state, cityRetailerMapping: { ...state.cityRetailerMapping, ...currCity2}, stateCityMapping: { ...state.stateCityMapping, ...modifiedState }};
     case UNMARK_CITY_SELECTED:
       const currCity1 = {};
       currCity1[action.data] = Object.assign({}, state.cityRetailerMapping[parseInt(action.data, 10)]);
       currCity1[action.data].is_selected = false;
       /* Added if the state is selected and cities are selected and the state is being unmarked selected cities should also get disabled */
-      currCity1[action.data].selected_retailers = {};
 
       selectedState = Object.assign( {}, state.viewedState);
       modifiedState = Object.assign({}, state.stateCityMapping[parseInt(selectedState.stateInfo.id, 10)]);
@@ -450,7 +465,21 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
       } else {
         viewedCity = {};
       }
-      return {...state, cityRetailerMapping: { ...state.cityRetailerMapping, ...currCity1}, viewedCity: viewedCity};
+
+      /* Update module */
+      currCity1[action.data].is_updated = currCity1[action.data].is_fetched ? true : false;
+      retailersObj = Object.assign({}, state.retailerMapping);
+      /* Unmark all the retailers under that city */
+      if ( currCity1[action.data].is_fetched ) {
+        const yetToBeUnmarkedRetailers = currCity1[action.data].selected_retailers;
+        Object.keys(yetToBeUnmarkedRetailers).forEach( ( retailerId ) => {
+          /* If the retailer is also fetched update it to false */
+          retailersObj[retailerId] = { ...yetToBeUnmarkedRetailers[retailerId], is_selected: false, is_updated: true };
+        });
+      }
+      /* End of it */
+      currCity1[action.data].selected_retailers = {};
+      return {...state, cityRetailerMapping: { ...state.cityRetailerMapping, ...currCity1}, viewedCity: viewedCity, retailerMapping: { ...retailersObj } };
     case VIEW_STATE:
       return {...state, viewedState: state.stateCityMapping[action.data], viewedCity: {}};
     case VIEW_CITY:
@@ -462,7 +491,6 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
       /* Added if the state is selected and cities are selected and the state is being unmarked selected cities should also get disabled */
       /* TODO: 1 Unselect all cities if this guy is unmarked and marked again */
       /* TODO: 2 Unselect all the retailers as this is the chain reaction (State is unselect -> unselect the cities -> unselect the retailers */
-      currState1[action.data].selected_cities = {};
       let viewedState = Object.assign({}, state.viewedState);
       if (Object.keys(viewedState).length > 0) {
         viewedState = ( viewedState.stateInfo.id === action.data ) ? {} : viewedState;
@@ -472,7 +500,40 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
       if ( currState1[action.data].is_fetched ) {
         currState1[action.data].is_updated = true;
       }
-      return {...state, stateCityMapping: { ...state.stateCityMapping, ...currState1 }, viewedState: viewedState};
+
+
+      const citiesObj = Object.assign({}, state.cityRetailerMapping);
+      retailersObj = Object.assign({}, state.retailerMapping);
+      /* Unmark all the retailers under that city */
+      if ( currState1[action.data].is_fetched ) {
+        const yetToBeUnmarkedCities = currState1[action.data].selected_cities;
+        Object.keys(yetToBeUnmarkedCities ).forEach( ( cityId ) => {
+          /* If the retailer is also fetched update it to false */
+          citiesObj[cityId] = { ...yetToBeUnmarkedCities[cityId], is_selected: false, is_updated: true };
+          const yetToBeUnmarkedRetailers = citiesObj[cityId].selected_retailers;
+          citiesObj[cityId] = { ...citiesObj[cityId], selected_retailers: {}};
+          Object.keys(yetToBeUnmarkedRetailers).forEach( ( retailerId ) => {
+            /* If the retailer is also fetched update it to false */
+            retailersObj[retailerId] = { ...yetToBeUnmarkedRetailers[retailerId], is_selected: false, is_updated: true };
+          });
+        });
+      } else {
+        const yetToBeUnmarkedCities = currState1[action.data].selected_cities;
+        Object.keys(yetToBeUnmarkedCities ).forEach( ( cityId ) => {
+          /* If the retailer is also fetched update it to false */
+          citiesObj[cityId] = { ...yetToBeUnmarkedCities[cityId], is_selected: false };
+          const yetToBeUnmarkedRetailers = citiesObj[cityId].selected_retailers;
+          citiesObj[cityId] = { ...citiesObj[cityId], selected_retailers: {}};
+          Object.keys(yetToBeUnmarkedRetailers).forEach( ( retailerId ) => {
+            /* If the retailer is also fetched update it to false */
+            retailersObj[retailerId] = { ...yetToBeUnmarkedRetailers[retailerId], is_selected: false };
+          });
+        });
+      }
+
+      currState1[action.data].selected_cities = {};
+
+      return {...state, stateCityMapping: { ...state.stateCityMapping, ...currState1 }, viewedState: viewedState, cityRetailerMapping: { ...citiesObj }, retailerMapping: { ...retailersObj } };
     case STATE_FETCH_AND_COMPUTE_MAPPINGS:
       /* Map states to cities */
       /* State with zero cities are considered now can be removed later */
@@ -572,7 +633,12 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
             const retailerId = inventory.retailer.kycs[0].id;
             localStateCityMapping[sState.state_id].selected_cities[cityId] = { ...state.cityRetailerMapping[cityId], is_selected: false};
             localRetailerMapping[retailerId].is_selected = true;
+            localRetailerMapping[retailerId].is_fetched = true;
+            // localRetailerMapping[retailerId].serverValues = { is_selected: true };
             localCityRetailerMapping[cityId].is_selected = true;
+            localCityRetailerMapping[cityId].is_fetched = true;
+            localCityRetailerMapping[cityId].serverValues = { 'selected_retailers': ( ( 'serverValues' in localCityRetailerMapping[cityId]) ? localCityRetailerMapping[cityId].serverValues.selected_retailers : {} ) };
+            localCityRetailerMapping[cityId].serverValues.selected_retailers[retailerId] = localRetailerMapping[retailerId];
             localCityRetailerMapping[cityId].selected_retailers[retailerId] = localRetailerMapping[retailerId];
           });
         }
