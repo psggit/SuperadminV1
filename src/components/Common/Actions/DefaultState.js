@@ -11,6 +11,14 @@ const defaultNotepadState = {
   issueTypes: []
 };
 
+const defaultFreshdeskTicketState = {
+  freshdeskTicketData: {
+    attachments: [],
+    to_emails: [],
+    conversations: [{attachments: [], to_emails: []}]
+  }
+};
+
 const defaultBrandState = {
   companyList: [],
   genreList: [],
@@ -236,4 +244,5 @@ export { defaultNotepadState
   , defaultTopPicksSelectState
   , defaultTopPicksState
   , defaultAddTopPickData
+  , defaultFreshdeskTicketState
 };

@@ -34,7 +34,7 @@ const Support = ({dispatch}) => { // eslint-disable-line no-unused-vars
                     <div className={styles.squarecontent}>
                         <div>
                             <span>
-                                <Link to={'#'}>Take Calls</Link>
+                              <Link to={'/hadmin/customer_support/customer_profile'}>Take Calls</Link>
                             </span>
                         </div>
                     </div>

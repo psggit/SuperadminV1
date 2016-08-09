@@ -95,14 +95,13 @@ global.socket = initSocket();
 
 // Main routes and rendering
 const requireLoginAndSchema = (nextState, replaceState, cb) => {
-  const {loginState: {credentials}, tables: {allSchemas} } = store.getState();
-  if (credentials && allSchemas) {
+  const {loginState: {credentials}} = store.getState();
+  if (credentials) {
     cb();
     return;
   }
   Promise.all([
     store.dispatch(loadCredentials()),
-    // store.dispatch(loadSchema())
   ]).then(
     () => {
       cb();
@@ -201,7 +200,7 @@ const main = (
         <Route path="retailer_management/create_organization" component={RetailerManagementCreateOrganization} />
         <Route path="customer_support" component={CustomerSupportSupport} />
         <Route path="customer_support/customer_profile" component={CustomerSupportCustomerProfile} />
-        <Route path="customer_support/freshdesk_ticket" component={CustomerSupportFreshdeskTicket} />
+        <Route path="customer_support/freshdesk_ticket/:Id" component={CustomerSupportFreshdeskTicket} />
         <Route path="customer_support/issue_history" component={CustomerSupportIssueHistory} />
         <Route path="customer_support/freshdesk_ticketlist" component={CustomerSupportFreshdeskTicketList} />
         <Route path="customer_support/instant_callback_history" component={CustomerSupportInstantCallbackHistory} />
