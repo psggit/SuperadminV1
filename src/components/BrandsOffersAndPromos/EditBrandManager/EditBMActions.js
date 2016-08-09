@@ -324,7 +324,9 @@ const regionsUpdateOrDelete = (mod, bmId) => {
     const modArr = [...mod];
     const srListForCreate = [];     // array of region objects
     const deleteRegionIds = [];     // array of region ids
+    const finalSelectedBrandsList = [];
     modArr.forEach((brand) => {
+      const finalSBRegions = [];
       if (brand.is_deleted) {
         brand.regions.forEach((region) => {
           deleteRegionIds.push(region.id);
@@ -333,6 +335,7 @@ const regionsUpdateOrDelete = (mod, bmId) => {
         brand.regions.forEach((region) => {
           if (region.is_selected && region.in_db === undefined) {
             // Create new
+            region.in_db = true;
             const obj = {};
             obj.brand_id = brand.id;
             obj.brand_manager_id = bmId;
@@ -345,12 +348,16 @@ const regionsUpdateOrDelete = (mod, bmId) => {
             // Delete existing
             deleteRegionIds.push(region.id);
           }
+          finalSBRegions.push(region);
         });
       }
+      brand.regions = [...finalSBRegions];
+      finalSelectedBrandsList.push(brand);
     });
     return Promise.all([
       dispatch(deleteRegionsFunc([...deleteRegionIds])).then(
-        dispatch(insertRegionsFunc([...srListForCreate]))
+        dispatch(insertRegionsFunc([...srListForCreate])),
+      dispatch({type: UPDATE_SELECTED_BRANDS_LIST, data: finalSelectedBrandsList}),
       )
     ]);
   };
