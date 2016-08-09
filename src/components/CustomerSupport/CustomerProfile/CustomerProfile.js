@@ -8,6 +8,7 @@ import HistoryInformation from './HistoryInformation';
 import MakerName from './MakerName';
 import StatusViewTicket from './StatusViewTicket';
 import CreatedAt from './CreatedAt';
+
 class CustomerProfile extends React.Component {
   constructor() {
     super();
