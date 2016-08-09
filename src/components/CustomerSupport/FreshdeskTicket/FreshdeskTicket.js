@@ -42,7 +42,7 @@ class FreshdeskTicket extends Component {
 
   render() {
     const styles = require('./FreshdeskTicket.scss');
-    const estyles = require('./EmailTextArea.scss');
+    const estyles = require('./EmailTextarea.scss');
     const {freshdeskTicketData} = this.props;
 
     const getAttachementHtml = (attachments) => {
