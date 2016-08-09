@@ -62,7 +62,6 @@ class EditBrandManager extends Component { // eslint-disable-line no-unused-vars
     cbrand.regions.forEach((cr) => {
       isp = false;
       brand.regions.forEach((sr) => {
-        console.log('This is a supergoat Fucker!!');
         console.log(sr, cr);
         if (sr.in_db) {
           if (cr.id === sr.oid) {
