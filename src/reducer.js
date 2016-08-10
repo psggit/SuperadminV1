@@ -35,6 +35,7 @@ import topPicksStateGenreReducer from './components/SkuManagement/Skus/ToppicksI
 import addTopPickReducer from './components/SkuManagement/Skus/AddTopPicks/AddTopPickAction';
 
 import freshdeskTicketReducer from './components/CustomerSupport/FreshdeskTicket/FreshdeskTicketActions';
+import customerSupportReducer from './components/CustomerSupport/CustomerProfile/CustomerProfileActions';
 
 const reducer = combineReducers({
   loginState: loginReducer,
@@ -67,6 +68,7 @@ const reducer = combineReducers({
   sku_top_picks_state_genre_data: topPicksStateGenreReducer,
   add_top_picks_data: addTopPickReducer,
   freshdesk_ticket: freshdeskTicketReducer,
+  customer_support_data: customerSupportReducer,
 });
 
 export default reducer;

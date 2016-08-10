@@ -7,8 +7,6 @@ const SettementWrapper = () => {
       <SettlementInformation key = {index} label = { name.labelVal } val = {name.val}/>
     );
   });
-  console.log('con');
-  console.log(content);
   return (
     <div>
       {content}

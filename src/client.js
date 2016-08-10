@@ -199,7 +199,7 @@ const main = (
         <Route path="retailer_management/transactions" component={RetailerManagementTransactions} />
         <Route path="retailer_management/create_organization" component={RetailerManagementCreateOrganization} />
         <Route path="customer_support" component={CustomerSupportSupport} />
-        <Route path="customer_support/customer_profile" component={CustomerSupportCustomerProfile} />
+        <Route path="customer_support/customer_profile/:Id" component={CustomerSupportCustomerProfile} />
         <Route path="customer_support/freshdesk_ticket/:Id" component={CustomerSupportFreshdeskTicket} />
         <Route path="customer_support/issue_history" component={CustomerSupportIssueHistory} />
         <Route path="customer_support/freshdesk_ticketlist" component={CustomerSupportFreshdeskTicketList} />

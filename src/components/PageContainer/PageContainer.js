@@ -146,10 +146,10 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
             <li><input type="checkbox" id="cb4"/><label htmlFor="cb4">RETAILER MANAGEMENT</label>
               <ul>
               <li className={styles.sidebar_list}><label>
-                <Link to={'/consumer/kycfunctions'} className={ lastPathname === 'profiles' ? styles.active : '' }> Retailer 1 </Link>
+                  <Link to={'/hadmin/consumer/kycfunctions'} className={ lastPathname === 'profiles' ? styles.active : '' }> Retailer 1 </Link>
               </label></li>
               <li className={styles.sidebar_list}><label>
-                <Link to={'/consumer/profiles'} className={ lastPathname === 'profiles' ? styles.active : '' }>Retailer 2</Link>
+                  <Link to={'/hadmin/consumer/profiles'} className={ lastPathname === 'profiles' ? styles.active : '' }>Retailer 2</Link>
               </label></li>
               </ul>
             </li>
@@ -159,10 +159,10 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
             <li><input type="checkbox" id="cb5"/><label htmlFor="cb5">BRAND MANAGER</label>
               <ul>
               <li className={styles.sidebar_list}><label>
-                <Link to={'/consumer/kycfunctions'} className={ lastPathname === 'profiles' ? styles.active : '' }> Brand 1 </Link>
+                  <Link to={'/hadmin/consumer/kycfunctions'} className={ lastPathname === 'profiles' ? styles.active : '' }> Brand 1 </Link>
               </label></li>
               <li className={styles.sidebar_list}><label>
-                <Link to={'/consumer/profiles'} className={ lastPathname === 'profiles' ? styles.active : '' }>Brand 2</Link>
+                  <Link to={'/hadmin/consumer/profiles'} className={ lastPathname === 'profiles' ? styles.active : '' }>Brand 2</Link>
               </label></li>
               </ul>
             </li>

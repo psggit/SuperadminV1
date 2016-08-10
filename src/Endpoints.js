@@ -1,5 +1,5 @@
-// const base = 'http://130.211.246.199';
-const base = 'http://104.155.225.221';
+const base = 'http://130.211.246.199';
+// const base = 'http://104.155.225.221';
 // const base = '';
 const Endpoints = {
   login: base + '/hauth/login',

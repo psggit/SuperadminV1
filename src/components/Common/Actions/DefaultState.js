@@ -19,6 +19,16 @@ const defaultFreshdeskTicketState = {
   }
 };
 
+const defaultCustomerSupportState = {
+  issueData: {
+    consumer_id: '',
+    consumer: {
+      full_name: '',
+      mobile_number: '',
+    },
+  }
+};
+
 const defaultBrandState = {
   companyList: [],
   genreList: [],
@@ -245,4 +255,5 @@ export { defaultNotepadState
   , defaultTopPicksState
   , defaultAddTopPickData
   , defaultFreshdeskTicketState
+  , defaultCustomerSupportState
 };
