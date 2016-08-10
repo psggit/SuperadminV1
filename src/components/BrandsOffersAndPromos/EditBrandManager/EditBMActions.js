@@ -39,7 +39,7 @@ const fetchBrands = (companyId) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: globalCookiePolicy,
-      body: JSON.stringify(queryObj),
+      body: JSON.stringify(queryObj)
     };
     /* Make a MAKE_REQUEST action */
     dispatch({type: MAKE_REQUEST});

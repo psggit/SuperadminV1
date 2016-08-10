@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {Component, PropTypes} from 'react';
+
 import BreadCrumb from '../../Common/BreadCrumb';
-import SettlementWrapper from '../../RetailerManagement/CreateOrganization/SettlementWrapper';
+import SettlementInformation from '../../RetailerManagement/RedemptionHistory/SettlementInformation';
 import TransactionsInformation from '../../Sku/Transactions/TransactionsInformation';
 import AddBeneficiaryInput from '../../RetailerManagement/CreateOrganization/AddBeneficiaryInput';
 import AddBeneficiaryTextarea from '../../RetailerManagement/CreateOrganization/AddBeneficiaryTextarea';
@@ -9,7 +10,11 @@ import MakerName from './MakerName';
 import StatusViewTicket from './StatusViewTicket';
 import CreatedAt from './CreatedAt';
 
-class CustomerProfile extends React.Component {
+import { connect } from 'react-redux';
+
+import {getIssueData} from './CustomerProfileActions';
+
+class CustomerProfile extends Component {
   constructor() {
     super();
     /* Data required for the bread component to render correctly */
@@ -24,28 +29,31 @@ class CustomerProfile extends React.Component {
       sequence: 2,
       link: '#'
     });
-    this.breadCrumbs.push({
-      title: 'Profile',
-      sequence: 3,
-      link: '#'
-    });
-    this.breadCrumbs.push({
-      title: '32',
-      sequence: 4,
-      link: '#'
-    });
   }
+
+  componentWillMount() {
+    this.props.dispatch(getIssueData(this.props.params.Id));
+  }
+
   render() {
     const styles = require('./CustomerProfile.scss');
-
+    const toLocalDate = (dateString) => {
+      return (new Date(new Date(dateString).getTime() + 19800000).toLocaleString());
+    };
     return (
       <div className={styles.container}>
         <BreadCrumb breadCrumbs={this.breadCrumbs} />
         <div className = {styles.assigned_issue_container}>
           <div className = {styles.assigned_issue_wrapper}>
-            <SettlementWrapper />
+            <div className = {styles.assign_issue_head}>
+              Close Issue
+            </div>
+            <SettlementInformation label="Customer Name" val={this.props.issueData.consumer.full_name} />
+            <SettlementInformation label="Mobile Number" val={this.props.issueData.consumer.mobile_number}/>
+            <SettlementInformation label="Issue" val={this.props.issueData.reason}/>
+            <SettlementInformation label="Issue Raised At" val={toLocalDate(this.props.issueData.created_at)}/>
             <div className = {styles.start_call_btn}>
-              <button> Start Call</button>
+              <button> Start Call </button>
             </div>
           </div>
           <div className = {styles.close_issue_wrapper}>
@@ -65,12 +73,7 @@ class CustomerProfile extends React.Component {
                 <div className = {styles.account_details_head}>
                   Account Details
                 </div>
-                <SettlementWrapper />
-                <SettlementWrapper />
-                <SettlementWrapper />
-                <SettlementWrapper />
-                <SettlementWrapper />
-                <SettlementWrapper />
+                <SettlementInformation label="test" val="testing"/>
               </div>
               <div className = {styles.all_btns}>
                 <button>Edit Profile</button>
@@ -161,4 +164,15 @@ class CustomerProfile extends React.Component {
     );
   }
 }
-export default CustomerProfile;
+
+CustomerProfile.propTypes = {
+  params: PropTypes.object.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  issueData: PropTypes.object.isRequired
+};
+
+const mapStateToProps = (state) => {
+  return {...state.customer_support_data};
+};
+
+export default connect(mapStateToProps)(CustomerProfile);
