@@ -383,7 +383,14 @@ const onSave = () => {
 
 const onUpdate = () => {
   return (dispatch, getState) => {
-    // console.log(getState());
+    /* Add the bonus feature if the product inactive then make it active on select */
+    // Handle five cases
+    // 1. Remove State ( Update it as inactive )
+    // 2. Update State ( Update SKU Pricing )
+    // 3. Remove Retailer (Mark the inventory as inactive or delete)
+    // 4. Added State (Add sku_pricing )
+    // 5. Added Retailer (Add Inventory ) (To the existing sku_pricing or to the new sku_pricing )
+
     const currState = getState();
     const skuInsertObj = {};
     const skuUrl = Endpoints.db + '/table/sku/update';

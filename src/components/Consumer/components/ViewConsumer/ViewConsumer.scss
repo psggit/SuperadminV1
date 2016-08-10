@@ -1,0 +1,288 @@
+.container
+{
+	width: 100%;
+	float: left;
+}
+.wrapper {
+  width: 100%;
+  float: left;
+}
+.head_container
+{
+	width: 100%;
+	float: left;
+	padding: 70px 45px 10px 45px;
+	background: #DFDFDF;
+	color: rgba(0,0,0,0.54);
+	font-weight: 500;
+}
+.wd_100
+{
+	width: 100%;
+	float: left;
+}
+.search_wrapper
+{
+	background: #FFF;
+	padding: 15px 45px 25px 45px;
+	color: rgba(0,0,0,0.54);
+	font-size: 15px;
+	letter-spacing: 0.3px;
+}
+.common_btn
+{
+	width: 130px;
+	height: 30px;
+	color: rgba(255, 116, 0, 0.8);
+	border: 1px solid #FF7400;
+	border-radius: 4px;
+	background: #FFF;
+	cursor: pointer;
+	font-weight: 400;
+	text-align: center;
+	font-size: 13px;
+	letter-spacing: 0.5px;
+	transition: all 0.2s linear;
+	&:hover
+	{
+		color: rgba(255, 116, 0, 1); 
+	}
+	&:focus
+	{
+		outline: none;
+	}
+}
+.search_form
+{
+	input
+	{
+		display: inline-block;
+		width: 170px;
+		border: 1px solid #CCCCCC;
+		border-radius: 4px;
+		background: #FFF;
+		margin-right: 30px;
+		height: 30px;
+		padding: 0 10px;
+		color: #4c4c4c;
+		font-size: 12px;
+		font-weight: 400;
+		letter-spacing: 0.5px;
+		transition: all 0.2s linear;
+		&:focus
+		{
+			outline: none;
+			border: 1px solid #FF7400;
+		}
+	}
+}
+.create_state_wrapper
+{
+	padding: 10px 15px;
+	background: #FFF;
+	margin: 45px;
+	display: inline-block;
+	float: left;
+	font-size: 14px;
+	letter-spacing: 0.5px;
+	p
+	{
+		color: rgba(0,0,0,0.38);
+		font-weight: 500;
+		margin-bottom: 15px;
+	}
+	.create_form
+	{
+		text-align: center;
+		input
+		{
+			display: inline-block;
+			width: 160px;
+			border: 1px solid #CCCCCC;
+			border-radius: 4px;
+			background: #FFF;
+			height: 30px;
+			padding: 0 10px;
+			color: #4c4c4c;
+			font-size: 12px;
+			font-weight: 400;
+			letter-spacing: 0.5px;
+			transition: all 0.2s linear;
+			&:focus
+			{
+				outline: none;
+				border: 1px solid #FF7400;
+			}
+		}
+		select
+		{
+			display: inline-block;
+			width: 160px;
+			border: 1px solid #CCCCCC;
+			border-radius: 4px;
+			background: #FFF;
+			height: 30px;
+			color: #4c4c4c; 
+			padding: 0 10px;
+			font-size: 12px;
+			font-weight: 400;
+			letter-spacing: 0.5px;
+			transition: all 0.2s linear;
+			&:focus
+			{
+				outline: none;
+				border: 1px solid #FF7400;
+			}
+			option
+			{
+				color: #4c4c4c; 
+			}	
+		}
+
+		.indiv_form
+		{
+			margin-bottom: 15px;
+			label
+			{
+				width: 150px;
+				font-weight: 400;
+				color: rgba(0,0,0,0.54);
+				font-size: 13px;
+				text-align: left;
+				float: left;
+			}
+		}
+		.create_btn
+		{
+			margin: auto;
+			margin: 10px 0 15px 0;
+		}
+	}
+}
+.create_layout
+{
+	padding: 20px 45px 0 45px;
+}
+.list_of_states_wrapper
+{
+	float: left;
+	width: 100%;
+	padding: 20px 45px;
+	color: rgba(0,0,0,0.54);
+	label
+	{
+		font-weight: 500;
+		font-size: 15px;
+		margin-bottom: 10px;
+		letter-spacing: 0.3px;
+		font-size: 14px;
+	}
+	table
+	{
+		background: #FFF;
+		thead th
+		{
+			font-weight: 500;
+			border-bottom: 1px;
+			padding: 12px 8px;
+			letter-spacing: 0.3px;
+			font-size: 13px;
+		}
+		tbody tr td
+		{
+			font-size: 13px;
+			letter-spacing: 0.3px;
+			padding: 10px 8px;
+		}
+		.id
+		{
+			font-weight: 500;
+		}
+		.edit_btn
+		{
+			background: #FFF;
+			height: 20px;
+			text-align: center;
+			padding: 0 13px;
+			border: 1px solid #CCCCCC;
+			border-radius: 4px;
+			font-size: 11px;
+			letter-spacing: 0.3px;
+			color: rgba(0,0,0,0.44);
+			&:hover
+			{
+				color: rgba(0,0,0,0.54);
+			}
+			&:focus
+			{
+				outline: none;
+			}
+		}
+	}
+	.pagination_wrapper
+	{
+		text-align: center;
+		color: #FF7400;
+		margin-top: 30px;
+		.custom_pagination
+		{
+			list-style: none;
+			display: inline-block;
+			border-radius: 4px;
+			margin: 0;
+			padding: 0;
+			background: #FFF;
+			border: 1px solid #ECEEEF;
+			border-radius: 4px;
+			li
+			{
+				display:inline-block;
+				border-right: 1px solid #ECEEEF;
+				a
+				{
+					padding: 8px 14px; 
+					color: #FF7400;
+					display: inline-block;
+					&:hover, &:focus
+					{
+						text-decoration: none;
+					}
+				}
+			}
+			.active
+			{
+				a
+				{
+					background: #FF7400;
+					color: #FFF; 
+				}
+			}
+			li:last-child
+			{
+				border-right: 0;
+			}
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

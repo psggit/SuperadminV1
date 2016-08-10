@@ -9,7 +9,7 @@ export PageContainer from './PageContainer/PageContainer';
 export Login from './Login/Login';
 export FileUpload from './FileUpload/FileUpload';
 export Home from './Home/Home';
-export ViewConsumers from './Consumer/ViewTable';
+export ViewConsumers from './Consumer/components/ViewConsumer/ViewConsumer';
 export AddTable from './Consumer/AddTable';
 export InsertItem from './Consumer/InsertItem';
 export EditItem from './Bills/EditItem';
