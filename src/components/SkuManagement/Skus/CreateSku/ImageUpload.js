@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import uploadFile from '../../../Common/Actions/upload';
 import { connect } from 'react-redux';
 
+import Endpoints from '../../../../Endpoints';
+
 class ImageUpload extends Component {
   constructor() {
     super();
@@ -18,17 +20,19 @@ class ImageUpload extends Component {
   render() {
     const styles = require('./CreateSku.scss');
     const { imageUrl } = this.props;
+    const imgUr = Endpoints.file_get + imageUrl;
     return (
         <div className={styles.upload_container}>
           <div className={styles.upload_lab}>Upload Images</div>
           <div className={styles.upload_images}>
             <div className={styles.upload_id}>Upload</div>
             <div className={styles.file_upload}>
+            {/* http://130.211.246.199 */}
               {
                 (imageUrl.length > 0) ?
                   (
                    <div className={ styles.img_wrapper }>
-                    <img src={ '/file_upload/get?fs_url=' + imageUrl } className={styles.upload_img}/>
+                    <img src={ imgUr } className={styles.upload_img}/>
                     <p className={ styles.close } onClick={ this.onCancelClick.bind(this) }>X</p>
                   </div>
                   )

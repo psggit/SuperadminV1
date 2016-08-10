@@ -27,15 +27,23 @@ const CreateSku = ({ brandList
     , skuImageUrl
     , dispatch
     , onSave
+    , onUpdate
+    , skuReqObj
+    , page
   }) => { // eslint-disable-line no-unused-vars
   const styles = require('./CreateSku.scss');
+  const submitButton = ( page !== 'edit_page' ) ? (
+        <button className={styles.save_btn} onClick = { onSave } >Save</button>
+      ) : (
+          <button className={styles.save_btn} onClick = { onUpdate } >Update</button>
+        );
   // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
   return (
     <div className={styles.container}>
       {
         /* Shows entry form for entering sku infomation */
       }
-      <SkuInfo dispatch={ dispatch } brandList={brandList} />
+      <SkuInfo dispatch={ dispatch } brandList={brandList} skuReqObj = { skuReqObj }/>
       {
         /* Component to display the list of states and their corresponding prices */
       }
@@ -61,11 +69,11 @@ const CreateSku = ({ brandList
       {
         /* Similar to the above component to render city and its corresponding information */
       }
-      <StateCity viewedState={ viewedState } cityRetailerMapping={ cityRetailerMapping } onCityCheck={onCityCheck} onCityView={onCityView} />
+      <StateCity viewedState={ viewedState } cityRetailerMapping={ cityRetailerMapping } onCityCheck={onCityCheck} onCityView={onCityView} page = { page } />
       {
         /* Component to render retailers of a particular city */
       }
-      <CityRetailer viewedCity={ viewedCity } onRetailerCheck={ onRetailerCheck }/>
+      <CityRetailer viewedCity={ viewedCity } onRetailerCheck={ onRetailerCheck } page = { page } />
 
       {
         /* Again some CSS Gotcha */
@@ -74,7 +82,7 @@ const CreateSku = ({ brandList
       {
         /* Self Explaining */
       }
-      <button className={styles.save_btn} onClick = { onSave } >Save</button>
+      { submitButton }
     </div>);
 };
 

@@ -110,6 +110,7 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
               </ul>
             </li>
           </ul>
+          {/*
           <ul>
             <li><input type="checkbox" id="cb4"/><label htmlFor="cb4">BRANDS OFFERS AND PROMOS</label>
               <ul>
@@ -140,6 +141,7 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
               </ul>
             </li>
           </ul>
+          */}
 
           {/*
           <ul>

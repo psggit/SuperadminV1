@@ -63,7 +63,6 @@ import reducer from './reducer';
 
 // Create the store
 const DevTools = require('./helpers/DevTools/DevTools');
-console.log(DevTools);
 const reduxSimpleRouterMiddleware = syncHistory(browserHistory);
 const _finalCreateStore = compose(
   applyMiddleware(thunk, reduxSimpleRouterMiddleware, createLogger()),
@@ -181,6 +180,7 @@ const main = (
         <Route path="skus/toppicks" component={Toppicks} />
         <Route path="skus/top_picks/:stateId/:genreId/add_top_picks" component={AddTopPicks} />
         <Route path="skus/create_sku" component={CreateSku} />
+        <Route path="skus/edit_sku/:Id" component={CreateSku} />
         <Route path="skus/view_sku" component={SkuManagementViewSkus} />
         <Route path="skus/top_picks/:stateId/:genreId" component={TopPicksInWrapper} />
         <Route path="homepage_management/ads" component={HomepageManagementAds} />
