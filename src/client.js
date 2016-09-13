@@ -48,7 +48,12 @@ import {Login, Home, PageContainer,
   RetailerManagementSettlementDetails, RetailerManagementDeviceDetail, RetailerManagementDisableDevice,
   RetailerManagementTransactions, RetailerManagementCreateOrganization, CustomerSupportCustomerProfile,
   CustomerSupportFreshdeskTicket, CustomerSupportIssueHistory, CustomerSupportSupport, CustomerSupportFreshdeskTicketList,
-  CustomerSupportInstantCallbackHistory,
+  CustomerSupportInstantCallbackHistory, ParameterManagementConsumerIssueCreateCode, ParameterManagementCreateCode,
+  ParameterManagementConsumerIssueCodes, ParameterManagementConsumerManualCodes, ParameterManagementConsumerNotepadCodes,
+  ParameterManagementNotepadCreateCode, ParameterManagementRetailerManualDebitCreditCodes, ParameterManagementRetailerManualCreateCode,
+  ParameterManagementConsumerDisableAccountCode, ParameterManagementConsumerDisableAccountCreateCode, ParameterManagementConsumerDeviceAccountCodes,
+  ParameterManagementConsumerDeviceAccountCreateCode, AccountingEODReport, AccountingSettlementReport, AccountingUploadPayUReport,
+  AccountingUploadSettlementReport,
   ViewBrandManager,
   EditBrandManager
 } from './components'; // eslint-disable-line no-unused-vars
@@ -204,10 +209,26 @@ const main = (
         <Route path="customer_support/issue_history" component={CustomerSupportIssueHistory} />
         <Route path="customer_support/freshdesk_ticketlist" component={CustomerSupportFreshdeskTicketList} />
         <Route path="customer_support/instant_callback_history" component={CustomerSupportInstantCallbackHistory} />
+        <Route path="parameter_management/consumer_manual_debit_credit_codes" component={ParameterManagementConsumerManualCodes} />
+        <Route path="parameter_management/create_code" component={ParameterManagementCreateCode} />
+        <Route path="parameter_management/consumer_issue_codes" component={ParameterManagementConsumerIssueCodes} />
+        <Route path="parameter_management/consumer_issue/create_code" component={ParameterManagementConsumerIssueCreateCode} />
+        <Route path="parameter_management/consumer_notepad_codes" component={ParameterManagementConsumerNotepadCodes} />
+        <Route path="parameter_management/notepad_create_code" component={ParameterManagementNotepadCreateCode} />
+        <Route path="parameter_management/retailer_manual_debit_credit_codes" component={ParameterManagementRetailerManualDebitCreditCodes} />
+        <Route path="parameter_management/retailer_manual/create_code" component={ParameterManagementRetailerManualCreateCode} />
+        <Route path="parameter_management/consumer_disable_account_code" component={ParameterManagementConsumerDisableAccountCode} />
+        <Route path="parameter_management/consumer_disable_account/create_code" component={ParameterManagementConsumerDisableAccountCreateCode} />
+        <Route path="parameter_management/consumer_device_account_codes" component={ParameterManagementConsumerDeviceAccountCodes} />
+        <Route path="parameter_management/consumer_device_account_create_code" component={ParameterManagementConsumerDeviceAccountCreateCode} />
+        <Route path="accounting/eod_report" component={AccountingEODReport} />
+        <Route path="accounting/settlement_report" component={AccountingSettlementReport} />
+        <Route path="accounting/upload_payu_report" component={AccountingUploadPayUReport} />
+        <Route path="accounting/upload_settlement_report" component={AccountingUploadSettlementReport} />
         /* End of SKU Management */
-        {/*
+        { /*
         <Route path="notepad_entries" component={NotepadEntries} />
-        */}
+        */ }
       </Route>
     </Router>
 );
