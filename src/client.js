@@ -22,10 +22,6 @@ import {Login, Home, PageContainer,
   Kycfunctions,
   VerifyKycs,
   UploadKycs,
-  /*
-  ViewKyc,
-  ViewKycProfile,
-  */
   ViewStates,
   ViewState,
   KycViewUpload,
@@ -52,7 +48,12 @@ import {Login, Home, PageContainer,
   RetailerManagementSettlementDetails, RetailerManagementDeviceDetail, RetailerManagementDisableDevice,
   RetailerManagementTransactions, RetailerManagementCreateOrganization, CustomerSupportCustomerProfile,
   CustomerSupportFreshdeskTicket, CustomerSupportIssueHistory, CustomerSupportSupport, CustomerSupportFreshdeskTicketList,
-  CustomerSupportInstantCallbackHistory,
+  CustomerSupportInstantCallbackHistory, ParameterManagementConsumerIssueCreateCode, ParameterManagementCreateCode,
+  ParameterManagementConsumerIssueCodes, ParameterManagementConsumerManualCodes, ParameterManagementConsumerNotepadCodes,
+  ParameterManagementNotepadCreateCode, ParameterManagementRetailerManualDebitCreditCodes, ParameterManagementRetailerManualCreateCode,
+  ParameterManagementConsumerDisableAccountCode, ParameterManagementConsumerDisableAccountCreateCode, ParameterManagementConsumerDeviceAccountCodes,
+  ParameterManagementConsumerDeviceAccountCreateCode, AccountingEODReport, AccountingSettlementReport, AccountingUploadPayUReport,
+  AccountingUploadSettlementReport,
   ViewBrandManager,
   EditBrandManager
 } from './components'; // eslint-disable-line no-unused-vars
@@ -67,7 +68,6 @@ import reducer from './reducer';
 
 // Create the store
 const DevTools = require('./helpers/DevTools/DevTools');
-console.log(DevTools);
 const reduxSimpleRouterMiddleware = syncHistory(browserHistory);
 const _finalCreateStore = compose(
   applyMiddleware(thunk, reduxSimpleRouterMiddleware, createLogger()),
@@ -99,14 +99,13 @@ global.socket = initSocket();
 
 // Main routes and rendering
 const requireLoginAndSchema = (nextState, replaceState, cb) => {
-  const {loginState: {credentials}, tables: {allSchemas} } = store.getState();
-  if (credentials && allSchemas) {
+  const {loginState: {credentials}} = store.getState();
+  if (credentials) {
     cb();
     return;
   }
   Promise.all([
     store.dispatch(loadCredentials()),
-    // store.dispatch(loadSchema())
   ]).then(
     () => {
       cb();
@@ -186,6 +185,7 @@ const main = (
         <Route path="skus/toppicks" component={Toppicks} />
         <Route path="skus/top_picks/:stateId/:genreId/add_top_picks" component={AddTopPicks} />
         <Route path="skus/create_sku" component={CreateSku} />
+        <Route path="skus/edit_sku/:Id" component={CreateSku} />
         <Route path="skus/view_sku" component={SkuManagementViewSkus} />
         <Route path="skus/top_picks/:stateId/:genreId" component={TopPicksInWrapper} />
         <Route path="homepage_management/ads" component={HomepageManagementAds} />
@@ -203,16 +203,32 @@ const main = (
         <Route path="retailer_management/disable_device" component={RetailerManagementDisableDevice} />
         <Route path="retailer_management/transactions" component={RetailerManagementTransactions} />
         <Route path="retailer_management/create_organization" component={RetailerManagementCreateOrganization} />
-        <Route path="customer_support/customer_profile" component={CustomerSupportCustomerProfile} />
-        <Route path="customer_support/freshdesk_ticket" component={CustomerSupportFreshdeskTicket} />
+        <Route path="customer_support" component={CustomerSupportSupport} />
+        <Route path="customer_support/customer_profile/:Id" component={CustomerSupportCustomerProfile} />
+        <Route path="customer_support/freshdesk_ticket/:Id" component={CustomerSupportFreshdeskTicket} />
         <Route path="customer_support/issue_history" component={CustomerSupportIssueHistory} />
-        <Route path="customer_support/support" component={CustomerSupportSupport} />
-        <Route path="customer_support/freshdeskticketlist" component={CustomerSupportFreshdeskTicketList} />
+        <Route path="customer_support/freshdesk_ticketlist" component={CustomerSupportFreshdeskTicketList} />
         <Route path="customer_support/instant_callback_history" component={CustomerSupportInstantCallbackHistory} />
+        <Route path="parameter_management/consumer_manual_debit_credit_codes" component={ParameterManagementConsumerManualCodes} />
+        <Route path="parameter_management/create_code" component={ParameterManagementCreateCode} />
+        <Route path="parameter_management/consumer_issue_codes" component={ParameterManagementConsumerIssueCodes} />
+        <Route path="parameter_management/consumer_issue/create_code" component={ParameterManagementConsumerIssueCreateCode} />
+        <Route path="parameter_management/consumer_notepad_codes" component={ParameterManagementConsumerNotepadCodes} />
+        <Route path="parameter_management/notepad_create_code" component={ParameterManagementNotepadCreateCode} />
+        <Route path="parameter_management/retailer_manual_debit_credit_codes" component={ParameterManagementRetailerManualDebitCreditCodes} />
+        <Route path="parameter_management/retailer_manual/create_code" component={ParameterManagementRetailerManualCreateCode} />
+        <Route path="parameter_management/consumer_disable_account_code" component={ParameterManagementConsumerDisableAccountCode} />
+        <Route path="parameter_management/consumer_disable_account/create_code" component={ParameterManagementConsumerDisableAccountCreateCode} />
+        <Route path="parameter_management/consumer_device_account_codes" component={ParameterManagementConsumerDeviceAccountCodes} />
+        <Route path="parameter_management/consumer_device_account_create_code" component={ParameterManagementConsumerDeviceAccountCreateCode} />
+        <Route path="accounting/eod_report" component={AccountingEODReport} />
+        <Route path="accounting/settlement_report" component={AccountingSettlementReport} />
+        <Route path="accounting/upload_payu_report" component={AccountingUploadPayUReport} />
+        <Route path="accounting/upload_settlement_report" component={AccountingUploadSettlementReport} />
         /* End of SKU Management */
-        {/*
+        { /*
         <Route path="notepad_entries" component={NotepadEntries} />
-        */}
+        */ }
       </Route>
     </Router>
 );

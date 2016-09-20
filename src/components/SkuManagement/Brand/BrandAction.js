@@ -19,7 +19,6 @@ const BRAND_GENRE_FETCH = 'BRAND/BRAND_GENRE_FETCH';
 const BRAND_COMPANY_FETCH = 'BRAND/BRAND_COMPANY_FETCH';
 const BRAND_STATE_FETCH = 'BRAND/BRAND_STATE_FETCH';
 
-
 const VIEW_STATE = 'BRAND/VIEW_STATE';
 const TOGGLE_REGION_VISIBILITY = 'BRAND/TOGGLE_REGION_VISIBILITY';
 const REGION_INPUT_CHANGED = 'BRAND/REGION_INPUT_CHANGED';
@@ -63,11 +62,7 @@ const fetchCategory = () => {
       body: JSON.stringify(queryObj),
     };
     /* Make a MAKE_REQUEST action */
-    dispatch({type: MAKE_REQUEST});
-    return Promise.all([
-      dispatch(requestAction(url, options, BRAND_CATEGORY_FETCH, REQUEST_ERROR)),
-      dispatch({type: REQUEST_COMPLETED})
-    ]);
+    dispatch(requestAction(url, options, BRAND_CATEGORY_FETCH, REQUEST_ERROR));
   };
 };
 
@@ -85,12 +80,7 @@ const fetchGenre = () => {
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
-    /* Make a MAKE_REQUEST action */
-    dispatch({type: MAKE_REQUEST});
-    return Promise.all([
-      dispatch(requestAction(url, options, BRAND_GENRE_FETCH, REQUEST_ERROR)),
-      dispatch({type: REQUEST_COMPLETED})
-    ]);
+    dispatch(requestAction(url, options, BRAND_GENRE_FETCH, REQUEST_ERROR));
   };
 };
 
@@ -109,11 +99,8 @@ const fetchCompany = () => {
       body: JSON.stringify(queryObj),
     };
     /* Make a MAKE_REQUEST action */
-    dispatch({type: MAKE_REQUEST});
-    return Promise.all([
-      dispatch(requestAction(url, options, BRAND_COMPANY_FETCH, REQUEST_ERROR)),
-      dispatch({type: REQUEST_COMPLETED})
-    ]);
+    // dispatch({type: MAKE_REQUEST});
+    dispatch(requestAction(url, options, BRAND_COMPANY_FETCH, REQUEST_ERROR));
   };
 };
 
@@ -145,11 +132,8 @@ const fetchState = () => {
       body: JSON.stringify(queryObj),
     };
     /* Make a MAKE_REQUEST action */
-    dispatch({type: MAKE_REQUEST});
-    return Promise.all([
-      dispatch(requestAction(url, options, BRAND_STATE_FETCH, REQUEST_ERROR)),
-      dispatch({type: REQUEST_COMPLETED})
-    ]);
+    // dispatch({type: MAKE_REQUEST});
+    dispatch(requestAction(url, options, BRAND_STATE_FETCH, REQUEST_ERROR));
   };
 };
 
@@ -184,11 +168,7 @@ const fetchBrand = (Id) => {
       body: JSON.stringify(queryObj),
     };
     /* Make a MAKE_REQUEST action */
-    dispatch({type: MAKE_REQUEST});
-    return Promise.all([
-      dispatch(requestAction(url, options, BRAND_FETCHED, REQUEST_ERROR)),
-      dispatch({type: REQUEST_COMPLETED})
-    ]);
+    dispatch(requestAction(url, options, BRAND_FETCHED, REQUEST_ERROR));
   };
 };
 
@@ -262,10 +242,16 @@ const insertBrand = () => {
             credentials: globalCookiePolicy,
             body: JSON.stringify(regionObjs)
           };
+          if ( regionObjs.objects.length === 0) {
+            return { 'returnit': true };
+          }
           return dispatch(requestAction(regionUrl, options));
         }
       })
       .then( ( resp ) => {
+        if ( resp.returnit ) {
+          return {'success': true};
+        }
         const regionTempToMainMapping = {};
         resp.returning.forEach( ( item ) => {
           regionTempToMainMapping[regionNameIdMapping[item.region_name]] = item.id;
@@ -300,13 +286,17 @@ const insertBrand = () => {
         };
         return dispatch(requestAction(regionCityUrl, options));
       })
-      .then( (resp) => {
-        if ( resp.returning.length > 0) {
-          alert('brand Created Successfully');
-          return dispatch(routeActions.push('/hadmin/brand_management'));
-        }
-        alert('something went wrong while creating brand');
-        return dispatch({type: REQUEST_COMPLETED});
+      .then( () => {
+        // if ( resp.success ) {
+        alert('brand Created Successfully');
+        return dispatch(routeActions.push('/hadmin/brand_management'));
+        // }
+        // if ( resp.returning.length > 0) {
+        //   alert('brand Created Successfully');
+        //   return dispatch(routeActions.push('/hadmin/brand_management'));
+        // }
+        // alert('something went wrong while creating brand');
+        // return dispatch({type: REQUEST_COMPLETED});
       })
       .catch((resp) => {
         console.log(resp);

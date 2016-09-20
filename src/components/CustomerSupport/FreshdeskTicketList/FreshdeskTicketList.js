@@ -52,8 +52,6 @@ class FreshdeskTicketList extends React.Component { // eslint-disable-line no-un
     const styles = require('./FreshdeskTicketList.scss');
     const { lastSuccess } = this.props;
 
-    console.log('my name is ');
-    console.log(this.myName);
     // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
     return (
         <div className={styles.container}>
@@ -77,7 +75,7 @@ class FreshdeskTicketList extends React.Component { // eslint-disable-line no-un
             limit = "10"
             triggerPageChange={ this.triggerPageChange.bind(this) }
             showMax="5"
-            parentUrl="/hadmin/customer_support/freshdeskticketlist"
+            parentUrl="/hadmin/customer_support/freshdesk_ticketlist"
           />
         </div>
       );

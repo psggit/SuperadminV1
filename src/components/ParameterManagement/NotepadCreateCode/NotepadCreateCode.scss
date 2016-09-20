@@ -1,0 +1,123 @@
+.container
+{
+	width: 100%;
+	float: left;
+}
+.wrapper {
+  width: 100%;
+  float: left;
+}
+.disable_device_wrapper
+{
+  width: 35%;
+  margin-left: 45px;
+  margin-top: 20px;
+	margin-bottom: 10px;
+  float: left;
+  background-color: #fff;
+  overflow: auto;
+  padding: 20px 15px;
+  .disable_device_head
+  {
+    font-size: 14px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    text-align: left;
+    color: #9F9E9E;
+    font-weight: 500;
+    padding-bottom: 10px;
+  }
+	.disable_device_btn
+	{
+		text-align: center;
+		button
+		{
+			width: 130px;
+			height: 30px;
+			color: #FF7400;
+			border: 1px solid #FF7400;
+			border-radius: 4px;
+			background-color: #fff;
+			cursor: pointer;
+			font-weight: 400;
+			display: inline-block;
+			padding: 5px;
+			text-align: center;
+
+		}
+	}
+	.code_wrapper
+	{
+		.information_leftpanel
+	  {
+	    width: 40%;
+	    display: inline-block;
+	    color: #9F9E9E;
+	    font-weight: 400;
+	  }
+		.information_rightpanel
+	  {
+	    width: 60%;
+	    display: inline-block;
+	    color: #9F9E9E;
+	    font-weight: 400;
+			input
+			{
+				border: 1px solid #ccc;
+				border-radius: 4px;
+				padding: 5px 10px;
+				transition: all 0.2s;
+				background-color: #fff;
+				font-size: 13px;
+				vertical-align: top;
+				height: 30px;
+				resize: none;
+				color: #9F9E9E;
+				width: 170px;
+				margin-bottom: 10px;
+			}
+			input:focus
+			{
+				outline: none;
+				border: 1px solid #FF7400;
+			}
+	  }
+	}
+	.command_wrapper
+	{
+		.information_leftpanel
+	  {
+	    width: 40%;
+	    display: inline-block;
+	    color: #9F9E9E;
+	    font-weight: 400;
+	  }
+	  .information_rightpanel
+	  {
+	    width: 60%;
+	    display: inline-block;
+	    color: #9F9E9E;
+	    font-weight: 400;
+			textarea
+			{
+				border: 1px solid #ccc;
+				border-radius: 4px;
+				padding: 5px 10px;
+				transition: all 0.2s;
+				background-color: #fff;
+				font-size: 13px;
+				vertical-align: top;
+				height: 50px;
+				resize: none;
+				color: #9F9E9E;
+				width: 170px;
+				margin-bottom: 10px;
+			}
+			textarea:focus
+			{
+				outline: none;
+				border: 1px solid #FF7400;
+			}
+	  }
+	}
+}

@@ -4,9 +4,32 @@ import { Link } from 'react-router';
 import { getAllStateData, getStateData } from '../Action';
 import SearchWrapper from './SearchWrapper';
 
+
 import PaginationContainer from '../../CustomerTransaction/components/Recharge/Pagination';
 
+/* Decorator which adds couple of useful features like
+ * 1. Clearing the state of the Component on unmount
+ * 2. Displaying/Hiding loading icon on ajax fetch/complete
+ * */
+import commonDecorator from '../../Common/CommonDecorator';
+import BreadCrumb from '../../Common/BreadCrumb';
+
 class StateManagement extends React.Component { // eslint-disable-line no-unused-vars
+  constructor() {
+    super();
+    /* Data required for the bread component to render correctly */
+    this.breadCrumbs = [];
+    this.breadCrumbs.push({
+      title: 'SKU Management',
+      sequence: 1,
+      link: '#'
+    });
+    this.breadCrumbs.push({
+      title: 'Manage State',
+      sequence: 2,
+      link: '#'
+    });
+  }
   componentDidMount() {
     /* Fetch the state data */
     const {query} = this.props.location;
@@ -32,9 +55,7 @@ class StateManagement extends React.Component { // eslint-disable-line no-unused
     // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
     return (
         <div className={styles.container}>
-          <div className={styles.head_container}>
-         		SKU Management / Manage State
-         	</div>
+          <BreadCrumb breadCrumbs={this.breadCrumbs} />
          	<div className={styles.search_wrapper + ' ' + styles.wd_100}>
          		<p>Search</p>
          		<div className={styles.search_form + ' ' + styles.wd_100}>
@@ -65,82 +86,6 @@ class StateManagement extends React.Component { // eslint-disable-line no-unused
               <button className={styles.common_btn}>Create State</button>
             </Link>
           </div>
-          {/*
-          <div className={styles.list_of_states_wrapper}>
-            <label>List of States</label>
-            <table className={'table' + ' ' + 'table-striped'}>
-              <thead>
-                <th></th>
-                <th>ID</th>
-                <th>State Name</th>
-                <th>Status</th>
-                <th>Created At</th>
-                <th>Updated At</th>
-              </thead>
-              <tbody>
-              	<tr>
-              		<td><button className={styles.edit_btn}>Edit</button></td>
-              		<td className={styles.id}>1</td>
-              		<td>Tamil Nadu</td>
-              		<td>Active</td>
-              		<td>01-03-2016</td>
-              		<td>05-04-2016</td>
-              	</tr>
-              	<tr>
-              		<td><button className={styles.edit_btn}>Edit</button></td>
-              		<td className={styles.id}>2</td>
-              		<td>Tamil Nadu</td>
-              		<td>Active</td>
-              		<td>01-03-2016</td>
-              		<td>05-04-2016</td>
-              	</tr>
-              	<tr>
-              		<td><button className={styles.edit_btn}>Edit</button></td>
-              		<td className={styles.id}>3</td>
-              		<td>Tamil Nadu</td>
-              		<td>Active</td>
-              		<td>01-03-2016</td>
-              		<td>05-04-2016</td>
-              	</tr>
-              	<tr>
-              		<td><button className={styles.edit_btn}>Edit</button></td>
-              		<td className={styles.id}>4</td>
-              		<td>Tamil Nadu</td>
-              		<td>Active</td>
-              		<td>01-03-2016</td>
-              		<td>05-04-2016</td>
-              	</tr>
-              	<tr>
-              		<td><button className={styles.edit_btn}>Edit</button></td>
-              		<td className={styles.id}>5</td>
-              		<td>Tamil Nadu</td>
-              		<td>Active</td>
-              		<td>01-03-2016</td>
-              		<td>05-04-2016</td>
-              	</tr>
-              </tbody>
-     		  	</table>
-            <div className={styles.pagination_wrapper + ' ' + styles.wd_100}>
-              <ul className={styles.custom_pagination}>
-                	<li>
-                  		<a href="#">
-                    		<span aria-hidden="true">&laquo;</span>
-                  		</a>
-                	</li>
-                	<li className={styles.active}><a href="#">1</a></li>
-                	<li><a href="#">2</a></li>
-                	<li><a href="#">3</a></li>
-                	<li><a href="#">4</a></li>
-                	<li><a href="#">5</a></li>
-                	<li>
-                  		<a href="#">
-                    		<span aria-hidden="true">&raquo;</span>
-                  		</a>
-                	</li>
-              </ul>
-            </div>
-          </div>
-          */}
           <SearchWrapper data={lastSuccess}/>
           <div className={styles.pagination_wrapper}>
             <PaginationContainer limit="10" onClickHandler={this.onClickHandle.bind(this)} currentPage={page} showMax="5" count={count} parentUrl="/hadmin/state_management" />
@@ -161,7 +106,8 @@ StateManagement.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  return {...state.sku_data};
+  return {...state.sku_data, ongoingRequest: state.page_data.ongoingRequest };
 };
 
-export default connect(mapStateToProps)(StateManagement);
+const decoratedConnectedComponent = commonDecorator(StateManagement);// connect(mapStateToProps)(CommonDecorator);
+export default connect(mapStateToProps)(decoratedConnectedComponent);

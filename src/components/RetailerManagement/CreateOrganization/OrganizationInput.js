@@ -1,5 +1,5 @@
 import React from 'react';
-const OrganizationInput = ({labelVal, Val}) => {
+const OrganizationInput = ({labelVal, Val, fieldName, fieldType }) => {
   const styles = require('./OrganizationInput.scss');
   return (
     <div className = {styles.constitution_organisation_input_container}>
@@ -7,7 +7,7 @@ const OrganizationInput = ({labelVal, Val}) => {
         {labelVal}
       </div>
       <div className = {styles.constitution_organisation_input_right}>
-        <input type="text" placeholder = {Val} />
+        <input type={ fieldType } placeholder = {Val} data-field-name={ fieldName } data-field-type = { fieldType } />
       </div>
     </div>
   );

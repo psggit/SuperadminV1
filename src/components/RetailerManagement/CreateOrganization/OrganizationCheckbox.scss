@@ -1,12 +1,12 @@
-  .constitution_organisation_checkbox
+.constitution_organisation_checkbox
+{
+  width: 25%;
+  display: inline-block;
+  margin-bottom: 20px;
+  label
   {
-    width: 25%;
-    display: inline-block;
-    margin-bottom: 20px;
-    label
-    {
-      padding-left: 5px;
-      font-weight: normal;
-      color: #9F9E9E;
-    }
+    padding-left: 5px;
+    font-weight: normal;
+    color: #9F9E9E;
   }
+}

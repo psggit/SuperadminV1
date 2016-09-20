@@ -9,13 +9,14 @@ const SearchWrapper = ( {data} ) => {
   tableBody = data.map((dat, index) => {
     let createdAt = dat.created_at;
     let updatedAt = dat.updated_at;
+    // consumer/profile/:ID
 
     createdAt = new Date(new Date(createdAt).getTime()).toLocaleString();
     updatedAt = new Date(new Date(updatedAt).getTime()).toLocaleString();
     return (
           <tr key={index}>
             <td>
-              <Link to={'/hadmin/brand_management/edit/' + dat.id}>
+              <Link to={'/hadmin/customer_support/freshdesk_ticket/' + dat.freshdesk_token_id} target="_blank">
                 <button className={styles.edit_btn} data-genre-id={dat.id}>
                   View
                 </button>
@@ -23,25 +24,18 @@ const SearchWrapper = ( {data} ) => {
             </td>
             <td> { dat.id } </td>
             <td>
-                { dat.brand_name}
+              <Link to={ (dat.consumer_email) ? '/hadmin/consumer/profile/' + dat.consumer_id : ''}>
+                { (dat.consumer_id) ? dat.consumer_id : 'N/A'}
+              </Link>
             </td>
             <td>
-              Active
+                { (dat.consumer_email) ? dat.consumer_email : 'N/A'}
             </td>
             <td>
-                { (dat.category) ? dat.category.name : 'N/A'}
+                { (dat.freshdesk_token_id) ? dat.freshdesk_token_id : 'N/A'}
             </td>
             <td>
-                { (dat.genre) ? dat.genre.genre_name : 'N/A'}
-            </td>
-            <td>
-                { (dat.company) ? dat.company.name : 'N/A'}
-            </td>
-            <td>
-                { (dat.company) ? dat.company.name : 'N/A'}
-            </td>
-            <td>
-                { (dat.company) ? dat.company.name : 'N/A'}
+                { (dat.status) ? dat.status : 'N/A'}
             </td>
             <td> { createdAt } </td>
             <td> { updatedAt } </td>
@@ -53,7 +47,7 @@ const SearchWrapper = ( {data} ) => {
     objHtml = () => {
       return (
         <div className={styles.error_message}>
-          Sorry no Brands
+          No Tickets found!
         </div>
         );
     }();
@@ -65,13 +59,10 @@ const SearchWrapper = ( {data} ) => {
                 <tr>
                   <th> </th>
                   <th> ID </th>
+                  <th> Customer ID </th>
                   <th> Customer Email </th>
-                  <th> Subject </th>
-                  <th> Description </th>
-                  <th> Status </th>
                   <th> Freshdesk ID </th>
-                  <th> Priority </th>
-                  <th> No of emails in thread </th>
+                  <th> Status </th>
                   <th> Created At </th>
                   <th> Updated At </th>
                 </tr>

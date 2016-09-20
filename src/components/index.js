@@ -9,7 +9,7 @@ export PageContainer from './PageContainer/PageContainer';
 export Login from './Login/Login';
 export FileUpload from './FileUpload/FileUpload';
 export Home from './Home/Home';
-export ViewConsumers from './Consumer/ViewTable';
+export ViewConsumers from './Consumer/components/ViewConsumer/ViewConsumer';
 export AddTable from './Consumer/AddTable';
 export InsertItem from './Consumer/InsertItem';
 export EditItem from './Bills/EditItem';
@@ -82,6 +82,22 @@ export CustomerSupportIssueHistory from './CustomerSupport/IssueHistory/IssueHis
 export CustomerSupportSupport from './CustomerSupport/Support/Support';
 export CustomerSupportFreshdeskTicketList from './CustomerSupport/FreshdeskTicketList/FreshdeskTicketList';
 export CustomerSupportInstantCallbackHistory from './CustomerSupport/InstantCallbackHistory/InstantCallbackHistory';
+export ParameterManagementConsumerManualCodes from './ParameterManagement/ConsumerManualCodes/ConsumerManualCodes';
+export ParameterManagementCreateCode from './ParameterManagement/CreateCode/CreateCode';
+export ParameterManagementConsumerIssueCodes from './ParameterManagement/ConsumerIssueCodes/ConsumerIssueCodes';
+export ParameterManagementConsumerIssueCreateCode from './ParameterManagement/ConsumerIssueCreateCode/ConsumerIssueCreateCode';
+export ParameterManagementConsumerNotepadCodes from './ParameterManagement/ConsumerNotepadCodes/ConsumerNotepadCodes';
+export ParameterManagementNotepadCreateCode from './ParameterManagement/NotepadCreateCode/NotepadCreateCode';
+export ParameterManagementRetailerManualDebitCreditCodes from './ParameterManagement/RetailerManualDebitCreditCodes/RetailerManualDebitCreditCodes';
+export ParameterManagementRetailerManualCreateCode from './ParameterManagement/RetailerManualCreateCode/RetailerManualCreateCode';
+export ParameterManagementConsumerDisableAccountCode from './ParameterManagement/ConsumerDisableAccountCode/ConsumerDisableAccountCode';
+export ParameterManagementConsumerDisableAccountCreateCode from './ParameterManagement/ConsumerDisableAccountCreateCode/ConsumerDisableAccountCreateCode';
+export ParameterManagementConsumerDeviceAccountCodes from './ParameterManagement/ConsumerDeviceAccountCodes/ConsumerDeviceAccountCodes';
+export ParameterManagementConsumerDeviceAccountCreateCode from './ParameterManagement/ConsumerDeviceAccountCreateCode/ConsumerDeviceAccountCreateCode';
+export AccountingEODReport from './Accounting/EODReport/EODReport';
+export AccountingSettlementReport from './Accounting/SettlementReport/SettlementReport';
+export AccountingUploadPayUReport from './Accounting/UploadPayUReport/UploadPayUReport';
+export AccountingUploadSettlementReport from './Accounting/UploadSettlementReport/UploadSettlementReport';
 /* Consumer Transactions */
 
 export ConsumerRecharge from './CustomerTransaction/components/Recharge/Recharge';

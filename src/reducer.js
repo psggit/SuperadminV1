@@ -1,7 +1,7 @@
 import {combineReducers} from 'redux';
 import {routeReducer} from 'redux-simple-router';
 import loginReducer from './components/Login/Actions';
-import dataReducer from './components/Consumer/DataActions';
+// import dataReducer from './components/Consumer/DataActions';
 import addTableReducer from './components/Consumer/AddActions';
 import fileReducer from './components/FileUpload/Actions';
 import profileReducer from './components/Consumer/ProfileActions';
@@ -34,9 +34,11 @@ import topPicksReducer from './components/SkuManagement/Skus/Toppicks/TopPicksAc
 import topPicksStateGenreReducer from './components/SkuManagement/Skus/ToppicksIn/TopPicksInAction';
 import addTopPickReducer from './components/SkuManagement/Skus/AddTopPicks/AddTopPickAction';
 
+import freshdeskTicketReducer from './components/CustomerSupport/FreshdeskTicket/FreshdeskTicketActions';
+import customerSupportReducer from './components/CustomerSupport/CustomerProfile/CustomerProfileActions';
+
 const reducer = combineReducers({
   loginState: loginReducer,
-  tables: dataReducer,
   addTable: addTableReducer,
   routing: routeReducer,
   profile: profileReducer,
@@ -64,7 +66,9 @@ const reducer = combineReducers({
   edit_bm_data: editBrandManagerReducer,
   sku_top_picks_data: topPicksReducer,
   sku_top_picks_state_genre_data: topPicksStateGenreReducer,
-  add_top_picks_data: addTopPickReducer
+  add_top_picks_data: addTopPickReducer,
+  freshdesk_ticket: freshdeskTicketReducer,
+  customer_support_data: customerSupportReducer,
 });
 
 export default reducer;
