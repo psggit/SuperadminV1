@@ -1,0 +1,128 @@
+.list_of_states_wrapper
+{
+	float: left;
+	width: 100%;
+	padding: 20px 45px;
+	color: rgba(0,0,0,0.54);
+	.list_of_states_btn
+	{
+		padding-bottom: 25px;
+		button
+		{
+			width: 130px;
+	    height: 30px;
+	    color: rgba(255, 116, 0, 0.8);
+	    border: 1px solid #FF7400;
+	    border-radius: 4px;
+	    background: #FFF;
+	    cursor: pointer;
+	    font-weight: 400;
+	    text-align: center;
+	    font-size: 13px;
+	    letter-spacing: 0.5px;
+	    transition: all 0.2s linear;
+		}
+		button:focus
+		{
+			outline: none;
+		}
+		button:hover
+		{
+			color: #ff7400;
+		}
+	}
+	label
+	{
+		font-weight: 500;
+		font-size: 15px;
+		margin-bottom: 10px;
+		letter-spacing: 0.3px;
+		font-size: 14px;
+	}
+	table
+	{
+		background: #FFF;
+		thead th
+		{
+			font-weight: 500;
+			border-bottom: 1px;
+			padding: 12px 8px;
+			letter-spacing: 0.3px;
+			font-size: 13px;
+		}
+		tbody tr td
+		{
+			font-size: 13px;
+			letter-spacing: 0.3px;
+			padding: 10px 8px;
+		}
+		.id
+		{
+			font-weight: 500;
+		}
+		.edit_btn
+		{
+			background: #FFF;
+			height: 20px;
+			text-align: center;
+			padding: 0 13px;
+			border: 1px solid #CCCCCC;
+			border-radius: 4px;
+			font-size: 11px;
+			letter-spacing: 0.3px;
+			color: rgba(0,0,0,0.44);
+			&:hover
+			{
+				color: rgba(0,0,0,0.54);
+			}
+			&:focus
+			{
+				outline: none;
+			}
+		}
+	}
+	.pagination_wrapper
+	{
+		text-align: center;
+		color: #FF7400;
+		margin-top: 30px;
+		.custom_pagination
+		{
+			list-style: none;
+			display: inline-block;
+			border-radius: 4px;
+			margin: 0;
+			padding: 0;
+			background: #FFF;
+			border: 1px solid #ECEEEF;
+			border-radius: 4px;
+			li
+			{
+				display:inline-block;
+				border-right: 1px solid #ECEEEF;
+				a
+				{
+					padding: 8px 14px;
+					color: #FF7400;
+					display: inline-block;
+					&:hover, &:focus
+					{
+						text-decoration: none;
+					}
+				}
+			}
+			.active
+			{
+				a
+				{
+					background: #FF7400;
+					color: #FFF;
+				}
+			}
+			li:last-child
+			{
+				border-right: 0;
+			}
+		}
+	}
+}
