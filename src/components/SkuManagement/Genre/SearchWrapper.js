@@ -10,6 +10,8 @@ const SearchWrapper = ( {data} ) => {
     let createdAt = dat.created_at;
     let updatedAt = dat.updated_at;
 
+    const imageUrl = dat.image ? ( <a target="_blank" href={ dat.image }> <img src={ dat.image } width="40px" height="40px" /> </a> ) : 'N/A';
+
     createdAt = new Date(new Date(createdAt).getTime()).toLocaleString();
     updatedAt = new Date(new Date(updatedAt).getTime()).toLocaleString();
     return (
@@ -23,8 +25,21 @@ const SearchWrapper = ( {data} ) => {
             </td>
             <td> { dat.id } </td>
             <td>
+              { imageUrl }
+            </td>
+            <td>
                 { dat.genre_name}
             </td>
+            <td>
+                { dat.display_name }
+            </td>
+            <td>
+                { dat.ordinal_position }
+            </td>
+            <td>
+                { dat.is_active ? 'Active' : 'Inactive' }
+            </td>
+
             <td> { createdAt } </td>
             <td> { updatedAt } </td>
           </tr>
@@ -47,7 +62,11 @@ const SearchWrapper = ( {data} ) => {
                 <tr>
                   <th> </th>
                   <th> ID </th>
+                  <th> Image </th>
                   <th> Genre Name </th>
+                  <th> Display Name </th>
+                  <th> Display Order </th>
+                  <th> Status </th>
                   <th> Updated At </th>
                   <th> Created At </th>
                 </tr>
@@ -65,7 +84,7 @@ const SearchWrapper = ( {data} ) => {
           <label>
             List of Genres
           </label>
-          <div className={styles.wd_80}>
+          <div className={'table-responsive ' + styles.wd_80}>
             {objHtml}
           </div>
         </div>

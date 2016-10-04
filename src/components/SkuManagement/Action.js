@@ -344,7 +344,7 @@ const getGenreCount = () => {
     const url = Endpoints.db + '/table/' + 'genre' + '/count';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -397,7 +397,7 @@ const getGenreData = (page, limit) => {
     const url = Endpoints.db + '/table/' + 'genre' + '/select';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };

@@ -39,6 +39,8 @@ import customerSupportReducer from './components/CustomerSupport/CustomerProfile
 
 import organizationReducer from './components/RetailerManagement/CreateOrganization/CreateOrganizationAction';
 
+import genreReducer from './components/SkuManagement/Genre/GenreAction';
+
 const reducer = combineReducers({
   loginState: loginReducer,
   addTable: addTableReducer,
@@ -71,7 +73,8 @@ const reducer = combineReducers({
   add_top_picks_data: addTopPickReducer,
   freshdesk_ticket: freshdeskTicketReducer,
   customer_support_data: customerSupportReducer,
-  organization_data: organizationReducer
+  organization_data: organizationReducer,
+  genre_data: genreReducer
 });
 
 export default reducer;

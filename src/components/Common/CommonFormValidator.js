@@ -46,7 +46,12 @@ const commonFormValidator = ( Component, fieldName, fieldType, changeEmitter) =>
         return e.target.value;
       };
 
-      data.value = (e.target.getAttribute(fieldType) === 'int') ? parseInt(e.target.value, 10) : fetchVal();
+      const makeIntValue = (value) => {
+        const intVal = parseInt(value, 10);
+        return ( intVal ) ? intVal : 0;
+      };
+
+      data.value = (e.target.getAttribute(fieldType) === 'int') ? makeIntValue(e.target.value) : fetchVal();
       this.props.dispatch({ type: changeEmitter, data: data});
     }
     render() {

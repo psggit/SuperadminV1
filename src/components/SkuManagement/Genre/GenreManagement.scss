@@ -151,6 +151,26 @@
 				text-align: left;
 				float: left;
 			}
+      textarea {
+        display: inline-block;
+        width: 160px;
+        border: 1px solid rgb(204, 204, 204);
+        border-radius: 4px;
+        background: rgb(255, 255, 255);
+        height: 113px;
+        padding: 0px 10px;
+        color: rgb(76, 76, 76);
+        font-size: 12px;
+        font-weight: 400;
+        letter-spacing: 0.5px;
+        transition: all 0.2s linear;
+        margin: 0px;
+		    &:focus
+		    {
+		    	outline: none;
+		    	border: 1px solid #FF7400;
+		    }
+      }
 		}
 		.create_btn
 		{

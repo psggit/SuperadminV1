@@ -29,6 +29,15 @@ const defaultCustomerSupportState = {
   }
 };
 
+const defaultGenreState = {
+  genreName: '',
+  displayName: '',
+  displayOrder: 0,
+  image: '',
+  genreStatus: false,
+  genreId: 0
+};
+
 const defaultBrandState = {
   companyList: [],
   genreList: [],
@@ -258,4 +267,5 @@ export { defaultNotepadState
   , defaultAddTopPickData
   , defaultFreshdeskTicketState
   , defaultCustomerSupportState
+  , defaultGenreState
 };

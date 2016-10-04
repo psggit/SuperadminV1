@@ -1,9 +1,18 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { insertGenre, fetchGenre, updateGenre, updateGenreText, resetGenre} from '../Action';
+import { insertGenre
+  , fetchGenre
+  , updateGenre
+  , resetGenre
+  , INPUT_VALUE_CHANGED
+  , REQUEST_COMPLETED
+  , MAKE_REQUEST
+} from './GenreAction';
 
 import commonDecorator from '../../Common/CommonDecorator';
 import BreadCrumb from '../../Common/BreadCrumb';
+
+import formValidator from '../../Common/CommonFormValidator';
 
 class ManageGenre extends React.Component { // eslint-disable-line no-unused-vars
   constructor() {
@@ -31,90 +40,89 @@ class ManageGenre extends React.Component { // eslint-disable-line no-unused-var
     let genreId = this.props.params.Id;
     if (genreId) {
       genreId = parseInt(genreId, 10);
-      this.props.dispatch(fetchGenre(genreId));
+      Promise.all([
+        this.props.dispatch({ type: MAKE_REQUEST}),
+        this.props.dispatch(fetchGenre(genreId))
+      ]).then( ( ) => {
+        this.props.dispatch({ type: REQUEST_COMPLETED });
+      });
     } else {
       this.props.dispatch(resetGenre());
     }
   }
   onClickHandle() {
-    // e.preventDefault();
-    const genreName = document.querySelectorAll('[data-field-name="genre_name"]')[0].value;
-    const genreObj = {};
-    genreObj.genre_name = genreName;
-    genreObj.created_at = new Date().toISOString();
-    genreObj.updated_at = new Date().toISOString();
-    this.props.dispatch(insertGenre(genreObj));
+    Promise.all([
+      this.props.dispatch({ type: MAKE_REQUEST}),
+      this.props.dispatch(insertGenre())
+    ]).then( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED });
+    });
   }
-  onClickEdit(e) {
-    const genreName = document.querySelectorAll('[data-field-name="genre_name"]')[0].value;
-    const genreId = parseInt(e.target.getAttribute('data-genre-id'), 10);
-    const genreObj = {};
-    genreObj.values = {};
-    genreObj.values.genre_name = genreName;
-    genreObj.returning = ['id'];
-    this.props.dispatch(updateGenre(genreObj, genreId));
-  }
-  /* Function to update the Fetched Genre of this component so that input field is editable */
-  inputOnChange(e) {
-    e.target.value = e.target.value;
-    this.props.dispatch(updateGenreText(e.target.value));
+  onClickEdit() {
+    Promise.all([
+      this.props.dispatch({ type: MAKE_REQUEST}),
+      this.props.dispatch(updateGenre())
+    ]).then( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED });
+    });
   }
   render() {
     const styles = require('./GenreManagement.scss');
 
-    const { ongoingRequest, lastError, lastSuccess } = this.props;
+    const {
+      ongoingRequest
+      , genreName
+      , displayName
+      , displayOrder
+      , image
+      , genreStatus
+      , genreId
+    } = this.props;
+
     console.log(ongoingRequest);
-    console.log(lastError);
 
     const htmlContent = () => {
-      if (lastSuccess.length > 0) {
-        return (
-          <div className={styles.wrapper}>
-            <BreadCrumb breadCrumbs={this.breadCrumbs} />
-            <div className={styles.create_state_wrapper}>
-              <p>
-                Edit Genre
-              </p>
-              <div className={styles.create_form}>
-                <div className={styles.indiv_form}>
-                	<label>Genre Name</label>
-                	<input type="text" data-field-name="genre_name" onChange={this.inputOnChange.bind(this)} value={lastSuccess[0].genre_name} />
-                </div>
-                {/*
-                <div className={styles.indiv_form}>
-                	<label>Status</label>
-                	<select>
-                		<option>Pending</option>
-                	</select>
-                </div>
-                */}
-                <button className={styles.common_btn + ' ' + styles.create_btn } data-genre-id={lastSuccess[0].id} onClick={this.onClickEdit.bind(this)}>Edit Genre</button>
-              </div>
-            </div>
-          </div>
+      const submitButton = ( genreId !== 0 ) ?
+        (
+          <button className={styles.common_btn + ' ' + styles.create_btn } onClick={this.onClickEdit.bind(this)} disabled={ongoingRequest ? true : false}>Edit Genre</button>
+        )
+      :
+        (
+          <button className={styles.common_btn + ' ' + styles.create_btn } onClick={this.onClickHandle.bind(this)} disabled={ongoingRequest ? true : false}>Create Genre</button>
         );
-      }
+
       return (
         <div className={styles.wrapper}>
           <BreadCrumb breadCrumbs={this.breadCrumbs} />
           <div className={styles.create_state_wrapper}>
             <p>
-              Create Genre
+              { genreId > 0 ? 'Edit ' : 'Create ' } Genre
             </p>
             <div className={styles.create_form}>
               <div className={styles.indiv_form}>
               	<label>Genre Name</label>
-              	<input type="text" data-field-name="genre_name" />
+              	<input type="text" value={ genreName } data-field-name="genreName" data-field-type="text"/>
               </div>
-              {/*
+              <div className={styles.indiv_form}>
+              	<label>Display Name</label>
+              	<input type="text" value={ displayName } data-field-name="displayName" data-field-type="text"/>
+              </div>
+              <div className={styles.indiv_form}>
+              	<label>Display Order</label>
+              	<input type="text" value={ displayOrder ? displayOrder : '' } data-field-name="displayOrder" data-field-type="int"/>
+              </div>
+              <div className={styles.indiv_form}>
+              	<label>Image</label>
+              	<textarea value={ image } data-field-name="image" data-field-type="text"></textarea>
+              </div>
               <div className={styles.indiv_form}>
               	<label>Status</label>
-              	<select>
-              		<option>Pending</option>
+              	<select value = { genreStatus ? '1' : '0' } data-field-name="genreStatus" data-field-type="boolean" onChange={ () => { return true; } }>
+              		<option value="1">Active</option>
+              		<option value="0">InActive</option>
               	</select>
               </div>
-              */}
-              <button className={styles.common_btn + ' ' + styles.create_btn } onClick={this.onClickHandle.bind(this)} disabled={ongoingRequest ? true : false}>Create Genre</button>
+              { submitButton }
             </div>
           </div>
         </div>
@@ -136,12 +144,21 @@ ManageGenre.propTypes = {
   dispatch: PropTypes.func.isRequired,
   ongoingRequest: PropTypes.bool.isRequired,
   lastError: PropTypes.object.isRequired,
-  lastSuccess: PropTypes.array.isRequired
+  lastSuccess: PropTypes.array.isRequired,
+  genreName: PropTypes.string.isRequired,
+  displayName: PropTypes.string.isRequired,
+  displayOrder: PropTypes.number.isRequired,
+  genreId: PropTypes.number.isRequired,
+  image: PropTypes.string.isRequired,
+  genreStatus: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = (state) => {
-  return {...state.sku_data};
+  return {...state.sku_data, ...state.page_data, ...state.genre_data };
 };
 
-const decoratedConnectedComponent = commonDecorator(ManageGenre);// connect(mapStateToProps)(CommonDecorator);
+
+const decoratedOne = formValidator(ManageGenre, 'data-field-name', 'data-field-type', INPUT_VALUE_CHANGED);
+
+const decoratedConnectedComponent = commonDecorator(decoratedOne);// connect(mapStateToProps)(CommonDecorator);
 export default connect(mapStateToProps)(decoratedConnectedComponent);
