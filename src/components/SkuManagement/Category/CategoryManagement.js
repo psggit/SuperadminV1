@@ -38,12 +38,9 @@ class CategoryManagement extends React.Component { // eslint-disable-line no-unu
 
   render() {
     const styles = require('./CategoryManagement.scss');
-    const { ongoingRequest, lastError, lastSuccess } = this.props;
+    const { lastSuccess } = this.props;
     // const {query} = this.props.location;
     // const page = (Object.keys(query).length > 0) ? parseInt(query.p, 10) : 1;
-    console.log(lastError);
-    console.log(ongoingRequest);
-    console.log(lastSuccess);
     // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
     return (
         <div className={styles.container}>

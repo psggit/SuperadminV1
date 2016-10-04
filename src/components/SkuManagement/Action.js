@@ -605,7 +605,7 @@ const getCategoryCount = () => {
     const url = Endpoints.db + '/table/' + 'category' + '/count';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin'},
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -649,7 +649,7 @@ const getCategoryData = (page, limit) => {
     offset = (page - 1) * 10;
 
     const payload = {
-      columns: ['*', { 'name': 'genre', 'columns': ['*']}],
+      columns: ['*', { 'name': 'genre_short', 'columns': ['*']}],
       limit: limit,
       offset: offset,
       order_by: '+id'
@@ -658,7 +658,7 @@ const getCategoryData = (page, limit) => {
     const url = Endpoints.db + '/table/' + 'category' + '/select';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin'},
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };

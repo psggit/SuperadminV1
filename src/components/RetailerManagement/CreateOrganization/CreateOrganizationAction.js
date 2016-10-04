@@ -1,8 +1,15 @@
-
 /* Actions Creator */
 
-import requestAction from '../../Common/Actions/requestAction';
+import {combineReducers} from 'redux';
 
-import Endpoints, { globalCookiePolicy } from '../../../Endpoints';
+// import requestAction from '../../Common/Actions/requestAction';
+//
+// import Endpoints, { globalCookiePolicy } from '../../../Endpoints';
+//
+// import { routeActions } from 'redux-simple-router';
 
-import { routeActions } from 'redux-simple-router';
+import beneficiaryReducer from './BeneficiaryAction';
+
+export default combineReducers({
+  beneficiary_data: beneficiaryReducer
+});

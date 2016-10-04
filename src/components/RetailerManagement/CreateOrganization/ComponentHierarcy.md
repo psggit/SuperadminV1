@@ -1,0 +1,3 @@
+- Components
+  - Smallest unit of data representation
+    - Can contain form elements

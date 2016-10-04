@@ -204,8 +204,9 @@ const defaultKycState = {
 const defaultCategoryState = {
   genreList: [],
   name: '',
-  genreId: 0,
-  categoryId: 0
+  genreShort: '',
+  categoryId: 0,
+  categoryStatus: true
 };
 
 const defaultCompanyState = {

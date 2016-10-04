@@ -37,6 +37,8 @@ import addTopPickReducer from './components/SkuManagement/Skus/AddTopPicks/AddTo
 import freshdeskTicketReducer from './components/CustomerSupport/FreshdeskTicket/FreshdeskTicketActions';
 import customerSupportReducer from './components/CustomerSupport/CustomerProfile/CustomerProfileActions';
 
+import organizationReducer from './components/RetailerManagement/CreateOrganization/CreateOrganizationAction';
+
 const reducer = combineReducers({
   loginState: loginReducer,
   addTable: addTableReducer,
@@ -69,6 +71,7 @@ const reducer = combineReducers({
   add_top_picks_data: addTopPickReducer,
   freshdesk_ticket: freshdeskTicketReducer,
   customer_support_data: customerSupportReducer,
+  organization_data: organizationReducer
 });
 
 export default reducer;

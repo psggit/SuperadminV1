@@ -143,20 +143,20 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
           </ul>
           */}
 
-          {/*
           <ul>
             <li><input type="checkbox" id="cb4"/><label htmlFor="cb4">RETAILER MANAGEMENT</label>
               <ul>
               <li className={styles.sidebar_list}><label>
-                  <Link to={'/hadmin/consumer/kycfunctions'} className={ lastPathname === 'profiles' ? styles.active : '' }> Retailer 1 </Link>
+                  <Link to={'/hadmin/retailer_management/profile_and_kyc'} className={ lastPathname === 'profiles' ? styles.active : '' }> Profile & KYC </Link>
               </label></li>
               <li className={styles.sidebar_list}><label>
-                  <Link to={'/hadmin/consumer/profiles'} className={ lastPathname === 'profiles' ? styles.active : '' }>Retailer 2</Link>
+                  <Link to={'/hadmin/consumer/profiles'} className={ lastPathname === 'profiles' ? styles.active : '' }> Transactions </Link>
               </label></li>
               </ul>
             </li>
           </ul>
 
+          {/*
           <ul>
             <li><input type="checkbox" id="cb5"/><label htmlFor="cb5">BRAND MANAGER</label>
               <ul>

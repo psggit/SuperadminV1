@@ -93,3 +93,7 @@ export EditBrandManager from './BrandsOffersAndPromos/EditBrandManager/EditBrand
 
 /* SKU */
 export ListSku from './SkuManagement/Skus/ListSku/ListSku';
+
+/* Retailer Management */
+export ProfileKyc from './RetailerManagement/ProfileKyc/ProfileKyc';
+/* */

@@ -590,14 +590,15 @@ const getBrandData = (page, limit) => {
       columns: ['*',
         {
           'name': 'category',
-          'columns': ['*']
+          'columns': ['*',
+            {
+              'name': 'genre_short',
+              'columns': ['*']
+            }
+          ]
         },
         {
           'name': 'company',
-          'columns': ['*']
-        },
-        {
-          'name': 'genre',
           'columns': ['*']
         }
       ],

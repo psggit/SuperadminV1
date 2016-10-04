@@ -26,9 +26,12 @@ const SearchWrapper = ( {data} ) => {
                 { dat.name}
             </td>
             <td>
-              <Link to={ ( dat.genre ) ? '/hadmin/genre_management/edit/' + dat.genre.id : '' }>
-                { (dat.genre) ? dat.genre.genre_name : 'N/A'}
+              <Link to={ ( dat.genre_short ) ? '/hadmin/genre_management/edit/' + dat.genre_short.id : '' }>
+                { (dat.genre_short ) ? dat.genre_short.genre_name : 'N/A'}
               </Link>
+            </td>
+            <td>
+              { dat.is_active ? 'Active' : 'InActive' }
             </td>
             <td> { createdAt } </td>
             <td> { updatedAt } </td>
@@ -54,6 +57,7 @@ const SearchWrapper = ( {data} ) => {
                   <th> ID </th>
                   <th> Category Name </th>
                   <th> Genre Name </th>
+                  <th> Status </th>
                   <th> Updated At </th>
                   <th> Created At </th>
                 </tr>

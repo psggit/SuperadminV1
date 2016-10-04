@@ -50,7 +50,8 @@ import {Login, Home, PageContainer,
   CustomerSupportFreshdeskTicket, CustomerSupportIssueHistory, CustomerSupportSupport, CustomerSupportFreshdeskTicketList,
   CustomerSupportInstantCallbackHistory,
   ViewBrandManager,
-  EditBrandManager
+  EditBrandManager,
+  ProfileKyc
 } from './components'; // eslint-disable-line no-unused-vars
 import {AddTable} from './components';
 import {loadCredentials} from './components/Login/Actions';
@@ -198,6 +199,7 @@ const main = (
         <Route path="retailer_management/disable_device" component={RetailerManagementDisableDevice} />
         <Route path="retailer_management/transactions" component={RetailerManagementTransactions} />
         <Route path="retailer_management/create_organization" component={RetailerManagementCreateOrganization} />
+        <Route path="retailer_management/profile_and_kyc" component={ProfileKyc} />
         <Route path="customer_support" component={CustomerSupportSupport} />
         <Route path="customer_support/customer_profile/:Id" component={CustomerSupportCustomerProfile} />
         <Route path="customer_support/freshdesk_ticket/:Id" component={CustomerSupportFreshdeskTicket} />

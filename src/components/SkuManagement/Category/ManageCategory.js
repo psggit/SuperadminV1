@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { updateCategoryText, resetCategory} from '../Action';
 
-import { updateCategory, fetchGenre, INPUT_VALUE_CHANGED, insertCategory, fetchCategory, RESET} from './CategoryAction';
+import { updateCategory, fetchGenre, INPUT_VALUE_CHANGED, insertCategory, fetchCategory, RESET, REQUEST_COMPLETED, MAKE_REQUEST } from './CategoryAction';
 
 import formValidator from '../../Common/CommonFormValidator';
 
@@ -35,8 +35,13 @@ class ManageCategory extends React.Component { // eslint-disable-line no-unused-
     let CategoryId = this.props.params.Id;
     if (CategoryId) {
       CategoryId = parseInt(CategoryId, 10);
-      this.props.dispatch(fetchCategory(CategoryId));
-      this.props.dispatch(fetchGenre());
+      Promise.all([
+        this.props.dispatch( { type: MAKE_REQUEST } ),
+        this.props.dispatch(fetchCategory(CategoryId)),
+        this.props.dispatch(fetchGenre())
+      ]).then( () => {
+        this.props.dispatch( { type: REQUEST_COMPLETED } );
+      });
     } else {
       this.props.dispatch(resetCategory());
       this.props.dispatch(fetchGenre());
@@ -70,16 +75,17 @@ class ManageCategory extends React.Component { // eslint-disable-line no-unused-
     const { ongoingRequest,
       lastError,
       genreList,
-      genreId,
+      genreShort,
       name,
-      categoryId
+      categoryId,
+      categoryStatus
     } = this.props;
     console.log(ongoingRequest);
     console.log(lastError);
 
     const genreHtml = genreList.map((genre, index) => {
       return (
-          <option key={index} value={genre.id}>{genre.genre_name}</option>
+          <option key={index} value={ genre.short_name }>{genre.genre_name}</option>
         );
     });
 
@@ -95,23 +101,22 @@ class ManageCategory extends React.Component { // eslint-disable-line no-unused-
               <div className={styles.create_form}>
                 <div className={styles.indiv_form}>
                   <label>Genre</label>
-                  <select value = { genreId } data-field-name="genreId" data-field-type="int" >
+                  <select value = { genreShort } data-field-name="genreShort" data-field-type="text" >
                     <option>Select Genre Type</option>
                     { genreHtml }
                   </select>
                 </div>
                 <div className={styles.indiv_form}>
                 	<label>Category Name</label>
-                	<input type="text" value={ name } data-field-name="name" data-field-type="text" />
+                	<input type="text" value={ name } data-field-name="name" data-field-type="text" onChange={ () => { return true; } } />
                 </div>
-                {/*
                 <div className={styles.indiv_form}>
                 	<label>Status</label>
-                	<select>
-                		<option>Pending</option>
+                	<select value = { categoryStatus ? '1' : '0' } data-field-name="categoryStatus" data-field-type="boolean" onChange={ () => { return true; } }>
+                		<option value="1">Active</option>
+                		<option value="0">InActive</option>
                 	</select>
                 </div>
-                */}
                 <button className={styles.common_btn + ' ' + styles.create_btn } onClick={this.updateCategory.bind(this)}>Edit Category</button>
               </div>
             </div>
@@ -128,7 +133,7 @@ class ManageCategory extends React.Component { // eslint-disable-line no-unused-
             <div className={styles.create_form}>
               <div className={styles.indiv_form}>
                 <label>Genre</label>
-                <select data-field-name="genreId" data-field-type="text">
+                <select data-field-name="genreShort" data-field-type="text">
                   <option value="default">
                     Select Genre
                   </option>
@@ -137,16 +142,15 @@ class ManageCategory extends React.Component { // eslint-disable-line no-unused-
               </div>
               <div className={styles.indiv_form}>
               	<label>Category Name</label>
-              	<input type="text" data-field-name="name" data-field-type="text"/>
+              	<input type="text" data-field-name="name" data-field-type="text" onChange={ () => { return true; } }/>
               </div>
-              {/*
               <div className={styles.indiv_form}>
               	<label>Status</label>
-              	<select>
-              		<option>Pending</option>
+              	<select value = { categoryStatus ? '1' : '0' } data-field-name="categoryStatus" data-field-type="boolean" onChange={ () => { return true; } }>
+              		<option value="1">Active</option>
+              		<option value="0">InActive</option>
               	</select>
               </div>
-              */}
               <button className={styles.common_btn + ' ' + styles.create_btn } onClick={this.createCategory.bind(this)} disabled={ongoingRequest ? true : false}>Create Category</button>
             </div>
           </div>
@@ -171,13 +175,14 @@ ManageCategory.propTypes = {
   lastError: PropTypes.object.isRequired,
   lastSuccess: PropTypes.array.isRequired,
   genreList: PropTypes.array.isRequired,
-  genreId: PropTypes.number.isRequired,
+  genreShort: PropTypes.string.isRequired,
+  categoryStatus: PropTypes.bool.isRequired,
   name: PropTypes.string.isRequired,
-  categoryId: PropTypes.string.isRequired
+  categoryId: PropTypes.number.isRequired
 };
 
 const mapStateToProps = (state) => {
-  return {...state.sku_data, ...state.category_data};
+  return {...state.sku_data, ...state.category_data, ...state.page_data };
 };
 
 const decoratedOne = formValidator(ManageCategory, 'data-field-name', 'data-field-type', INPUT_VALUE_CHANGED);

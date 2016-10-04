@@ -12,6 +12,14 @@ const SearchWrapper = ( {data} ) => {
 
     createdAt = new Date(new Date(createdAt).getTime()).toLocaleString();
     updatedAt = new Date(new Date(updatedAt).getTime()).toLocaleString();
+    const checkGenre = () => {
+      if ( dat.category.genre_short ) {
+        return dat.category.genre_short.genre_name;
+      }
+      return 'N/A';
+    };
+    const genreName = (dat.category) ? checkGenre() : 'N/A';
+
     return (
           <tr key={index}>
             <td>
@@ -32,7 +40,7 @@ const SearchWrapper = ( {data} ) => {
                 { (dat.category) ? dat.category.name : 'N/A'}
             </td>
             <td>
-                { (dat.genre) ? dat.genre.genre_name : 'N/A'}
+                { genreName }
             </td>
             <td>
                 { (dat.company) ? dat.company.name : 'N/A'}

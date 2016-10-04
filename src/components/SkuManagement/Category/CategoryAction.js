@@ -38,15 +38,12 @@ const fetchCategory = ( categoryId ) => {
     };
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin'},
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
-    /* Make a MAKE_REQUEST action */
-    dispatch({type: MAKE_REQUEST});
     return Promise.all([
-      dispatch(requestAction(url, options, CATEGORY_FETCHED, REQUEST_ERROR)),
-      dispatch({type: REQUEST_COMPLETED})
+      dispatch(requestAction(url, options, CATEGORY_FETCHED, REQUEST_ERROR))
     ]);
   };
 };
@@ -61,15 +58,12 @@ const fetchGenre = () => {
     ];
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin'},
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
-    /* Make a MAKE_REQUEST action */
-    dispatch({type: MAKE_REQUEST});
     return Promise.all([
-      dispatch(requestAction(url, options, GENRE_FETCHED, REQUEST_ERROR)),
-      dispatch({type: REQUEST_COMPLETED})
+      dispatch(requestAction(url, options, GENRE_FETCHED, REQUEST_ERROR))
     ]);
   };
 };
@@ -80,16 +74,18 @@ const insertCategory = () => {
     const insertObj = {};
     const currState = getState().category_data;
 
-    if ( !currState.genreId || !currState.name ) {
+    if ( !currState.genreShort || !currState.name ) {
       alert('Genre and Name of the category are important for category creation');
       return dispatch({type: REQUEST_COMPLETED});
     }
 
     const categoryObj = {
-      'genre_id': parseInt(currState.genreId, 10),
+      'genre_short_name': currState.genreShort,
       'name': currState.name.toUpperCase(),
+      'short_name': currState.name.replace(' ', '-').toLowerCase(),
       'created_at': new Date().toISOString(),
-      'updated_at': new Date().toISOString()
+      'updated_at': new Date().toISOString(),
+      'is_active': currState.categoryStatus
     };
 
     insertObj.objects = [categoryObj];
@@ -97,7 +93,7 @@ const insertCategory = () => {
 
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin'},
       credentials: globalCookiePolicy,
       body: JSON.stringify(insertObj)
     };
@@ -123,14 +119,15 @@ const updateCategory = () => {
     const updateObj = {};
     const currState = getState().category_data;
 
-    if ( !currState.genreId || !currState.name ) {
+    if ( !currState.genreShort || !currState.name ) {
       alert('Genre and Name of the category are important for category creation');
       return dispatch({type: REQUEST_COMPLETED});
     }
 
     const categoryObj = {
-      'genre_id': parseInt(currState.genreId, 10),
-      'name': currState.name.toUpperCase()
+      'genre_short_name': currState.genreShort,
+      'name': currState.name.toUpperCase(),
+      'is_active': currState.categoryStatus
     };
 
     updateObj.values = categoryObj;
@@ -141,7 +138,7 @@ const updateCategory = () => {
 
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin'},
       credentials: globalCookiePolicy,
       body: JSON.stringify(updateObj)
     };
@@ -172,7 +169,7 @@ const categoryReducer = (state = defaultCategoryState, action) => {
       categoryInfo[action.data.key] = action.data.value;
       return { ...state, ...categoryInfo };
     case CATEGORY_FETCHED:
-      return { ...state, name: action.data[0].name, genreId: action.data[0].genre_id, categoryId: action.data[0].id};
+      return { ...state, name: action.data[0].name, genreShort: action.data[0].genre_short_name, categoryId: action.data[0].id, categoryStatus: action.data[0].is_active ? true : false };
     case RESET:
       return { ...defaultCategoryState };
     default:
@@ -188,6 +185,8 @@ export {
   INPUT_VALUE_CHANGED,
   insertCategory,
   updateCategory,
-  RESET
+  RESET,
+  REQUEST_COMPLETED,
+  MAKE_REQUEST
 };
 export default categoryReducer;

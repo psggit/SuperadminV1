@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import BreadCrumb from '../../Common/BreadCrumb';
 import OrganizationDetails from './OrganizationDetails';
 import OrganizationRegisteredDetails from './OrganizationRegisteredDetails';
 import OrganizationContactDetails from './OrganizationContactDetails';
-import AddBeneficiaryInput from './AddBeneficiaryInput';
-import AddBeneficiaryTextarea from './AddBeneficiaryTextarea';
-import SettlementWrapper from './SettlementWrapper';
+
+import { connect } from 'react-redux';
+
+import Beneficiary from './Beneficiary';
+
 class CreateOrganization extends React.Component {
   constructor() {
     super();
@@ -38,33 +40,7 @@ class CreateOrganization extends React.Component {
             <OrganizationContactDetails />
           </div>
         </div>
-        <div className = {styles.beneficiaries_container}>
-          <div className = {styles.beneficiaries_wrapper}>
-            <div className = {styles.beneficiaries_head}>
-              beneficiaries
-            </div>
-            <div className = {styles.beneficiaries_subhead}>
-              + Add New
-            </div>
-            <SettlementWrapper />
-          </div>
-          <div className = {styles.add_beneficiaries_wrapper}>
-            <div className = {styles.add_beneficiaries_head}>
-              beneficiaries
-            </div>
-            <AddBeneficiaryInput labelVal = "Name"/>
-            <AddBeneficiaryTextarea labelVal = "Address" />
-            <AddBeneficiaryInput labelVal = "Pincode"/>
-            <AddBeneficiaryInput labelVal = "City"/>
-            <AddBeneficiaryInput labelVal = "State"/>
-            <AddBeneficiaryInput labelVal = "Landline Number"/>
-            <AddBeneficiaryInput labelVal = "Email"/>
-            <div className = {styles.add_beneficiary_btn}>
-              <button>Cancel</button>
-              <button>Save</button>
-            </div>
-          </div>
-        </div>
+        <Beneficiary { ...this.props } />
         <div className = {styles.organisation_details_btn}>
           <button>Save</button>
         </div>
@@ -72,4 +48,9 @@ class CreateOrganization extends React.Component {
     );
   }
 }
-export default CreateOrganization;
+
+CreateOrganization.propTypes = {
+  dispatch: PropTypes.func.isRequired
+};
+
+export default connect()(CreateOrganization);
