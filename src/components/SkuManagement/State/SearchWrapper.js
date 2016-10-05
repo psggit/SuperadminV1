@@ -25,6 +25,9 @@ const SearchWrapper = ( {data} ) => {
             <td>
                 { dat.state_name}
             </td>
+            <td>
+                { dat.short_name }
+            </td>
             <td> { createdAt } </td>
             <td> { updatedAt } </td>
           </tr>
@@ -48,6 +51,7 @@ const SearchWrapper = ( {data} ) => {
                   <th> </th>
                   <th> ID </th>
                   <th> State Name </th>
+                  <th> Short Name </th>
                   <th> Updated At </th>
                   <th> Created At </th>
                 </tr>

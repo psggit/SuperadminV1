@@ -65,8 +65,10 @@ const defaultBrandState = {
 
 const defaultStateManagementState = {
   stateInput: '',
+  shortName: '',
   stateStatus: false,
   cityInput: '',
+  cityGPS: '',
   hideCityComponent: true,
   isCityEdit: false,
   isCityLocal: false,

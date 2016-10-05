@@ -96,7 +96,6 @@ const loadCredentials = () => {
 
 const getStateCount = () => {
   return (dispatch) => {
-    dispatch({ type: MAKE_REQUEST});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
     const payload = {
@@ -106,7 +105,7 @@ const getStateCount = () => {
     const url = Endpoints.db + '/table/' + 'state' + '/count';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -137,7 +136,6 @@ const getStateCount = () => {
 
 const getStateData = (page) => {
   return (dispatch) => {
-    dispatch({ type: MAKE_REQUEST});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
     let offset = 0;
@@ -159,7 +157,7 @@ const getStateData = (page) => {
     const url = Endpoints.db + '/table/' + 'state' + '/select';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -185,7 +183,7 @@ const insertState = (stateObj) => {
     const url = Endpoints.db + '/table/' + 'state' + '/insert';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -230,7 +228,7 @@ const fetchState = (stateId) => {
     const url = Endpoints.db + '/table/' + 'state' + '/select';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -283,7 +281,7 @@ const updateState = (updateObj, stateId) => {
     const url = Endpoints.db + '/table/' + 'state' + '/update';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -317,17 +315,25 @@ const updateState = (updateObj, stateId) => {
 };
 
 const getAllStateData = (page) => {
-  const gotPage = page;
-  /* Dispatching first one */
+  return ( dispatch ) => {
+    const gotPage = page;
+    /* Dispatching first one */
+    return Promise.all([
+      dispatch(getStateCount()),
+      dispatch(getStateData(gotPage))
+    ]);
+  };
+  /*
   return (dispatch) => {
     dispatch(getStateCount())
       .then(() => {
         return dispatch(getStateData(gotPage));
       })
       .then(() => {
-        console.log('Recharge Data fetched');
+        console.log('State Data fetched');
       });
   };
+  */
 };
 
 /* Genre Actions */
@@ -872,7 +878,7 @@ const getCompanyCount = () => {
     const url = Endpoints.db + '/table/' + 'company' + '/count';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -925,7 +931,7 @@ const getCompanyData = (page, limit) => {
     const url = Endpoints.db + '/table/' + 'company' + '/select';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };

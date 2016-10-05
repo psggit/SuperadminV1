@@ -5,6 +5,11 @@ import { getAllStateData, getStateData } from '../Action';
 import SearchWrapper from './SearchWrapper';
 
 
+import {
+  MAKE_REQUEST,
+  REQUEST_COMPLETED
+} from './StateActions';
+
 import PaginationContainer from '../../CustomerTransaction/components/Recharge/Pagination';
 
 /* Decorator which adds couple of useful features like
@@ -35,7 +40,13 @@ class StateManagement extends React.Component { // eslint-disable-line no-unused
     const {query} = this.props.location;
     const page = (Object.keys(query).length > 0) ? parseInt(query.p, 10) : 1;
 
-    this.props.dispatch(getAllStateData(page));
+    Promise.all([
+      this.props.dispatch( { type: MAKE_REQUEST }),
+      this.props.dispatch(getAllStateData(page))
+    ])
+    .then( () => {
+      this.props.dispatch( { type: REQUEST_COMPLETED });
+    });
   }
   onClickHandle(e) {
     // e.preventDefault();
@@ -46,12 +57,11 @@ class StateManagement extends React.Component { // eslint-disable-line no-unused
   }
   render() {
     const styles = require('./StateManagement.scss');
-    const { ongoingRequest, lastError, lastSuccess, count} = this.props;
+    const { ongoingRequest, lastSuccess, count} = this.props;
     const {query} = this.props.location;
     const page = (Object.keys(query).length > 0) ? parseInt(query.p, 10) : 1;
-    console.log(lastError);
+    console.log('ongoingRequest');
     console.log(ongoingRequest);
-    console.log(lastSuccess);
     // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
     return (
         <div className={styles.container}>
