@@ -13,7 +13,8 @@ import { fetchGenre,
   SAVE_TO_LOCAL,
   VIEW_REGION,
   DELETE_REGION,
-  INPUT_VALUE_CHANGED
+  INPUT_VALUE_CHANGED,
+  fetchOrigin
 } from './BrandAction.js';
 
 // import TableHeader from '../../Common/TableHeader';
@@ -52,7 +53,8 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
       this.props.dispatch(fetchCompany()),
       this.props.dispatch(fetchCategory()),
       this.props.dispatch(fetchGenre()),
-      this.props.dispatch(fetchState())
+      this.props.dispatch(fetchState()),
+      this.props.dispatch(fetchOrigin())
     ]);
   }
   onClickCreateBrand() {
@@ -116,6 +118,7 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
       genreList,
       categoryList,
       companyList,
+      originList,
       stateCityMapping,
       viewedState,
       showRegionState,
@@ -125,8 +128,14 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
       isEdit,
       brandName,
       companyId,
-      genreId,
-      categoryId
+      genreShort,
+      categoryId,
+      alcoholPer,
+      temperature,
+      caloriesPer,
+      caloriesTotal,
+      origin,
+      description
     } = this.props;
 
     let regionHtml = Object.keys(region).map( (reg, index) => {
@@ -142,16 +151,22 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
 
     const genreHtml = genreList.map((genre, index) => {
       return (
-          <option key={index} value={genre.id}>{genre.genre_name}</option>
+          <option key={index} value={ genre.short_name }>{genre.genre_name}</option>
         );
     });
 
     const filteredCategoryList = categoryList.filter( (category) => {
-      return (genreId ) ? ( category.genre_id === genreId ) : true;
+      return ( genreShort ) ? ( category.genre_short_name === genreShort ) : true;
     });
     const categoryHtml = filteredCategoryList.map((category, index) => {
       return (
           <option key={index} value={category.id}>{category.name}</option>
+        );
+    });
+
+    const originHtml = originList.map((originL, index) => {
+      return (
+          <option key={index} value={originL.iso2code}>{originL.name}</option>
         );
     });
 
@@ -180,7 +195,7 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
               </li>
               <li>
                 <label>Genre</label>
-                <select data-field-name="genreId" data-field-type="int" value={ genreId }>
+                <select data-field-name="genreShort" data-field-type="text" value={ genreShort }>
                   <option>Select Genre</option>
                   { genreHtml }
                 </select>
@@ -191,6 +206,33 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
                   <option>Select Category</option>
                   { categoryHtml }
                 </select>
+              </li>
+              <li>
+                <label>Origin</label>
+                <select data-field-name="origin" data-field-type="text" value={ origin } >
+                  <option>Select Origin</option>
+                  { originHtml }
+                </select>
+              </li>
+              <li>
+                <label>Alcohol Percentage</label>
+                <input data-field-name="alcoholPer" type="text" data-field-type="text" value={ alcoholPer } />
+              </li>
+              <li>
+                <label>Temperature</label>
+                <input data-field-name="temperature" type="text" data-field-type="text" value={ temperature} />
+              </li>
+              <li>
+                <label>Calories Per</label>
+                <input data-field-name="caloriesPer" type="text" data-field-type="text" value={ caloriesPer } />
+              </li>
+              <li>
+                <label>Calories Total</label>
+                <input data-field-name="caloriesTotal" type="text" data-field-type="text" value={ caloriesTotal } />
+              </li>
+              <li>
+                <label>Description</label>
+                <textarea data-field-name="description" data-field-type="text" value={ description } />
               </li>
               {/*
               <li>
@@ -327,6 +369,7 @@ BrandCreate.propTypes = {
   categoryList: PropTypes.array.isRequired,
   genreList: PropTypes.array.isRequired,
   companyList: PropTypes.array.isRequired,
+  originList: PropTypes.array.isRequired,
   stateCityMapping: PropTypes.object.isRequired,
   viewedState: PropTypes.object.isRequired,
   showRegionState: PropTypes.bool.isRequired,
@@ -338,7 +381,14 @@ BrandCreate.propTypes = {
   brandName: PropTypes.string.isRequired,
   companyId: PropTypes.number.isRequired,
   genreId: PropTypes.number.isRequired,
+  genreShort: PropTypes.string.isRequired,
   categoryId: PropTypes.number.isRequired,
+  alcoholPer: PropTypes.string.isRequired,
+  temperature: PropTypes.string.isRequired,
+  caloriesPer: PropTypes.string.isRequired,
+  caloriesTotal: PropTypes.string.isRequired,
+  origin: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired
 };
 
 const mapStateToProps = (state) => {

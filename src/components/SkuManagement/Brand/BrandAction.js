@@ -18,6 +18,7 @@ const BRAND_CATEGORY_FETCH = 'BRAND/BRAND_CATEGORY_FETCH';
 const BRAND_GENRE_FETCH = 'BRAND/BRAND_GENRE_FETCH';
 const BRAND_COMPANY_FETCH = 'BRAND/BRAND_COMPANY_FETCH';
 const BRAND_STATE_FETCH = 'BRAND/BRAND_STATE_FETCH';
+const BRAND_ORIGIN_FETCH = 'BRAND/BRAND_ORIGIN_FETCH';
 
 const VIEW_STATE = 'BRAND/VIEW_STATE';
 const TOGGLE_REGION_VISIBILITY = 'BRAND/TOGGLE_REGION_VISIBILITY';
@@ -55,9 +56,12 @@ const fetchCategory = () => {
     queryObj.columns = [
       '*'
     ];
+    queryObj.where = {
+      'is_active': true
+    };
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -74,9 +78,12 @@ const fetchGenre = () => {
     queryObj.columns = [
       '*'
     ];
+    queryObj.where = {
+      'is_active': true
+    };
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -94,13 +101,33 @@ const fetchCompany = () => {
     ];
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
     /* Make a MAKE_REQUEST action */
     // dispatch({type: MAKE_REQUEST});
     dispatch(requestAction(url, options, BRAND_COMPANY_FETCH, REQUEST_ERROR));
+  };
+};
+
+const fetchOrigin = () => {
+  return (dispatch) => {
+    /* Url */
+    const url = Endpoints.db + '/table/origin/select';
+    const queryObj = {};
+    queryObj.columns = [
+      '*'
+    ];
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(queryObj),
+    };
+    /* Make a MAKE_REQUEST action */
+    // dispatch({type: MAKE_REQUEST});
+    dispatch(requestAction(url, options, BRAND_ORIGIN_FETCH, REQUEST_ERROR));
   };
 };
 
@@ -127,7 +154,7 @@ const fetchState = () => {
     };
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -145,6 +172,13 @@ const fetchBrand = (Id) => {
     queryObj.columns = [
       '*',
       {
+        'name': 'category',
+        'columns': [
+          'id',
+          'genre_short_name'
+        ]
+      },
+      {
         'name': 'regions',
         'columns': [
           '*',
@@ -152,7 +186,10 @@ const fetchBrand = (Id) => {
             'name': 'cities',
             'columns': ['*', {
               'name': 'city',
-              'columns': ['*']
+              'columns': ['*', {
+                'name': 'state_short',
+                'columns': ['id', 'short_name', 'state_name']
+              }]
             }]
           }
         ]
@@ -163,7 +200,7 @@ const fetchBrand = (Id) => {
     };
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -185,8 +222,16 @@ const insertBrand = () => {
     const brandObj = {};
     brandObj.brand_name = currState.brandName;
     brandObj.company_id = parseInt(currState.companyId, 10);
-    brandObj.genre_id = parseInt(currState.genreId, 10);
     brandObj.category_id = parseInt(currState.categoryId, 10);
+    brandObj.image = 'googleapi';
+    brandObj.short_name = currState.brandName.replace(' ', '-').toLowerCase();
+    brandObj.is_active = true;
+    brandObj.alcohol_per = currState.alcoholPer;
+    brandObj.temperature = currState.temperature;
+    brandObj.cal_per = currState.caloriesPer;
+    brandObj.cal_total = currState.caloriesTotal;
+    brandObj.origin_name = currState.origin;
+    brandObj.description = currState.description;
     brandObj.created_at = new Date().toISOString();
     brandObj.updated_at = new Date().toISOString();
 
@@ -201,7 +246,7 @@ const insertBrand = () => {
 
     let options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(insertObj)
     };
@@ -238,7 +283,7 @@ const insertBrand = () => {
           });
           options = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
             credentials: globalCookiePolicy,
             body: JSON.stringify(regionObjs)
           };
@@ -280,7 +325,7 @@ const insertBrand = () => {
 
         options = {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
           credentials: globalCookiePolicy,
           body: JSON.stringify(regionCityObjs)
         };
@@ -315,9 +360,16 @@ const updateBrand = () => {
     const brandObj = {};
     brandObj.brand_name = currState.brandName;
     brandObj.company_id = parseInt(currState.companyId, 10);
-    brandObj.genre_id = parseInt(currState.genreId, 10);
     brandObj.category_id = parseInt(currState.categoryId, 10);
-    brandObj.updated_at = new Date().toISOString();
+    brandObj.image = 'googleapi';
+    brandObj.short_name = currState.brandName.replace(' ', '-').toLowerCase();
+    brandObj.is_active = true;
+    brandObj.alcohol_per = currState.alcoholPer;
+    brandObj.temperature = currState.temperature;
+    brandObj.cal_per = currState.caloriesPer;
+    brandObj.cal_total = currState.caloriesTotal;
+    brandObj.origin_name = currState.origin;
+    brandObj.description = currState.description;
 
     updateObj.values = brandObj;
     updateObj.where = {
@@ -327,7 +379,7 @@ const updateBrand = () => {
 
     let options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(updateObj)
     };
@@ -369,7 +421,7 @@ const updateBrand = () => {
           }
           options = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
             credentials: globalCookiePolicy,
             body: JSON.stringify(regionObjs)
           };
@@ -405,7 +457,7 @@ const updateBrand = () => {
 
         options = {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
           credentials: globalCookiePolicy,
           body: JSON.stringify(regionCityObjs)
         };
@@ -462,7 +514,7 @@ const updateRegion = () => {
       };
       options = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
         credentials: globalCookiePolicy,
         body: JSON.stringify(regionUpdateObj)
       };
@@ -484,7 +536,7 @@ const updateRegion = () => {
         });
         options = {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
           credentials: globalCookiePolicy,
           body: JSON.stringify(regionUpdateObjs)
         };
@@ -508,7 +560,7 @@ const updateRegion = () => {
         });
         options = {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
           credentials: globalCookiePolicy,
           body: JSON.stringify(regionUpdateDObjs)
         };
@@ -545,7 +597,7 @@ const getBrandCount = () => {
     const url = Endpoints.db + '/table/' + 'brand' + '/count';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -610,7 +662,7 @@ const getBrandData = (page, limit) => {
     const url = Endpoints.db + '/table/' + 'brand' + '/select';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -669,7 +721,7 @@ const deleteRegionFromServer = () => {
 
     let options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
       credentials: globalCookiePolicy,
       body: JSON.stringify(deleteObj)
     };
@@ -918,6 +970,8 @@ const brandReducer = (state = defaultBrandState, action) => {
       return {...state, categoryList: action.data};
     case BRAND_GENRE_FETCH:
       return {...state, genreList: action.data};
+    case BRAND_ORIGIN_FETCH:
+      return {...state, originList: action.data};
     case BRAND_COMPANY_FETCH:
       return {...state, companyList: action.data};
     case BRAND_STATE_FETCH:
@@ -1047,7 +1101,7 @@ const brandReducer = (state = defaultBrandState, action) => {
           reg.cities.forEach( ( city ) => {
             const rCity = {};
             rCity.id = city.city_id;
-            rCity.state_id = city.city.state_id;
+            rCity.state_id = city.city.state_short.id;
             rCity.name = city.city.name;
             regionCity[reg.id][city.city_id] = rCity;
           });
@@ -1056,7 +1110,7 @@ const brandReducer = (state = defaultBrandState, action) => {
         regionObj = {};
         regionCity = {};
       }
-      return { ...state, brandObj: brandObj, region: { ...regionObj }, regionCity: { ...regionCity }, brandId: brandObj.id, brandName: brandObj.brand_name, companyId: brandObj.company_id, categoryId: brandObj.category_id, genreId: brandObj.genre_id };
+      return { ...state, brandObj: brandObj, region: { ...regionObj }, regionCity: { ...regionCity }, brandId: brandObj.id, brandName: brandObj.brand_name, companyId: brandObj.company_id, categoryId: brandObj.category_id, genreId: brandObj.genre_id, genreShort: brandObj.category.genre_short_name, alcoholPer: brandObj.alcohol_per, temperature: brandObj.temperature, caloriesPer: brandObj.cal_per, caloriesTotal: brandObj.cal_total, origin: brandObj.origin_name, description: brandObj.description };
     case CANCEL_REGION:
       /* TODO: If existing region is viewed and modified ?
        * clear all the modifications if cancel is pressed
@@ -1100,6 +1154,7 @@ export {
   DELETE_REGION,
   CANCEL_REGION,
   fetchBrand,
+  fetchOrigin,
   deleteRegionFromServer,
   updateRegion,
   INPUT_VALUE_CHANGED

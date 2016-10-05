@@ -35,7 +35,8 @@ const defaultGenreState = {
   displayOrder: 0,
   image: '',
   genreStatus: false,
-  genreId: 0
+  genreId: 0,
+  genreShort: ''
 };
 
 const defaultBrandState = {
@@ -56,11 +57,19 @@ const defaultBrandState = {
   brandId: 0,
   brandObj: {},
   updatedRegions: {},
+  originList: [],
   updatedRegionReference: {},
   brandName: '',
   companyId: 0,
   categoryId: 0,
-  genreId: 0
+  genreId: 0,
+  genreShort: '',
+  alcoholPer: '',
+  temperature: '',
+  caloriesPer: '',
+  caloriesTotal: '',
+  origin: '',
+  description: ''
 };
 
 const defaultStateManagementState = {
