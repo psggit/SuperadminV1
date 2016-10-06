@@ -6,7 +6,7 @@ const StatesWrapper = ( { stateData, stateCityMapping, onStateSelect, onStatePri
   const styles = require('./CreateSku.scss');
   const stateOptions = (stateData.length > 0) ? stateData.map( (state, index) => {
     return (
-            <StateElement key={ index } stateInfo={ state } onStateSelect={onStateSelect} stateCityMapping={ stateCityMapping[state.id] } onStatePriceEntered={ onStatePriceEntered }/>
+            <StateElement key={ index } stateInfo={ state } onStateSelect={onStateSelect} stateCityMapping={ stateCityMapping[ state.short_name ] } onStatePriceEntered={ onStatePriceEntered }/>
       );
   }) : () => {
     return ( <div > No State </div> );

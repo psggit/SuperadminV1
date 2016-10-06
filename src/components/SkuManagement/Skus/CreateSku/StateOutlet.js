@@ -18,7 +18,7 @@ const StateOutlet = ({ stateCityMapping, onStateView}) => {
             {selectedState.stateInfo.state_name}
           </label>
           <p>
-            <span data-view-state-id={selectedState.stateInfo.id} onClick={ onStateView }>
+            <span data-view-state-id={selectedState.stateInfo.short_name } onClick={ onStateView }>
               ({ Object.keys(selectedState.selected_cities).length }) of {selectedState.stateInfo.cities.length} { selectedState.stateInfo.cities.length <= 1 ? 'City' : 'Cities'}
             </span>
           </p>

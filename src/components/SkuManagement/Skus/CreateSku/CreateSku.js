@@ -5,11 +5,6 @@ import StateOutlet from './StateOutlet';
 import StateCity from './StateCity';
 import CityRetailer from './CityRetailer';
 
-import { IMAGE_UPLOAD_SUCCESS, IMAGE_UPLOAD_ERROR, CANCEL_IMAGE} from './CreateSkuActions';
-
-/* Image Upload component takes in two Actions OnResponseSuccess, OnResponseFailure */
-import ImageUpload from './ImageUpload';
-
 import SkuInfo from './SkuInfo';
 
 const CreateSku = ({ brandList
@@ -24,7 +19,6 @@ const CreateSku = ({ brandList
     , viewedCity
     , onCityCheck
     , onRetailerCheck
-    , skuImageUrl
     , dispatch
     , onSave
     , onUpdate
@@ -60,7 +54,6 @@ const CreateSku = ({ brandList
           2. OnImageUploadFailure
         */
       }
-      <ImageUpload imageUrl={skuImageUrl} requestSuccess={IMAGE_UPLOAD_SUCCESS} requestError={ IMAGE_UPLOAD_ERROR } cancelImage={ CANCEL_IMAGE }/>
       <div className={styles.outlets_lab}>Select Outlets</div>
       {
         /* Component to render states and its corresponding information */

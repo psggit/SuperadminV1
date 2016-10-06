@@ -12,6 +12,12 @@ import { MAKE_REQUEST,
 // import { routeActions } from 'redux-simple-router';
 // import commonReducer from '../Common/Actions/CommonReducer';
 
+const genOptions = {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
+  credentials: globalCookiePolicy
+};
+
 /* Action Creators for ListSku Management Listing */
 
 const getSkuCount = () => {
@@ -25,10 +31,8 @@ const getSkuCount = () => {
 
     const url = Endpoints.db + '/table/' + 'sku' + '/count';
     const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(payload),
+      ...genOptions,
+      body: JSON.stringify(payload)
     };
     // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
 
@@ -73,7 +77,9 @@ const getSkuData = (page, limit) => {
           'name': 'brand',
           'columns': [
             'id',
-            'brand_name'
+            'brand_name',
+            'alcohol_per',
+            'temperature'
           ]
         }
       ],
@@ -84,10 +90,8 @@ const getSkuData = (page, limit) => {
 
     const url = Endpoints.db + '/table/' + 'sku' + '/select';
     const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(payload),
+      ...genOptions,
+      body: JSON.stringify(payload)
     };
     // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
 

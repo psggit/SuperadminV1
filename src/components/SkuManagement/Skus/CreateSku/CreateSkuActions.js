@@ -39,6 +39,14 @@ const STATE_MRP_INFORMATION = 'SKU/STATE_MRP_INFORMATION';
 const UPDATE_COMPONENT_STATE = 'SKU/UPDATE_COMPONENT_STATE';
 const POPULATE_SKU_DATA = 'SKU/POPULATE_SKU_DATA';
 
+/* Variable */
+
+const genOptions = {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
+  credentials: globalCookiePolicy
+};
+
 /* Insert Actions */
 
 const SKU_ID_CREATED = 'SKU/SKU_ID_CREATED';
@@ -54,10 +62,8 @@ const fetchBrand = () => {
     ];
     queryObj.order_by = '+brand_name';
     const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(queryObj),
+      ...genOptions,
+      body: JSON.stringify(queryObj)
     };
     /* Make a MAKE_REQUEST action */
     // dispatch({type: MAKE_REQUEST});
@@ -106,10 +112,8 @@ const hydrateStateObj = () => {
     };
     /* Check for empty thing */
     const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(skuReqObj),
+      ...genOptions,
+      body: JSON.stringify(skuReqObj)
     };
     return dispatch(requestAction(skuUrl, options, POPULATE_SKU_DATA, REQUEST_ERROR));
   };
@@ -153,10 +157,8 @@ const fetchState = () => {
       }
     };
     const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(queryObj),
+      ...genOptions,
+      body: JSON.stringify(queryObj)
     };
     /* Make a MAKE_REQUEST action */
     // dispatch({type: MAKE_REQUEST});
@@ -188,8 +190,9 @@ const onSave = () => {
 
     let options = {};
     let skuReqObj = {};
-    skuReqObj = currState.create_sku_data.skuReqObj;
-    skuReqObj.image = (currState.create_sku_data.skuImageUrl.length > 0) ? currState.create_sku_data.skuImageUrl : null;
+    skuReqObj = Object.assign({}, currState.create_sku_data.skuReqObj);
+    // skuReqObj.image = (currState.create_sku_data.skuImageUrl.length > 0) ? currState.create_sku_data.skuImageUrl : null;
+    skuReqObj.brand_id = currState.create_sku_data.brandSlug[skuReqObj.brand_id];
     skuReqObj.created_at = new Date().toISOString();
     skuReqObj.updated_at = new Date().toISOString();
 
@@ -204,10 +207,8 @@ const onSave = () => {
     /* End of it */
 
     options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(skuInsertObj),
+      ...genOptions,
+      body: JSON.stringify(skuInsertObj)
     };
 
     // console.log(skuReqObj);
@@ -223,12 +224,12 @@ const onSave = () => {
 
         let spiObj = {};
         spiObjs.objects = [];
-        spiObjs.returning = ['state_id', 'id'];
+        spiObjs.returning = ['state_short_name', 'id'];
 
         brandListingObjs.objects = [];
         brandListingObjs.returning = ['id'];
 
-        brandListingSelectObj.columns = ['brand_id', 'id', 'state_id'];
+        brandListingSelectObj.columns = ['brand_short_name', 'id', 'state_short_name'];
         brandListingSelectObj.where = {
           '$or': []
         };
@@ -245,11 +246,10 @@ const onSave = () => {
         console.log(skuPricingObjs);
         skuPricingObjs.map( ( pricing ) => {
           spiObj = {};
-          spiObj.duty_free = pricing.duty_free ? pricing.duty_free : null;
-          spiObj.duty_paid = pricing.duty_paid ? pricing.duty_paid : null;
+          spiObj.price = pricing.price ? pricing.price : null;
           spiObj.created_at = new Date().toISOString();
           spiObj.updated_at = new Date().toISOString();
-          spiObj.state_id = pricing.stateInfo.id;
+          spiObj.state_short_name = pricing.stateInfo.short_name;
           spiObj.sku_id = resp.returning[0].id;
           spiObjs.objects.push(spiObj);
 
@@ -257,27 +257,24 @@ const onSave = () => {
 
           brandListingObj = {};
           /* Creating brand listing objects */
-          brandListingObj.brand_id = currState.create_sku_data.skuReqObj.brand_id;
-          brandListingObj.display_order = 10000;
-          brandListingObj.is_top_pick = false;
-          brandListingObj.display_order_top_pick = 10000;
-          brandListingObj.state_id = pricing.stateInfo.id;
+          brandListingObj.brand_short_name = currState.create_sku_data.skuReqObj.brand_id;
+          brandListingObj.featured_order = 1;
+          brandListingObj.all_display_order = 10000;
+          brandListingObj.state_short_name = pricing.stateInfo.short_name;
           brandListingObj.created_at = new Date().toISOString();
           brandListingObj.updated_at = new Date().toISOString();
           brandListingObjs.objects.push(brandListingObj);
 
           brandListingSelectObj.where.$or.push(
             {
-              'brand_id': parseInt(brandListingObj.brand_id, 10),
-              'state_id': parseInt(brandListingObj.state_id, 10)
+              'brand_short_name': brandListingObj.brand_short_name,
+              'state_short_name': brandListingObj.state_short_name
             }
           );
         });
         options = {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: globalCookiePolicy,
-          body: JSON.stringify(spiObjs),
+          ...genOptions,
+          body: JSON.stringify(spiObjs)
         };
         // 2nd Point of Failure
         //  Effect: This will end up in creation of SKU but not its prices in respective states
@@ -305,7 +302,6 @@ const onSave = () => {
               rObj = {};
               rObj.retailer_id = parseInt(retailer, 10);
               rObj.sku_pricing_id = getState().create_sku_data.sku_state_id[ cityObj.cityInfo.state_id ];
-              rObj.inventory_status_id = 3;
               rObj.stock = 5;
               rObj.created_at = new Date().toISOString();
               rObj.updated_at = new Date().toISOString();
@@ -315,10 +311,8 @@ const onSave = () => {
 
           /* Check for empty thing */
           options = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: globalCookiePolicy,
-            body: JSON.stringify(rObjs),
+            ...genOptions,
+            body: JSON.stringify(rObjs)
           };
           // 3rd point of failure
           //  Effect: The sku wouldn't have gotten tagged with the relevant retailers
@@ -331,9 +325,7 @@ const onSave = () => {
         /* Check whether the brand listing entry is already there or no */
         console.log(resp);
         options = {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: globalCookiePolicy,
+          ...genOptions,
           body: JSON.stringify(brandListingSelectObj)
         };
         return dispatch(requestAction(brandListingSelectUrl, options));
@@ -345,12 +337,12 @@ const onSave = () => {
         }
         /* Remove the already created brandLising objects */
         resp.forEach( ( r ) => {
-          existingMap[r.brand_id + ',' + r.state_id] = true;
+          existingMap[r.brand_short_name + ',' + r.state_short_name] = true;
         });
 
         const updatedBrandListingObjs = [];
         brandListingObjs.objects.forEach( ( bl ) => {
-          if ( !existingMap[bl.brand_id + ',' + bl.state_id] ) {
+          if ( !existingMap[bl.brand_short_name + ',' + bl.state_short_name ] ) {
             updatedBrandListingObjs.push(bl);
           }
         });
@@ -360,10 +352,8 @@ const onSave = () => {
           return true;
         }
         options = {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: globalCookiePolicy,
-          body: JSON.stringify(brandListingObjs),
+          ...genOptions,
+          body: JSON.stringify(brandListingObjs)
         };
         return dispatch(requestAction(brandListingUrl, options));
       })
@@ -416,10 +406,8 @@ const onUpdate = () => {
     /* End of it */
 
     options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(skuInsertObj),
+      ...genOptions,
+      body: JSON.stringify(skuInsertObj)
     };
 
     // console.log(skuReqObj);
@@ -495,14 +483,18 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
   let retailersObj;
   switch (action.type) {
     case BRAND_FETCH:
-      return {...state, brandList: action.data};
+      const brandSlugMap = {};
+      action.data.forEach( ( brand ) => {
+        brandSlugMap[ brand.short_name ] = brand.id;
+      });
+      return {...state, brandList: action.data, brandSlug: { ...brandSlugMap }};
     case MARK_STATE_SELECTED:
       const currState = {};
-      currState[action.data] = Object.assign({}, state.stateCityMapping[parseInt(action.data, 10)]);
+      currState[action.data] = Object.assign({}, state.stateCityMapping[action.data]);
       currState[action.data].is_selected = true;
       /* Check for updated server values */
       if ( currState[action.data].is_fetched ) {
-        currState[action.data].is_updated = ( currState[action.data].duty_free !== currState[action.data].serverValues.duty_free ) || ( currState[action.data].duty_paid !== currState[action.data].serverValues.duty_paid );
+        currState[action.data].is_updated = ( currState[action.data].price !== currState[action.data].serverValues.price );
       }
       return {...state, stateCityMapping: { ...state.stateCityMapping, ...currState }};
     case MARK_RETAILER_SELECTED:
@@ -544,8 +536,8 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
       /* Get the selected State right now */
       selectedState = Object.assign( {}, state.viewedState);
       modifiedState = {};
-      modifiedState[selectedState.stateInfo.id] = Object.assign({}, state.stateCityMapping[parseInt(selectedState.stateInfo.id, 10)]);
-      modifiedState[selectedState.stateInfo.id].selected_cities[action.data] = currCity2[action.data];
+      modifiedState[selectedState.stateInfo.short_name ] = Object.assign({}, state.stateCityMapping[selectedState.stateInfo.short_name]);
+      modifiedState[selectedState.stateInfo.short_name ].selected_cities[action.data] = currCity2[action.data];
 
       /* Update module */
       currCity2[action.data].is_updated = !currCity2[action.data].is_fetched ? true : false;
@@ -559,7 +551,7 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
       /* Added if the state is selected and cities are selected and the state is being unmarked selected cities should also get disabled */
 
       selectedState = Object.assign( {}, state.viewedState);
-      modifiedState = Object.assign({}, state.stateCityMapping[parseInt(selectedState.stateInfo.id, 10)]);
+      modifiedState = Object.assign({}, state.stateCityMapping[selectedState.stateInfo.short_name]);
       delete modifiedState.selected_cities[action.data];
 
       /* If the city is being viewed and it is unmarked just remove the retailers also NOT LITERALLY */
@@ -590,14 +582,14 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
       return {...state, viewedCity: state.cityRetailerMapping[action.data]};
     case UNMARK_STATE_SELECTED:
       const currState1 = {};
-      currState1[action.data] = Object.assign({}, state.stateCityMapping[parseInt(action.data, 10)]);
+      currState1[action.data] = Object.assign({}, state.stateCityMapping[action.data]);
       currState1[action.data].is_selected = false;
       /* Added if the state is selected and cities are selected and the state is being unmarked selected cities should also get disabled */
       /* TODO: 1 Unselect all cities if this guy is unmarked and marked again */
       /* TODO: 2 Unselect all the retailers as this is the chain reaction (State is unselect -> unselect the cities -> unselect the retailers */
       let viewedState = Object.assign({}, state.viewedState);
       if (Object.keys(viewedState).length > 0) {
-        viewedState = ( viewedState.stateInfo.id === action.data ) ? {} : viewedState;
+        viewedState = ( viewedState.stateInfo.short_name === action.data ) ? {} : viewedState;
       } else {
         viewedState = {};
       }
@@ -649,7 +641,7 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
       const retailerMapping = {};
       while ( countState < action.data.length) {
         countCity = 0;
-        stateCityMapping[action.data[countState].id] = {
+        stateCityMapping[action.data[countState].short_name] = {
           is_selected: false,
           selected_cities: {},
           duty_free: 0,
@@ -668,7 +660,7 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
             cityInfo: currCity[countCity]
           };
           while ( countRetailer < retailers.length) {
-            retailerMapping[retailers[countRetailer].retailer_id] = {
+            retailerMapping[retailers[countRetailer].id] = {
               is_selected: false,
               retailerInfo: retailers[countRetailer]
             };
@@ -722,20 +714,18 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
       selectedStates.forEach( ( sState ) => {
         /* Check if the retailer exists in the state */
         /* To avoid error data */
-        if ( localStateCityMapping[sState.state_id] ) {
-          localStateCityMapping[sState.state_id].is_selected = true;
-          localStateCityMapping[sState.state_id].duty_free = sState.duty_free;
-          localStateCityMapping[sState.state_id].duty_paid = sState.duty_paid;
-          localStateCityMapping[sState.state_id].is_fetched = true;
-          localStateCityMapping[sState.state_id].is_updated = false;
-          localStateCityMapping[sState.state_id].serverValues = {
-            'duty_free': sState.duty_free,
-            'duty_paid': sState.duty_paid
+        if ( localStateCityMapping[sState.state_short_name ] ) {
+          localStateCityMapping[ sState.state_short_name ].is_selected = true;
+          localStateCityMapping[ sState.state_short_name ].price = sState.price;
+          localStateCityMapping[ sState.state_short_name ].is_fetched = true;
+          localStateCityMapping[ sState.state_short_name ].is_updated = false;
+          localStateCityMapping[ sState.state_short_name ].serverValues = {
+            'price': sState.price
           };
           sState.sku_inventories.forEach( ( inventory ) => {
             const cityId = inventory.retailer.kycs[0].city_id;
             const retailerId = inventory.retailer_id;
-            localStateCityMapping[sState.state_id].selected_cities[cityId] = { ...state.cityRetailerMapping[cityId], is_selected: false};
+            localStateCityMapping[ sState.state_short_name ].selected_cities[cityId] = { ...state.cityRetailerMapping[cityId], is_selected: false};
             localRetailerMapping[retailerId].is_selected = true;
             localRetailerMapping[retailerId].is_fetched = true;
             // localRetailerMapping[retailerId].serverValues = { is_selected: true };

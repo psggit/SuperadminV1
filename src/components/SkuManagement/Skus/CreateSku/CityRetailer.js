@@ -3,6 +3,9 @@ import React from 'react';
 const CityRetailer = ({ viewedCity, onRetailerCheck } ) => {
   const styles = require('./CreateSku.scss');
 
+  console.log('viewedCity');
+  console.log(viewedCity);
+
   const retailerHtml = ( Object.keys(viewedCity).length > 0) ?
     () => {
       return (
@@ -16,7 +19,7 @@ const CityRetailer = ({ viewedCity, onRetailerCheck } ) => {
                   return (
                     <li key={index}>
                       <label>
-                        <input type="checkbox" data-retailer-id={retailer.retailer_id} type="checkbox" checked = { viewedCity.selected_retailers[retailer.retailer_id] ? true : false } onChange = { onRetailerCheck }/>
+                        <input type="checkbox" data-retailer-id={ retailer.id } type="checkbox" checked = { viewedCity.selected_retailers[ retailer.id ] ? true : false } onChange = { onRetailerCheck }/>
                         { retailer.org_name }
                       </label>
                     </li>

@@ -57,7 +57,7 @@ class SkuWrapper extends Component {
   }
   onStateSelect(e) {
     const stateId = e.target.getAttribute('data-state-id');
-    this.props.dispatch(( e.target.checked ) ? markStateSelected(parseInt(stateId, 10)) : unMarkStateSelected(parseInt(stateId, 10)));
+    this.props.dispatch(( e.target.checked ) ? markStateSelected(stateId) : unMarkStateSelected(stateId));
   }
   onStatePriceEntered(e) {
     const changedValue = e.target.getAttribute('data-field-name');
@@ -66,12 +66,12 @@ class SkuWrapper extends Component {
     const data = {};
     data[changedValue] = parseFloat(e.target.value);
     data.key = changedValue;
-    data.state_id = parseInt(stateId, 10);
+    data.state_id = stateId;
     this.props.dispatch({ type: STATE_MRP_INFORMATION, data: { ...data }});
   }
   onStateView(e) {
     const stateId = e.target.parentNode.getAttribute('data-view-state-id');
-    this.props.dispatch( viewState(parseInt(stateId, 10)));
+    this.props.dispatch( viewState(stateId));
     console.log(stateId);
   }
   onCityView(e) {

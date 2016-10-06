@@ -32,13 +32,10 @@ const SearchWrapper = ( {data} ) => {
                 { (dat.volume) ? dat.volume : 'N/A'}
             </td>
             <td>
-                { (dat.alcohol_per) ? dat.alcohol_per : 'N/A'}
+                { (dat.brand.alcohol_per) ? dat.brand.alcohol_per : 'N/A'}
             </td>
             <td>
-                { (dat.test_vol ) ? dat.test_vol : 'N/A'}
-            </td>
-            <td>
-                { (dat.barcode ) ? dat.barcode : 'N/A'}
+                { (dat.brand.temperature ) ? dat.brand.temperature : 'N/A'}
             </td>
             <td> { createdAt } </td>
             <td> { updatedAt } </td>
@@ -66,8 +63,7 @@ const SearchWrapper = ( {data} ) => {
                   <th> Status </th>
                   <th> Volume </th>
                   <th> Alcohol Percentage </th>
-                  <th> Test Volume </th>
-                  <th> Bar Code </th>
+                  <th> Temperature </th>
                   <th> Updated At </th>
                   <th> Created At </th>
                 </tr>

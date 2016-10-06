@@ -41,6 +41,7 @@ const defaultGenreState = {
 
 const defaultBrandState = {
   companyList: [],
+  brandSlugMap: {},
   genreList: [],
   categoryList: [],
   stateList: [],

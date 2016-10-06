@@ -3,7 +3,7 @@ import React from 'react';
 const BrandDropDown = ( { brandData, value} ) => {
   const brandOptions = (brandData.length > 0) ? brandData.map( (brand, index) => {
     return (
-        <option key={index} value={brand.id}>
+        <option key={index} value={brand.short_name}>
           { brand.brand_name.toUpperCase() }
         </option>
       );
@@ -11,7 +11,7 @@ const BrandDropDown = ( { brandData, value} ) => {
     return ( <option value="No Brands"> No Brands </option> );
   };
   return (
-        <select data-field-name="brand_id" data-field-type="int" value = { value ? parseInt(value, 10) : '' }>
+        <select data-field-name="brand_id" data-field-type="text" value = { value ? value : '' }>
           { brandOptions }
         </select>
       );
