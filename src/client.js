@@ -15,18 +15,14 @@ import {compose, createStore, applyMiddleware} from 'redux';
 
 import {Login, Home, PageContainer,
   ViewConsumers,
-  InsertItem,
-  EditItem,
   FileUpload,
   ViewConsumerProfile,
   Kycfunctions,
   VerifyKycs,
   UploadKycs,
-  ViewStates,
-  ViewState,
   KycViewUpload,
   KycViewVerify,
-  ViewSkus, ViewSku, ViewCart, Reservations, ViewDevice, RechargeHistory, StateManagement, CustomerTransaction,
+  ViewCart, ViewDevice, RechargeHistory, StateManagement, CustomerTransaction,
   CreateNotepadEntry, Notepad, EditAccountDetails, Skus, Toppicks, AddTopPicks, CreateSku, SkuManagementViewSkus,
   TopPicksInWrapper,
   ConsumerRecharge,
@@ -135,7 +131,6 @@ const main = (
         {/*
         <Route path="consumer/kycfunctions/verify_kyc/view_kyc_profile/:Id" component={ViewKycProfile} />
         */}
-        <Route path="consumer/profile/:Id/reservation" component={Reservations} />
         <Route path="consumer/profile/:Id" component={ViewConsumerProfile} />
         <Route path="consumer/profile/:Id/cart" component={ViewCart} />
         <Route path="consumer/profile/:Id/device_history" component={ViewDevice} />
@@ -157,13 +152,6 @@ const main = (
         <Route path="consumer_transactions/confirm_credits" component={ConfirmCredit} />
         <Route path="consumer_transactions/view_credits/:batchNumber" component={ViewCredits} />
         /* End of Customer Transactions */
-
-        <Route path="consumer/:table/edit" component={EditItem} />
-        <Route path="consumer/:table/insert" component={InsertItem} />
-        <Route path="sku/states" component={ViewStates} />
-        <Route path="sku/state/:Id" component={ViewState} />
-        <Route path="sku/skus" component={ViewSkus} />
-        <Route path="sku/sku/:Id" component={ViewSku} />
 
         /* SKU Management (State, Genre, Category) */
         <Route path="state_management" component={StateManagement} />

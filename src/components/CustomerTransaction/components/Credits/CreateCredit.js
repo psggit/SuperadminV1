@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import TableHeader from '../../../Consumer/TableHeader';
 
 import { getTransactionCode, checkValidity} from '../../actions/Action';
 
@@ -78,7 +77,6 @@ class CreateCredit extends Component { // eslint-disable-line no-unused-vars
     }
     return (
       <div className={styles.container}>
-        <TableHeader title={'Customer Transactions/Add Credits'} />
         <div className={styles.create_notepad_container}>
           <label className={styles.heading}>Add Credits</label>
           <div className={styles.create_form}>
