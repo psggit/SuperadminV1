@@ -1,10 +1,36 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import TableHeader from '../Common/TableHeader';
 import NotepadEntries from './NotepadEntries';
 import { fetchNotepad } from './NotepadAction';
 
+import BreadCrumb from '../Common/BreadCrumb';
+
 class Notepad extends React.Component { // eslint-disable-line no-unused-vars
+  constructor(props) {
+    super();
+    /* Data required for the bread component to render correctly */
+    this.breadCrumbs = [];
+    this.breadCrumbs.push({
+      title: 'Consumer Management',
+      sequence: 1,
+      link: '#'
+    });
+    this.breadCrumbs.push({
+      title: 'Profile',
+      sequence: 2,
+      link: '/hadmin/consumer/profiles'
+    });
+    this.breadCrumbs.push({
+      title: props.params.Id,
+      sequence: 3,
+      link: '/hadmin/consumer/profile/' + props.params.Id
+    });
+    this.breadCrumbs.push({
+      title: 'Notepad Entries',
+      sequence: 4,
+      link: '#'
+    });
+  }
   componentWillMount() {
     /* Fetch the corresponding data */
     const userId = parseInt(this.props.params.Id, 10);
@@ -20,7 +46,7 @@ class Notepad extends React.Component { // eslint-disable-line no-unused-vars
     // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
     return (
         <div className={styles.container}>
-          <TableHeader title={'Consumer Management/Profile/' + this.props.params.Id + '/NotepadEntries'} />
+          <BreadCrumb breadCrumbs={this.breadCrumbs} />
           <NotepadEntries userId={userId} data={lastSuccess}/>
         </div>
       );

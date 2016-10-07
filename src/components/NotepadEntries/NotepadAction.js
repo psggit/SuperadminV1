@@ -4,7 +4,8 @@
 
 import { defaultNotepadState } from '../Common/Actions/DefaultState';
 import requestAction from '../Common/Actions/requestAction';
-import Endpoints, { globalCookiePolicy } from '../../Endpoints';
+import Endpoints from '../../Endpoints';
+
 import { MAKE_REQUEST,
   REQUEST_SUCCESS,
   REQUEST_COMPLETED,
@@ -12,6 +13,8 @@ import { MAKE_REQUEST,
 
 import { routeActions } from 'redux-simple-router';
 // import commonReducer from '../Common/Actions/CommonReducer';
+
+import { genOpt } from '../Common/commonConfig';
 
 const NOTEPAD_FETCH_ISSUE_SUCCESS = 'NOTEPAD/NOTEPAD_FETCH_ISSUE_SUCCESS';
 
@@ -34,10 +37,8 @@ const fetchNotepad = (userId) => {
     };
     queryObj.order_by = '-created_at';
     const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(queryObj),
+      ...genOpt,
+      body: JSON.stringify(queryObj)
     };
     /* Make a MAKE_REQUEST action */
     dispatch({type: MAKE_REQUEST});
@@ -54,10 +55,8 @@ const fetchIssueTypes = () => {
       '*'
     ];
     const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(queryObj),
+      ...genOpt,
+      body: JSON.stringify(queryObj)
     };
     /* Make a MAKE_REQUEST action */
     dispatch({type: MAKE_REQUEST});
@@ -89,9 +88,7 @@ const insertNotepad = (issueId, description, userId) => {
     insertObj.returning = ['id'];
 
     const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: globalCookiePolicy,
+      ...genOpt,
       body: JSON.stringify(insertObj)
     };
 

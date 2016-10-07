@@ -12,6 +12,8 @@ import fetch from 'isomorphic-fetch';
 // import { routeActions } from 'redux-simple-router';
 import Endpoints, {globalCookiePolicy} from '../../Endpoints';
 
+import requestAction from '../Common/Actions/requestAction';
+
 // const GET_CONSUMER = 'ViewProfile/GET_CONSUMER';
 const MAKE_REQUEST = 'ViewProfile/MAKE_REQUEST';
 const REQUEST_SUCCESS = 'ViewProfile/REQUEST_SUCCESS';
@@ -58,113 +60,79 @@ const getSecondaryData = (data, key) => {
   };
 };
 
-const getUserData = (f) => {
-  return (dispatch) => {
-    // dispatch({ type: MAKE_REQUEST, f});
-    //
-    console.log(f);
-    /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
-    const payload = {
-      'columns': [
-        {
-          'name': 'old_consumer_device_history',
-          'columns': ['*']
-        },
-        {
-          'name': 'device',
-          'columns': ['*']
-        },
-        {
-          'name': 'carts',
-          'columns': [
-            'created_at',
-            {
-              'name': 'normal_items',
-              'columns': ['*']
-            },
-            {
-              'name': 'cashback_items',
-              'columns': ['*']
-            },
-            {
-              'name': 'discount_items',
-              'columns': ['*']
-            },
-            {
-              'name': 'onpack_items',
-              'columns': ['*']
-            },
-            {
-              'name': 'crosspromo_items',
-              'columns': ['*']
-            },
-            {
-              'name': 'merchandise_items',
-              'columns': ['*']
-            }
-          ],
-          'order_by': '-created_at',
-          'limit': 1
-        },
-        {
-          'name': 'gifts',
-          'columns': [
-            '*'
-          ]
-        },
-        {
-          'name': 'consumer_notepads',
-          'columns': [
-            '*'
-          ]
-        },
-        {
-          'name': 'payment_recharges',
-          'columns': ['*']
-        },
-        {
-          'name': 'reservations',
-          'columns': ['*']
-        },
-        {
-          'name': 'orders',
-          'columns': ['*']
-        },
-        '*'
-      ],
-      'where': {
-        'id': f
-      }
-    };
-    const url = Endpoints.db + '/table/' + 'consumer' + '/select';
-    const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(payload),
-    };
-    // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
+const genOptions = {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
+  credentials: globalCookiePolicy
+};
 
-    return fetch(url, options)
-           .then(
-             (response) => {
-               if (response.ok) { // 2xx status
-                 response.json().then(
-                   (d) => {
-                     return dispatch({type: REQUEST_SUCCESS, data: d});
-                   },
-                   () => {
-                     return dispatch(requestFailed('Error. Try again!'));
-                   }
-                 );
-               } else {
-                 return dispatch(requestFailed('Error. Try again!'));
-               }
-             },
-             (error) => {
-               console.log(error);
-               return dispatch(requestFailed(error.text));
-             });
+const getUserData = ( f ) => {
+  return ( dispatch ) => {
+    const bulkQueryObj = {
+      'type': 'bulk',
+      'args': [
+        {
+          'type': 'select',
+          'args': {
+            'table': 'consumer',
+            'columns': ['*', {
+              'name': 'device',
+              'columns': ['*']
+            }],
+            'where': {
+              'id': f
+            }
+          }
+        },
+        {
+          'type': 'select',
+          'args': {
+            'table': 'place_order',
+            'columns': ['*'],
+            'where': {
+              'consumer_id': f
+            }
+          }
+        },
+        {
+          'type': 'select',
+          'args': {
+            'table': 'transaction_history',
+            'columns': ['*'],
+            'where': {
+              'consumer_id': f
+            }
+          }
+        },
+        {
+          'type': 'select',
+          'args': {
+            'table': 'hipbar_credits',
+            'columns': ['*'],
+            'where': {
+              'id': f
+            }
+          }
+        },
+        {
+          'type': 'select',
+          'args': {
+            'table': 'notepad',
+            'columns': ['*'],
+            'where': {
+              'consumer_id': f
+            }
+          }
+        }
+      ]
+    };
+
+    const url = Endpoints.baseUrl + '/v1/query';
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(bulkQueryObj)
+    };
+    return dispatch( requestAction( url, options, REQUEST_SUCCESS, REQUEST_ERROR ) );
   };
 };
 
