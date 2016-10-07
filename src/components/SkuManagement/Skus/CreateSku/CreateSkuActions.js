@@ -100,14 +100,20 @@ const hydrateStateObj = () => {
                       'limit': 1
                     }
                   ]
-                }
-              ]
+                },
+              ],
+              'where': {
+                'is_active': true
+              }
             }
-          ]
+          ],
+          'where': {
+            'is_active': true
+          }
         }
       ],
       'where': {
-        'id': skuId
+        'id': skuId,
       }
     };
     /* Check for empty thing */
@@ -380,15 +386,212 @@ const onUpdate = () => {
     // 3. Remove Retailer (Mark the inventory as inactive or delete)
     // 4. Added State (Add sku_pricing )
     // 5. Added Retailer (Add Inventory ) (To the existing sku_pricing or to the new sku_pricing )
+    //
+    /* Input: Array of sku_pricing_id's
+     * Output: Return the disable status for all the entries
+     * */
 
-    const currState = getState();
+    const currState = getState().create_sku_data;
+
+    const disableRetailers = Object.keys(currState.retailerMapping).filter( ( ret ) => {
+      return ( currState.retailerMapping[ret].is_fetched && !currState.retailerMapping[ret].is_selected );
+    });
+
+    const disablePricings = Object.keys(currState.stateCityMapping).filter( ( state ) => {
+      return ( currState.stateCityMapping[state].is_fetched && !currState.stateCityMapping[state].is_selected );
+    });
+
+    const enableRetailers = Object.keys(currState.retailerMapping).filter( ( ret ) => {
+      return ( !( 'is_fetched' in currState.retailerMapping[ret] ) && ( currState.retailerMapping[ret].is_selected ) );
+    });
+
+    const enablePricings = Object.keys(currState.stateCityMapping).filter( ( state ) => {
+      return ( !( 'is_fetched' in currState.stateCityMapping[state] ) && ( currState.stateCityMapping[state].is_selected ) );
+    });
+
+    const updatePricings = Object.keys(currState.stateCityMapping).filter( ( state ) => {
+      return ( ( 'is_fetched' in currState.stateCityMapping[state] ) && ( currState.stateCityMapping[state].is_selected ) && ( currState.stateCityMapping[state].is_updated ) );
+    });
+
+    const updatePricing = ( pricings ) => {
+      if ( pricings.length > 0 ) {
+        const updatePricingUrl = 'https://data.hipbar-stg.hasura-app.io/v1/query';
+        const updateObjs = pricings.map( ( pricingId ) => {
+          const localObj = {};
+          localObj.type = 'update';
+          localObj.args = {};
+          localObj.args.table = 'sku_pricing';
+
+          localObj.args.$set = {};
+          localObj.args.$set.price = currState.stateCityMapping[pricingId].price;
+          localObj.args.where = {
+            'sku_id': currState.sku_id,
+            'state_short_name': pricingId
+          };
+          console.log(localObj);
+          return localObj;
+        });
+        const bulkUpdate = {};
+        bulkUpdate.type = 'bulk';
+        bulkUpdate.args = updateObjs;
+
+        console.log('final');
+        console.log(updateObjs);
+        const localOpt = {
+          ...genOptions,
+          body: JSON.stringify(bulkUpdate)
+        };
+
+        return dispatch( requestAction( updatePricingUrl, localOpt ) )
+        .then( ( resp ) => {
+          console.log('SKU Pricing update');
+          console.log(resp);
+        });
+      }
+      return Promise.resolve();
+    };
+
+    const addRetailers = ( retailers, map ) => {
+      if ( retailers.length > 0 ) {
+        const updateObjs = {};
+        const inventoryUrl = Endpoints.db + '/table/inventory/insert';
+        updateObjs.objects = retailers.map( ( retailerId ) => {
+          console.log('here');
+          console.log(currState.retailerMapping);
+          console.log(currState.retailerMapping[parseInt(retailerId, 10)].retailerInfo.city_id);
+          const localObj = {};
+          localObj.retailer_id = parseInt(retailerId, 10);
+          localObj.sku_pricing_id = map[currState.cityRetailerMapping[currState.retailerMapping[parseInt(retailerId, 10)].retailerInfo.city_id].cityInfo.state_short_name];
+          localObj.stock = 5;
+          return localObj;
+        });
+        updateObjs.returning = ['id'];
+
+        const localOpt = {
+          ...genOptions,
+          body: JSON.stringify(updateObjs)
+        };
+
+        return dispatch( requestAction( inventoryUrl, localOpt ) )
+        .then( ( resp ) => {
+          console.log('inventory response is ');
+          console.log(resp);
+          Promise.resolve( { success: true });
+        });
+      }
+      return Promise.resolve();
+    };
+
+    const addPricing = ( pricings ) => {
+      if ( pricings.length > 0) {
+        const updateObjs = {};
+        const skuPricingUrl = Endpoints.db + '/table/sku_pricing/insert';
+        const skuPricingMap = {};
+        updateObjs.objects = pricings.map( ( pricingId ) => {
+          const localObj = {};
+          localObj.price = currState.stateCityMapping[pricingId].price;
+          localObj.sku_id = currState.sku_id;
+          localObj.state_short_name = pricingId;
+          return localObj;
+        });
+        updateObjs.returning = ['id', 'sku_id', 'state_short_name'];
+
+        const localOpt = {
+          ...genOptions,
+          body: JSON.stringify(updateObjs)
+        };
+
+        return dispatch( requestAction( skuPricingUrl, localOpt ) )
+          .then( ( response ) => {
+            if ( response.returning.length > 0 ) {
+              response.returning.forEach( ( skuPricing ) => {
+                skuPricingMap[skuPricing.state_short_name] = skuPricing.id;
+              });
+              return addRetailers( enableRetailers, { ...skuPricingMap, ...currState.skuStatePricingMap } );
+            }
+            Promise.reject();
+          });
+      } else if ( enableRetailers.length > 0 ) {
+        return addRetailers( enableRetailers, currState.skuStatePricingMap );
+      }
+      return Promise.resolve();
+    };
+
+    const removeState = ( skuPricingIds ) => {
+      if ( skuPricingIds.length > 0 ) {
+        const updateObj = {};
+        const removeUrl = Endpoints.db + '/table/sku_pricing/update';
+        updateObj.values = {
+          'is_active': false
+        };
+        updateObj.where = {
+          '$or': ( skuPricingIds.map( ( pricingId ) => { return { 'state_short_name': pricingId }; } ) ),
+          'sku_id': currState.sku_id
+        };
+        updateObj.returning = ['id'];
+
+        const opt = {
+          ...genOptions,
+          body: JSON.stringify(updateObj)
+        };
+
+        return dispatch( requestAction(removeUrl, opt) )
+        .then( ( response ) => {
+          console.log('remove State response');
+          console.log(response);
+        });
+      }
+      return Promise.resolve();
+    };
+
+    const removeInventory = ( retailerIds ) => {
+      if ( retailerIds.length > 0 ) {
+        const updateObj = {};
+        const removeUrl = Endpoints.db + '/table/inventory/update';
+        updateObj.values = {
+          'is_active': false
+        };
+        updateObj.where = {
+          '$or': ( retailerIds.map( ( retailerId ) => { return { 'retailer_id': parseInt(retailerId, 10) }; } ) ),
+          'sku_pricing': {
+            'sku_id': currState.sku_id
+          }
+        };
+        updateObj.returning = ['id'];
+
+        const opt = {
+          ...genOptions,
+          body: JSON.stringify(updateObj)
+        };
+
+        return dispatch( requestAction(removeUrl, opt) )
+        .then( ( resp ) => {
+          console.log('remove inventory response');
+          console.log(resp);
+        });
+      }
+      return Promise.resolve();
+    };
+
+    /* Tester Funcs */
+    /*
+    removeState(disablePricings).then( ( resp ) => {
+      console.log('resp is ');
+      console.log(resp);
+    });
+    removeInventory(disableRetailers).then( ( resp ) => {
+      console.log('Inventory resp is ');
+      console.log(resp);
+    });
+    */
+    /* End of it */
     const skuInsertObj = {};
     const skuUrl = Endpoints.db + '/table/sku/update';
 
     let options = {};
     let skuReqObj = {};
-    skuReqObj = currState.create_sku_data.skuReqObj;
-    skuReqObj.image = (currState.create_sku_data.skuImageUrl.length > 0) ? currState.create_sku_data.skuImageUrl : null;
+    skuReqObj = Object.assign( {}, currState.skuReqObj );
+    // skuReqObj.image = (currState.create_sku_data.skuImageUrl.length > 0) ? currState.create_sku_data.skuImageUrl : null;
     skuReqObj.created_at = new Date().toISOString();
     skuReqObj.updated_at = new Date().toISOString();
 
@@ -400,7 +603,7 @@ const onUpdate = () => {
       ...skuReqObj
     };
     skuInsertObj.where = {
-      'id': currState.create_sku_data.sku_id
+      'id': currState.sku_id
     };
     skuInsertObj.returning = ['id'];
     /* End of it */
@@ -417,8 +620,19 @@ const onUpdate = () => {
     //  Effect: Nothing
     return dispatch(requestAction(skuUrl, options))
       .then(() => {
+        if ( disablePricings.length > 0 || disableRetailers.length > 0 || updatePricings.length > 0 || enableRetailers.length > 0 || enablePricings.length > 0 ) {
+          return Promise.all([
+            removeState(disablePricings),
+            removeInventory(disableRetailers),
+            updatePricing(updatePricings),
+            addPricing(enablePricings)
+          ]);
+          /* Add an entry to brand listing table too */
+        }
+        return Promise.resolve();
+      })
+      .then( ( ) => {
         alert('SKU Updated Successfully');
-        /* Add an entry to brand listing table too */
         return dispatch(routeActions.push('/hadmin/skus/list_sku'));
       })
       .catch((resp) => {
@@ -572,6 +786,12 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
           /* If the retailer is also fetched update it to false */
           retailersObj[retailerId] = { ...yetToBeUnmarkedRetailers[retailerId], is_selected: false, is_updated: true };
         });
+      } else {
+        const yetToBeUnmarkedRetailers = currCity1[action.data].selected_retailers;
+        Object.keys(yetToBeUnmarkedRetailers).forEach( ( retailerId ) => {
+          /* If the retailer is also fetched update it to false */
+          retailersObj[retailerId] = { ...yetToBeUnmarkedRetailers[retailerId], is_selected: false, is_updated: false };
+        });
       }
       /* End of it */
       currCity1[action.data].selected_retailers = {};
@@ -688,9 +908,8 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
       currentStateObj[action.data.state_id] = Object.assign( {}, state.stateCityMapping[action.data.state_id] );
       currentStateObj[action.data.state_id][action.data.key] = action.data[action.data.key];
       if ( currentStateObj[action.data.state_id].is_fetched ) {
-        currentStateObj[action.data.state_id].is_updated = ( currentStateObj[action.data.state_id].duty_free !== currentStateObj[action.data.state_id].serverValues.duty_free ) || ( currentStateObj[action.data.state_id].duty_paid !== currentStateObj[action.data.state_id].serverValues.duty_paid );
+        currentStateObj[action.data.state_id].is_updated = ( currentStateObj[action.data.state_id].price !== currentStateObj[action.data.state_id].serverValues.price );
       }
-
       return { ...state, stateCityMapping: { ...state.stateCityMapping, ...currentStateObj }};
     case SKU_ID_CREATED:
       return { ...state, sku_id: action.data };
@@ -710,6 +929,7 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
       const localStateCityMapping = { ...state.stateCityMapping };
       const localCityRetailerMapping = { ...state.cityRetailerMapping };
       const localRetailerMapping = { ...state.retailerMapping };
+      const skuStatePricingMap = {};
       delete localSkuInfo.pricings;
       selectedStates.forEach( ( sState ) => {
         /* Check if the retailer exists in the state */
@@ -723,7 +943,7 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
             'price': sState.price
           };
           sState.sku_inventories.forEach( ( inventory ) => {
-            const cityId = inventory.retailer.kycs[0].city_id;
+            const cityId = inventory.retailer.city_id;
             const retailerId = inventory.retailer_id;
             localStateCityMapping[ sState.state_short_name ].selected_cities[cityId] = { ...state.cityRetailerMapping[cityId], is_selected: false};
             localRetailerMapping[retailerId].is_selected = true;
@@ -735,11 +955,13 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
             localCityRetailerMapping[cityId].serverValues.selected_retailers[retailerId] = localRetailerMapping[retailerId];
             localCityRetailerMapping[cityId].selected_retailers[retailerId] = localRetailerMapping[retailerId];
           });
+
+          skuStatePricingMap[sState.state_short_name] = sState.id;
         }
       });
       /* for each state price loop and get the selected states */
       /* for each retailer get the selected city */
-      return { ...state, skuReqObj: { ...localSkuInfo }, stateCityMapping: { ...localStateCityMapping }, cityRetailerMapping: { ...localCityRetailerMapping }, retailerMapping: { ...localRetailerMapping }, skuImageUrl: (localSkuInfo.image ? localSkuInfo.image : '')};
+      return { ...state, skuReqObj: { ...localSkuInfo }, stateCityMapping: { ...localStateCityMapping }, cityRetailerMapping: { ...localCityRetailerMapping }, retailerMapping: { ...localRetailerMapping }, skuImageUrl: (localSkuInfo.image ? localSkuInfo.image : ''), skuStatePricingMap: { ...skuStatePricingMap }};
     default: return state;
   }
 };

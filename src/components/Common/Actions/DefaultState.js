@@ -115,7 +115,8 @@ const defaultCreateSkuState = {
   skuReqObj: {}, /* Stores the request object for SKU creation */
   sku_id: '',
   sku_state_id: {},
-  currentPage: ''
+  currentPage: '',
+  skuPricingStateMap: {}
   /* For each state in this mapping we need to create an entry in sku_pricing */
   // stateMrpObj: {}
 };

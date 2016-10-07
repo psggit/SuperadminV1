@@ -17,7 +17,7 @@ const getConsumerCount = () => {
     const url = Endpoints.db + '/table/' + 'consumer' + '/count';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -73,7 +73,7 @@ const getConsumerData = (page, limit) => {
     const url = Endpoints.db + '/table/' + 'consumer' + '/select';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
