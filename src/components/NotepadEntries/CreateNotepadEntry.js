@@ -1,10 +1,35 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 
-import TableHeader from '../Common/TableHeader';
 import { fetchIssueTypes, insertNotepad } from './NotepadAction';
 
+import BreadCrumb from '../Common/BreadCrumb';
+
 class CreateNotepadEntry extends Component { // eslint-disable-line no-unused-vars
+  constructor(props) {
+    super();
+    this.breadCrumbs = [];
+    this.breadCrumbs.push({
+      title: 'Consumer Management',
+      sequence: 1,
+      link: '#'
+    });
+    this.breadCrumbs.push({
+      title: 'Profile',
+      sequence: 2,
+      link: '/hadmin/consumer/profiles'
+    });
+    this.breadCrumbs.push({
+      title: props.params.Id,
+      sequence: 3,
+      link: '/hadmin/consumer/profile/' + props.params.Id
+    });
+    this.breadCrumbs.push({
+      title: 'Create Notepad Entry',
+      sequence: 4,
+      link: '#'
+    });
+  }
   componentWillMount() {
     this.props.dispatch(fetchIssueTypes());
   }
@@ -21,7 +46,6 @@ class CreateNotepadEntry extends Component { // eslint-disable-line no-unused-va
     // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
     /* Render the select options */
     const { issueTypes, ongoingRequest } = this.props;
-    const { Id: userId } = this.props.params;
 
     const issueTypesHtml = issueTypes.map((issue, index) => {
       return (
@@ -30,7 +54,7 @@ class CreateNotepadEntry extends Component { // eslint-disable-line no-unused-va
     });
     return (
       <div className={styles.container}>
-        <TableHeader title={'Customer Management/Profile/' + userId + '/Create Notepad Entry'} />
+        <BreadCrumb breadCrumbs={this.breadCrumbs} />
         <div className={styles.create_notepad_container}>
           <label className={styles.heading}>Create Notepad Entry</label>
           <div className={styles.create_form}>

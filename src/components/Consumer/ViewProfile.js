@@ -2,11 +2,14 @@ import React, {Component, PropTypes} from 'react';
 import { Link } from 'react-router';
 
 import {connect} from 'react-redux';
-import {getUserData, resetPin, resetPassword} from './ProfileActions';
+import {RESET, getUserData, resetPin, resetPassword} from './ProfileActions';
 
 /* Common Decorator for taking care of loading and shit */
 // import commonDecorator from '../../Common/CommonDecorator';
 import BreadCrumb from '../Common/BreadCrumb';
+import commonDecorator from '../Common/CommonDecorator';
+
+import { MAKE_REQUEST, REQUEST_COMPLETED } from '../Common/Actions/Actions';
 /* End of it */
 
 class ViewConsumerProfile extends Component {
@@ -32,7 +35,20 @@ class ViewConsumerProfile extends Component {
   }
   componentDidMount() {
     // this.props.dispatch({type: GET_CONSUMER, data: this.props.params.Id});
-    this.props.dispatch(getUserData(parseInt(this.props.params.Id, 10)));
+    Promise.all([
+      this.props.dispatch( { type: RESET }),
+      this.props.dispatch( { type: MAKE_REQUEST }),
+      this.props.dispatch(getUserData(parseInt(this.props.params.Id, 10)))
+    ])
+    .then( () => {
+      this.props.dispatch( { type: REQUEST_COMPLETED });
+    })
+    .catch( () => {
+      this.props.dispatch( { type: REQUEST_COMPLETED });
+    });
+  }
+  componentWillUnmount() {
+    this.props.dispatch( { type: RESET });
   }
   clickHandler() {
     // Dispatch the event here
@@ -92,6 +108,20 @@ class ViewConsumerProfile extends Component {
       const reservationCount = transactionHistory.filter( ( ts ) => { return ( ts.type === 'reservation' ); }).length;
       const cancellationCount = transactionHistory.filter( ( ts ) => { return ( ts.type === 'cancellation' ); }).length;
       const redemptionCount = transactionHistory.filter( ( ts ) => { return ( ts.type === 'redemption' ); }).length;
+
+      const cartHtml = ( cartInfo.length > 0 ) ?
+        (
+          <div className={styles.wd_60_link} >
+            <Link to={'/hadmin/consumer/profile/' + profileInfo.id + '/cart'}>
+              { cartInfo.length }
+            </Link>
+          </div>
+        ) :
+        (
+          <div >
+            { cartInfo.length }
+          </div>
+        );
 
       const rechargeHTML = ( rechargeCount ) ?
         (
@@ -228,7 +258,7 @@ class ViewConsumerProfile extends Component {
               Cart:
             </div>
             <div className={styles.wd_60} >
-              { cartInfo.length }
+              { cartHtml }
             </div>
           </div>
           <div className={styles.profile_information}>
@@ -343,7 +373,8 @@ ViewConsumerProfile.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  return {...state.profile};
+  return {...state.profile, ongoingRequest: state.page_data.ongoingRequest };
 };
 
-export default connect(mapStateToProps)(ViewConsumerProfile);
+const decoratedConnectedComponent = commonDecorator(ViewConsumerProfile);// connect(mapStateToProps)(CommonDecorator);
+export default connect(mapStateToProps)(decoratedConnectedComponent);
