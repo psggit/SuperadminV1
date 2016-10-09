@@ -248,7 +248,6 @@ const resetPin = (customerId) => {
         'device_id',
         'gcm_token',
         'full_name',
-        'tm_id',
         'referred_by',
         'dob',
         'mobile_number',
@@ -263,9 +262,7 @@ const resetPin = (customerId) => {
       'values': updateValues
     };
     const options = {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      credentials: globalCookiePolicy,
+      ...genOptions,
       body: JSON.stringify(query)
     };
     return fetch(url, options)
@@ -306,9 +303,7 @@ const resetPassword = (email, dob) => {
       }
     };
     const options = {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      credentials: globalCookiePolicy,
+      ...genOptions,
       body: JSON.stringify(query)
     };
     return fetch(url, options)

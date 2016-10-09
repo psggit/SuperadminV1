@@ -17,6 +17,12 @@ const USER_DATA_FETCH = 'CONSUMER/USER_DATA_FETCH';
 const UPDATE_USER_NAME = 'CONSUMER/UPDATE_USER_NAME';
 const UPDATE_DOB = 'CONSUMER/UPDATE_DOB';
 
+const genOptions = {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
+  credentials: globalCookiePolicy
+};
+
 /* ****** Action Creators ******** */
 
 const getConsumerData = (userId) => {
@@ -33,10 +39,8 @@ const getConsumerData = (userId) => {
     const url = Endpoints.db + '/table/' + 'consumer' + '/select';
 
     const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(payload),
+      ...genOptions,
+      body: JSON.stringify(payload)
     };
     // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
 
@@ -80,9 +84,7 @@ const updateUser = (userObj, userId) => {
     const url = Endpoints.db + '/table/consumer/update';
 
     const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: globalCookiePolicy,
+      ...genOptions,
       body: JSON.stringify(userObj)
     };
 

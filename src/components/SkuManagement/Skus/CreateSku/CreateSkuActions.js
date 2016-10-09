@@ -698,10 +698,14 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
   switch (action.type) {
     case BRAND_FETCH:
       const brandSlugMap = {};
+      const brandIdMap = {};
       action.data.forEach( ( brand ) => {
         brandSlugMap[ brand.short_name ] = brand.id;
       });
-      return {...state, brandList: action.data, brandSlug: { ...brandSlugMap }};
+      action.data.forEach( ( brand ) => {
+        brandIdMap[ brand.id ] = brand.short_name;
+      });
+      return {...state, brandList: action.data, brandIdMap: { ...brandIdMap}};
     case MARK_STATE_SELECTED:
       const currState = {};
       currState[action.data] = Object.assign({}, state.stateCityMapping[action.data]);
@@ -961,7 +965,7 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
       });
       /* for each state price loop and get the selected states */
       /* for each retailer get the selected city */
-      return { ...state, skuReqObj: { ...localSkuInfo }, stateCityMapping: { ...localStateCityMapping }, cityRetailerMapping: { ...localCityRetailerMapping }, retailerMapping: { ...localRetailerMapping }, skuImageUrl: (localSkuInfo.image ? localSkuInfo.image : ''), skuStatePricingMap: { ...skuStatePricingMap }};
+      return { ...state, skuReqObj: { ...localSkuInfo, 'brand_id': state.brandIdMap[localSkuInfo.brand_id] }, stateCityMapping: { ...localStateCityMapping }, cityRetailerMapping: { ...localCityRetailerMapping }, retailerMapping: { ...localRetailerMapping }, skuImageUrl: (localSkuInfo.image ? localSkuInfo.image : ''), skuStatePricingMap: { ...skuStatePricingMap }};
     default: return state;
   }
 };
