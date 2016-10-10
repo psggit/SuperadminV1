@@ -595,6 +595,8 @@ const onUpdate = () => {
     skuReqObj.created_at = new Date().toISOString();
     skuReqObj.updated_at = new Date().toISOString();
 
+
+    skuReqObj.brand_id = currState.brandSlug[skuReqObj.brand_id];
     /* Deleting status field as that is not required for the SKU */
     delete skuReqObj.status;
 
@@ -705,7 +707,7 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
       action.data.forEach( ( brand ) => {
         brandIdMap[ brand.id ] = brand.short_name;
       });
-      return {...state, brandList: action.data, brandIdMap: { ...brandIdMap}};
+      return {...state, brandList: action.data, brandIdMap: { ...brandIdMap}, brandSlug: { ...brandSlugMap }};
     case MARK_STATE_SELECTED:
       const currState = {};
       currState[action.data] = Object.assign({}, state.stateCityMapping[action.data]);

@@ -317,11 +317,13 @@ class ViewConsumerProfile extends Component {
                                Reset Pin
                            </button>
                        </div>
+                      {/*
                        <div className={styles.profile_action_button}>
                            <button className="form-control" id="reset_password" onClick={ this.resetHandler.bind(this) }>
                                Reset Password
                            </button>
                        </div>
+                      */}
                        {/*
                        <div className={styles.profile_action_button}>
                            <button className="form-control" id="disable_user" >

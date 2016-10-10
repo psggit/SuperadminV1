@@ -80,7 +80,7 @@ class ConsumerRecharge extends Component {
     console.log(ongoingRequest);
     return (
           <div className={styles.recharge_container}>
-            <TableHeader title={'Customer Management/Customer Reservations'} />
+            <TableHeader title={'Customer Management/Customer Recharges'} />
             <RechargeSearchWrapper data={lastSuccess}/>
             <PaginationContainer limit="10" onClickHandler={this.onClickHandle.bind(this)} currentPage={page} showMax="5" count={count} parentUrl={ paginationUrl } />
           </div>

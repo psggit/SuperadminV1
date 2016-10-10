@@ -44,11 +44,13 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
                     Customer Transactions
                 </Link>
               </label></li>
+              {/*
               <li className={styles.sidebar_list}><label>
                 <Link to={'/hadmin/customer_support'} className={ lastPathname === 'customer_support' ? styles.active : '' }>
                     Customer Support
                 </Link>
               </label></li>
+              */}
               </ul>
             </li>
           </ul>
@@ -143,6 +145,7 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
           </ul>
           */}
 
+          {/*
           <ul>
             <li><input type="checkbox" id="cb4"/><label htmlFor="cb4">RETAILER MANAGEMENT</label>
               <ul>
@@ -155,6 +158,7 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
               </ul>
             </li>
           </ul>
+          */}
 
           {/*
           <ul>
