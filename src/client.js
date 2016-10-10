@@ -30,6 +30,7 @@ import {Login, Home, PageContainer,
   BrandEdit,
   BrandManagement,
   ConsumerReservation,
+  ConsumerCancellation,
   ConsumerReservationItems,
   ManageState,
   GenreManagement,
@@ -154,7 +155,9 @@ const main = (
         <Route path="consumer_transactions/recharges" component={ConsumerRecharge} />
         <Route path="consumer_transactions/:userId/recharges" component={ConsumerRecharge} />
         <Route path="consumer_transactions/reservations" component={ConsumerReservation} />
+        <Route path="consumer_transactions/cancellations" component={ConsumerCancellation} />
         <Route path="consumer_transactions/:userId/reservations" component={ConsumerReservation} />
+        <Route path="consumer_transactions/:userId/cancellations" component={ConsumerCancellation} />
         <Route path="consumer_transactions/reservations/:cartId/items" component={ConsumerReservationItems} />
         <Route path="consumer_transactions/add_credits" component={AddCredit} />
         <Route path="consumer_transactions/confirm_credits" component={ConfirmCredit} />

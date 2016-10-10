@@ -99,6 +99,7 @@ export AccountingUploadSettlementReport from './Accounting/UploadSettlementRepor
 /* Consumer Transactions */
 
 export ConsumerRecharge from './CustomerTransaction/components/Recharge/Recharge';
+export ConsumerCancellation from './CustomerTransaction/components/Cancellation/Cancellation';
 export ConsumerReservation from './CustomerTransaction/components/Reservation/Reservation';
 export ConsumerReservationItems from './CustomerTransaction/components/Reservation/ReservationItems/ReservationItems';
 

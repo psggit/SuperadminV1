@@ -115,6 +115,88 @@ const loadCredentials = () => {
   };
 };
 
+/* Fetch Cancel Products */
+
+const getCancellationCount = ( consumerId ) => {
+  return (dispatch) => {
+    // dispatch({ type: MAKE_REQUEST, f});
+    //
+    /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
+    const payload = {
+      'columns': ['*']
+    };
+
+    if ( consumerId.length > 0 ) {
+      payload.where = {
+        'consumer_id': parseInt(consumerId, 10)
+      };
+    }
+
+    payload.where = {};
+
+    payload.where.type = 'cancellation';
+
+    const url = Endpoints.db + '/table/' + 'transaction_history' + '/count';
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(payload)
+    };
+    return dispatch(requestAction(url, options, COUNT_FETCHED, REQUEST_ERROR));
+  };
+};
+
+const getCancellationData = ( page, consumerId ) => {
+  return (dispatch) => {
+    // dispatch({ type: MAKE_REQUEST, f});
+    //
+    /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
+    let offset = 0;
+    let limit = 0;
+    // const count = currentProps.count;
+
+    // limit = (page * 10) > count ? count : ((page) * 10);
+    // limit = ((page) * 10);
+    limit = 10;
+    offset = (page - 1) * 10;
+
+    const payload = {
+      'columns': [ '*'],
+      limit: limit,
+      offset: offset
+    };
+
+    payload.where = {};
+
+    if ( consumerId.length > 0 ) {
+      payload.where = {
+        'consumer_id': parseInt(consumerId, 10)
+      };
+    }
+
+    payload.where.type = 'cancellation';
+
+    const url = Endpoints.db + '/table/' + 'transaction_history' + '/select';
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(payload),
+    };
+    return dispatch(requestAction(url, options, REQUEST_SUCCESS, REQUEST_ERROR));
+  };
+};
+
+const getAllCancellationData = (page, consumerId = '' ) => {
+  const gotPage = page;
+  /* Dispatching first one */
+  return (dispatch) => {
+    return Promise.all([
+      dispatch(getCancellationCount( consumerId )),
+      dispatch(getCancellationData(gotPage, consumerId))
+    ]);
+  };
+};
+
+/* */
+
 const getRechargeCount = ( consumerId ) => {
   return (dispatch) => {
     // dispatch({ type: MAKE_REQUEST, f});
@@ -678,5 +760,6 @@ export {requestSuccess,
   insertCredits,
   getTransactionByBatch,
   getAllTransactionByBatch,
-  getReservedItems
+  getReservedItems,
+  getAllCancellationData
 };
