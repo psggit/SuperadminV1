@@ -168,7 +168,7 @@ class ViewConsumerProfile extends Component {
       const redemptionHTML = ( redemptionCount ) ?
         (
           <div className={styles.wd_60_link} >
-            <Link to={'/hadmin/consumer/profile/' + profileInfo.id + '/redemption_history'}>
+            <Link to={'/hadmin/consumer_transactions/' + profileInfo.id + '/redemptions'}>
               { redemptionCount }
             </Link>
           </div>

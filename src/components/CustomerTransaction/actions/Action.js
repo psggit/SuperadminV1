@@ -719,6 +719,207 @@ const updatePageData = (page, data) => {
   };
 };
 
+/* Redemption items */
+const getRedemptionCount = ( consumerId ) => {
+  return (dispatch) => {
+    // dispatch({ type: MAKE_REQUEST, f});
+    //
+    /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
+    const payload = {
+      'columns': ['*']
+    };
+
+    payload.where = {};
+    if ( consumerId.length > 0 ) {
+      payload.where.consumer_id = parseInt(consumerId, 10);
+    }
+
+    payload.where.status = 'closed';
+
+    const url = Endpoints.db + '/table/' + 'order' + '/count';
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(payload)
+    };
+    return dispatch(requestAction(url, options, COUNT_FETCHED, REQUEST_ERROR));
+  };
+};
+
+const getRedemptionData = ( page, consumerId ) => {
+  return (dispatch) => {
+    // dispatch({ type: MAKE_REQUEST, f});
+    //
+    /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
+
+    let offset = 0;
+    let limit = 0;
+    // const count = currentProps.count;
+
+    // limit = (page * 10) > count ? count : ((page) * 10);
+    // limit = ((page) * 10);
+    limit = 10;
+    offset = (page - 1) * 10;
+
+    const payload = {
+      'columns': [ '*', {
+        'name': 'normal_redemptions',
+        'columns': ['*']
+      }, {
+        'name': 'cashback_redemptions',
+        'columns': ['*']
+      }, {
+        'name': 'bar_redemptions',
+        'columns': ['*']
+      }],
+      'limit': limit,
+      'offset': offset
+    };
+
+    payload.where = {};
+    if ( consumerId.length > 0 ) {
+      payload.where.consumer_id = parseInt(consumerId, 10);
+    }
+
+    payload.where.status = 'closed';
+
+    const url = Endpoints.db + '/table/' + 'order' + '/select';
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(payload)
+    };
+    return dispatch(requestAction(url, options, REQUEST_SUCCESS, REQUEST_ERROR));
+  };
+};
+
+const getRedeemedItems = ( orderId ) => {
+  return (dispatch) => {
+    // dispatch({ type: MAKE_REQUEST, f});
+    //
+    /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
+    // const count = currentProps.count;
+
+    // limit = (page * 10) > count ? count : ((page) * 10);
+    // limit = ((page) * 10);
+    console.log(orderId);
+
+    const payload = {
+      'columns': ['consumer_id', 'amount', 'status', 'itemtype', 'qr_code_id', 'id', {
+        'name': 'bar_redemptions',
+        'columns': [
+          '*', {
+            'name': 'item',
+            'columns': ['*',
+              {
+                'name': 'cart',
+                'columns': ['*',
+                  {
+                    'name': 'product',
+                    'columns': ['*', {
+                      'name': 'sku_pricing',
+                      'columns': ['*',
+                        {
+                          'name': 'sku',
+                          'columns': ['*',
+                            {
+                              'name': 'brand',
+                              'columns': ['*']
+                            }
+                          ]
+                        }
+                      ]
+                    }]
+                  }
+                ]
+              }
+            ]
+          }
+        ]}, {
+          'name': 'cashback_redemptions',
+          'columns': [
+            '*', {
+              'name': 'item',
+              'columns': ['*',
+                {
+                  'name': 'cart',
+                  'columns': ['*', {
+                    'name': 'product',
+                    'columns': ['*',
+                      {
+                        'name': 'sku_pricing',
+                        'columns': ['*',
+                          {
+                            'name': 'sku',
+                            'columns': ['*',
+                              {
+                                'name': 'brand',
+                                'columns': ['*']
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          'name': 'normal_redemptions',
+          'columns': [
+            '*', {
+              'name': 'item',
+              'columns': ['*',
+                {
+                  'name': 'cart',
+                  'columns': ['*',
+                    {
+                      'name': 'product',
+                      'columns': ['*', {
+                        'name': 'sku',
+                        'columns': ['*',
+                          {
+                            'name': 'brand',
+                            'columns': ['*']
+                          }
+                        ]
+                      }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      'where': {
+        'id': parseInt(orderId, 10),
+        'status': 'closed'
+      }
+    };
+
+    const url = Endpoints.db + '/table/' + 'order' + '/select';
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(payload)
+    };
+    return dispatch(requestAction(url, options, REQUEST_SUCCESS, REQUEST_ERROR));
+  };
+};
+
+const getAllRedemptionData = (page, consumerId = '') => {
+  const gotPage = page;
+  /* Dispatching first one */
+  return (dispatch) => {
+    return Promise.all([
+      dispatch(getRedemptionCount( consumerId )),
+      dispatch(getRedemptionData(gotPage, consumerId ))
+    ]);
+  };
+};
+
 const getAllReservationData = (page, consumerId = '') => {
   const gotPage = page;
   /* Dispatching first one */
@@ -751,5 +952,7 @@ export {requestSuccess,
   getTransactionByBatch,
   getAllTransactionByBatch,
   getReservedItems,
-  getAllCancellationData
+  getAllCancellationData,
+  getRedeemedItems,
+  getAllRedemptionData
 };
