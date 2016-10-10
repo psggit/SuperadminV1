@@ -429,10 +429,8 @@ const getTransactionCode = () => {
 
     const url = Endpoints.db + '/table/' + 'transaction_code/select';
     const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(payload),
+      ...genOptions,
+      body: JSON.stringify(payload)
     };
     // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
 
@@ -481,10 +479,8 @@ const checkValidity = (emailIds, data) => {
 
     const url = Endpoints.db + '/table/' + 'consumer/select';
     const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(payload),
+      ...genOptions,
+      body: JSON.stringify(payload)
     };
     // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
 
@@ -550,10 +546,8 @@ const insertCredits = (creditObjs, batchNumber) => {
 
     const url = Endpoints.db + '/table/' + 'recharge_hipbar' + '/insert';
     const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(payload),
+      ...genOptions,
+      body: JSON.stringify(payload)
     };
     // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
 
@@ -609,10 +603,8 @@ const getTransactionByBatch = (page, batchId) => {
 
     const url = Endpoints.db + '/table/' + 'recharge_hipbar/select';
     const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(payload),
+      ...genOptions,
+      body: JSON.stringify(payload)
     };
     // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
 
@@ -653,10 +645,8 @@ const getTransactionCount = (batchId) => {
 
     const url = Endpoints.db + '/table/' + 'recharge_hipbar' + '/count';
     const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(payload),
+      ...genOptions,
+      body: JSON.stringify(payload)
     };
     // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
 

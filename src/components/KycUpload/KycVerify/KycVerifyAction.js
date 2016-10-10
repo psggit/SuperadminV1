@@ -4,11 +4,13 @@
 
 // import { defaultNotepadState } from '../Common/Actions/DefaultState';
 import requestAction from '../../Common/Actions/requestAction';
-import Endpoints, { globalCookiePolicy } from '../../../Endpoints';
+import Endpoints from '../../../Endpoints';
 import { MAKE_REQUEST,
   REQUEST_SUCCESS,
   COUNT_FETCHED,
   REQUEST_ERROR } from '../../Common/Actions/Actions';
+
+import { genOptions } from '../../Common/Actions/commonFunctions';
 
 // import { routeActions } from 'redux-simple-router';
 // import commonReducer from '../Common/Actions/CommonReducer';
@@ -26,23 +28,15 @@ const fetchConsumerCount = () => {
     const payload = {
       'columns': ['id'],
       'where': {
-        'files': {
-          'is_active': true
-        },
-        'level_id': 2,
-        'consumer': {
-          'level_id': 1
-        },
-        'status': 'open'
+        'is_open': true,
+        'is_sa_validated': false
       },
       'order_by': '+id'
     };
-    const url = Endpoints.db + '/table/' + 'consumer_kyc' + '/count';
+    const url = Endpoints.db + '/table/' + 'kyc_request' + '/count';
     const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(payload),
+      ...genOptions,
+      body: JSON.stringify(payload)
     };
     // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
 
@@ -72,7 +66,7 @@ const fetchConsumerCount = () => {
 const fetchConsumer = (page) => {
   return (dispatch) => {
     /* Url */
-    const url = Endpoints.db + '/table/consumer_kyc/select';
+    const url = Endpoints.db + '/table/kyc_request/select';
     const queryObj = {};
 
     let offset = 0;
@@ -92,23 +86,15 @@ const fetchConsumer = (page) => {
       'created_at'
     ];
     queryObj.where = {
-      'files': {
-        'is_active': true
-      },
-      'level_id': 2,
-      'consumer': {
-        'level_id': 1
-      },
-      'status': 'open'
+      'is_open': true,
+      'is_sa_validated': false
     };
     queryObj.limit = limit;
     queryObj.offset = offset;
     queryObj.order_by = '-created_at';
     const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(queryObj),
+      ...genOptions,
+      body: JSON.stringify(queryObj)
     };
     /* Make a MAKE_REQUEST action */
     dispatch({type: MAKE_REQUEST});

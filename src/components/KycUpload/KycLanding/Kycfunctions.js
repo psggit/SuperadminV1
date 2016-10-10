@@ -20,6 +20,7 @@ const Kycfunctions = ({dispatch}) => { // eslint-disable-line no-unused-vars
                     </div>
                 </div>
             </div>
+            {/*
             <div className = {styles.rightsquarebox}>
                     <div>
                     <div className={styles.squarecontent}>
@@ -31,6 +32,7 @@ const Kycfunctions = ({dispatch}) => { // eslint-disable-line no-unused-vars
                     </div>
                 </div>
             </div>
+            */}
         </div>
     );
 };

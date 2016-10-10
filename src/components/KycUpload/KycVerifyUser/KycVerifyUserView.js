@@ -95,10 +95,10 @@ class KycVerifyProfile extends Component {
   }
   uploadKYCDetails() {
     /* Consumer KYC need to exist first then id will be present */
-    const kycId = this.props.lastSuccess[0].kycs[0].id;
+    const kycId = this.props.lastSuccess[0].kyc_requests[0].id;
     const { Id: userId } = this.props.params;
     /* Consumer KYC need to exist first then files will atleast be an empty array */
-    const kycFiles = this.props.lastSuccess[0].kycs[0].files;
+    const kycFiles = this.props.lastSuccess[0].kyc_requests[0].kyc_files;
 
     /* Verified Status */
     let consumerPICVerification = document.querySelectorAll('[data-field-name=consumer_status] option:checked')[0].value;
@@ -173,12 +173,12 @@ class KycVerifyProfile extends Component {
 
       /* Get kycIds for Consumer KYCS */
       kycFiles.forEach( (file) => {
-        if (file.proof_type === 'CONSUMERPIC') {
+        if (file.proof_type === 'USERPHOTO') {
           updateConsumers = true;
           consumerWhere.$or.push({
             'id': file.id
           });
-        } else if (file.proof_type === 'IDPROOF') {
+        } else if (file.proof_type === 'IDPROOFFRONT' || file.proof_type === 'IDPROOFBACK') {
           updateIdProof = true;
           idWhere.$or.push({
             'id': file.id
@@ -296,10 +296,10 @@ class KycVerifyProfile extends Component {
 
     const populateImageHtml = () => {
       if (lastSuccess.length > 0) {
-        if (lastSuccess[0].kycs) {
-          consumerPic = lastSuccess[0].kycs[0].files.map((file, index) => {
+        if (lastSuccess[0].kyc_requests) {
+          consumerPic = lastSuccess[0].kyc_requests[0].kyc_files.map((file, index) => {
             const imgUrl = Endpoints.file_get + file.file;
-            if (file.proof_type === 'CONSUMERPIC') {
+            if (file.proof_type === 'USERPHOTO') {
               // consumerComment = file.comment;
               hasConsumerPic = true;
               return (
@@ -310,9 +310,9 @@ class KycVerifyProfile extends Component {
             }
           });
 
-          idPic = lastSuccess[0].kycs[0].files.map((file, index) => {
+          idPic = lastSuccess[0].kyc_requests[0].kyc_files.map((file, index) => {
             const imgUrl = Endpoints.file_get + file.file;
-            if (file.proof_type === 'IDPROOF') {
+            if (file.proof_type === 'IDPROOFFRONT' || file.proof_type === 'IDPROOFBACK') {
               // idProofComment = file.comment;
               hasIDProofPic = true;
               return (
@@ -323,9 +323,9 @@ class KycVerifyProfile extends Component {
             }
           });
 
-          addressPic = lastSuccess[0].kycs[0].files.map((file, index) => {
+          addressPic = lastSuccess[0].kyc_requests[0].kyc_files.map((file, index) => {
             const imgUrl = Endpoints.file_get + file.file;
-            if (file.proof_type === 'ADDRESSPROOF') {
+            if (file.proof_type === 'ADDRESSPROOFFRONT' || file.proof_type === 'ADDRESSPROOFBACK') {
               hasAddressPic = true;
               // addressProofComment = file.comment;
               return (

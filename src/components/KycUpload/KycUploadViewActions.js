@@ -17,6 +17,8 @@ import { MAKE_REQUEST,
   REQUEST_COMPLETED,
   REQUEST_ERROR, RESET } from '../Common/Actions/Actions';
 
+import { genOptions } from '../Common/Actions/commonFunctions';
+
 /* Action Constants */
 const ADD_CONSUMER_PIC = 'KYCREDUCER/ADD_CONSUMER_PIC';
 const ADD_ID_PROOF = 'KYCREDUCER/ADD_ID_PROOF';
@@ -48,9 +50,9 @@ const getUserData = (f) => {
       'where': {'id': f},
       'columns': [
         '*', {
-          'name': 'kycs',
+          'name': 'kyc_requests',
           'columns': ['*', {
-            'name': 'files',
+            'name': 'kyc_files',
             'columns': ['*'],
             'where': {
               'is_active': true
@@ -63,10 +65,8 @@ const getUserData = (f) => {
       ]};
     const url = Endpoints.db + '/table/' + 'consumer' + '/select';
     const options = {
-      method: 'POST',
-      body: JSON.stringify(payload),
-      headers: { 'Content-Type': 'application/json' },
-      credentials: globalCookiePolicy
+      ...genOptions,
+      body: JSON.stringify(payload)
     };
     // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
 
@@ -195,28 +195,27 @@ const uploadAndSave = (formData, proofType) => {
   };
 };
 
-const updateConsumerKyc = (id, status, userId) => {
+const updateConsumerKyc = ( id, status ) => {
   return (dispatch) => {
     const userUpdate = {};
-    const url = Endpoints.db + '/table/consumer_kyc/update';
-    const currStatus = status;
-    const currUserId = userId;
+    const url = Endpoints.db + '/table/kyc_request/update';
     userUpdate.values = {
-      'status': status,
+      'is_sa_validated': ( status === 'Verified' ) ? true : false,
     };
     userUpdate.returning = ['id'];
     userUpdate.where = {
       'id': parseInt(id, 10)
     };
     const queryObj = {
-      method: 'POST',
-      body: JSON.stringify(userUpdate),
-      headers: { 'Content-Type': 'application/json' },
-      credentials: globalCookiePolicy
+      ...genOptions,
+      body: JSON.stringify(userUpdate)
     };
     return dispatch(requestAction(url, queryObj))
       .then((resp) => {
         /* If the KYC Status Update is successfull then update consumer level_id also */
+        console.log(resp);
+        alert('Consumer Updated Successfully');
+        /*
         if (resp.returning.length > 0) {
           const consumerUpdate = {};
           const consumerUrl = Endpoints.db + '/table/consumer/update';
@@ -236,10 +235,13 @@ const updateConsumerKyc = (id, status, userId) => {
           };
           return dispatch(requestAction(consumerUrl, consumerQueryObj));
         }
+        */
       })
+    /*
       .then( () => {
         alert('Consumer Updated Successfully');
       })
+    */
       .catch( () => {
         alert('Something went wrong while updating KYC');
       });
@@ -363,10 +365,8 @@ const updateExistingKycs = (requestObjs) => {
     const executeInSeries = (requestObj, index) => {
       let queryObj = {};
       queryObj = {
-        method: 'POST',
-        body: JSON.stringify(requestObj),
-        headers: { 'Content-Type': 'application/json' },
-        credentials: globalCookiePolicy
+        ...genOptions,
+        body: JSON.stringify(requestObj)
       };
       return dispatch(requestAction(url, queryObj))
         .then(() => {
@@ -521,15 +521,15 @@ const kycReducer = (state = defaultKycState, action) => {
       idProofInfo = Object.assign({}, state.defaultIdProof);
 
       /* If the data is already available, populate the value properly */
-      if (action.data[0].kycs.length > 0) {
-        const consumerPIC = action.data[0].kycs[0].files.filter( (file) => {
-          return (file.proof_type === 'CONSUMERPIC');
+      if (action.data[0].kyc_requests.length > 0) {
+        const consumerPIC = action.data[0].kyc_requests[0].kyc_files.filter( (file) => {
+          return (file.proof_type === 'USERPHOTO');
         });
-        const idProof = action.data[0].kycs[0].files.filter( (file) => {
-          return (file.proof_type === 'IDPROOF');
+        const idProof = action.data[0].kyc_requests[0].kyc_files.filter( (file) => {
+          return (file.proof_type === 'IDPROOFFRONT') || (file.proof_type === 'IDPROOFBACK');
         });
-        const addressProof = action.data[0].kycs[0].files.filter( (file) => {
-          return (file.proof_type === 'ADDRESSPROOF');
+        const addressProof = action.data[0].kyc_requests[0].kyc_files.filter( (file) => {
+          return (file.proof_type === 'ADDRESSPROOFFRONT') || (file.proof_type === 'ADDRESSPROOFBACK');
         });
 
         if (consumerPIC.length > 0) {
