@@ -5,9 +5,19 @@ import TableHeader from '../../../Common/TableHeader';
 import {connect} from 'react-redux';
 
 // import {getRechargeData, getRechargeCount} from '../../actions/Action';
-import {getAllRechargeData} from '../../actions/Action';
+import {
+  getAllRechargeData
+} from '../../actions/Action';
+
+import {
+  MAKE_REQUEST,
+  REQUEST_COMPLETED
+} from '../../../Common/Actions/Actions';
+
 import RechargeSearchWrapper from './SearchWrapper';
 import PaginationContainer from './Pagination';
+
+import commonDecorator from '../../../Common/CommonDecorator';
 
 class ConsumerRecharge extends Component {
   componentWillMount() {
@@ -17,7 +27,15 @@ class ConsumerRecharge extends Component {
     const {query} = this.props.location;
     const page = (Object.keys(query).length > 0) ? parseInt(query.p, 10) : 1;
 
-    this.props.dispatch(getAllRechargeData(page));
+    const { userId: consumerId } = this.props.params;
+
+    Promise.all([
+      this.props.dispatch({ type: MAKE_REQUEST }),
+      this.props.dispatch(getAllRechargeData(page, ( consumerId ? consumerId : '') ))
+    ])
+    .then( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED });
+    });
     /*
     this.props.dispatch(getRechargeCount())
       .then(() => {
@@ -36,14 +54,27 @@ class ConsumerRecharge extends Component {
   onClickHandle(e) {
     // e.preventDefault();
     const currentPage = parseInt(e.target.href.split('?p=')[1], 10);
+
+    const { userId: consumerId } = this.props.params;
     if (currentPage) {
-      this.props.dispatch(getAllRechargeData(currentPage));
+      Promise.all([
+        this.props.dispatch({ type: MAKE_REQUEST }),
+        this.props.dispatch(getAllRechargeData(currentPage, ( consumerId ? consumerId : '') ))
+      ])
+      .then( () => {
+        this.props.dispatch({ type: REQUEST_COMPLETED });
+      });
     }
   }
   render() {
     const styles = require('./Recharge.scss');
     const { ongoingRequest, lastError, lastSuccess, count} = this.props;
     const {query} = this.props.location;
+
+    const { userId: consumerId } = this.props.params;
+
+    const paginationUrl = ( consumerId ) ? '/hadmin/consumer_transactions/' + parseInt(consumerId, 10) + '/recharges' : '/hadmin/consumer_transactions/recharges';
+
     const page = (Object.keys(query).length > 0) ? parseInt(query.p, 10) : 1;
     console.log(lastError);
     console.log(ongoingRequest);
@@ -51,7 +82,7 @@ class ConsumerRecharge extends Component {
           <div className={styles.recharge_container}>
             <TableHeader title={'Customer Management/Customer Reservations'} />
             <RechargeSearchWrapper data={lastSuccess}/>
-            <PaginationContainer limit="10" onClickHandler={this.onClickHandle.bind(this)} currentPage={page} showMax="5" count={count} parentUrl="/hadmin/consumer_transactions/recharges" />
+            <PaginationContainer limit="10" onClickHandler={this.onClickHandle.bind(this)} currentPage={page} showMax="5" count={count} parentUrl={ paginationUrl } />
           </div>
         );
   }
@@ -68,7 +99,10 @@ ConsumerRecharge.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  return {...state.transaction_data};
+  return {...state.transaction_data, ongoingRequest: state.page_data.ongoingRequest };
 };
 
-export default connect(mapStateToProps)(ConsumerRecharge);
+
+const decoratedConnectedComponent = commonDecorator(ConsumerRecharge);// connect(mapStateToProps)(CommonDecorator);
+
+export default connect(mapStateToProps)(decoratedConnectedComponent);

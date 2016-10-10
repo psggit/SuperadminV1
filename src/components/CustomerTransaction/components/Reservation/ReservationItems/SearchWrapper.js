@@ -5,26 +5,42 @@ const SearchWrapper = ( {data} ) => {
   const styles = require('./SearchWrapper.scss');
   let tableBody;
   let objHtml;
+  let allProducts = [];
 
-  tableBody = data.map((dat, index) => {
+  if ( data.length > 0 ) {
+    allProducts = [ ...data[0].normal_items.map( ( item ) => {
+      const it = { ...item, 'type': 'normal'};
+      return it;
+    }), ...data[0].cashback_items.map( ( item ) => {
+      const it = { ...item, 'type': 'cashback'};
+      return it;
+    }), ...data[0].bar_items.map( ( item ) => {
+      const it = { ...item, 'type': 'bars'};
+      return it;
+    })];
+  }
+
+  tableBody = allProducts.map((dat, index) => {
     let createdAt = dat.created_at;
     let updatedAt = dat.updated_at;
 
     createdAt = new Date(new Date(createdAt).getTime()).toLocaleString();
     updatedAt = new Date(new Date(updatedAt).getTime()).toLocaleString();
+
+    const productIndex = dat.type === 'normal' ? dat.product : dat.product.sku_pricing;
+
     return (
           <tr key={index}>
+            <td> { dat.id } </td>
             <td>
-              <Link to={ '/hadmin/consumer_transactions/reservations/' + dat.cart_id + '/items' }>
-                { dat.id }
+              <Link to={'/hadmin/consumer/profile/' + data[0].consumer_id}>
+                { data[0].consumer_id }
               </Link>
             </td>
-            <td>
-              <Link to={'/hadmin/consumer/profile/' + dat.consumer_id}>
-                { dat.consumer_id }
-              </Link>
-            </td>
-            <td> { dat.amount } </td>
+            <td> { productIndex.sku.brand.brand_name } </td>
+            <td> { productIndex.sku.volume } ml </td>
+            <td> Rs. { ( dat.type !== 'bars' ? dat.product.price : dat.product.hipbarPrice ) } </td>
+            <td> { dat.type.toUpperCase() } </td>
             <td> { createdAt } </td>
             <td> { updatedAt } </td>
           </tr>
@@ -47,7 +63,10 @@ const SearchWrapper = ( {data} ) => {
             <tr>
               <th> ID </th>
               <th> Consumer ID </th>
+              <th> Brand </th>
+              <th> Volume </th>
               <th> Amount </th>
+              <th> Type </th>
               <th> Updated At </th>
               <th> Created At </th>
             </tr>

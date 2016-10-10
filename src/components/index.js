@@ -100,6 +100,7 @@ export AccountingUploadSettlementReport from './Accounting/UploadSettlementRepor
 
 export ConsumerRecharge from './CustomerTransaction/components/Recharge/Recharge';
 export ConsumerReservation from './CustomerTransaction/components/Reservation/Reservation';
+export ConsumerReservationItems from './CustomerTransaction/components/Reservation/ReservationItems/ReservationItems';
 
 /* ViewBrandManager */
 export ViewBrandManager from './BrandsOffersAndPromos/ViewBrandManager/ViewBrandManager';

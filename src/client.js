@@ -30,6 +30,7 @@ import {Login, Home, PageContainer,
   BrandEdit,
   BrandManagement,
   ConsumerReservation,
+  ConsumerReservationItems,
   ManageState,
   GenreManagement,
   ManageGenre,
@@ -39,8 +40,12 @@ import {Login, Home, PageContainer,
   ConfirmCredit,
   ViewCredits,
   ListSku,
-  HomepageManagementAds, HomepageManagementSelectAds, BrandManagerProfile, CreateBrandManager,
-  CompaniesManagement, ManageCompanies, BrandAds, BrandPromos, PromosInstantCashback, RetailerManagementCreate,
+  HomepageManagementAds,
+  HomepageManagementSelectAds,
+  BrandManagerProfile,
+  CreateBrandManager,
+  CompaniesManagement,
+  ManageCompanies, BrandAds, BrandPromos, PromosInstantCashback, RetailerManagementCreate,
   RetailerManagementSettlementDetails, RetailerManagementDeviceDetail, RetailerManagementDisableDevice,
   RetailerManagementTransactions, RetailerManagementCreateOrganization, CustomerSupportCustomerProfile,
   CustomerSupportFreshdeskTicket, CustomerSupportIssueHistory, CustomerSupportSupport, CustomerSupportFreshdeskTicketList,
@@ -147,7 +152,10 @@ const main = (
         /* Customer Transactions */
         <Route path="consumer_transactions" component={CustomerTransaction} />
         <Route path="consumer_transactions/recharges" component={ConsumerRecharge} />
+        <Route path="consumer_transactions/:userId/recharges" component={ConsumerRecharge} />
         <Route path="consumer_transactions/reservations" component={ConsumerReservation} />
+        <Route path="consumer_transactions/:userId/reservations" component={ConsumerReservation} />
+        <Route path="consumer_transactions/reservations/:cartId/items" component={ConsumerReservationItems} />
         <Route path="consumer_transactions/add_credits" component={AddCredit} />
         <Route path="consumer_transactions/confirm_credits" component={ConfirmCredit} />
         <Route path="consumer_transactions/view_credits/:batchNumber" component={ViewCredits} />

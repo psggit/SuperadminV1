@@ -28,7 +28,6 @@ const RechargeSearchWrapper = ( {data} ) => {
             <td> { (dat.payment_detail) ? dat.payment_detail.amount : '' } </td>
             <td> { (isSuccess) ? 'Successful' : 'Failed'} </td>
             <td> { (dat.payment_detail) ? dat.payment_detail.mode : '' } </td>
-            <td> { (dat.payment_detail) ? dat.payment_detail.bank_code : ''} </td>
             <td> { createdAt } </td>
             <td> { updatedAt } </td>
           </tr>
@@ -57,7 +56,6 @@ const RechargeSearchWrapper = ( {data} ) => {
                   <th> Amount </th>
                   <th> Status </th>
                   <th> Mode </th>
-                  <th> Bank Code </th>
                   <th> Updated At </th>
                   <th> Created At </th>
                 </tr>

@@ -13,6 +13,10 @@ import Endpoints, {globalCookiePolicy} from '../../../Endpoints';
 
 import { routeActions } from 'redux-simple-router';
 
+import { genOptions } from '../../Common/Actions/commonFunctions';
+
+import requestAction from '../../Common/Actions/requestAction';
+
 /* Actions */
 
 const MAKE_REQUEST = 'CTRecharge/MAKE_REQUEST';
@@ -111,7 +115,7 @@ const loadCredentials = () => {
   };
 };
 
-const getRechargeCount = () => {
+const getRechargeCount = ( consumerId ) => {
   return (dispatch) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
@@ -120,39 +124,22 @@ const getRechargeCount = () => {
       'columns': ['*']
     };
 
+    if ( consumerId.length > 0 ) {
+      payload.where = {
+        'consumer_id': parseInt(consumerId, 10)
+      };
+    }
+
     const url = Endpoints.db + '/table/' + 'recharge_wallet' + '/count';
     const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(payload),
+      ...genOptions,
+      body: JSON.stringify(payload)
     };
-    // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
-
-    return fetch(url, options)
-           .then(
-             (response) => {
-               if (response.ok) { // 2xx status
-                 response.json().then(
-                   (d) => {
-                     return dispatch({type: COUNT_FETCHED, data: d});
-                   },
-                   () => {
-                     return dispatch(requestFailed('Error. Try again!'));
-                   }
-                 );
-               } else {
-                 return dispatch(requestFailed('Error. Try again!'));
-               }
-             },
-             (error) => {
-               console.log(error);
-               return dispatch(requestFailed(error.text));
-             });
+    return dispatch(requestAction(url, options, COUNT_FETCHED, REQUEST_ERROR));
   };
 };
 
-const getRechargeData = (page) => {
+const getRechargeData = ( page, consumerId ) => {
   return (dispatch) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
@@ -176,53 +163,33 @@ const getRechargeData = (page) => {
       offset: offset
     };
 
+    if ( consumerId.length > 0 ) {
+      payload.where = {
+        'consumer_id': parseInt(consumerId, 10)
+      };
+    }
+
     const url = Endpoints.db + '/table/' + 'recharge_wallet' + '/select';
     const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: globalCookiePolicy,
+      ...genOptions,
       body: JSON.stringify(payload),
     };
-    // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
-
-    return fetch(url, options)
-           .then(
-             (response) => {
-               if (response.ok) { // 2xx status
-                 response.json().then(
-                   (d) => {
-                     return dispatch({type: REQUEST_SUCCESS, data: d});
-                   },
-                   () => {
-                     return dispatch(requestFailed('Error. Try again!'));
-                   }
-                 );
-               } else {
-                 return dispatch(requestFailed('Error. Try again!'));
-               }
-             },
-             (error) => {
-               console.log(error);
-               return dispatch(requestFailed(error.text));
-             });
+    return dispatch(requestAction(url, options, REQUEST_SUCCESS, REQUEST_ERROR));
   };
 };
 
-const getAllRechargeData = (page) => {
+const getAllRechargeData = (page, consumerId = '' ) => {
   const gotPage = page;
   /* Dispatching first one */
   return (dispatch) => {
-    dispatch(getRechargeCount())
-      .then(() => {
-        return dispatch(getRechargeData(gotPage));
-      })
-      .then(() => {
-        console.log('Recharge Data fetched');
-      });
+    return Promise.all([
+      dispatch(getRechargeCount( consumerId )),
+      dispatch(getRechargeData(gotPage, consumerId))
+    ]);
   };
 };
 
-const getReservationCount = () => {
+const getReservationCount = ( consumerId ) => {
   return (dispatch) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
@@ -231,39 +198,22 @@ const getReservationCount = () => {
       'columns': ['*']
     };
 
+    if ( consumerId.length > 0 ) {
+      payload.where = {
+        'consumer_id': parseInt(consumerId, 10)
+      };
+    }
+
     const url = Endpoints.db + '/table/' + 'reservation' + '/count';
     const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(payload),
+      ...genOptions,
+      body: JSON.stringify(payload)
     };
-    // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
-
-    return fetch(url, options)
-           .then(
-             (response) => {
-               if (response.ok) { // 2xx status
-                 response.json().then(
-                   (d) => {
-                     return dispatch({type: COUNT_FETCHED, data: d});
-                   },
-                   () => {
-                     return dispatch(requestFailed('Error. Try again!'));
-                   }
-                 );
-               } else {
-                 return dispatch(requestFailed('Error. Try again!'));
-               }
-             },
-             (error) => {
-               console.log(error);
-               return dispatch(requestFailed(error.text));
-             });
+    return dispatch(requestAction(url, options, COUNT_FETCHED, REQUEST_ERROR));
   };
 };
 
-const getReservationData = (page) => {
+const getReservationData = ( page, consumerId ) => {
   return (dispatch) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
@@ -279,40 +229,110 @@ const getReservationData = (page) => {
     offset = (page - 1) * 10;
 
     const payload = {
-      'columns': [ '*'],
+      'columns': [ '*', {
+        'name': 'cart', 'columns': ['*', {
+          'name': 'normal_items',
+          'columns': ['*', {
+            'name': 'product',
+            'columns': ['*', {
+              'name': 'sku',
+              'columns': ['*', {
+                'name': 'brand',
+                'columns': ['*']
+              }]
+            }]
+          }]
+        }, {
+          'name': 'bar_items',
+          'columns': ['*']
+        }, {
+          'name': 'cashback_items',
+          'columns': ['*']
+        }]
+      }],
       'limit': limit,
       'offset': offset
     };
+    if ( consumerId.length > 0 ) {
+      payload.where = {
+        'consumer_id': parseInt(consumerId, 10)
+      };
+    }
 
     const url = Endpoints.db + '/table/' + 'reservation' + '/select';
     const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(payload),
+      ...genOptions,
+      body: JSON.stringify(payload)
     };
-    // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
+    return dispatch(requestAction(url, options, REQUEST_SUCCESS, REQUEST_ERROR));
+  };
+};
 
-    return fetch(url, options)
-           .then(
-             (response) => {
-               if (response.ok) { // 2xx status
-                 response.json().then(
-                   (d) => {
-                     return dispatch({type: REQUEST_SUCCESS, data: d});
-                   },
-                   () => {
-                     return dispatch(requestFailed('Error. Try again!'));
-                   }
-                 );
-               } else {
-                 return dispatch(requestFailed('Error. Try again!'));
-               }
-             },
-             (error) => {
-               console.log(error);
-               return dispatch(requestFailed(error.text));
-             });
+const getReservedItems = ( cartId ) => {
+  return (dispatch) => {
+    // dispatch({ type: MAKE_REQUEST, f});
+    //
+    /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
+    // const count = currentProps.count;
+
+    // limit = (page * 10) > count ? count : ((page) * 10);
+    // limit = ((page) * 10);
+
+    const payload = {
+      'columns': ['*', {
+        'name': 'normal_items',
+        'columns': ['*', {
+          'name': 'product',
+          'columns': ['*', {
+            'name': 'sku',
+            'columns': ['*', {
+              'name': 'brand',
+              'columns': ['*']
+            }]
+          }]
+        }]
+      }, {
+        'name': 'cashback_items',
+        'columns': ['*', {
+          'name': 'product',
+          'columns': ['*', {
+            'name': 'sku_pricing',
+            'columns': [{
+              'name': 'sku',
+              'columns': ['*', {
+                'name': 'brand',
+                'columns': ['*']
+              }]
+            }]
+          }]
+        }]
+      }, {
+        'name': 'bar_items',
+        'columns': ['*', {
+          'name': 'product',
+          'columns': ['*', {
+            'name': 'sku_pricing',
+            'columns': [{
+              'name': 'sku',
+              'columns': ['*', {
+                'name': 'brand',
+                'columns': ['*']
+              }]
+            }]
+          }]
+        }]
+      }],
+      'where': {
+        'id': parseInt(cartId, 10)
+      }
+    };
+
+    const url = Endpoints.db + '/table/' + 'cart' + '/select';
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(payload)
+    };
+    return dispatch(requestAction(url, options, REQUEST_SUCCESS, REQUEST_ERROR));
   };
 };
 
@@ -627,17 +647,14 @@ const updatePageData = (page, data) => {
   };
 };
 
-const getAllReservationData = (page) => {
+const getAllReservationData = (page, consumerId = '') => {
   const gotPage = page;
   /* Dispatching first one */
   return (dispatch) => {
-    dispatch(getReservationCount())
-      .then(() => {
-        return dispatch(getReservationData(gotPage));
-      })
-      .then(() => {
-        console.log('Reservation Data fetched');
-      });
+    return Promise.all([
+      dispatch(getReservationCount( consumerId )),
+      dispatch(getReservationData(gotPage, consumerId ))
+    ]);
   };
 };
 
@@ -660,5 +677,6 @@ export {requestSuccess,
   checkValidity,
   insertCredits,
   getTransactionByBatch,
-  getAllTransactionByBatch
+  getAllTransactionByBatch,
+  getReservedItems
 };

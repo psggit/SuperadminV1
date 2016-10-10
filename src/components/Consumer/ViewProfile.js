@@ -126,7 +126,7 @@ class ViewConsumerProfile extends Component {
       const rechargeHTML = ( rechargeCount ) ?
         (
           <div className={styles.wd_60_link} >
-            <Link to={'/hadmin/consumer/profile/' + profileInfo.id + '/recharge_history'}>
+            <Link to={'/hadmin/consumer_transactions/' + profileInfo.id + '/recharges'}>
               { rechargeCount }
             </Link>
           </div>
@@ -140,7 +140,7 @@ class ViewConsumerProfile extends Component {
       const reservationHTML = ( reservationCount ) ?
         (
           <div className={styles.wd_60_link} >
-            <Link to={'/hadmin/consumer/profile/' + profileInfo.id + '/reservation_history'}>
+            <Link to={'/hadmin/consumer_transactions/' + profileInfo.id + '/reservations'}>
               { reservationCount }
             </Link>
           </div>
@@ -154,7 +154,7 @@ class ViewConsumerProfile extends Component {
       const cancellationHTML = ( cancellationCount ) ?
         (
           <div className={styles.wd_60_link} >
-            <Link to={'/hadmin/consumer/profile/' + profileInfo.id + '/cancellation_history'}>
+            <Link to={'/hadmin/consumer_transactions/' + profileInfo.id + '/cancellations'}>
               { cancellationCount }
             </Link>
           </div>
