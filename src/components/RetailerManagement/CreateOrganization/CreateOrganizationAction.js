@@ -9,7 +9,11 @@ import {combineReducers} from 'redux';
 // import { routeActions } from 'redux-simple-router';
 
 import beneficiaryReducer from './BeneficiaryAction';
+import defaultStateReducer from '../../Common/Actions/StateCityData';
+import organizationReducer from './OrganizationData';
 
 export default combineReducers({
-  beneficiary_data: beneficiaryReducer
+  beneficiaryData: beneficiaryReducer,
+  genStateData: defaultStateReducer,
+  organizationData: organizationReducer
 });

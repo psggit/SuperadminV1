@@ -1,5 +1,5 @@
 import React from 'react';
-const OrganizationTextarea = ({labelVal}) => {
+const OrganizationTextarea = ({labelVal, fieldName, fieldType }) => {
   const styles = require('./OrganizationTextarea.scss');
   return (
     <div className = {styles.constitution_organisation_textarea_container}>
@@ -7,7 +7,7 @@ const OrganizationTextarea = ({labelVal}) => {
         {labelVal}
       </div>
       <div className = {styles.constitution_organisation_textarea_right}>
-        <textarea></textarea>
+        <textarea data-field-name={ fieldName } data-field-type={ fieldType } ></textarea>
       </div>
     </div>
   );

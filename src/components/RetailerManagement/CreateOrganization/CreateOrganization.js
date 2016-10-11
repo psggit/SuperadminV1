@@ -6,6 +6,21 @@ import OrganizationContactDetails from './OrganizationContactDetails';
 
 import { connect } from 'react-redux';
 
+import { fetchStateCity } from '../../Common/Actions/StateCityData';
+
+import commonDecorator from '../../Common/CommonDecorator';
+
+import {
+  ORGANIZATION_INPUT_CHANGED,
+  ORGANIZATION_CONTACT_CHANGED,
+  ORGANIZATION_REGISTERED_CHANGED
+} from './OrganizationData';
+
+import {
+  MAKE_REQUEST,
+  REQUEST_COMPLETED
+} from '../../Common/Actions/Actions';
+
 import Beneficiary from './Beneficiary';
 
 class CreateOrganization extends React.Component {
@@ -24,8 +39,27 @@ class CreateOrganization extends React.Component {
       link: '#'
     });
   }
+  componentDidMount() {
+    Promise.all([
+      this.props.dispatch( { type: MAKE_REQUEST }),
+      this.props.dispatch( fetchStateCity() )
+    ])
+    .then( () => {
+      this.props.dispatch( { type: REQUEST_COMPLETED });
+    });
+  }
   render() {
     const styles = require('./CreateOrganization.scss');
+
+    const {
+      genStateData,
+      beneficiaryData,
+      organizationData
+    } = this.props;
+
+    const { orgDetail, orgContact, orgRegistered } = organizationData;
+
+    console.log( beneficiaryData );
 
     return (
       <div className={styles.container}>
@@ -35,9 +69,9 @@ class CreateOrganization extends React.Component {
             <div className = {styles.create_organization_head}>
               Organisation Details
             </div>
-            <OrganizationDetails />
-            <OrganizationRegisteredDetails />
-            <OrganizationContactDetails />
+            <OrganizationDetails { ...this.props } triggerDispatch={ ORGANIZATION_INPUT_CHANGED } currState={ orgDetail } />
+            <OrganizationRegisteredDetails { ...this.props } stateData = { Object.assign({}, genStateData ) } triggerDispatch={ ORGANIZATION_REGISTERED_CHANGED } currState = { orgRegistered } />
+            <OrganizationContactDetails { ...this.props } stateData = { Object.assign( {}, genStateData ) } triggerDispatch={ ORGANIZATION_CONTACT_CHANGED } currState={ orgContact } />
           </div>
         </div>
         <Beneficiary { ...this.props } />
@@ -50,7 +84,16 @@ class CreateOrganization extends React.Component {
 }
 
 CreateOrganization.propTypes = {
-  dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired,
+  beneficiaryData: PropTypes.object.isRequired,
+  genStateData: PropTypes.object.isRequired,
+  organizationData: PropTypes.object.isRequired
 };
 
-export default connect()(CreateOrganization);
+const mapStateToProps = ( state ) => {
+  return { ...state.organization_data, ...state.page_data };
+};
+
+const decoratedComponent = commonDecorator(CreateOrganization);
+
+export default connect(mapStateToProps)(decoratedComponent);

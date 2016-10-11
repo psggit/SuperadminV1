@@ -5,9 +5,11 @@ import { connect } from 'react-redux';
 import OrganizationInput from './OrganizationInput';
 import OrganizationSelect from './OrganizationSelect';
 
-import commonFormValidator from '../../Common/CommonFormValidator';
+import formValidator from '../../Common/CommonFormValidator';
 
-const STORE_ORGANISATION_DETAILS = '@create_organisation/STORE_ORGANISATION_DETAILS';
+import {
+  ORGANIZATION_INPUT_CHANGED
+} from './OrganizationData';
 
 const OrganizationDetails = () => {
   const styles = require('./OrganizationDetails.scss');
@@ -66,7 +68,7 @@ const OrganizationDetails = () => {
   );
 };
 
-const decoratedComponent = commonFormValidator(OrganizationDetails, 'data-field-name', 'data-field-type', STORE_ORGANISATION_DETAILS );
+const decoratedComponent = formValidator(OrganizationDetails, 'data-field-name', 'data-field-type', ORGANIZATION_INPUT_CHANGED);
 
 export default connect()(decoratedComponent);
 // export default OrganizationDetails;
