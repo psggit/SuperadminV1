@@ -60,10 +60,10 @@ const OrganizationDetails = () => {
       */}
       <OrganizationInput labelVal = "Organization Name" Val = "Ape's Ale" fieldName="organisation_name" fieldType="text" />
       <OrganizationInput labelVal = "Date of Incorporation" Val = "34528752484" fieldName="date_of_incorporation" fieldType="date" />
-      <OrganizationInput labelVal = "PAN Number" Val = "F128ABC37" fieldName="pan_number" fieldType="int" />
-      <OrganizationInput labelVal = "TIN Number" Val = "102016" fieldName="tin_number" fieldType="int" />
+      <OrganizationInput labelVal = "PAN Number" Val = "F128ABC37" fieldName="pan_number" fieldType="text" />
+      <OrganizationInput labelVal = "TIN Number" Val = "102016" fieldName="tin_number" fieldType="text" />
       <OrganizationInput labelVal = "Annual Turnover" Val = "74902834" fieldName="annual_turnover" fieldType="int" />
-      <OrganizationInput labelVal = "TAN Number" Val = "102016"fieldName="tan_number" fieldType="int" />
+      <OrganizationInput labelVal = "TAN Number" Val = "102016"fieldName="tan_number" fieldType="text" />
     </div>
   );
 };

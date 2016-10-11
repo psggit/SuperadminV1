@@ -13,7 +13,8 @@ import commonDecorator from '../../Common/CommonDecorator';
 import {
   ORGANIZATION_INPUT_CHANGED,
   ORGANIZATION_CONTACT_CHANGED,
-  ORGANIZATION_REGISTERED_CHANGED
+  ORGANIZATION_REGISTERED_CHANGED,
+  saveOrganizationDetail
 } from './OrganizationData';
 
 import {
@@ -48,6 +49,9 @@ class CreateOrganization extends React.Component {
       this.props.dispatch( { type: REQUEST_COMPLETED });
     });
   }
+  saveOrganization() {
+    this.props.dispatch(saveOrganizationDetail());
+  }
   render() {
     const styles = require('./CreateOrganization.scss');
 
@@ -76,7 +80,7 @@ class CreateOrganization extends React.Component {
         </div>
         <Beneficiary { ...this.props } />
         <div className = {styles.organisation_details_btn}>
-          <button>Save</button>
+          <button onClick={ this.saveOrganization.bind(this) } >Save</button>
         </div>
       </div>
     );

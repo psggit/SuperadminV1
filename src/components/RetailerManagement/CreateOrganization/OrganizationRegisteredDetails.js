@@ -22,8 +22,8 @@ const OrganizationRegisteredDetails = ( { stateData, currState } ) => {
     return s;
   }) : [];
 
-  const filteredCities = ( stateData && currState.state ) ? stateData.cities.filter( ( city ) => {
-    return ( city.state_short_name === stateData.stateIdMap[currState.state] );
+  const filteredCities = ( stateData && currState.state_id ) ? stateData.cities.filter( ( city ) => {
+    return ( city.state_short_name === stateData.stateIdMap[currState.state_id] );
   }) : [];
 
   let cityObj = [];
@@ -39,10 +39,10 @@ const OrganizationRegisteredDetails = ( { stateData, currState } ) => {
       <div className = {styles.constitution_organisation_head}>
         Organisation Registered Address
       </div>
-      <OrganizationTextarea labelVal = "Organization Address" fieldName="orgAddress" fieldType="text" />
-      <OrganizationSelect label = "State" defaultValue="Select State" selectOptions = { stateObj } fieldName="state" fieldType="int" />
-      <OrganizationSelect label = "City" defaultValue="Select City" selectOptions = { cityObj } fieldName="city" fieldType="int" />
-      <OrganizationInput labelVal = "Pincode" Val = "600018" fieldName="pinCode" fieldType="int"/>
+      <OrganizationTextarea labelVal = "Organization Address" fieldName="address" fieldType="text" />
+      <OrganizationSelect label = "State" defaultValue="Select State" selectOptions = { stateObj } fieldName="state_id" fieldType="int" />
+      <OrganizationSelect label = "City" defaultValue="Select City" selectOptions = { cityObj } fieldName="city_id" fieldType="int" />
+      <OrganizationInput labelVal = "Pincode" Val = "600018" fieldName="pincode" fieldType="text"/>
     </div>
   );
 };

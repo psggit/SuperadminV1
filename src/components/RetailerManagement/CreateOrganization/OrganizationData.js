@@ -1,8 +1,8 @@
-// import requestAction from '../../Common/Actions/requestAction';
-//
-// import { genOptions } from '../../Common/Actions/commonFunctions';
-//
-// import Endpoints from '../../../Endpoints';
+import requestAction from '../../Common/Actions/requestAction';
+// //
+import { genOptions } from '../../Common/Actions/commonFunctions';
+// //
+import Endpoints from '../../../Endpoints';
 
 /* Action constants */
 
@@ -11,6 +11,139 @@ const ORGANIZATION_CONTACT_CHANGED = '@organisationDataReducer/ORGANIZATION_CONT
 const ORGANIZATION_REGISTERED_CHANGED = '@commonStateReducer/ORGANIZATION_REGISTERED_CHANGED';
 
 /* End of it */
+
+/* Action creators */
+
+const saveOrganization = () => {
+  return ( dispatch, getState ) => {
+    const orgUrl = Endpoints.db + '/table/organisation/insert';
+
+    const orgState = getState().organization_data.organizationData;
+    const organizationDataObj = { ...orgState.orgDetail, 'kyc_status': orgState.orgContact.kycStatus, 'status': orgState.orgContact.organizationStatus };
+
+    const orgInsertCheck = ['annual_turnover', 'date_of_incorporation', 'organisation_name', 'pan_number', 'tan_number', 'tin_number', 'type_of_organisation'];
+    let orgCheckStatus = true;
+
+    orgInsertCheck.forEach( ( i ) => {
+      orgCheckStatus = orgCheckStatus && ( organizationDataObj[i] ? true : false );
+    });
+
+    if ( !orgCheckStatus ) {
+      alert('All the fields for organisation are mandatory');
+      return Promise.reject();
+    }
+
+    const insertObj = {};
+    insertObj.objects = [ { ...organizationDataObj } ];
+    insertObj.returning = ['id'];
+
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(insertObj)
+    };
+
+    return dispatch( requestAction( orgUrl, options ) );
+    // return Promise.resolve();
+  };
+};
+
+const saveOrganizationContact = ( id ) => {
+  return ( dispatch, getState ) => {
+    const orgUrl = Endpoints.db + '/table/organisation_contact_details/insert';
+
+    const orgState = getState().organization_data.organizationData;
+    const organizationDataObj = { ...orgState.orgContact, organisation_id: id };
+
+    delete organizationDataObj.kycStatus;
+    delete organizationDataObj.organizationStatus;
+
+    const orgInsertCheck = ['address', 'pincode', 'city_id', 'state_id', 'email', 'mobile_number', 'landline_number', 'organisation_id'];
+    let orgCheckStatus = true;
+
+    orgInsertCheck.forEach( ( i ) => {
+      orgCheckStatus = orgCheckStatus && ( organizationDataObj[i] ? true : false );
+    });
+
+    if ( !orgCheckStatus ) {
+      alert('All the fields for organisation contact are mandatory');
+      return Promise.reject();
+    }
+
+    const insertObj = {};
+    insertObj.objects = [ { ...organizationDataObj } ];
+    insertObj.returning = ['id'];
+
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(insertObj)
+    };
+
+    return dispatch( requestAction( orgUrl, options ) );
+    // return Promise.resolve();
+  };
+};
+
+const saveOrganizationAddress = ( id ) => {
+  return ( dispatch, getState ) => {
+    const orgUrl = Endpoints.db + '/table/organisation_registered_address/insert';
+
+    const orgState = getState().organization_data.organizationData;
+    const organizationDataObj = { ...orgState.orgRegistered, organisation_id: id };
+
+    const orgInsertCheck = ['address', 'pincode', 'city_id', 'state_id', 'organisation_id'];
+    let orgCheckStatus = true;
+
+    orgInsertCheck.forEach( ( i ) => {
+      orgCheckStatus = orgCheckStatus && ( organizationDataObj[i] ? true : false );
+    });
+
+    if ( !orgCheckStatus ) {
+      alert('All the fields for organisation registered address are mandatory');
+      return Promise.reject();
+    }
+
+    const insertObj = {};
+    insertObj.objects = [ { ...organizationDataObj } ];
+    insertObj.returning = ['id'];
+
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(insertObj)
+    };
+
+    return dispatch( requestAction( orgUrl, options ) );
+    // return Promise.resolve();
+  };
+};
+
+const saveOrganizationDetail = () => {
+  return ( dispatch ) => {
+    return dispatch(saveOrganization())
+    .then( ( resp ) => {
+      if ( resp.returning.length > 0 ) {
+        const orgId = resp.returning[0].id;
+        console.log('org');
+        console.log(orgId);
+        return Promise.all([
+          dispatch(saveOrganizationContact(orgId)),
+          dispatch(saveOrganizationAddress(orgId))
+        ]);
+      }
+      return Promise.reject();
+    })
+    .then( () => {
+      alert('Organisation Uploaded Successfully');
+    })
+    .catch( () => {
+      console.log('rejeced');
+      alert('Error While Uploading');
+    });
+  };
+};
+
+/* End of it */
+
+/* Reducers */
 
 const organizationDataReducer = ( state = { orgDetail: {}, orgContact: {}, orgRegistered: {} }, action ) => {
   switch ( action.type ) {
@@ -36,5 +169,6 @@ export default organizationDataReducer;
 export {
   ORGANIZATION_INPUT_CHANGED,
   ORGANIZATION_CONTACT_CHANGED,
-  ORGANIZATION_REGISTERED_CHANGED
+  ORGANIZATION_REGISTERED_CHANGED,
+  saveOrganizationDetail
 };
