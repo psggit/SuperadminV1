@@ -51,6 +51,7 @@ import {Login, Home, PageContainer,
   ManageCompanies, BrandAds, BrandPromos, PromosInstantCashback, RetailerManagementCreate,
   RetailerManagementSettlementDetails, RetailerManagementDeviceDetail, RetailerManagementDisableDevice,
   RetailerManagementTransactions, RetailerManagementCreateOrganization, CustomerSupportCustomerProfile,
+  RetailerManagementViewOrganization,
   CustomerSupportFreshdeskTicket, CustomerSupportIssueHistory, CustomerSupportSupport, CustomerSupportFreshdeskTicketList,
   CustomerSupportInstantCallbackHistory, ParameterManagementConsumerIssueCreateCode, ParameterManagementCreateCode,
   ParameterManagementConsumerIssueCodes, ParameterManagementConsumerManualCodes, ParameterManagementConsumerNotepadCodes,
@@ -208,6 +209,8 @@ const main = (
         <Route path="retailer_management/disable_device" component={RetailerManagementDisableDevice} />
         <Route path="retailer_management/transactions" component={RetailerManagementTransactions} />
         <Route path="retailer_management/create_organization" component={RetailerManagementCreateOrganization} />
+        <Route path="retailer_management/edit_organization/:orgId" component={RetailerManagementCreateOrganization} />
+        <Route path="retailer_management/view_organizations" component={RetailerManagementViewOrganization} />
         <Route path="retailer_management/profile_and_kyc" component={ProfileKyc} />
         <Route path="customer_support" component={CustomerSupportSupport} />
         <Route path="customer_support/customer_profile/:Id" component={CustomerSupportCustomerProfile} />

@@ -39,10 +39,10 @@ const OrganizationRegisteredDetails = ( { stateData, currState } ) => {
       <div className = {styles.constitution_organisation_head}>
         Organisation Registered Address
       </div>
-      <OrganizationTextarea labelVal = "Organization Address" fieldName="address" fieldType="text" />
-      <OrganizationSelect label = "State" defaultValue="Select State" selectOptions = { stateObj } fieldName="state_id" fieldType="int" />
-      <OrganizationSelect label = "City" defaultValue="Select City" selectOptions = { cityObj } fieldName="city_id" fieldType="int" />
-      <OrganizationInput labelVal = "Pincode" Val = "600018" fieldName="pincode" fieldType="text"/>
+      <OrganizationTextarea labelVal = "Organization Address" fieldName="address" fieldType="text" value={ stateData.address }/>
+      <OrganizationSelect label = "State" defaultValue="Select State" selectOptions = { stateObj } fieldName="state_id" fieldType="int" value={ stateData.state_id } />
+      <OrganizationSelect label = "City" defaultValue="Select City" selectOptions = { cityObj } fieldName="city_id" fieldType="int" value={ stateData.city_id } />
+      <OrganizationInput labelVal = "Pincode" Val = "600018" fieldName="pincode" fieldType="text" value={ stateData.pincode } />
     </div>
   );
 };

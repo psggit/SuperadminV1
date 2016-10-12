@@ -57,15 +57,15 @@ const OrganizationContactDetails = ( { stateData, currState } ) => {
       <div className = {styles.constitution_organisation_head}>
         Organisation Contact Details
       </div>
-      <OrganizationTextarea labelVal = "Organization Address" fieldName="address" fieldType="text" />
-      <OrganizationSelect label = "State" defaultValue="Select State" selectOptions = { stateObj } fieldName="state_id" fieldType="int" />
-      <OrganizationSelect label = "City" defaultValue="Select City" selectOptions = { cityObj } fieldName="city_id" fieldType="int" />
-      <OrganizationInput labelVal = "Pincode" Val = "600018" fieldName="pincode" fieldType="text" />
-      <OrganizationInput labelVal = "Email" Val = "contact@apesale.com" fieldName="email" fieldType="text"/>
-      <OrganizationInput labelVal = "Mobile Number" Val = "8220645452" fieldName="mobile_number" fieldType="text"/>
-      <OrganizationInput labelVal = "Landline Number" Val = "8220645452" fieldName="landline_number" fieldType="text"/>
-      <OrganizationSelect label = "KYC Verified" defaultValue="Select KYC Status" selectOptions={ kycSelectObj } fieldName="kycStatus" fieldType="text" />
-      <OrganizationSelect label = "Status" defaultValue="Select Status" selectOptions={ statusSelectObj } fieldName="organizationStatus" fieldType="text" />
+      <OrganizationTextarea labelVal = "Organization Address" fieldName="address" fieldType="text" value={ stateData.address } />
+      <OrganizationSelect label = "State" defaultValue="Select State" selectOptions = { stateObj } fieldName="state_id" fieldType="int" value={ stateData.state_id }/>
+      <OrganizationSelect label = "City" defaultValue="Select City" selectOptions = { cityObj } fieldName="city_id" fieldType="int" value={ stateData.city_id } />
+      <OrganizationInput labelVal = "Pincode" Val = "600018" fieldName="pincode" fieldType="text" value={ stateData.pincode }/>
+      <OrganizationInput labelVal = "Email" Val = "contact@apesale.com" fieldName="email" fieldType="text" value={ stateData.email } />
+      <OrganizationInput labelVal = "Mobile Number" Val = "8220645452" fieldName="mobile_number" fieldType="text" value={ stateData.mobile_number } />
+      <OrganizationInput labelVal = "Landline Number" Val = "8220645452" fieldName="landline_number" fieldType="text" value={ stateData.landline_number }/>
+      <OrganizationSelect label = "KYC Verified" defaultValue="Select KYC Status" selectOptions={ kycSelectObj } fieldName="kycStatus" fieldType="text" value={ stateData.kycStatus }/>
+      <OrganizationSelect label = "Status" defaultValue="Select Status" selectOptions={ statusSelectObj } fieldName="organizationStatus" fieldType="text" value={ stateData.organizationStatus }/>
     </div>
   );
 };

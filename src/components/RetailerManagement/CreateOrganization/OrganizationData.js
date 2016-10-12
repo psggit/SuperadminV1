@@ -8,7 +8,8 @@ import Endpoints from '../../../Endpoints';
 
 const ORGANIZATION_INPUT_CHANGED = '@organisationDataReducer/ORGANIZATION_INPUT_CHANGED';
 const ORGANIZATION_CONTACT_CHANGED = '@organisationDataReducer/ORGANIZATION_CONTACT_CHANGED';
-const ORGANIZATION_REGISTERED_CHANGED = '@commonStateReducer/ORGANIZATION_REGISTERED_CHANGED';
+const ORGANIZATION_REGISTERED_CHANGED = '@organisationDataReducer/ORGANIZATION_REGISTERED_CHANGED';
+const ORGANIZATION_FETCHED = '@organisationDataReducer/ORGANIZATION_FETCHED';
 
 /* End of it */
 
@@ -141,6 +142,39 @@ const saveOrganizationDetail = () => {
   };
 };
 
+const getOrganizationData = ( orgId ) => {
+  return (dispatch) => {
+    // dispatch({ type: MAKE_REQUEST, f});
+    //
+    /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
+
+    const payload = {
+      'columns': [ '*', {
+        'name': 'contact_addresses',
+        'columns': ['*'],
+        'order_by': '-created_at',
+        'limit': 1
+      }, {
+        'name': 'registered_addresses',
+        'columns': ['*'],
+        'order_by': '-created_at',
+        'limit': 1
+      }]
+    };
+
+    payload.where = {
+      'id': parseInt(orgId, 10)
+    };
+
+    const url = Endpoints.db + '/table/' + 'organisation' + '/select';
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(payload),
+    };
+    return dispatch(requestAction(url, options, ORGANIZATION_FETCHED));
+  };
+};
+
 /* End of it */
 
 /* Reducers */
@@ -159,6 +193,8 @@ const organizationDataReducer = ( state = { orgDetail: {}, orgContact: {}, orgRe
       const organizationRegistered = {};
       organizationRegistered[action.data.key] = action.data.value;
       return { ...state, orgRegistered: { ...state.orgRegistered, ...organizationRegistered}};
+    case ORGANIZATION_FETCHED:
+      return { ...state, orgData: action.data };
     default:
       return { ...state };
   }
@@ -170,5 +206,6 @@ export {
   ORGANIZATION_INPUT_CHANGED,
   ORGANIZATION_CONTACT_CHANGED,
   ORGANIZATION_REGISTERED_CHANGED,
-  saveOrganizationDetail
+  saveOrganizationDetail,
+  getOrganizationData
 };

@@ -14,7 +14,8 @@ import {
   ORGANIZATION_INPUT_CHANGED,
   ORGANIZATION_CONTACT_CHANGED,
   ORGANIZATION_REGISTERED_CHANGED,
-  saveOrganizationDetail
+  saveOrganizationDetail,
+  getOrganizationData
 } from './OrganizationData';
 
 import {
@@ -41,9 +42,11 @@ class CreateOrganization extends React.Component {
     });
   }
   componentDidMount() {
+    const orgId = this.props.params.orgId;
     Promise.all([
       this.props.dispatch( { type: MAKE_REQUEST }),
-      this.props.dispatch( fetchStateCity() )
+      this.props.dispatch( fetchStateCity() ),
+      ( orgId ? ( this.props.dispatch(getOrganizationData( orgId ) )) : Promise.resolve() )
     ])
     .then( () => {
       this.props.dispatch( { type: REQUEST_COMPLETED });
@@ -73,7 +76,7 @@ class CreateOrganization extends React.Component {
             <div className = {styles.create_organization_head}>
               Organisation Details
             </div>
-            <OrganizationDetails { ...this.props } triggerDispatch={ ORGANIZATION_INPUT_CHANGED } currState={ orgDetail } />
+            <OrganizationDetails { ...this.props } triggerDispatch={ ORGANIZATION_INPUT_CHANGED } stateData={ orgDetail } />
             <OrganizationRegisteredDetails { ...this.props } stateData = { Object.assign({}, genStateData ) } triggerDispatch={ ORGANIZATION_REGISTERED_CHANGED } currState = { orgRegistered } />
             <OrganizationContactDetails { ...this.props } stateData = { Object.assign( {}, genStateData ) } triggerDispatch={ ORGANIZATION_CONTACT_CHANGED } currState={ orgContact } />
           </div>
@@ -89,6 +92,7 @@ class CreateOrganization extends React.Component {
 
 CreateOrganization.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  params: PropTypes.object.isRequired,
   beneficiaryData: PropTypes.object.isRequired,
   genStateData: PropTypes.object.isRequired,
   organizationData: PropTypes.object.isRequired
