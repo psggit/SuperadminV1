@@ -1,5 +1,5 @@
 import React from 'react';
-const AddBeneficiaryTextarea = ({labelVal}) => {
+const AddBeneficiaryTextarea = ({labelVal, fieldName, fieldType, value}) => {
   const styles = require('./AddBeneficiaryTextarea.scss');
   return (
     <div className = {styles.add_beneficiary_textarea_container}>
@@ -7,7 +7,7 @@ const AddBeneficiaryTextarea = ({labelVal}) => {
         {labelVal}
       </div>
       <div className = {styles.add_beneficiary_textarea_right}>
-        <textarea></textarea>
+        <textarea data-field-name={ fieldName } data-field-type={ fieldType } value={ value } ></textarea>
       </div>
     </div>
   );

@@ -20,7 +20,7 @@ const saveOrganization = () => {
     const orgUrl = Endpoints.db + '/table/organisation/insert';
 
     const orgState = getState().organization_data.organizationData;
-    const organizationDataObj = { ...orgState.orgDetail, 'kyc_status': orgState.orgContact.kycStatus, 'status': orgState.orgContact.organizationStatus };
+    const organizationDataObj = { ...orgState.orgDetail };
 
     const orgInsertCheck = ['annual_turnover', 'date_of_incorporation', 'organisation_name', 'pan_number', 'tan_number', 'tin_number', 'type_of_organisation'];
     let orgCheckStatus = true;
@@ -55,9 +55,6 @@ const saveOrganizationContact = ( id ) => {
     const orgState = getState().organization_data.organizationData;
     const organizationDataObj = { ...orgState.orgContact, organisation_id: id };
 
-    delete organizationDataObj.kycStatus;
-    delete organizationDataObj.organizationStatus;
-
     const orgInsertCheck = ['address', 'pincode', 'city_id', 'state_id', 'email', 'mobile_number', 'landline_number', 'organisation_id'];
     let orgCheckStatus = true;
 
@@ -72,6 +69,38 @@ const saveOrganizationContact = ( id ) => {
 
     const insertObj = {};
     insertObj.objects = [ { ...organizationDataObj } ];
+    insertObj.returning = ['id'];
+
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(insertObj)
+    };
+
+    return dispatch( requestAction( orgUrl, options ) );
+    // return Promise.resolve();
+  };
+};
+
+const saveBeneficiaryData = ( id ) => {
+  return ( dispatch, getState ) => {
+    const orgUrl = Endpoints.db + '/table/beneficiary/insert';
+
+    const orgState = getState().organization_data.beneficiaryData;
+
+    const localBens = Object.keys(orgState.localBens);
+
+    if ( localBens.length === 0 ) {
+      console.log('No beneficiary to create');
+      return Promise.resolve();
+    }
+
+    const insertObj = {};
+    insertObj.objects = [];
+
+    localBens.forEach( ( ben ) => {
+      insertObj.objects.push( { ...orgState.localBens[ben], organisation_id: id });
+    });
+
     insertObj.returning = ['id'];
 
     const options = {
@@ -127,7 +156,8 @@ const saveOrganizationDetail = () => {
         console.log(orgId);
         return Promise.all([
           dispatch(saveOrganizationContact(orgId)),
-          dispatch(saveOrganizationAddress(orgId))
+          dispatch(saveOrganizationAddress(orgId)),
+          dispatch(saveBeneficiaryData(orgId))
         ]);
       }
       return Promise.reject();
@@ -141,6 +171,138 @@ const saveOrganizationDetail = () => {
     });
   };
 };
+
+/* Update Organisation */
+const updateOrganization = () => {
+  return ( dispatch, getState ) => {
+    const orgUrl = Endpoints.db + '/table/organisation/update';
+
+    const orgState = getState().organization_data.organizationData;
+    const organizationDataObj = { ...orgState.orgDetail };
+
+    const orgInsertCheck = ['annual_turnover', 'date_of_incorporation', 'organisation_name', 'pan_number', 'tan_number', 'tin_number', 'type_of_organisation', 'kyc_status', 'status'];
+    let orgCheckStatus = true;
+
+    orgInsertCheck.forEach( ( i ) => {
+      orgCheckStatus = orgCheckStatus && ( organizationDataObj[i] ? true : false );
+    });
+
+    if ( !orgCheckStatus ) {
+      alert('All the fields for organisation are mandatory');
+      return Promise.reject();
+    }
+
+    const orgId = orgState.orgData.id;
+
+    const insertObj = {};
+    insertObj.values = { ...organizationDataObj };
+    insertObj.where = {
+      'id': parseInt(orgId, 10)
+    };
+    insertObj.returning = ['id'];
+
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(insertObj)
+    };
+
+    return dispatch( requestAction( orgUrl, options ) );
+    // return Promise.resolve();
+  };
+};
+
+const updateOrganizationContact = ( ) => {
+  return ( dispatch, getState ) => {
+    const orgUrl = Endpoints.db + '/table/organisation_contact_details/update';
+
+    const orgState = getState().organization_data.organizationData;
+    const organizationDataObj = { ...orgState.orgContact };
+
+    const orgInsertCheck = ['address', 'pincode', 'city_id', 'state_id', 'email', 'mobile_number', 'landline_number', 'organisation_id'];
+    let orgCheckStatus = true;
+
+    orgInsertCheck.forEach( ( i ) => {
+      orgCheckStatus = orgCheckStatus && ( organizationDataObj[i] ? true : false );
+    });
+
+    if ( !orgCheckStatus ) {
+      alert('All the fields for organisation contact are mandatory');
+      return Promise.reject();
+    }
+
+    const insertObj = {};
+    const orgId = orgState.orgData.id;
+    insertObj.where = {
+      'organisation_id': parseInt(orgId, 10)
+    };
+    insertObj.values = { ...organizationDataObj };
+    insertObj.returning = ['id'];
+
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(insertObj)
+    };
+
+    return dispatch( requestAction( orgUrl, options ) );
+    // return Promise.resolve();
+  };
+};
+
+const updateOrganizationAddress = ( ) => {
+  return ( dispatch, getState ) => {
+    const orgUrl = Endpoints.db + '/table/organisation_registered_address/update';
+
+    const orgState = getState().organization_data.organizationData;
+    const organizationDataObj = { ...orgState.orgRegistered };
+
+    const orgInsertCheck = ['address', 'pincode', 'city_id', 'state_id', 'organisation_id'];
+    let orgCheckStatus = true;
+
+    orgInsertCheck.forEach( ( i ) => {
+      orgCheckStatus = orgCheckStatus && ( organizationDataObj[i] ? true : false );
+    });
+
+    if ( !orgCheckStatus ) {
+      alert('All the fields for organisation registered address are mandatory');
+      return Promise.reject();
+    }
+
+    const insertObj = {};
+    const orgId = orgState.orgData.id;
+    insertObj.where = {
+      'organisation_id': parseInt(orgId, 10)
+    };
+    insertObj.values = { ...organizationDataObj };
+    insertObj.returning = ['id'];
+
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(insertObj)
+    };
+
+    return dispatch( requestAction( orgUrl, options ) );
+    // return Promise.resolve();
+  };
+};
+
+const updateOrganizationDetail = () => {
+  return ( dispatch ) => {
+    return Promise.all([
+      dispatch(updateOrganization()),
+      dispatch(updateOrganizationContact()),
+      dispatch(updateOrganizationAddress())
+    ])
+    .then( () => {
+      alert('Organisation Uploaded Successfully');
+    })
+    .catch( () => {
+      console.log('rejeced');
+      alert('Error While Uploading');
+    });
+  };
+};
+
+/* End of it */
 
 const getOrganizationData = ( orgId ) => {
   return (dispatch) => {
@@ -194,7 +356,30 @@ const organizationDataReducer = ( state = { orgDetail: {}, orgContact: {}, orgRe
       organizationRegistered[action.data.key] = action.data.value;
       return { ...state, orgRegistered: { ...state.orgRegistered, ...organizationRegistered}};
     case ORGANIZATION_FETCHED:
-      return { ...state, orgData: action.data };
+      const orgContactKeys = ['address', 'pincode', 'city_id', 'state_id', 'email', 'mobile_number', 'landline_number', 'organisation_id'];
+      const orgAddressKeys = ['address', 'pincode', 'city_id', 'state_id', 'organisation_id'];
+      const orgDetailKeys = ['annual_turnover', 'date_of_incorporation', 'organisation_name', 'pan_number', 'tan_number', 'tin_number', 'type_of_organisation', 'kyc_status', 'status'];
+
+      const orgDetail = {};
+      const orgContact = {};
+      const orgRegistered = {};
+      orgDetailKeys.forEach( ( detail ) => {
+        orgDetail[detail] = action.data[0][detail];
+      });
+
+      if ( action.data[0].registered_addresses.length > 0 ) {
+        orgAddressKeys.forEach( ( detail ) => {
+          orgRegistered[detail] = action.data[0].registered_addresses[0][detail];
+        });
+      }
+
+      if ( action.data[0].contact_addresses.length > 0 ) {
+        orgContactKeys.forEach( ( detail ) => {
+          orgContact[detail] = action.data[0].contact_addresses[0][detail];
+        });
+      }
+
+      return { ...state, orgData: action.data[0], orgDetail: { ...orgDetail }, orgContact: { ...orgContact }, orgRegistered: { ...orgRegistered }, isOrgEdit: true };
     default:
       return { ...state };
   }
@@ -207,5 +392,6 @@ export {
   ORGANIZATION_CONTACT_CHANGED,
   ORGANIZATION_REGISTERED_CHANGED,
   saveOrganizationDetail,
-  getOrganizationData
+  getOrganizationData,
+  updateOrganizationDetail
 };

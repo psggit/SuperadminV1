@@ -13,13 +13,16 @@
     color: #FF7400;
     width: 40%;
     display: inline-block;
+    cursor: pointer;
     font-weight: 400;
+    text-align: center;
   }
   .information_rightpanel
   {
     width: 40%;
     display: inline-block;
-    color: #9F9E9E;
-    font-weight: 400;
+    cursor: pointer;
+		color: #FF7400;
+		font-weight: 400;
   }
 }

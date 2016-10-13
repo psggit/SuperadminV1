@@ -15,8 +15,19 @@ import {
   ORGANIZATION_CONTACT_CHANGED,
   ORGANIZATION_REGISTERED_CHANGED,
   saveOrganizationDetail,
+  updateOrganizationDetail,
   getOrganizationData
 } from './OrganizationData';
+
+import {
+  fetchBeneficiaries,
+  deleteBeneficiary,
+  updateBeneficiary,
+  createBeneficiary,
+  createBeneficiaryLocal,
+  updateBeneficiaryLocal,
+  deleteBeneficiaryLocal
+} from './BeneficiaryAction';
 
 import {
   MAKE_REQUEST,
@@ -26,7 +37,7 @@ import {
 import Beneficiary from './Beneficiary';
 
 class CreateOrganization extends React.Component {
-  constructor() {
+  constructor( props ) {
     super();
     /* Data required for the bread component to render correctly */
     this.breadCrumbs = [];
@@ -36,17 +47,26 @@ class CreateOrganization extends React.Component {
       link: '#'
     });
     this.breadCrumbs.push({
-      title: 'Create Organization',
+      title: ( props.params.orgId ? 'Edit ' : 'Create ' ) + 'Organization',
       sequence: 2,
       link: '#'
     });
+
+    if ( props.params.orgId ) {
+      this.breadCrumbs.push({
+        title: props.params.orgId,
+        sequence: 3,
+        link: '#'
+      });
+    }
   }
   componentDidMount() {
     const orgId = this.props.params.orgId;
     Promise.all([
       this.props.dispatch( { type: MAKE_REQUEST }),
       this.props.dispatch( fetchStateCity() ),
-      ( orgId ? ( this.props.dispatch(getOrganizationData( orgId ) )) : Promise.resolve() )
+      ( orgId ? ( this.props.dispatch(getOrganizationData( orgId ) )) : Promise.resolve() ),
+      ( orgId ? ( this.props.dispatch(fetchBeneficiaries( orgId ) )) : Promise.resolve() )
     ])
     .then( () => {
       this.props.dispatch( { type: REQUEST_COMPLETED });
@@ -55,6 +75,29 @@ class CreateOrganization extends React.Component {
   saveOrganization() {
     this.props.dispatch(saveOrganizationDetail());
   }
+  updateOrganization() {
+    this.props.dispatch(updateOrganizationDetail());
+  }
+  createBeneficiary() {
+    this.props.dispatch(createBeneficiary());
+  }
+  deleteBeneficiary() {
+    this.props.dispatch(deleteBeneficiary());
+  }
+  updateBeneficiary() {
+    this.props.dispatch(updateBeneficiary());
+  }
+
+  createBeneficiaryLocal() {
+    this.props.dispatch(createBeneficiaryLocal());
+  }
+  deleteBeneficiaryLocal() {
+    this.props.dispatch(deleteBeneficiaryLocal());
+  }
+  updateBeneficiaryLocal() {
+    this.props.dispatch(updateBeneficiaryLocal());
+  }
+
   render() {
     const styles = require('./CreateOrganization.scss');
 
@@ -65,6 +108,12 @@ class CreateOrganization extends React.Component {
     } = this.props;
 
     const { orgDetail, orgContact, orgRegistered } = organizationData;
+
+    const actionButton = !this.props.params.orgId ? (
+      <button onClick={ this.saveOrganization.bind(this) } >Save</button>
+    ) : (
+      <button onClick={ this.updateOrganization.bind(this) } >Update</button>
+    );
 
     console.log( beneficiaryData );
 
@@ -81,9 +130,17 @@ class CreateOrganization extends React.Component {
             <OrganizationContactDetails { ...this.props } stateData = { Object.assign( {}, genStateData ) } triggerDispatch={ ORGANIZATION_CONTACT_CHANGED } currState={ orgContact } />
           </div>
         </div>
-        <Beneficiary { ...this.props } />
+        <Beneficiary
+      { ...this.props }
+      createBeneficiary={ this.createBeneficiary.bind(this) }
+      updateBeneficiary={ this.updateBeneficiary.bind(this) }
+      deleteBeneficiary={ this.deleteBeneficiary.bind(this) }
+      createBeneficiaryLocal = { this.createBeneficiaryLocal.bind(this) }
+      updateBeneficiaryLocal = { this.updateBeneficiaryLocal.bind(this) }
+      deleteBeneficiaryLocal = { this.deleteBeneficiaryLocal.bind(this) }
+        />
         <div className = {styles.organisation_details_btn}>
-          <button onClick={ this.saveOrganization.bind(this) } >Save</button>
+          { actionButton }
         </div>
       </div>
     );

@@ -48,6 +48,26 @@ const OrganizationDetails = ({ stateData } ) => {
       'value': 'huf'
     }
   ];
+  const kycSelectObj = [
+    {
+      'label': 'True',
+      'value': true
+    },
+    {
+      'label': 'False',
+      'value': false
+    }
+  ];
+  const statusSelectObj = [
+    {
+      'label': 'Active',
+      'value': true
+    },
+    {
+      'label': 'InActive',
+      'value': false
+    }
+  ];
 
   return (
     <div className = {styles.constitution_organisation_wrapper}>
@@ -64,6 +84,8 @@ const OrganizationDetails = ({ stateData } ) => {
       <OrganizationInput labelVal = "TIN Number" Val = "102016" fieldName="tin_number" fieldType="text" value={ stateData.tin_number } />
       <OrganizationInput labelVal = "Annual Turnover" Val = "74902834" fieldName="annual_turnover" fieldType="int" value={ stateData.annual_turnover }/>
       <OrganizationInput labelVal = "TAN Number" Val = "102016"fieldName="tan_number" fieldType="text" value={ stateData.tan_number }/>
+      <OrganizationSelect label = "KYC Verified" defaultValue="Select KYC Status" selectOptions={ kycSelectObj } fieldName="kyc_status" fieldType="text" value={ stateData.kyc_status }/>
+      <OrganizationSelect label = "Status" defaultValue="Select Status" selectOptions={ statusSelectObj } fieldName="status" fieldType="text" value={ stateData.status }/>
     </div>
   );
 };

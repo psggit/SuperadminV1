@@ -34,7 +34,7 @@ const ProfileKyc = ({dispatch}) => { // eslint-disable-line no-unused-vars
                     <div className={styles.squarecontent}>
                         <div>
                             <span>
-                                <Link to={'#'}> View Organizations </Link>
+                                <Link to={'/hadmin/retailer_management/view_organizations'}> View Organizations </Link>
                             </span>
                         </div>
                     </div>
