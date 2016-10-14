@@ -27,6 +27,7 @@ const LOCAL_DELETE_BENEFICIARY = '@beneficiary/LOCAL_DELETE_BENEFICIARY';
 const UNLOAD_BENEFICIARY = '@beneficiary/UNLOAD_BENEFICIARY';
 
 const BENEFICIARY_INPUT_CHANGE = '@organisationDataReducer/BENEFICIARY_INPUT_CHANGE';
+const RESET_BENEFICIARY = '@organisationDataReducer/RESET_BENEFICIARY';
 
 /* End of it */
 
@@ -282,7 +283,7 @@ const beneficiaryReducer = ( state = { ...addBeneficiaryState, ...uiState }, act
       const localBenState = Object.assign({}, state.localBens );
       delete localBenState[action.data.benId];
 
-      return { ...state, ...defaultBenState, localBens: { ...localBenState }, showDetail: false, localBenId: action.data.benId - 1, isEditing: false};
+      return { ...state, ...defaultBenState, localBens: { ...localBenState }, showDetail: false, localBenId: state.localBenId - 1, isEditing: false};
 
     case LOCAL_UPDATE_BENEFICIARY:
       const localUpdateState = {};
@@ -316,6 +317,8 @@ const beneficiaryReducer = ( state = { ...addBeneficiaryState, ...uiState }, act
       const benD = { name: '', address: '', landline_number: '', pincode: '', email: '', city_id: 0, state_id: 0};
 
       return { ...state, ...benD, isEditing: false, showDetail: false, editBeneficiaryId: 0 };
+    case RESET_BENEFICIARY:
+      return { ...addBeneficiaryState, ...uiState };
     default:
       return { ...state };
   }
@@ -335,7 +338,8 @@ export {
   createBeneficiaryLocal,
   updateBeneficiaryLocal,
   deleteBeneficiaryLocal,
-  UNLOAD_BENEFICIARY
+  UNLOAD_BENEFICIARY,
+  RESET_BENEFICIARY
 };
 
 export default beneficiaryReducer;

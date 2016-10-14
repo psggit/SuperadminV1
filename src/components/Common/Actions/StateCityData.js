@@ -41,10 +41,10 @@ const fetchCity = () => {
 
 const fetchStateCity = () => {
   return ( dispatch ) => {
-    return Promise.all([
-      dispatch(fetchState()),
-      dispatch(fetchCity())
-    ]);
+    return dispatch(fetchState())
+    .then( () => {
+      dispatch(fetchCity());
+    });
   };
 };
 

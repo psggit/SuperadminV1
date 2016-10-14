@@ -1,6 +1,7 @@
 import requestAction from '../../Common/Actions/requestAction';
 // //
 import { genOptions } from '../../Common/Actions/commonFunctions';
+import { routeActions } from 'redux-simple-router';
 // //
 import Endpoints from '../../../Endpoints';
 
@@ -10,6 +11,7 @@ const ORGANIZATION_INPUT_CHANGED = '@organisationDataReducer/ORGANIZATION_INPUT_
 const ORGANIZATION_CONTACT_CHANGED = '@organisationDataReducer/ORGANIZATION_CONTACT_CHANGED';
 const ORGANIZATION_REGISTERED_CHANGED = '@organisationDataReducer/ORGANIZATION_REGISTERED_CHANGED';
 const ORGANIZATION_FETCHED = '@organisationDataReducer/ORGANIZATION_FETCHED';
+const RESET_ORGANIZATION = '@organisationDataReducer/RESET_ORGANIZATION';
 
 /* End of it */
 
@@ -22,7 +24,7 @@ const saveOrganization = () => {
     const orgState = getState().organization_data.organizationData;
     const organizationDataObj = { ...orgState.orgDetail };
 
-    const orgInsertCheck = ['annual_turnover', 'date_of_incorporation', 'organisation_name', 'pan_number', 'tan_number', 'tin_number', 'type_of_organisation'];
+    const orgInsertCheck = ['annual_turnover', 'date_of_incorporation', 'organisation_name', 'pan_number', 'tan_number', 'tin_number', 'type_of_organisation', 'kyc_status', 'status'];
     let orgCheckStatus = true;
 
     orgInsertCheck.forEach( ( i ) => {
@@ -31,7 +33,7 @@ const saveOrganization = () => {
 
     if ( !orgCheckStatus ) {
       alert('All the fields for organisation are mandatory');
-      return Promise.reject();
+      return Promise.reject({ stage: 0 });
     }
 
     const insertObj = {};
@@ -64,7 +66,7 @@ const saveOrganizationContact = ( id ) => {
 
     if ( !orgCheckStatus ) {
       alert('All the fields for organisation contact are mandatory');
-      return Promise.reject();
+      return Promise.reject( { stage: 2 });
     }
 
     const insertObj = {};
@@ -129,7 +131,7 @@ const saveOrganizationAddress = ( id ) => {
 
     if ( !orgCheckStatus ) {
       alert('All the fields for organisation registered address are mandatory');
-      return Promise.reject();
+      return Promise.reject( { stage: 3 } );
     }
 
     const insertObj = {};
@@ -152,25 +154,64 @@ const saveOrganizationDetail = () => {
     .then( ( resp ) => {
       if ( resp.returning.length > 0 ) {
         const orgId = resp.returning[0].id;
-        console.log('org');
-        console.log(orgId);
         return Promise.all([
           dispatch(saveOrganizationContact(orgId)),
           dispatch(saveOrganizationAddress(orgId)),
           dispatch(saveBeneficiaryData(orgId))
         ]);
       }
-      return Promise.reject();
+      return Promise.reject( { stage: 0 });
     })
     .then( () => {
       alert('Organisation Uploaded Successfully');
+      return dispatch( routeActions.push('/hadmin/retailer_management/view_organizations'));
     })
-    .catch( () => {
-      console.log('rejeced');
-      alert('Error While Uploading');
+    .catch( ( resp ) => {
+      if ( !resp.stage ) {
+        alert('Error While Uploading');
+        return Promise.reject();
+      }
+      alert('Organization inserted with errors, please edit it to correct the information');
+      return dispatch( routeActions.push('/hadmin/retailer_management/view_organizations'));
     });
   };
 };
+
+/* Get */
+const getOrganizationData = ( orgId ) => {
+  return (dispatch) => {
+    // dispatch({ type: MAKE_REQUEST, f});
+    //
+    /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
+
+    const payload = {
+      'columns': [ '*', {
+        'name': 'contact_addresses',
+        'columns': ['*'],
+        'order_by': '-created_at',
+        'limit': 1
+      }, {
+        'name': 'registered_addresses',
+        'columns': ['*'],
+        'order_by': '-created_at',
+        'limit': 1
+      }]
+    };
+
+    payload.where = {
+      'id': parseInt(orgId, 10)
+    };
+
+    const url = Endpoints.db + '/table/' + 'organisation' + '/select';
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(payload),
+    };
+    return dispatch(requestAction(url, options, ORGANIZATION_FETCHED));
+  };
+};
+
+/* End of it */
 
 /* Update Organisation */
 const updateOrganization = () => {
@@ -218,6 +259,12 @@ const updateOrganizationContact = ( ) => {
     const orgState = getState().organization_data.organizationData;
     const organizationDataObj = { ...orgState.orgContact };
 
+    /* Check if the address entry is existing or not */
+
+    if ( orgState.orgData.contact_addresses.length === 0 ) {
+      return dispatch(saveOrganizationContact(orgState.orgData.id));
+    }
+
     const orgInsertCheck = ['address', 'pincode', 'city_id', 'state_id', 'email', 'mobile_number', 'landline_number', 'organisation_id'];
     let orgCheckStatus = true;
 
@@ -255,6 +302,12 @@ const updateOrganizationAddress = ( ) => {
     const orgState = getState().organization_data.organizationData;
     const organizationDataObj = { ...orgState.orgRegistered };
 
+    /* Check if the address entry is existing or not */
+
+    if ( orgState.orgData.registered_addresses.length === 0 ) {
+      return dispatch(saveOrganizationAddress(orgState.orgData.id));
+    }
+
     const orgInsertCheck = ['address', 'pincode', 'city_id', 'state_id', 'organisation_id'];
     let orgCheckStatus = true;
 
@@ -286,7 +339,8 @@ const updateOrganizationAddress = ( ) => {
 };
 
 const updateOrganizationDetail = () => {
-  return ( dispatch ) => {
+  return ( dispatch, getState ) => {
+    const id = getState().organization_data.organizationData.orgData.id;
     return Promise.all([
       dispatch(updateOrganization()),
       dispatch(updateOrganizationContact()),
@@ -294,48 +348,16 @@ const updateOrganizationDetail = () => {
     ])
     .then( () => {
       alert('Organisation Uploaded Successfully');
+      return dispatch( getOrganizationData( id ));
     })
     .catch( () => {
-      console.log('rejeced');
       alert('Error While Uploading');
+      return dispatch( getOrganizationData( id ));
     });
   };
 };
 
 /* End of it */
-
-const getOrganizationData = ( orgId ) => {
-  return (dispatch) => {
-    // dispatch({ type: MAKE_REQUEST, f});
-    //
-    /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
-
-    const payload = {
-      'columns': [ '*', {
-        'name': 'contact_addresses',
-        'columns': ['*'],
-        'order_by': '-created_at',
-        'limit': 1
-      }, {
-        'name': 'registered_addresses',
-        'columns': ['*'],
-        'order_by': '-created_at',
-        'limit': 1
-      }]
-    };
-
-    payload.where = {
-      'id': parseInt(orgId, 10)
-    };
-
-    const url = Endpoints.db + '/table/' + 'organisation' + '/select';
-    const options = {
-      ...genOptions,
-      body: JSON.stringify(payload),
-    };
-    return dispatch(requestAction(url, options, ORGANIZATION_FETCHED));
-  };
-};
 
 /* End of it */
 
@@ -380,6 +402,9 @@ const organizationDataReducer = ( state = { orgDetail: {}, orgContact: {}, orgRe
       }
 
       return { ...state, orgData: action.data[0], orgDetail: { ...orgDetail }, orgContact: { ...orgContact }, orgRegistered: { ...orgRegistered }, isOrgEdit: true };
+
+    case RESET_ORGANIZATION:
+      return { orgDetail: {}, orgContact: {}, orgRegistered: {} };
     default:
       return { ...state };
   }
@@ -393,5 +418,6 @@ export {
   ORGANIZATION_REGISTERED_CHANGED,
   saveOrganizationDetail,
   getOrganizationData,
-  updateOrganizationDetail
+  updateOrganizationDetail,
+  RESET_ORGANIZATION
 };

@@ -16,7 +16,8 @@ import {
   ORGANIZATION_REGISTERED_CHANGED,
   saveOrganizationDetail,
   updateOrganizationDetail,
-  getOrganizationData
+  getOrganizationData,
+  RESET_ORGANIZATION
 } from './OrganizationData';
 
 import {
@@ -26,7 +27,8 @@ import {
   createBeneficiary,
   createBeneficiaryLocal,
   updateBeneficiaryLocal,
-  deleteBeneficiaryLocal
+  deleteBeneficiaryLocal,
+  RESET_BENEFICIARY
 } from './BeneficiaryAction';
 
 import {
@@ -72,11 +74,36 @@ class CreateOrganization extends React.Component {
       this.props.dispatch( { type: REQUEST_COMPLETED });
     });
   }
+  componentWillUnmount() {
+    Promise.all([
+      this.props.dispatch({ type: RESET_ORGANIZATION }),
+      this.props.dispatch({ type: RESET_BENEFICIARY }),
+    ]);
+  }
+
   saveOrganization() {
-    this.props.dispatch(saveOrganizationDetail());
+    Promise.all([
+      this.props.dispatch({ type: MAKE_REQUEST }),
+      this.props.dispatch(saveOrganizationDetail())
+    ])
+    .then( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED });
+    })
+    .catch( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED });
+    });
   }
   updateOrganization() {
-    this.props.dispatch(updateOrganizationDetail());
+    Promise.all([
+      this.props.dispatch({ type: MAKE_REQUEST }),
+      this.props.dispatch(updateOrganizationDetail())
+    ])
+    .then( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED });
+    })
+    .catch( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED });
+    });
   }
   createBeneficiary() {
     this.props.dispatch(createBeneficiary());
@@ -97,22 +124,26 @@ class CreateOrganization extends React.Component {
   updateBeneficiaryLocal() {
     this.props.dispatch(updateBeneficiaryLocal());
   }
-
   render() {
     const styles = require('./CreateOrganization.scss');
 
     const {
       genStateData,
       beneficiaryData,
-      organizationData
+      organizationData,
+      ongoingRequest
     } = this.props;
 
     const { orgDetail, orgContact, orgRegistered } = organizationData;
 
     const actionButton = !this.props.params.orgId ? (
-      <button onClick={ this.saveOrganization.bind(this) } >Save</button>
+      <button onClick={ this.saveOrganization.bind(this) } disabled = { ( ongoingRequest ? true : false )} >
+        { ( ongoingRequest ? 'Saving' : 'Save' ) }
+      </button>
     ) : (
-      <button onClick={ this.updateOrganization.bind(this) } >Update</button>
+      <button onClick={ this.updateOrganization.bind(this) } disabled = { ( ongoingRequest ? true : false )} >
+        { ( ongoingRequest ? 'Updating' : 'Update' )}
+      </button>
     );
 
     console.log( beneficiaryData );
@@ -152,7 +183,8 @@ CreateOrganization.propTypes = {
   params: PropTypes.object.isRequired,
   beneficiaryData: PropTypes.object.isRequired,
   genStateData: PropTypes.object.isRequired,
-  organizationData: PropTypes.object.isRequired
+  organizationData: PropTypes.object.isRequired,
+  ongoingRequest: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = ( state ) => {
