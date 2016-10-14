@@ -44,7 +44,7 @@ class CreateOrganization extends React.Component {
     /* Data required for the bread component to render correctly */
     this.breadCrumbs = [];
     this.breadCrumbs.push({
-      title: 'RETAILER MANAGEMENT',
+      title: 'Retailer Management',
       sequence: 1,
       link: '#'
     });
