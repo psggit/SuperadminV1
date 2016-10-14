@@ -63,35 +63,21 @@ const BranchContectDetails = ( { stateData, currState } ) => { // eslint-disable
         <li>
           <div className={styles.wd_50}>
             <label>Mobile Number</label>
-            <input type="number"/>
+            <input type="number" data-field-name="mobile_number" data-field-type="text" />
           </div>
           <div className={styles.wd_50}>
             <label>Email</label>
-            <input type="text"/>
+            <input type="text" data-field-name="email" data-field-type="text"/>
           </div>
         </li>
         <li>
           <div className={styles.wd_50}>
             <label>Gps Coordinates</label>
-            <input type="number"/>
+            <input type="text" data-field-name="gps_cordinates" data-field-type="text"/>
           </div>
           <div className={styles.wd_50}>
             <label>Landline Number</label>
-            <input type="text"/>
-          </div>
-        </li>
-        <li>
-          <div className={styles.wd_50}>
-            <label>KYC Verified</label>
-            <select data-field-name="">
-              <option>Select</option>
-            </select>
-          </div>
-          <div className={styles.wd_50}>
-            <label>Branch Status</label>
-            <select data-field-name="">
-              <option>Select</option>
-            </select>
+            <input type="text" data-field-name="landline_number" data-field-type="text"/>
           </div>
         </li>
       </ul>

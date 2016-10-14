@@ -16,7 +16,8 @@ import {
 } from '../../Common/Actions/Actions';
 
 import {
-  getOrganisation
+  getOrganisation,
+  saveBranchDetail
 } from './BranchData';
 
 class CreateBrand extends Component { // eslint-disable-line no-unused-vars
@@ -56,6 +57,10 @@ class CreateBrand extends Component { // eslint-disable-line no-unused-vars
       this.props.dispatch( { type: REQUEST_COMPLETED });
     });
   }
+
+  saveBranch() {
+    this.props.dispatch( saveBranchDetail());
+  }
   render() {
     const styles = require('./CreateBrand.scss');
 
@@ -87,7 +92,7 @@ class CreateBrand extends Component { // eslint-disable-line no-unused-vars
           </div>
           <div className="clearfix"></div>
           <DeviceWrapper />
-          <button className={styles.edit_brand_btn}>
+          <button className={styles.edit_brand_btn} onClick={ this.saveBranch.bind(this) } >
             Save Branch
           </button>
         </div>

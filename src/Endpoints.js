@@ -9,7 +9,7 @@ const Endpoints = {
   getConsumer: dataUrl + '/api/1/table/consumer/select',
   schemaChange: dataUrl + '/api/1/change',
   getCredentials: authUrl + '/user/account/info',
-  file_upload: dataUrl + '/file_upload/upload',
+  file_upload: 'http://api.hipbar.com' + '/file_upload/upload',
   file_get: 'http://api.hipbar.com/file_upload/get?fs_url=',
   integrations_dataUrl: 'http://localhost:5000',
   baseUrl: dataUrl

@@ -17,6 +17,7 @@ const BrandDetailsComponent = ( { dispatch, organisationData, genStateData, bran
       />
         <BankAccountDetails
     dispatch = { dispatch }
+    currState = { branchAccountRegistered }
       />
         <BranchContectDetails
     stateData = { genStateData }

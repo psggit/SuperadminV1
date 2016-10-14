@@ -528,6 +528,24 @@
   		float: left;
   		padding: 20px;
   		text-align: center;
+    .img_wrapper {
+      width: 80%;
+      margin: 0 auto;
+      img{
+        width: 80%;
+        float: left;
+        margin-left: 20px;
+      }
+      p {
+        float: left;
+        width: 10%;
+        cursor: pointer;
+        margin-left: 10px;
+        &:hover {
+          background-color: #eeeeee;
+        }
+      }
+    }
   	}
   	.input_upload
 	{
