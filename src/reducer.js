@@ -34,6 +34,7 @@ import freshdeskTicketReducer from './components/CustomerSupport/FreshdeskTicket
 import customerSupportReducer from './components/CustomerSupport/CustomerProfile/CustomerProfileActions';
 
 import organizationReducer from './components/RetailerManagement/CreateOrganization/CreateOrganizationAction';
+import branchReducer from './components/RetailerManagement/CreateBranch/CreateBranchAction';
 
 import genreReducer from './components/SkuManagement/Genre/GenreAction';
 
@@ -66,7 +67,8 @@ const reducer = combineReducers({
   freshdesk_ticket: freshdeskTicketReducer,
   customer_support_data: customerSupportReducer,
   organization_data: organizationReducer,
-  genre_data: genreReducer
+  genre_data: genreReducer,
+  branch_data: branchReducer
 });
 
 export default reducer;
