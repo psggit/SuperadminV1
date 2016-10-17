@@ -226,7 +226,7 @@ const branchDataReducer = ( state = { organisationData: [], branchDetail: {}, br
     case CANCEL_IMAGE:
       return { ...state, branchAccountRegistered: { ...state.branchAccountRegistered, canceled_cheque_image: ''}};
     case RESET_BRANCH:
-      return { branchDetail: {}, branchContact: {}, branchRegistered: {} };
+      return { branchDetail: {}, branchContact: {}, branchAccountRegistered: {}, organisationData: []};
     default:
       return { ...state };
   }

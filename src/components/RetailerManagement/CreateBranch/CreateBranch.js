@@ -17,8 +17,19 @@ import {
 
 import {
   getOrganisation,
-  saveBranchDetail
+  saveBranchDetail,
+  RESET_BRANCH
 } from './BranchData';
+
+import {
+  deleteDevice,
+  updateDevice,
+  createDevice,
+  createDeviceLocal,
+  updateDeviceLocal,
+  deleteDeviceLocal,
+  RESET_DEVICE
+} from './DeviceAction';
 
 class CreateBrand extends Component { // eslint-disable-line no-unused-vars
   constructor( props ) {
@@ -57,9 +68,42 @@ class CreateBrand extends Component { // eslint-disable-line no-unused-vars
       this.props.dispatch( { type: REQUEST_COMPLETED });
     });
   }
-
+  componentWillUnmount() {
+    Promise.all([
+      this.props.dispatch({ type: RESET_BRANCH }),
+      this.props.dispatch({ type: RESET_DEVICE })
+    ]);
+  }
   saveBranch() {
-    this.props.dispatch( saveBranchDetail());
+    Promise.all([
+      this.props.dispatch( { type: MAKE_REQUEST }),
+      this.props.dispatch( saveBranchDetail())
+    ])
+    .then( () => {
+      this.props.dispatch( { type: REQUEST_COMPLETED });
+    })
+    .catch( () => {
+      this.props.dispatch( { type: REQUEST_COMPLETED });
+    });
+  }
+  createDevice() {
+    this.props.dispatch(createDevice());
+  }
+  deleteDevice() {
+    this.props.dispatch(deleteDevice());
+  }
+  updateDevice() {
+    this.props.dispatch(updateDevice());
+  }
+
+  createDeviceLocal() {
+    this.props.dispatch(createDeviceLocal());
+  }
+  deleteDeviceLocal() {
+    this.props.dispatch(deleteDeviceLocal());
+  }
+  updateDeviceLocal() {
+    this.props.dispatch(updateDeviceLocal());
   }
   render() {
     const styles = require('./CreateBrand.scss');
@@ -91,7 +135,15 @@ class CreateBrand extends Component { // eslint-disable-line no-unused-vars
             <SkuWrapper />
           </div>
           <div className="clearfix"></div>
-          <DeviceWrapper />
+          <DeviceWrapper
+      { ...this.props }
+      createDevice={ this.createDevice.bind(this) }
+      updateDevice={ this.updateDevice.bind(this) }
+      deleteDevice={ this.deleteDevice.bind(this) }
+      createDeviceLocal = { this.createDeviceLocal.bind(this) }
+      updateDeviceLocal = { this.updateDeviceLocal.bind(this) }
+      deleteDeviceLocal = { this.deleteDeviceLocal.bind(this) }
+        />
           <button className={styles.edit_brand_btn} onClick={ this.saveBranch.bind(this) } >
             Save Branch
           </button>

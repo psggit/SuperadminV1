@@ -10,8 +10,10 @@ import {combineReducers} from 'redux';
 
 import defaultStateReducer from '../../Common/Actions/StateCityData';
 import branchReducer from './BranchData';
+import deviceReducer from './DeviceAction';
 
 export default combineReducers({
   genStateData: defaultStateReducer,
-  branchData: branchReducer
+  branchData: branchReducer,
+  deviceData: deviceReducer
 });

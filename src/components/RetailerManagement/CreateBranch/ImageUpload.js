@@ -50,7 +50,6 @@ class ImageUpload extends Component {
               }
             </div>
           </div>
-
         </div>
       );
   }
