@@ -22,6 +22,14 @@ import {
 } from './BranchData';
 
 import {
+  fetchBrand,
+  BRAND_SELECTED,
+  SKU_SELECTED,
+  SKU_UNSELECTED,
+  RESET_BRAND
+} from './SkuAction';
+
+import {
   deleteDevice,
   updateDevice,
   createDevice,
@@ -59,7 +67,8 @@ class CreateBrand extends Component { // eslint-disable-line no-unused-vars
     Promise.all([
       this.props.dispatch( { type: MAKE_REQUEST }),
       this.props.dispatch( fetchStateCity() ),
-      this.props.dispatch(getOrganisation() )
+      this.props.dispatch( getOrganisation() ),
+      this.props.dispatch( fetchBrand() )
     ])
     .then( () => {
       this.props.dispatch( { type: REQUEST_COMPLETED });
@@ -71,7 +80,8 @@ class CreateBrand extends Component { // eslint-disable-line no-unused-vars
   componentWillUnmount() {
     Promise.all([
       this.props.dispatch({ type: RESET_BRANCH }),
-      this.props.dispatch({ type: RESET_DEVICE })
+      this.props.dispatch({ type: RESET_DEVICE }),
+      this.props.dispatch({ type: RESET_BRAND }),
     ]);
   }
   saveBranch() {
@@ -89,6 +99,7 @@ class CreateBrand extends Component { // eslint-disable-line no-unused-vars
   createDevice() {
     this.props.dispatch(createDevice());
   }
+
   deleteDevice() {
     this.props.dispatch(deleteDevice());
   }
@@ -105,16 +116,36 @@ class CreateBrand extends Component { // eslint-disable-line no-unused-vars
   updateDeviceLocal() {
     this.props.dispatch(updateDeviceLocal());
   }
+
+  viewBrand( id ) {
+    this.props.dispatch({ type: BRAND_SELECTED, data: id });
+  }
+
+  skuToggled( id, e) {
+    console.log(e.target);
+    const actionConst = ( e.target.checked ) ? SKU_SELECTED : SKU_UNSELECTED;
+    this.props.dispatch({ type: actionConst, data: id });
+  }
+
+  unSelectSKU( id ) {
+    const actionConst = SKU_UNSELECTED;
+    this.props.dispatch({ type: actionConst, data: id });
+  }
   render() {
     const styles = require('./CreateBrand.scss');
 
     const {
       branchData,
       genStateData,
-      dispatch
+      dispatch,
+      brandData
     } = this.props;
 
-    const { organisationData, branchContact, branchAccountRegistered, branchDetail } = branchData;
+    const { organisationData
+      , branchContact
+      , branchAccountRegistered
+      , branchDetail
+    } = branchData;
     // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
     return (
       <div className={styles.container}>
@@ -132,7 +163,12 @@ class CreateBrand extends Component { // eslint-disable-line no-unused-vars
           </div>
           <div className="clearfix"></div>
           <div className={styles.select_sku_wrapper}>
-            <SkuWrapper />
+            <SkuWrapper
+      { ...brandData }
+      viewBrand = { this.viewBrand.bind(this) }
+      skuToggled = { this.skuToggled.bind(this) }
+      unSelectSKU = { this.unSelectSKU.bind(this) }
+        />
           </div>
           <div className="clearfix"></div>
           <DeviceWrapper
@@ -156,6 +192,7 @@ CreateBrand.propTypes = {
   params: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
   branchData: PropTypes.object.isRequired,
+  brandData: PropTypes.object.isRequired,
   genStateData: PropTypes.object.isRequired
 };
 

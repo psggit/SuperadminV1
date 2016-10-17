@@ -165,6 +165,39 @@ const saveAccount = ( id ) => {
   };
 };
 
+const saveInventory = ( id ) => {
+  return ( dispatch, getState ) => {
+    const brUrl = Endpoints.db + '/table/inventory/insert';
+
+    const brandState = getState().branch_data.brandData;
+
+    if ( Object.keys(brandState.skus).length === 0 ) {
+      return Promise.resolve();
+    }
+
+    const insertObjs = Object.keys(brandState.skus).map( ( sku ) => {
+      return {
+        'sku_pricing_id': parseInt(brandState.skus[sku].pricings[0].id, 10),
+        'retailer_id': parseInt(id, 10),
+        'stock': 10,
+        'is_active': true
+      };
+    });
+
+    const insertObj = {};
+    insertObj.objects = [ ...insertObjs ];
+    insertObj.returning = ['id'];
+
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(insertObj)
+    };
+
+    return dispatch( requestAction( brUrl, options ) );
+    // return Promise.resolve();
+  };
+};
+
 const saveBranchDetail = () => {
   return ( dispatch ) => {
     return dispatch(saveBranch())
@@ -173,7 +206,8 @@ const saveBranchDetail = () => {
         const branchId = resp.returning[0].id;
         return Promise.all([
           dispatch(saveBranchContact(branchId)),
-          dispatch(saveAccount(branchId))
+          dispatch(saveAccount(branchId)),
+          dispatch(saveInventory(branchId))
         ]);
       }
       return Promise.reject( { stage: 0 });

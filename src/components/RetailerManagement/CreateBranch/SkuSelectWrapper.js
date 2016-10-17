@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import SkuSelectBrands from './SkuSelectBrands';
 import SkuSelectBrandsItems from './SkuSelectBrandsItems';
-const SkuSelectWrapper = () => { // eslint-disable-line no-unused-vars
+const SkuSelectWrapper = ( props ) => { // eslint-disable-line no-unused-vars
   const styles = require('./CreateBrand.scss');
   // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
   return (
@@ -17,8 +17,8 @@ const SkuSelectWrapper = () => { // eslint-disable-line no-unused-vars
             <option>select</option>
           </select>
         </div>
-        <SkuSelectBrands />
-        <SkuSelectBrandsItems />
+        <SkuSelectBrands { ...props } />
+        <SkuSelectBrandsItems { ...props } />
       </div>
     </div>);
 };

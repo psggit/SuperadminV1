@@ -380,7 +380,7 @@
 		float: left;
 		label
 		{
-			width: 70%;
+			width: 80%;
 			font-weight: 400;
 			color: rgba(0,0,0,0.54);
 			font-size: 13px;
@@ -389,12 +389,13 @@
 		}
 		p
 		{
-			width: 30%;
+			width: 20%;
 			float: left;
 			color: #FF7400;
 			font-size: 13px;
 			text-align: right;
 			margin-bottom: 0;
+      cursor: pointer;
 		}
 	}	
 }
@@ -449,6 +450,7 @@
 			font-size: 13px;
 			text-align: right;
 			margin-bottom: 0;
+      cursor: pointer;
 		}
 	}	
 }
