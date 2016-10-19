@@ -171,12 +171,35 @@ const saveInventory = ( id ) => {
   return ( dispatch, getState ) => {
     const brUrl = Endpoints.db + '/table/inventory/insert';
 
+    const branchState = getState().branch_data.branchData;
+
     const brandState = getState().branch_data.brandData;
 
     if ( Object.keys(brandState.skus).length === 0 ) {
       return Promise.resolve();
     }
 
+    const stateId = getState().branch_data.genStateData.stateIdMap[branchState.branchContact.state_id];
+
+    if ( !stateId ) {
+      alert('State is required to assign SKU');
+      return Promise.resolve();
+    }
+
+    const insertObjs = Object.keys(brandState.skus).map( ( sku ) => {
+      const pricingId = brandState.skus[sku].pricings.filter( ( p ) => {
+        return p.state_short_name === stateId;
+      });
+
+      return {
+        'sku_pricing_id': parseInt(pricingId[0].id, 10),
+        'retailer_id': parseInt(id, 10),
+        'stock': 10,
+        'is_active': true
+      };
+    });
+
+    /*
     const insertObjs = Object.keys(brandState.skus).map( ( sku ) => {
       return {
         'sku_pricing_id': parseInt(brandState.skus[sku].pricings[0].id, 10),
@@ -185,6 +208,7 @@ const saveInventory = ( id ) => {
         'is_active': true
       };
     });
+    */
 
     const insertObj = {};
     insertObj.objects = [ ...insertObjs ];
@@ -214,9 +238,22 @@ const saveInventoryEdit = ( ) => {
 
     const brId = branchState.branchData.id;
 
+    /* Get the correct state's pricing */
+
+    const stateId = getState().branch_data.genStateData.stateIdMap[branchState.branchContact.state_id];
+
+    if ( !stateId ) {
+      alert('State is required to assign SKU');
+      return Promise.resolve();
+    }
+
     const insertObjs = Object.keys(brandState.unsavedSkus).map( ( sku ) => {
+      const pricingId = brandState.unsavedSkus[sku].pricings.filter( ( p ) => {
+        return p.state_short_name === stateId;
+      });
+
       return {
-        'sku_pricing_id': parseInt(brandState.unsavedSkus[sku].pricings[0].id, 10),
+        'sku_pricing_id': parseInt(pricingId[0].id, 10),
         'retailer_id': parseInt(brId, 10),
         'stock': 10,
         'is_active': true
@@ -371,6 +408,10 @@ const updateBranchContact = ( ) => {
     const branchState = getState().branch_data.branchData;
     const branchDataObj = { ...branchState.branchContact };
 
+    if ( branchState.branchData.addresses.length === 0 ) {
+      return dispatch(saveBranchContact(branchState.branchData.id));
+    }
+
     const brInsertCheck = ['branch_address', 'pincode', 'city_id', 'state_id', 'email', 'mobile_number', 'landline_number', 'gps_cordinates'];
     let brCheckStatus = true;
 
@@ -408,6 +449,10 @@ const updateAccount = ( ) => {
 
     const branchState = getState().branch_data.branchData;
     const branchDataObj = { ...branchState.branchAccountRegistered };
+
+    if ( branchState.branchData.bank_details.length === 0 ) {
+      return dispatch(saveAccount(branchState.branchData.id));
+    }
 
     const brInsertCheck = ['ifsc_code', 'account_number', 'branch', 'bank_name'];
     let brCheckStatus = true;
