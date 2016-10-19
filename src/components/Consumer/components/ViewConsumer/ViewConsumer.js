@@ -38,7 +38,7 @@ class ViewConsumer extends Component {
       link: '#'
     });
     this.breadCrumbs.push({
-      title: 'View Consumer',
+      title: 'Profile',
       sequence: 2,
       link: '#'
     });

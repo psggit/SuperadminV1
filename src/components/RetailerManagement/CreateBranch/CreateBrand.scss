@@ -372,6 +372,18 @@
 		list-style: none;
 		height: 507px;
 		overflow: auto;
+    .sku_header {
+      /* color: #FF7400; */
+      font-weight: 600;
+      padding-top: 10px;
+      font-size: 13px;
+      font-style: italic;
+      letter-spacing: 0.3px;
+      float: left;
+      margin-bottom: 0;
+      /* cursor: pointer; */
+      margin-bottom: 10px;
+    }
 	}
 	li
 	{

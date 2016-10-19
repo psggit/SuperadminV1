@@ -1,12 +1,13 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { PropTypes } from 'react';
+
 import SkuSelectBrands from './SkuSelectBrands';
 import SkuSelectBrandsItems from './SkuSelectBrandsItems';
-const SkuSelectWrapper = ( props ) => { // eslint-disable-line no-unused-vars
+
+const SkuSelectWrapper = ( props, { isSkuActive }) => { // eslint-disable-line no-unused-vars
   const styles = require('./CreateBrand.scss');
   // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
   return (
-    <div>
+    <div className = { props.isSkuActive ? '' : 'hide' }>
       <div className={styles.select_sku_container}>
         <div className={styles.heading}>
           select available skus
@@ -23,4 +24,8 @@ const SkuSelectWrapper = ( props ) => { // eslint-disable-line no-unused-vars
     </div>);
 };
 
-export default connect()(SkuSelectWrapper);
+SkuSelectWrapper.propTypes = {
+  isSkuActive: PropTypes.bool.isRequired
+};
+
+export default SkuSelectWrapper;

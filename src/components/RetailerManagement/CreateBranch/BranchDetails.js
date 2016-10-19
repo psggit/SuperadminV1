@@ -67,7 +67,7 @@ const BranchDetails = ( { currState, organisationData } ) => { // eslint-disable
         </li>
         <li>
           <label>Branch Name</label>
-          <input data-field-name="name" type="text" data-field-name="org_name" data-field-type="text" value={ currState.name } />
+          <input data-field-name="name" type="text" data-field-name="org_name" data-field-type="text" value={ currState.org_name } />
         </li>
         <li>
           <label>Excise License Number</label>
@@ -80,14 +80,14 @@ const BranchDetails = ( { currState, organisationData } ) => { // eslint-disable
         <li>
           <div className={styles.wd_50}>
             <label>KYC Verified</label>
-            <select data-field-name="kyc_status" data-field-type="text">
+            <select data-field-name="kyc_status" data-field-type="text" value={ currState.kyc_status }>
               <option value="">Select Kyc Status</option>
               { kycHtml }
             </select>
           </div>
           <div className={styles.wd_50}>
             <label>Branch Status</label>
-            <select data-field-name="branch_status" data-field-type="text">
+            <select data-field-name="branch_status" data-field-type="text" value={ currState.branch_status }>
               <option value="">Select Branch Status</option>
               { branchStatusHtml }
             </select>

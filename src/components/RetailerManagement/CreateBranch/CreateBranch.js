@@ -18,15 +18,25 @@ import {
 import {
   getOrganisation,
   saveBranchDetail,
-  RESET_BRANCH
+  updateBranchDetail,
+  getBranchData,
+  RESET_BRANCH,
+  saveInventoryEdit
 } from './BranchData';
 
 import {
   fetchBrand,
+  fetchSKUs,
   BRAND_SELECTED,
   SKU_SELECTED,
   SKU_UNSELECTED,
-  RESET_BRAND
+  TOGGLE_SKU_VISIBILITY,
+  RESET_BRAND,
+  SKU_CLEAR_LOCAL,
+  SKU_SAVE_LOCAL,
+  SKU_DELETE_LOCAL,
+  disableSKUs,
+  enableSKUs
 } from './SkuAction';
 
 import {
@@ -50,25 +60,32 @@ class CreateBrand extends Component { // eslint-disable-line no-unused-vars
       link: '#'
     });
     this.breadCrumbs.push({
-      title: ( props.params.orgId ? 'Edit ' : 'Create ' ) + ' Branch',
+      title: ( props.params.brId ? 'Edit ' : 'Create ' ) + ' Branch',
       sequence: 2,
       link: '#'
     });
 
-    if ( props.params.orgId ) {
+    if ( props.params.brId ) {
       this.breadCrumbs.push({
-        title: props.params.orgId,
+        title: props.params.brId,
         sequence: 3,
         link: '#'
       });
     }
   }
   componentDidMount() {
+    const brId = this.props.params.brId;
     Promise.all([
       this.props.dispatch( { type: MAKE_REQUEST }),
       this.props.dispatch( fetchStateCity() ),
       this.props.dispatch( getOrganisation() ),
-      this.props.dispatch( fetchBrand() )
+      ( brId ? ( this.props.dispatch(getBranchData( brId ) )) : Promise.resolve() ),
+      (
+      brId ?
+        this.props.dispatch( fetchSKUs( brId ) )
+        :
+        this.props.dispatch( fetchBrand() )
+      )
     ])
     .then( () => {
       this.props.dispatch( { type: REQUEST_COMPLETED });
@@ -88,6 +105,18 @@ class CreateBrand extends Component { // eslint-disable-line no-unused-vars
     Promise.all([
       this.props.dispatch( { type: MAKE_REQUEST }),
       this.props.dispatch( saveBranchDetail())
+    ])
+    .then( () => {
+      this.props.dispatch( { type: REQUEST_COMPLETED });
+    })
+    .catch( () => {
+      this.props.dispatch( { type: REQUEST_COMPLETED });
+    });
+  }
+  updateBranch() {
+    Promise.all([
+      this.props.dispatch( { type: MAKE_REQUEST }),
+      this.props.dispatch( updateBranchDetail())
     ])
     .then( () => {
       this.props.dispatch( { type: REQUEST_COMPLETED });
@@ -131,10 +160,47 @@ class CreateBrand extends Component { // eslint-disable-line no-unused-vars
     const actionConst = SKU_UNSELECTED;
     this.props.dispatch({ type: actionConst, data: id });
   }
+
+  disableSKUs( id ) {
+    this.props.dispatch( disableSKUs(id) );
+  }
+
+  enableSKUs( id ) {
+    this.props.dispatch( enableSKUs(id) );
+  }
+
+  skuViewToggle() {
+    this.props.dispatch( { type: TOGGLE_SKU_VISIBILITY } );
+  }
+
+  saveSkuLocal() {
+    this.props.dispatch( { type: SKU_SAVE_LOCAL } );
+  }
+
+  deleteSkuLocal( id ) {
+    this.props.dispatch( { type: SKU_DELETE_LOCAL, data: id} );
+  }
+
+  clearSkuLocal() {
+    this.props.dispatch( { type: SKU_CLEAR_LOCAL } );
+  }
+
+  saveInventoryEdit( ) {
+    const brId = this.props.params.brId;
+    this.props.dispatch( saveInventoryEdit() )
+    .then( ( ) => {
+      return Promise.all([
+        this.props.dispatch( fetchSKUs( brId ) ),
+        this.props.dispatch( { type: SKU_CLEAR_LOCAL } )
+      ]);
+    });
+  }
+
   render() {
     const styles = require('./CreateBrand.scss');
 
     const {
+      ongoingRequest,
       branchData,
       genStateData,
       dispatch,
@@ -145,8 +211,27 @@ class CreateBrand extends Component { // eslint-disable-line no-unused-vars
       , branchContact
       , branchAccountRegistered
       , branchDetail
+      , isBrEdit
     } = branchData;
+
+    let stateIdentifier = '';
+
+    if ( 'state_id' in branchContact ) {
+      stateIdentifier = genStateData.stateIdMap[branchContact.state_id];
+    }
+
     // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
+
+    const actionButton = !this.props.params.brId ? (
+      <button className={styles.edit_brand_btn} onClick={ this.saveBranch.bind(this) } disabled = { ( ongoingRequest ? true : false )} >
+        { ( ongoingRequest ? 'Saving' : 'Save' ) }
+      </button>
+    ) : (
+      <button className={styles.edit_brand_btn} onClick={ this.updateBranch.bind(this) } disabled = { ( ongoingRequest ? true : false )} >
+        { ( ongoingRequest ? 'Updating' : 'Update' )}
+      </button>
+    );
+
     return (
       <div className={styles.container}>
         <BreadCrumb breadCrumbs={this.breadCrumbs} />
@@ -161,16 +246,33 @@ class CreateBrand extends Component { // eslint-disable-line no-unused-vars
       dispatch = { dispatch }
         />
           </div>
+
           <div className="clearfix"></div>
-          <div className={styles.select_sku_wrapper}>
+
+          <div className={ styles.select_sku_wrapper + ( stateIdentifier.length > 0 ? '' : ' hide') }>
             <SkuWrapper
       { ...brandData }
+      stateIdentifier = { stateIdentifier }
+      isBrEdit = { isBrEdit }
       viewBrand = { this.viewBrand.bind(this) }
       skuToggled = { this.skuToggled.bind(this) }
       unSelectSKU = { this.unSelectSKU.bind(this) }
+      skuViewToggle = { this.skuViewToggle.bind(this) }
+      saveSkuLocal = { this.saveSkuLocal.bind(this) }
+      deleteSkuLocal = { this.deleteSkuLocal.bind(this) }
+      clearSkuLocal = { this.clearSkuLocal.bind(this) }
+      disableSKUs = { this.disableSKUs.bind(this) }
+      enableSKUs = { this.enableSKUs.bind(this) }
+      saveInventoryEdit = { this.saveInventoryEdit.bind(this) }
         />
           </div>
+
+          <div className={ styles.select_sku_wrapper + ( stateIdentifier.length > 0 ? ' hide' : '' ) }>
+            <h3> Please select state to assign SKU's </h3>
+          </div>
+
           <div className="clearfix"></div>
+
           <DeviceWrapper
       { ...this.props }
       createDevice={ this.createDevice.bind(this) }
@@ -180,9 +282,7 @@ class CreateBrand extends Component { // eslint-disable-line no-unused-vars
       updateDeviceLocal = { this.updateDeviceLocal.bind(this) }
       deleteDeviceLocal = { this.deleteDeviceLocal.bind(this) }
         />
-          <button className={styles.edit_brand_btn} onClick={ this.saveBranch.bind(this) } >
-            Save Branch
-          </button>
+          { actionButton }
         </div>
       </div>);
   }
@@ -190,6 +290,7 @@ class CreateBrand extends Component { // eslint-disable-line no-unused-vars
 
 CreateBrand.propTypes = {
   params: PropTypes.object.isRequired,
+  ongoingRequest: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
   branchData: PropTypes.object.isRequired,
   brandData: PropTypes.object.isRequired,
