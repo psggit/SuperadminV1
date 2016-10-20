@@ -33,16 +33,16 @@ const RESET_DEVICE = '@organisationDataReducer/RESET_DEVICE';
 
 /* Action Creators */
 
-const fetchDevice = (orgId) => {
+const fetchDevice = ( id ) => {
   return ( dispatch ) => {
-    const devUrl = Endpoints.db + '/table/device/select';
+    const devUrl = Endpoints.db + '/table/retailer_pos/select';
 
     const devObj = {
-      'columns': ['*']
+      'columns': ['*', { 'name': 'device', 'columns': ['*'] }]
     };
 
     devObj.where = {
-      'organisation_id': parseInt(orgId, 10)
+      'retailer_id': parseInt(id, 10)
     };
 
     const options = {
@@ -54,9 +54,198 @@ const fetchDevice = (orgId) => {
   };
 };
 
+/* User methods */
+const activateUser = ( hasuraId ) => {
+  return ( dispatch ) => {
+    const activateUrl = Endpoints.authUrl + '/admin/user/activate';
+
+    const updateObj = {
+      'hasura_id': parseInt(hasuraId, 10)
+    };
+
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(updateObj)
+    };
+
+    return dispatch( requestAction( activateUrl, options ));
+  };
+};
+
+const assignUserRole = ( hasuraId ) => {
+  return ( dispatch ) => {
+    const activateUrl = Endpoints.authUrl + '/admin/user/assign-role';
+
+    const updateObj = {
+      'hasura_id': parseInt(hasuraId, 10),
+      'role': 'retailer'
+    };
+
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(updateObj)
+    };
+
+    return dispatch( requestAction( activateUrl, options ));
+  };
+};
+
+const unAssignUserRole = ( hasuraId ) => {
+  return ( dispatch ) => {
+    const activateUrl = Endpoints.authUrl + '/admin/user/unassign-role';
+
+    const updateObj = {
+      'hasura_id': parseInt(hasuraId, 10),
+      'role': 'user'
+    };
+
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(updateObj)
+    };
+
+    return dispatch( requestAction( activateUrl, options ));
+  };
+};
+
+const createRetailerPos = ( id, email, mobileNumber, retailerId, deviceId ) => {
+  return ( dispatch ) => {
+    const retailerPos = Endpoints.db + '/table/retailer_pos/insert';
+
+    const insertObj = {};
+    insertObj.objects = [{
+      'id': parseInt(id, 10),
+      'email': email,
+      'mobile': mobileNumber,
+      'retailer_id': retailerId,
+      'device_id': deviceId,
+      'is_active': true,
+      'online': true,
+      'name': email
+    }];
+    insertObj.returning = ['id'];
+
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(insertObj)
+    };
+
+    return dispatch( requestAction( retailerPos, options ));
+  };
+};
+
+const createUser = ( deviceId ) => {
+  return ( dispatch, getState ) => {
+    const createUrl = Endpoints.authUrl + '/admin/user/create';
+
+    const currState = getState().branch_data.deviceData;
+
+    const retId = getState().branch_data.branchData.branchData.id;
+
+    const createObj = {
+      'username': currState.email,
+      'email': currState.email,
+      'password': 'goodluck',
+      'mobile': currState.mobile_number
+    };
+
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(createObj)
+    };
+
+    return dispatch( requestAction( createUrl, options ))
+    .then( ( resp ) => {
+      return Promise.all([
+        dispatch(activateUser(resp.hasura_id)),
+        dispatch(assignUserRole(resp.hasura_id)),
+        dispatch(unAssignUserRole(resp.hasura_id)),
+        dispatch(createRetailerPos(resp.hasura_id, currState.email, currState.mobile_number, retId, deviceId))
+      ]);
+    })
+    .catch( ( resp ) => {
+      console.log('resp');
+      alert(resp.message);
+      /* Rolling back the device as the user hasn't gotten created */
+      return Promise.reject({ id: deviceId });
+    });
+  };
+};
+
+const updateDevice = () => {
+  return ( dispatch, getState ) => {
+    const devUrl = Endpoints.db + '/table/device/update';
+
+    const deviceData = getState().branch_data.deviceData;
+    const deviceDataObj = {
+      'device_num': deviceData.device_num,
+      'operator': deviceData.operator
+    };
+
+    const updateObj = {};
+    updateObj.values = { ...deviceDataObj };
+    updateObj.returning = ['id'];
+    updateObj.where = {
+      'id': getState().branch_data.deviceData.editDeviceId
+    };
+
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(updateObj)
+    };
+
+    return dispatch( requestAction( devUrl, options ) )
+    .then( ( resp ) => {
+      if ( resp.returning.length > 0 ) {
+        alert('Device Updated Successfully');
+        return Promise.all([
+          dispatch( fetchDevice(getState().branch_data.branchData.branchData.id)),
+          dispatch( { type: UNLOAD_DEVICE })
+        ]);
+      }
+    })
+    .catch( ( ) => {
+      alert('Couldn"t Update Device');
+    });
+    // return Promise.resolve();
+  };
+};
+
+const deleteDevice = ( id ) => {
+  return ( dispatch, getState ) => {
+    const devUrl = Endpoints.db + '/table/device/delete';
+
+    const deleteObj = {};
+    deleteObj.returning = ['id'];
+    deleteObj.where = {
+      'id': id
+    };
+
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(deleteObj)
+    };
+
+    return dispatch( requestAction( devUrl, options ) )
+    .then( ( resp ) => {
+      if ( resp.returning.length > 0 ) {
+        alert('Device Deleted Successfully');
+        return Promise.all([
+          dispatch( fetchDevice(getState().branch_data.branchData.branchData.id)),
+          dispatch( { type: UNLOAD_DEVICE })
+        ]);
+      }
+    })
+    .catch( ( ) => {
+      alert('Couldn"t Delete Device');
+    });
+    // return Promise.resolve();
+  };
+};
+
 const createDevice = () => {
   return ( dispatch, getState ) => {
-    if ( !getState().branch_data.branchData.orgData.id ) {
+    if ( !getState().branch_data.branchData.branchData.id ) {
       alert('Create Organization to create device');
       return Promise.reject();
     }
@@ -93,87 +282,24 @@ const createDevice = () => {
     return dispatch( requestAction( devUrl, options ) )
     .then( ( resp ) => {
       if ( resp.returning.length > 0 ) {
-        alert('Device Created Successfully');
+        // alert('Device Created Successfully');
         return Promise.all([
-          dispatch( fetchDevice(getState().branch_data.branchData.orgData.id)),
-          dispatch( { type: UNLOAD_DEVICE })
+          dispatch( createUser(resp.returning[0].id) )
         ]);
       }
     })
-    .catch( ( ) => {
+    .then( ( ) => {
+      return Promise.all([
+        dispatch( fetchDevice( getState().branch_data.branchData.branchData.id )),
+        dispatch( { type: UNLOAD_DEVICE })
+      ]);
+    })
+    .catch( ( resp ) => {
+      if ( resp.id ) {
+        alert('User Creation failed device creation rolling back');
+        return dispatch( deleteDevice( resp.id ) );
+      }
       alert('Couldn"t create deveficiciary');
-    });
-    // return Promise.resolve();
-  };
-};
-
-const updateDevice = () => {
-  return ( dispatch, getState ) => {
-    const devUrl = Endpoints.db + '/table/device/update';
-
-    const deviceData = getState().branch_data.deviceData;
-    const deviceDataObj = {
-      'device_num': deviceData.device_num,
-      'mobile_number': deviceData.mobile_number,
-      'operator': deviceData.operator
-    };
-
-    const updateObj = {};
-    updateObj.values = { ...deviceDataObj };
-    updateObj.returning = ['id'];
-    updateObj.where = {
-      'id': getState().branch_data.deviceData.editDeviceId
-    };
-
-    const options = {
-      ...genOptions,
-      body: JSON.stringify(updateObj)
-    };
-
-    return dispatch( requestAction( devUrl, options ) )
-    .then( ( resp ) => {
-      if ( resp.returning.length > 0 ) {
-        alert('Device Updated Successfully');
-        return Promise.all([
-          dispatch( fetchDevice(getState().branch_data.branchData.orgData.id)),
-          dispatch( { type: UNLOAD_DEVICE })
-        ]);
-      }
-    })
-    .catch( ( ) => {
-      alert('Couldn"t delete deveficiciary');
-    });
-    // return Promise.resolve();
-  };
-};
-
-const deleteDevice = () => {
-  return ( dispatch, getState ) => {
-    const devUrl = Endpoints.db + '/table/device/delete';
-
-    const deleteObj = {};
-    deleteObj.returning = ['id'];
-    deleteObj.where = {
-      'id': getState().branch_data.deviceData.editDeviceId
-    };
-
-    const options = {
-      ...genOptions,
-      body: JSON.stringify(deleteObj)
-    };
-
-    return dispatch( requestAction( devUrl, options ) )
-    .then( ( resp ) => {
-      if ( resp.returning.length > 0 ) {
-        alert('Device Deleted Successfully');
-        return Promise.all([
-          dispatch( fetchDevice(getState().branch_data.branchData.orgData.id)),
-          dispatch( { type: UNLOAD_DEVICE })
-        ]);
-      }
-    })
-    .catch( ( ) => {
-      alert('Couldn"t Delete deveficiciary');
     });
     // return Promise.resolve();
   };
@@ -236,8 +362,7 @@ const deleteDeviceLocal = () => {
   };
 };
 
-const defaultDevState = { 'device_num': '', 'mobile_number': '', 'operator': ''};
-
+const defaultDevState = { 'device_num': '', 'mobile_number': '', 'operator': '', 'email': ''};
 
 /* End of it */
 
@@ -276,15 +401,19 @@ const deviceReducer = ( state = { ...addDeviceState, ...uiState }, action ) => {
     case LOAD_DEVICE:
       const devId = action.data;
       const filteredDev = state.devices.filter( ( dev ) => {
-        return ( dev.id === devId );
+        return ( dev.device.id === devId );
       });
       const {
         device_num,
         mobile_number,
         operator,
+      } = filteredDev[0].device;
+
+      const {
+        email
       } = filteredDev[0];
 
-      const devData = { device_num, mobile_number, operator };
+      const devData = { device_num, mobile_number, operator, email};
 
       return { ...state, ...devData, editDeviceId: devId, showDetail: true, isEditing: true};
     case LOAD_LOCAL_DEVICE:
@@ -292,7 +421,7 @@ const deviceReducer = ( state = { ...addDeviceState, ...uiState }, action ) => {
 
       return { ...state, ...state.localDevs[localDevId], editDeviceId: localDevId, showDetail: true, isEditing: true };
     case UNLOAD_DEVICE:
-      const devD = { device_num: '', mobile_number: '', operator: '' };
+      const devD = { device_num: '', mobile_number: '', operator: '', email: ''};
 
       return { ...state, ...devD, isEditing: false, showDetail: false, editDeviceId: 0 };
     case RESET_DEVICE:

@@ -46,7 +46,8 @@ import {
   createDeviceLocal,
   updateDeviceLocal,
   deleteDeviceLocal,
-  RESET_DEVICE
+  RESET_DEVICE,
+  fetchDevice
 } from './DeviceAction';
 
 class CreateBrand extends Component { // eslint-disable-line no-unused-vars
@@ -82,7 +83,10 @@ class CreateBrand extends Component { // eslint-disable-line no-unused-vars
       ( brId ? ( this.props.dispatch(getBranchData( brId ) )) : Promise.resolve() ),
       (
       brId ?
-        this.props.dispatch( fetchSKUs( brId ) )
+        Promise.all([
+          this.props.dispatch( fetchSKUs( brId ) ),
+          this.props.dispatch( fetchDevice( brId ) )
+        ])
         :
         this.props.dispatch( fetchBrand() )
       )
@@ -126,7 +130,16 @@ class CreateBrand extends Component { // eslint-disable-line no-unused-vars
     });
   }
   createDevice() {
-    this.props.dispatch(createDevice());
+    Promise.all([
+      this.props.dispatch({ type: MAKE_REQUEST }),
+      this.props.dispatch(createDevice())
+    ])
+    .then( () => {
+      this.props.dispatch( { type: REQUEST_COMPLETED });
+    })
+    .catch( () => {
+      this.props.dispatch( { type: REQUEST_COMPLETED });
+    });
   }
 
   deleteDevice() {

@@ -44,6 +44,10 @@ const CLEAR_STORED_LOCAL_UPDATED_REGIONS = 'Brand/CLEAR_STORED_LOCAL_UPDATED_REG
 
 const INPUT_VALUE_CHANGED = '@category/INPUT_VALUE_CHANGED';
 
+const IMAGE_UPLOAD_SUCCESS = '@category/IMAGE_UPLOAD_SUCCESS';
+const IMAGE_UPLOAD_ERROR = '@category/IMAGE_UPLOAD_ERROR';
+const CANCEL_IMAGE = '@category/CANCEL_IMAGE';
+
 /* End of it */
 
 /* ****** Action Creators ******** */
@@ -223,7 +227,7 @@ const insertBrand = () => {
     brandObj.brand_name = currState.brandName;
     brandObj.company_id = parseInt(currState.companyId, 10);
     brandObj.category_id = parseInt(currState.categoryId, 10);
-    brandObj.image = 'googleapi';
+    brandObj.image = Endpoints.file_get + currState.image;
     brandObj.short_name = currState.brandName.replace(' ', '-').toLowerCase();
     brandObj.is_active = true;
     brandObj.alcohol_per = currState.alcoholPer;
@@ -361,7 +365,7 @@ const updateBrand = () => {
     brandObj.brand_name = currState.brandName;
     brandObj.company_id = parseInt(currState.companyId, 10);
     brandObj.category_id = parseInt(currState.categoryId, 10);
-    brandObj.image = 'googleapi';
+    brandObj.image = Endpoints.file_get + currState.image;
     brandObj.short_name = currState.brandName.replace(' ', '-').toLowerCase();
     brandObj.is_active = true;
     brandObj.alcohol_per = currState.alcoholPer;
@@ -417,7 +421,10 @@ const updateBrand = () => {
           /* If regions are not updated then exit here */
           if ( regionObjs.objects.length === 0) {
             alert('Brand Successfully Updated');
-            return dispatch(fetchBrand(brandId));
+            return Promise.all([
+              Promise.reject( { 'intended': true } ),
+              dispatch(fetchBrand(brandId))
+            ]);
           }
           options = {
             method: 'POST',
@@ -473,7 +480,9 @@ const updateBrand = () => {
       })
       .catch((resp) => {
         console.log(resp);
-        alert('Something wrong happened while creating a brand entry');
+        if ( !resp.intended ) {
+          alert('Something wrong happened while creating a brand entry');
+        }
         return dispatch({type: REQUEST_COMPLETED});
       });
   };
@@ -1110,7 +1119,7 @@ const brandReducer = (state = defaultBrandState, action) => {
         regionObj = {};
         regionCity = {};
       }
-      return { ...state, brandObj: brandObj, region: { ...regionObj }, regionCity: { ...regionCity }, brandId: brandObj.id, brandName: brandObj.brand_name, companyId: brandObj.company_id, categoryId: brandObj.category_id, genreId: brandObj.genre_id, genreShort: brandObj.category.genre_short_name, alcoholPer: brandObj.alcohol_per, temperature: brandObj.temperature, caloriesPer: brandObj.cal_per, caloriesTotal: brandObj.cal_total, origin: brandObj.origin_name, description: brandObj.description };
+      return { ...state, brandObj: brandObj, region: { ...regionObj }, regionCity: { ...regionCity }, image: brandObj.image, brandId: brandObj.id, brandName: brandObj.brand_name, companyId: brandObj.company_id, categoryId: brandObj.category_id, genreId: brandObj.genre_id, genreShort: brandObj.category.genre_short_name, alcoholPer: brandObj.alcohol_per, temperature: brandObj.temperature, caloriesPer: brandObj.cal_per, caloriesTotal: brandObj.cal_total, origin: brandObj.origin_name, description: brandObj.description };
     case CANCEL_REGION:
       /* TODO: If existing region is viewed and modified ?
        * clear all the modifications if cancel is pressed
@@ -1126,6 +1135,12 @@ const brandReducer = (state = defaultBrandState, action) => {
       return { ...state, ...categoryInfo };
     case CLEAR_STORED_LOCAL_UPDATED_REGIONS:
       return { ...state, showRegionState: false, isEdit: false, viewedRegionId: 0, updatedRegions: {}, updatedRegionReference: {}, regionCityUpdated: {}};
+    case IMAGE_UPLOAD_SUCCESS:
+      return { ...state, image: action.data[0]};
+    case IMAGE_UPLOAD_ERROR:
+      return { ...state, image: ''};
+    case CANCEL_IMAGE:
+      return { ...state, image: ''};
     case RESET:
       return { ...defaultBrandState };
     default: return state;
@@ -1157,6 +1172,9 @@ export {
   fetchOrigin,
   deleteRegionFromServer,
   updateRegion,
-  INPUT_VALUE_CHANGED
+  INPUT_VALUE_CHANGED,
+  IMAGE_UPLOAD_SUCCESS,
+  IMAGE_UPLOAD_ERROR,
+  CANCEL_IMAGE
 };
 export default brandReducer;

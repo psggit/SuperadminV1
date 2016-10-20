@@ -14,8 +14,13 @@ import { fetchGenre,
   VIEW_REGION,
   DELETE_REGION,
   INPUT_VALUE_CHANGED,
-  fetchOrigin
+  fetchOrigin,
+  IMAGE_UPLOAD_SUCCESS,
+  IMAGE_UPLOAD_ERROR,
+  CANCEL_IMAGE
 } from './BrandAction.js';
+
+import ImageUpload from './ImageUpload';
 
 // import TableHeader from '../../Common/TableHeader';
 
@@ -135,7 +140,8 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
       caloriesPer,
       caloriesTotal,
       origin,
-      description
+      description,
+      image
     } = this.props;
 
     let regionHtml = Object.keys(region).map( (reg, index) => {
@@ -180,77 +186,82 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
       <div className={styles.container}>
         <BreadCrumb breadCrumbs={this.breadCrumbs} />
         <div className={styles.create_brand_container}>
-          <div className={styles.heading + ' ' + styles.wd_100}>Create Brand</div>
-            <ul>
-              <li>
-                <label>Brand Name</label>
-                <input data-field-name="brandName" type="text" data-field-type="text" value={ brandName } />
-              </li>
-              <li>
-                <label>Company Name</label>
-                <select data-field-name="companyId" data-field-type="int" value={ companyId }>
-                  <option>Select Company</option>
-                  { companyHtml }
-                </select>
-              </li>
-              <li>
-                <label>Genre</label>
-                <select data-field-name="genreShort" data-field-type="text" value={ genreShort }>
-                  <option>Select Genre</option>
-                  { genreHtml }
-                </select>
-              </li>
-              <li>
-                <label>Category</label>
-                <select data-field-name="categoryId" data-field-type="int" value={ categoryId } >
-                  <option>Select Category</option>
-                  { categoryHtml }
-                </select>
-              </li>
-              <li>
-                <label>Origin</label>
-                <select data-field-name="origin" data-field-type="text" value={ origin } >
-                  <option>Select Origin</option>
-                  { originHtml }
-                </select>
-              </li>
-              <li>
-                <label>Alcohol Percentage</label>
-                <input data-field-name="alcoholPer" type="text" data-field-type="text" value={ alcoholPer } />
-              </li>
-              <li>
-                <label>Temperature</label>
-                <input data-field-name="temperature" type="text" data-field-type="text" value={ temperature} />
-              </li>
-              <li>
-                <label>Calories Per</label>
-                <input data-field-name="caloriesPer" type="text" data-field-type="text" value={ caloriesPer } />
-              </li>
-              <li>
-                <label>Calories Total</label>
-                <input data-field-name="caloriesTotal" type="text" data-field-type="text" value={ caloriesTotal } />
-              </li>
-              <li>
-                <label>Description</label>
-                <textarea data-field-name="description" data-field-type="text" value={ description } />
-              </li>
-              {/*
-              <li>
-                <label>Brand Manager</label>
-                <input type="email" />
-              </li>
-              */}
-              {/*
-              <li>
-                <label>Status</label>
-                <select data-field-name="status">
-                  <option>Select Status</option>
-                  <option data-field-name="status" data-field-value="active">Active</option>
-                  <option data-field-name="status" data-field-value="inactive">InActive</option>
-                </select>
-              </li>
-              */}
-            </ul>
+          <div className={styles.heading + ' ' + styles.wd_100}>
+            Create Brand
+          </div>
+          <ul>
+            <li>
+              <label>Brand Name</label>
+              <input data-field-name="brandName" type="text" data-field-type="text" value={ brandName } />
+            </li>
+            <li>
+              <label>Company Name</label>
+              <select data-field-name="companyId" data-field-type="int" value={ companyId }>
+                <option>Select Company</option>
+                { companyHtml }
+              </select>
+            </li>
+            <li>
+              <label>Genre</label>
+              <select data-field-name="genreShort" data-field-type="text" value={ genreShort }>
+                <option>Select Genre</option>
+                { genreHtml }
+              </select>
+            </li>
+            <li>
+              <label>Category</label>
+              <select data-field-name="categoryId" data-field-type="int" value={ categoryId } >
+                <option>Select Category</option>
+                { categoryHtml }
+              </select>
+            </li>
+            <li>
+              <label>Origin</label>
+              <select data-field-name="origin" data-field-type="text" value={ origin } >
+                <option>Select Origin</option>
+                { originHtml }
+              </select>
+            </li>
+            <li>
+              <label>Alcohol Percentage</label>
+              <input data-field-name="alcoholPer" type="text" data-field-type="text" value={ alcoholPer } />
+            </li>
+            <li>
+              <label>Temperature</label>
+              <input data-field-name="temperature" type="text" data-field-type="text" value={ temperature} />
+            </li>
+            <li>
+              <label>Calories Per</label>
+              <input data-field-name="caloriesPer" type="text" data-field-type="text" value={ caloriesPer } />
+            </li>
+            <li>
+              <label>Calories Total</label>
+              <input data-field-name="caloriesTotal" type="text" data-field-type="text" value={ caloriesTotal } />
+            </li>
+            <li>
+              <label>Description</label>
+              <textarea data-field-name="description" data-field-type="text" value={ description } />
+            </li>
+            {/*
+            <li>
+              <label>Brand Manager</label>
+              <input type="email" />
+            </li>
+            */}
+            {/*
+            <li>
+              <label>Status</label>
+              <select data-field-name="status">
+                <option>Select Status</option>
+                <option data-field-name="status" data-field-value="active">Active</option>
+                <option data-field-name="status" data-field-value="inactive">InActive</option>
+              </select>
+            </li>
+            */}
+          </ul>
+        </div>
+        <div className={ styles.image_container }>
+            <ImageUpload imageUrl={image ? image : ''} requestSuccess={IMAGE_UPLOAD_SUCCESS} requestError={ IMAGE_UPLOAD_ERROR } cancelImage={ CANCEL_IMAGE }/>
         </div>
         {/*
         <div className={styles.states_container}>
@@ -388,7 +399,8 @@ BrandCreate.propTypes = {
   caloriesPer: PropTypes.string.isRequired,
   caloriesTotal: PropTypes.string.isRequired,
   origin: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired
+  description: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired
 };
 
 const mapStateToProps = (state) => {

@@ -16,7 +16,8 @@ const AddDeviceComponent = ( {
   createDeviceLocal,
   updateDeviceLocal,
   deleteDeviceLocal,
-  isBrEdit
+  isBrEdit,
+  isEditing
 } ) => { // eslint-disable-line no-unused-vars
   const styles = require('./CreateBrand.scss');
   // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
@@ -67,6 +68,12 @@ const AddDeviceComponent = ( {
         </div>
         <div className={styles.wd_100 + ' ' + styles.margin_bottom}>
           <label className={styles.success_msg_lab}>
+            Consumer Email
+          </label>
+          <input type="text" data-field-name="email" data-field-type="text" value={ currState.email } disabled = { isEditing }/>
+        </div>
+        <div className={styles.wd_100 + ' ' + styles.margin_bottom}>
+          <label className={styles.success_msg_lab}>
             Device IMEI(1)
           </label>
           <input type="text" data-field-name="device_num" data-field-type="text" value={ currState.device_num } />
@@ -75,7 +82,7 @@ const AddDeviceComponent = ( {
           <label className={styles.success_msg_lab}>
             Mobile Number
           </label>
-          <input type="text" data-field-name="mobile_number" data-field-type="text" value={ currState.mobile_number } />
+          <input type="text" data-field-name="mobile_number" data-field-type="text" value={ currState.mobile_number } disabled = { isEditing }/>
         </div>
         <div className={styles.wd_100 + ' ' + styles.margin_bottom}>
           <label className={styles.success_msg_lab}>

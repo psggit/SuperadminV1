@@ -16,9 +16,9 @@ const DeviceComponent = ( {
       <div className={styles.indiv_item} key={ index } >
         <div className={styles.heading_container}>
           <p className={styles.heading_lab}>
-            { device.device_num }
+            { devices[device].device.device_num }
           </p>
-          <p className={styles.edit_lab} onClick={ ( e ) => { loadDevice.call(undefined, e.target.getAttribute('data-dev-id')); }} data-dev-id={ device.id }>
+          <p className={styles.edit_lab} onClick={ ( e ) => { loadDevice.call(undefined, e.target.getAttribute('data-dev-id')); }} data-dev-id={ devices[device].device.id }>
             Edit
           </p>
         </div>
@@ -33,10 +33,10 @@ const DeviceComponent = ( {
         </div>
         <div className={styles.custom_table_td + ' ' + 'row'}>
           <div className={styles.table_td + ' ' + 'col-md-6'}>
-            { device.mobile_number }
+            { devices[device].device.mobile_number }
           </div>
           <div className={styles.table_td + ' ' + 'col-md-6'}>
-            { device.operator }
+            { devices[device].device.operator }
           </div>
         </div>
       </div>
@@ -73,12 +73,14 @@ const DeviceComponent = ( {
       </div>
     );
   });
+
+  const devicesLength = content.length + contentLocal.length;
   return (
     <div>
       <div className={styles.device_items_container}>
         <div className={styles.device_lab}>
           Devices
-          <p>10 Items</p>
+          <p> { devicesLength } item{ devicesLength === 1 ? '' : 's' }</p>
         </div>
         <p className={styles.add_promo_lab} onClick={ toggleDeviceDetail } >
           + Add Device

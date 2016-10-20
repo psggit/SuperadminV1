@@ -555,7 +555,7 @@ const branchDataReducer = ( state = { organisationData: [], branchDetail: {}, br
 
       const branchContactKeys = ['branch_address', 'pincode', 'city_id', 'state_id', 'email', 'mobile_number', 'landline_number', 'retailer_id', 'gps_cordinates'];
 
-      const branchAccountKeys = ['ifsc_code', 'account_number', 'branch', 'bank_name', 'retailer_id'];
+      const branchAccountKeys = ['ifsc_code', 'account_number', 'branch', 'bank_name', 'retailer_id', 'canceled_cheque_image'];
 
       branchDetail = {};
       branchContact = {};

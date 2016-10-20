@@ -38,7 +38,7 @@ class DeviceWrapper extends Component { // eslint-disable-line no-unused-vars
       branchData
     } = this.props;
 
-    const { showDetail, devices, localDevs } = deviceData;
+    const { showDetail, devices, localDevs, isEditing } = deviceData;
 
     return (
       <div className={styles.container}>
@@ -53,6 +53,7 @@ class DeviceWrapper extends Component { // eslint-disable-line no-unused-vars
         />
             <AddDeviceComponent
       dispatch = { dispatch }
+      isEditing = { isEditing }
       isShow = { !showDetail ? 'hide' : '' }
       currState= { Object.assign({}, ...deviceData) }
 
