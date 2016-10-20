@@ -286,15 +286,17 @@ class CreateBrand extends Component { // eslint-disable-line no-unused-vars
 
           <div className="clearfix"></div>
 
-          <DeviceWrapper
-      { ...this.props }
-      createDevice={ this.createDevice.bind(this) }
-      updateDevice={ this.updateDevice.bind(this) }
-      deleteDevice={ this.deleteDevice.bind(this) }
-      createDeviceLocal = { this.createDeviceLocal.bind(this) }
-      updateDeviceLocal = { this.updateDeviceLocal.bind(this) }
-      deleteDeviceLocal = { this.deleteDeviceLocal.bind(this) }
-        />
+          <div className={ isBrEdit ? '' : 'hide' }>
+            <DeviceWrapper
+        { ...this.props }
+        createDevice={ this.createDevice.bind(this) }
+        updateDevice={ this.updateDevice.bind(this) }
+        deleteDevice={ this.deleteDevice.bind(this) }
+        createDeviceLocal = { this.createDeviceLocal.bind(this) }
+        updateDeviceLocal = { this.updateDeviceLocal.bind(this) }
+        deleteDeviceLocal = { this.deleteDeviceLocal.bind(this) }
+          />
+          </div>
           { actionButton }
         </div>
       </div>);

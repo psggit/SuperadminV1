@@ -172,6 +172,8 @@ const createUser = ( deviceId ) => {
   };
 };
 
+/* End of it */
+
 const updateDevice = () => {
   return ( dispatch, getState ) => {
     const devUrl = Endpoints.db + '/table/device/update';
