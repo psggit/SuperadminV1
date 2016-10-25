@@ -75,6 +75,7 @@ export RetailerManagementDisableDevice from './RetailerManagement/DisableDevice/
 export RetailerManagementTransactions from './Sku/Transactions/Transactions';
 export RetailerManagementCreateOrganization from './RetailerManagement/CreateOrganization/CreateOrganization';
 export RetailerManagementViewOrganization from './RetailerManagement/ViewOrganization/ViewOrganization';
+export RetailerManagementViewBranch from './RetailerManagement/ViewBranch/ViewBranch';
 export CustomerSupportCustomerProfile from './CustomerSupport/CustomerProfile/CustomerProfile';
 export CustomerSupportFreshdeskTicket from './CustomerSupport/FreshdeskTicket/FreshdeskTicket';
 export CustomerSupportIssueHistory from './CustomerSupport/IssueHistory/IssueHistory';

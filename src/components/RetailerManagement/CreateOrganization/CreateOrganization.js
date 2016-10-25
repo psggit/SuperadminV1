@@ -77,7 +77,7 @@ class CreateOrganization extends React.Component {
   componentWillUnmount() {
     Promise.all([
       this.props.dispatch({ type: RESET_ORGANIZATION }),
-      this.props.dispatch({ type: RESET_BENEFICIARY }),
+      this.props.dispatch({ type: RESET_BENEFICIARY })
     ]);
   }
 

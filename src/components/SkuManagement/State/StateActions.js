@@ -39,6 +39,10 @@ const saveState = () => {
     console.log(dispatch);
     const currState = getState().state_data;
     const stateUrl = Endpoints.db + '/table/state/insert';
+    if ( currState.stateInput.length === 0 || currState.shortName.length === 0 ) {
+      alert('Kindly check start name or short name');
+      return Promise.reject();
+    }
     const insertObj = {
     };
     insertObj.objects = [

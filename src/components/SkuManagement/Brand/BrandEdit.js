@@ -20,8 +20,13 @@ import { fetchGenre,
   updateBrand,
   updateRegion,
   INPUT_VALUE_CHANGED,
-  RESET
+  RESET,
+  IMAGE_UPLOAD_SUCCESS,
+  IMAGE_UPLOAD_ERROR,
+  CANCEL_IMAGE
 } from './BrandAction.js';
+
+import ImageUpload from './ImageUpload';
 
 // import TableHeader from '../../Common/TableHeader';
 
@@ -176,7 +181,8 @@ class BrandEdit extends Component { // eslint-disable-line no-unused-vars
       caloriesTotal,
       origin,
       description,
-      originList
+      originList,
+      image
     } = this.props;
 
     let regionHtml = Object.keys(region).map( (reg, index) => {
@@ -292,6 +298,9 @@ class BrandEdit extends Component { // eslint-disable-line no-unused-vars
               </li>
               */}
             </ul>
+        </div>
+        <div className={ styles.image_container }>
+            <ImageUpload imageUrl={image ? image : ''} requestSuccess={IMAGE_UPLOAD_SUCCESS} requestError={ IMAGE_UPLOAD_ERROR } cancelImage={ CANCEL_IMAGE }/>
         </div>
         {/*
         <div className={styles.states_container}>
@@ -437,7 +446,8 @@ BrandEdit.propTypes = {
   caloriesTotal: PropTypes.string.isRequired,
   origin: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  originList: PropTypes.array.isRequired
+  originList: PropTypes.array.isRequired,
+  image: PropTypes.string.isRequired
 };
 
 const mapStateToProps = (state) => {

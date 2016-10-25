@@ -52,6 +52,7 @@ import {Login, Home, PageContainer,
   RetailerManagementSettlementDetails, RetailerManagementDeviceDetail, RetailerManagementDisableDevice,
   RetailerManagementTransactions, RetailerManagementCreateOrganization, CustomerSupportCustomerProfile,
   RetailerManagementViewOrganization,
+  RetailerManagementViewBranch,
   CustomerSupportFreshdeskTicket, CustomerSupportIssueHistory, CustomerSupportSupport, CustomerSupportFreshdeskTicketList,
   CustomerSupportInstantCallbackHistory, ParameterManagementConsumerIssueCreateCode, ParameterManagementCreateCode,
   ParameterManagementConsumerIssueCodes, ParameterManagementConsumerManualCodes, ParameterManagementConsumerNotepadCodes,
@@ -204,6 +205,7 @@ const main = (
         <Route path="brands_offers_and_promos/promos" component={BrandPromos} />
         <Route path="brands_offers_and_promos/promos/instant_cashback" component={PromosInstantCashback} />
         <Route path="retailer_management/create_branch" component={RetailerManagementCreate} />
+        <Route path="retailer_management/edit_branch/:brId" component={RetailerManagementCreate} />
         <Route path="retailer_management/settlement_details" component={RetailerManagementSettlementDetails} />
         <Route path="retailer_management/device_details" component={RetailerManagementDeviceDetail} />
         <Route path="retailer_management/disable_device" component={RetailerManagementDisableDevice} />
@@ -211,6 +213,7 @@ const main = (
         <Route path="retailer_management/create_organization" component={RetailerManagementCreateOrganization} />
         <Route path="retailer_management/edit_organization/:orgId" component={RetailerManagementCreateOrganization} />
         <Route path="retailer_management/view_organizations" component={RetailerManagementViewOrganization} />
+        <Route path="retailer_management/view_branches" component={RetailerManagementViewBranch} />
         <Route path="retailer_management/profile_and_kyc" component={ProfileKyc} />
         <Route path="customer_support" component={CustomerSupportSupport} />
         <Route path="customer_support/customer_profile/:Id" component={CustomerSupportCustomerProfile} />

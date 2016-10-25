@@ -372,6 +372,18 @@
 		list-style: none;
 		height: 507px;
 		overflow: auto;
+    .sku_header {
+      /* color: #FF7400; */
+      font-weight: 600;
+      padding-top: 10px;
+      font-size: 13px;
+      font-style: italic;
+      letter-spacing: 0.3px;
+      float: left;
+      margin-bottom: 0;
+      /* cursor: pointer; */
+      margin-bottom: 10px;
+    }
 	}
 	li
 	{
@@ -380,7 +392,7 @@
 		float: left;
 		label
 		{
-			width: 70%;
+			width: 80%;
 			font-weight: 400;
 			color: rgba(0,0,0,0.54);
 			font-size: 13px;
@@ -389,12 +401,13 @@
 		}
 		p
 		{
-			width: 30%;
+			width: 20%;
 			float: left;
 			color: #FF7400;
 			font-size: 13px;
 			text-align: right;
 			margin-bottom: 0;
+      cursor: pointer;
 		}
 	}	
 }
@@ -449,6 +462,7 @@
 			font-size: 13px;
 			text-align: right;
 			margin-bottom: 0;
+      cursor: pointer;
 		}
 	}	
 }
@@ -528,6 +542,24 @@
   		float: left;
   		padding: 20px;
   		text-align: center;
+    .img_wrapper {
+      width: 80%;
+      margin: 0 auto;
+      img {
+        width: 80%;
+        float: left;
+        margin-left: 20px;
+      }
+      p {
+        float: left;
+        width: 10%;
+        cursor: pointer;
+        margin-left: 10px;
+        &:hover {
+          background-color: #eeeeee;
+        }
+      }
+    }
   	}
   	.input_upload
 	{

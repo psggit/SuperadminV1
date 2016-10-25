@@ -70,7 +70,8 @@ const defaultBrandState = {
   caloriesPer: '',
   caloriesTotal: '',
   origin: '',
-  description: ''
+  description: '',
+  image: ''
 };
 
 const defaultStateManagementState = {

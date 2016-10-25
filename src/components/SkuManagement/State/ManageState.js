@@ -118,6 +118,9 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
     ])
     .then( () => {
       this.props.dispatch({ type: REQUEST_COMPLETED });
+    })
+    .catch( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED });
     });
   }
   render() {

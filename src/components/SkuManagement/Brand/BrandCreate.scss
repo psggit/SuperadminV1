@@ -3,6 +3,123 @@
 	width: 100%;
 	float: left;
 }
+
+.image_container {
+  float: left;
+  margin-left: 30px;
+  .upload_container
+  {
+  	float: left;
+  	width: 250px;
+  	margin-top: 20px;
+  	.upload_images
+  	{
+  		width: 100%;
+  		float: left;
+  	}
+  	.upload_lab
+  	{
+  		color: rgba(0,0,0,0.54);
+  		font-weight: 500;
+  		font-size: 14px;
+  		padding-bottom: 15px;
+  	}
+  	.upload_id
+  	{
+  		color: rgba(0,0,0,0.54);
+  		font-size: 13px;
+  		font-weight: 500;
+  		padding: 10px 15px;
+  		background: #DFDFDF;
+  	}
+  	.upload_img
+  	{
+  		max-width: 100%;
+  		max-height: 100%;
+      margin: auto;
+      padding: 10px;
+  	}
+  	.file_upload
+  	{
+  		width: 100%;
+      position: relative;
+  		float: left;
+  		height: 200px;
+  		background: #FFF;
+  		display: flex;
+  		align-items: center;
+  
+      .img_wrapper {
+        text-align: center;
+        width: 100%;
+        float: left;
+        margin: 10px;
+        border: 1px solid #DDD;
+        height: 180px;
+        p {
+          position: absolute;
+          top: 2px;
+          right: 0px;
+          width: 20px;
+          height: 20px;
+          border-radius: 100%;
+          background: #353535;
+          color: #FFF;
+          font-size: 14px;
+          text-align: center;
+          cursor: pointer;
+          margin: 0;
+  
+        }
+      }
+  	}
+  	input[type="file"]
+  	{
+  		width: 80%;
+  		padding: 8px;
+  		background: #FFF;
+  		border-radius: 3px;
+  		border: 1px solid #CCC;
+  		margin: auto;
+  		&:focus
+  		{
+  			outline: none;
+  			border: 1px solid #FF7400;
+  		}
+  	}
+  	.upload_btn_layout
+  	{
+  		background: #DFDFDF;
+  		width: 100%;
+  		float: left;
+	    .upload_btn
+	    {
+        width: 50%;
+        height: 30px;
+        color: rgba(255, 116, 0, 0.8);
+        border: 1px solid #FF7400;
+        border-radius: 4px;
+        background: #FFF;
+        cursor: pointer;
+        font-weight: 400;
+        display: block;
+        padding: 5px;
+        margin: 0 auto;
+        font-size: 13px;
+        letter-spacing: 0.5px;
+	      &:focus
+	      {
+	      	outline: none;
+	      }
+	      &:hover
+	      {
+	      	color: rgba(255, 116, 0 , 1);
+	      }
+	    }
+  	}
+  }
+}
+
 .wd_100
 {
 	width: 100%;
@@ -20,6 +137,7 @@
 .create_brand_container
 {
 	background: #FFF;
+  float: left;
 	padding: 20px 15px;
 	display: inline-block;
 	vertical-align: top;
