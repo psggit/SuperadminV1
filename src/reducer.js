@@ -35,6 +35,7 @@ import customerSupportReducer from './components/CustomerSupport/CustomerProfile
 
 import organizationReducer from './components/RetailerManagement/CreateOrganization/CreateOrganizationAction';
 import branchReducer from './components/RetailerManagement/CreateBranch/CreateBranchAction';
+import barReducer from './components/BarManagement/CreateBar/CreateBarAction';
 
 import genreReducer from './components/SkuManagement/Genre/GenreAction';
 
@@ -68,7 +69,8 @@ const reducer = combineReducers({
   customer_support_data: customerSupportReducer,
   organization_data: organizationReducer,
   genre_data: genreReducer,
-  branch_data: branchReducer
+  branch_data: branchReducer,
+  bar_data: barReducer
 });
 
 export default reducer;

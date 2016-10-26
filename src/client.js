@@ -48,7 +48,7 @@ import {Login, Home, PageContainer,
   BrandManagerProfile,
   CreateBrandManager,
   CompaniesManagement,
-  ManageCompanies, BrandAds, BrandPromos, PromosInstantCashback, RetailerManagementCreate,
+  ManageCompanies, BrandAds, BrandPromos, PromosInstantCashback, RetailerManagementCreate, RetailerManagementBarCreate, RetailerManagementViewBar,
   RetailerManagementSettlementDetails, RetailerManagementDeviceDetail, RetailerManagementDisableDevice,
   RetailerManagementTransactions, RetailerManagementCreateOrganization, CustomerSupportCustomerProfile,
   RetailerManagementViewOrganization,
@@ -62,7 +62,8 @@ import {Login, Home, PageContainer,
   AccountingUploadSettlementReport,
   ViewBrandManager,
   EditBrandManager,
-  ProfileKyc
+  ProfileKyc,
+  BarProfileKyc
 } from './components'; // eslint-disable-line no-unused-vars
 import {AddTable} from './components';
 import {loadCredentials} from './components/Login/Actions';
@@ -206,6 +207,14 @@ const main = (
         <Route path="brands_offers_and_promos/promos/instant_cashback" component={PromosInstantCashback} />
         <Route path="retailer_management/create_branch" component={RetailerManagementCreate} />
         <Route path="retailer_management/edit_branch/:brId" component={RetailerManagementCreate} />
+
+        <Route path="bar_management/create_bar" component={RetailerManagementBarCreate} />
+        <Route path="bar_management/edit_bar/:brId" component={RetailerManagementBarCreate} />
+
+
+        <Route path="bar_management/bar_profile_and_kyc" component={BarProfileKyc} />
+        <Route path="bar_management/view_bars" component={RetailerManagementViewBar} />
+
         <Route path="retailer_management/settlement_details" component={RetailerManagementSettlementDetails} />
         <Route path="retailer_management/device_details" component={RetailerManagementDeviceDetail} />
         <Route path="retailer_management/disable_device" component={RetailerManagementDisableDevice} />

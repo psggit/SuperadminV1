@@ -69,6 +69,10 @@ export BrandAds from './BrandsOffersAndPromos/BrandAds/BrandAds';
 export BrandPromos from './BrandsOffersAndPromos/BrandPromos/BrandPromos';
 export PromosInstantCashback from './BrandsOffersAndPromos/PromosInstantCashback/PromosInstantCashback';
 export RetailerManagementCreate from './RetailerManagement/CreateBranch/CreateBranch';
+
+export RetailerManagementBarCreate from './BarManagement/CreateBar/CreateBar';
+export RetailerManagementViewBar from './BarManagement/ViewBar/ViewBar';
+
 export RetailerManagementSettlementDetails from './RetailerManagement/RedemptionHistory/SettlementDetails';
 export RetailerManagementDeviceDetail from './RetailerManagement/DeviceDetail/DeviceDetail';
 export RetailerManagementDisableDevice from './RetailerManagement/DisableDevice/DisableDevice';
@@ -116,4 +120,9 @@ export ListSku from './SkuManagement/Skus/ListSku/ListSku';
 
 /* Retailer Management */
 export ProfileKyc from './RetailerManagement/ProfileKyc/ProfileKyc';
+/* */
+/* Bar */
+
+export BarProfileKyc from './BarManagement/ProfileKyc/BarProfileKyc';
+
 /* */
