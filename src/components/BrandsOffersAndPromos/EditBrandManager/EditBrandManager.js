@@ -25,7 +25,7 @@ class EditBrandManager extends Component { // eslint-disable-line no-unused-vars
       link: '#' // TODO
     });
     this.breadCrumbs.push({
-      title: 'Create Brand Manager',
+      title: 'Edit Brand Manager',
       sequence: 2,
       link: '#' // TODO
     });

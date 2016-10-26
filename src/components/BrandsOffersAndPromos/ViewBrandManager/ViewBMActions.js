@@ -54,7 +54,7 @@ const fetchBManager = (bmId) => {
     queryObj.where = {'id': bmId};
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -87,7 +87,7 @@ const fetchBrands = (companyId) => {
     }];
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -112,7 +112,7 @@ const fetchCompany = () => {
     queryObj.where = {'brands': { 'id': {'$gt': 0 }}};
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -135,7 +135,7 @@ const insertBrand = (brandObj) => {
 
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(insertObj)
     };
@@ -200,7 +200,7 @@ const sbListToOptions = (sbList, bmId) => {
   });
   const brOptions = {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
     credentials: globalCookiePolicy,
     body: JSON.stringify(brData),
   };
@@ -218,7 +218,7 @@ const bmInfoToOptions = (bmInfo) => {
   bmData.returning = ['id'];
   const options = {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
     credentials: globalCookiePolicy,
     body: JSON.stringify(bmData),
   };
@@ -277,7 +277,7 @@ const getBrandCount = () => {
     const url = Endpoints.db + '/table/' + 'brand' + '/count';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -340,7 +340,7 @@ const getBrandData = (page, limit) => {
     const url = Endpoints.db + '/table/' + 'brand' + '/select';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };

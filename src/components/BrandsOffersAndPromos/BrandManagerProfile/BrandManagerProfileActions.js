@@ -13,8 +13,6 @@ import { MAKE_REQUEST,
 // import { routeActions } from 'redux-simple-router';
 // import commonReducer from '../Common/Actions/CommonReducer';
 
-const FETCH_BRAND_MANAGERS = 'BRAND_MANAGER_PROFILE/FETCH_BRAND_MANAGERS';
-
 /* ****** Action Creators ******** */
 
 const getBrandManagerData = (page, limit) => {
@@ -39,7 +37,7 @@ const getBrandManagerData = (page, limit) => {
     const url = Endpoints.db + '/table/' + 'brand_manager' + '/select';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -81,7 +79,7 @@ const getBrandManagerCount = () => {
     const url = Endpoints.db + '/table/' + 'brand_manager' + '/count';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -134,8 +132,8 @@ const getAllBrandManagerData = (page, limit) => {
 const brandManagerProfileReducer = (state = defaultBrandManagerProfileState, action) => {
   console.log(action.type);
   switch (action.type) {
-    case FETCH_BRAND_MANAGERS:
-      return {...state, brandManagerList: action.data};
+    case REQUEST_SUCCESS:
+      return {...state, lastSuccess: action.data};
     default: return state;
   }
 };

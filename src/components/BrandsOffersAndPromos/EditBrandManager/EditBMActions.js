@@ -37,7 +37,7 @@ const fetchBrands = (companyId) => {
     queryObj.where = {'company_id': companyId, 'regions': {'id': {'$gt': 0}}};
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj)
     };
@@ -76,7 +76,7 @@ const fetchBManager = (bmId) => {
     queryObj.where = {'id': bmId};
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -103,7 +103,7 @@ const fetchCompany = () => {
     queryObj.where = {'brands': { 'id': {'$gt': 0 }}};
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -126,7 +126,7 @@ const insertBrand = (brandObj) => {
 
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(insertObj)
     };
@@ -190,7 +190,7 @@ const sbListToOptions = (sbList, bmId) => {
   });
   const brOptions = {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
     credentials: globalCookiePolicy,
     body: JSON.stringify(brData),
   };
@@ -207,7 +207,7 @@ const bmInfoUpdateOptions = (bmInfo) => {
   bmData.returning = ['id'];
   const options = {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
     credentials: globalCookiePolicy,
     body: JSON.stringify(bmData),
   };
@@ -224,7 +224,7 @@ const bmInfoToOptions = (bmInfo) => {
   bmData.returning = ['id'];
   const options = {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
     credentials: globalCookiePolicy,
     body: JSON.stringify(bmData),
   };
@@ -242,7 +242,7 @@ const createBM = (bmInfo, sbList) => {
         dispatch(requestAction(brUrl, brOptions)).then((resp) => {
           console.log(resp);
           return Promise.all([
-            dispatch(routeActions.push('/hadmin/brands_offers_and_promos/brand_manager_profile')),
+            dispatch(routeActions.push('/hadmin/brands_offers_and_promos/brand_managers_list')),
             dispatch({type: REQUEST_COMPLETED})
           ]);
         }).catch((brResp) => {
@@ -286,7 +286,7 @@ const deleteRegionsFunc = (dArr) => {
     data.returning = ['id'];
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(data),
     };
@@ -294,28 +294,31 @@ const deleteRegionsFunc = (dArr) => {
     return dispatch(requestAction(delRegionUrl, options)).then((response) => {
       console.log(response);
     }).catch((resp) => {
-      console.log(resp);
+      console.log(JSON.stringify(resp));
     });
   };
 };
 
 const insertRegionsFunc = (srList) => {
   return (dispatch) => {
-    const insertRegionUrl = Endpoints.db + '/table/managers/insert';
-    const brData = {};
-    brData.objects = srList;
-    brData.returning = ['id'];
-    const brOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(brData),
-    };
-    return dispatch(requestAction(insertRegionUrl, brOptions)).then((response) => {
-      console.log(response);
-    }).catch((resp) => {
-      console.log(resp);
-    });
+    if (srList.length > 0) {
+      const insertRegionUrl = Endpoints.db + '/table/managers/insert';
+      const brData = {};
+      brData.objects = srList;
+      brData.returning = ['id'];
+      const brOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+        credentials: globalCookiePolicy,
+        body: JSON.stringify(brData),
+      };
+      return dispatch(requestAction(insertRegionUrl, brOptions)).then((response) => {
+        console.log(response);
+      }).catch((resp) => {
+        console.log(resp);
+      });
+    }
+    alert('BrandManager Updated!');
   };
 };
 
@@ -388,7 +391,7 @@ const getBrandCount = () => {
     const url = Endpoints.db + '/table/' + 'brand' + '/count';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -447,7 +450,7 @@ const getBrandData = (page, limit) => {
     const url = Endpoints.db + '/table/' + 'brand' + '/select';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };

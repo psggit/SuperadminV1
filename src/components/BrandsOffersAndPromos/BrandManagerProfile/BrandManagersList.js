@@ -3,6 +3,8 @@ import { Link } from 'react-router';
 
 const BrandManagersList = ( {data} ) => {
   const styles = require('./BrandManagersList.scss');
+  console.log('amazing bullshit!');
+  console.log(data);
   let tableBody;
   let objHtml;
 
