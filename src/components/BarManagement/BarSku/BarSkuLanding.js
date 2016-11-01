@@ -12,6 +12,7 @@ const BarSkuLanding = ({dispatch}) => { // eslint-disable-line no-unused-vars
             <TableHeader title={'Bar Management/ Bar SKU Management '} />
             <div className="clearfix"></div>
             <div className={styles.entry_point_links}>
+                {/*
                 <div className = {styles.box_wrapper}>
                     <div className={styles.squarecontent}>
                         <div>
@@ -21,6 +22,7 @@ const BarSkuLanding = ({dispatch}) => { // eslint-disable-line no-unused-vars
                         </div>
                     </div>
                 </div>
+                */}
                 <div className = {styles.box_wrapper}>
                     <div className={styles.squarecontent}>
                         <div>
