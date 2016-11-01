@@ -60,6 +60,10 @@ const saveBar = () => {
       is_open: true
     };
 
+    if ( barState.barContact.branch_address ) {
+      barDataObj.address = barState.barContact.branch_address;
+    }
+
     const brInsertCheck = [
       'gps',
       'is_open',
@@ -70,7 +74,8 @@ const saveBar = () => {
       'bar_status',
       'city_id',
       'excise_licence_number',
-      'name'
+      'name',
+      'address'
     ];
     let brCheckStatus = true;
 
@@ -242,6 +247,10 @@ const updateBar = () => {
       gps: barState.barContact.gps_cordinates,
       city_id: barState.barContact.city_id
     };
+
+    if ( barState.barContact.branch_address ) {
+      barDataObj.address = barState.barContact.branch_address;
+    }
 
     const brInsertCheck = [
       'gps',
