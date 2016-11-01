@@ -1,0 +1,86 @@
+.container
+{
+	width: 100%;
+	float: left;
+}
+.wrapper {
+  width: 100%;
+  float: left;
+}
+.device_details_head
+{
+	font-size: 14px;
+	text-transform: uppercase;
+	margin-bottom: 10px;
+	text-align: left;
+	color: #9F9E9E;
+	font-weight: 500;
+	margin-left: 45px;
+  margin-top: 125px;
+}
+.device_details_wrapper
+{
+  width: 35%;
+  margin-left: 45px;
+  margin-top: 20px;
+	margin-bottom: 10px;
+  float: left;
+  background-color: #fff;
+  overflow: auto;
+  padding: 20px 15px;
+	.unlock_add_head
+	{
+		color:#FF7400;
+		padding-left: 15px;
+	}
+	.unlock_list_head
+	{
+		padding-top: 20px;
+		border-bottom: 1px solid #999;
+		padding-left: 15px;
+    padding-bottom: 5px;
+		text-transform: uppercase;
+	}
+	.unlock_listing
+	{
+		border-bottom: 1px solid #999;
+		.unlock_listing_name
+		{
+			padding-left: 15px;
+			padding-top: 15px;
+		}
+		.unlock_listing_date_container
+		{
+			padding-left: 15px;
+			padding-top: 15px;
+			.unlock_listing_fromdate
+			{
+				display: inline-block;
+				padding-right: 20px;
+			}
+			.unlock_listing_todate
+			{
+				display: inline-block;
+				padding-left: 20px;
+			}
+		}
+		.unlock_active_container
+		{
+			padding-left: 15px;
+			padding-top: 15px;
+			padding-bottom: 15px;
+			.unlock_active
+			{
+				display: inline-block;
+				width: 50%;
+			}
+			.unlock_view
+			{
+				display: inline-block;
+				color: #FF7400;
+				text-align: right;
+				width: 50%;
+			}
+		}
+	}
+}

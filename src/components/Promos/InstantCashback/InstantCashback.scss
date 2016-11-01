@@ -1,0 +1,868 @@
+.container
+{
+	width: 100%;
+	float: left;
+}
+.wd_100
+{
+	width: 100%;
+	float: left;
+}
+.wd_50
+{
+	width: 50%;
+	float: left;
+}
+.brand_wrapper
+{
+	width: 100%;
+	float: left;
+}
+.heading
+{
+	color: rgba(0,0,0,0.54);
+	font-weight: 500;
+	margin-bottom: 10px;
+	font-size: 14px; 
+	text-transform: uppercase;
+	text-align: left; 
+	letter-spacing: 0.3px;
+}
+.brand_component
+{
+	width: 100%;
+	float: left;
+}
+.brand_details_container
+{
+	background: #FFF;
+	padding: 20px 15px;
+	display: inline-block;
+	vertical-align: top;
+	float: left;
+	margin: 20px 45px;
+	ul
+	{
+		padding: 0;
+		margin: 0;
+		font-weight: 400;
+		list-style: none;
+	}
+	li
+	{
+		margin-bottom: 15px;
+		width: 100%;
+		float: left;
+		label
+		{
+			width: 170px;
+			font-weight: 400;
+			color: rgba(0,0,0,0.54);
+			font-size: 13px;
+			letter-spacing: 0.3px;
+		}
+		input, select
+		{
+			border: 1px solid #CCC;
+			border-radius: 3px;
+			padding: 5px 10px;
+			transition: all 0.2s;
+			background: #FFF;
+			font-size: 13px;
+			height: 30px;
+			color: rgba(0,0,0,0.9);
+			width: 170px;
+			&:focus
+			{
+				outline: none;
+				border: 1px solid #FF7400;
+			}
+			option
+			{
+				color: rgba(0,0,0,0.54);
+			}
+		}
+		textarea
+		{
+			border: 1px solid #CCC;
+			border-radius: 3px;
+			padding: 5px 10px;
+			transition: all 0.2s;
+			background: #FFF;
+			font-size: 13px;
+			vertical-align: top;
+			height: 100px;
+			resize: none;
+			color: rgba(0,0,0,0.9);
+			width: 170px;
+			&:focus
+			{
+				outline: none;
+				border: 1px solid #FF7400;
+			}
+		}
+	}
+}
+.brands_wrapper
+{
+	width: 100%;
+	float: left;
+	padding: 0 45px;
+}
+.select_sku_wrapper
+{
+	width: 100%;
+	float: left;
+	padding: 0 45px;	
+}
+.edit_brand_btn
+{
+	width: 130px;
+    height: 30px;
+    color: rgba(255, 116, 0, 0.8);
+    border: 1px solid #FF7400;
+    border-radius: 4px;
+    background: #FFF;
+    cursor: pointer;
+    font-weight: 400;
+    margin: auto;
+    margin-top: 20px;
+    display: block;
+    padding: 5px;
+    text-align: center;
+    font-size: 13px;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+    &:focus
+    {
+    	outline: none;
+    }
+    &:hover
+    {
+    	color: rgba(255, 116, 0 , 1);
+    }
+}
+.brand_container
+{
+	background: #FFF;
+	padding: 15px 15px;
+	width: 30%;
+	float: left;
+	margin-right: 2%;
+	.heading
+	{
+		color: rgba(0,0,0,0.54);
+		font-weight: 500;
+		margin-bottom: 10px;
+		font-size: 13px; 
+		letter-spacing: 0.3px;
+		text-transform: uppercase;
+	}
+	.add_lab
+	{
+		color: #FF7400;
+		font-size: 13px;
+		letter-spacing: 0.3px;
+		float: left;
+		cursor: pointer;
+	}
+	ul
+	{
+		padding: 0;
+		margin: 0;
+		font-weight: 400;
+		width: 100%;
+		float: left;
+		list-style: none;
+		height: 560px;
+		overflow: auto;
+	}
+	li
+	{
+		margin-top: 15px;
+		label
+		{
+			width: 70%;
+			font-weight: 400;
+			color: rgba(0,0,0,0.54);
+			font-size: 13px;
+			letter-spacing: 0.3px;
+			float: left;
+		}
+		p
+		{
+			width: 30%;
+			float: left;
+			color: #FF7400;
+			font-size: 13px;
+			text-align: right;
+		}
+	}	
+}
+.sku_container
+{
+	background: #FFF;
+	padding: 15px 15px;
+	width: 35%;
+	float: left;
+	.add_sku_lab
+	{
+		color: #FF7400;
+    	font-size: 13px;
+    	letter-spacing: 0.3px;
+    	float: left;
+    	margin-bottom: 0;
+    	cursor: pointer;
+    	margin-bottom: 10px;
+	}
+	.heading
+	{
+		color: rgba(0,0,0,0.54);
+		font-weight: 500;
+		margin-bottom: 10px;
+		font-size: 13px; 
+		letter-spacing: 0.3px;
+		text-transform: uppercase;
+	}
+	input[type="text"], select
+	{
+		border: 1px solid #CCC;
+		border-radius: 3px;
+		padding: 5px 10px;
+		transition: all 0.2s;
+		background: #FFF;
+		font-size: 13px;
+		height: 30px;
+		color: rgba(0,0,0,0.9);
+		width: 170px;
+		&:focus
+		{
+			outline: none;
+			border: 1px solid #FF7400;
+		}
+		option
+		{
+			color: rgba(0,0,0,0.54);
+		}
+	}
+}
+.select_sku_container
+{
+	width: 63%;
+	margin-left: 2%;
+	float: left;
+	background: #FFF;
+	padding: 15px;
+	.copy_sku
+	{
+		width: 100%;
+		float: left;
+		margin-bottom: 15px;
+		p
+		{
+			width: 200px;
+			font-size: 13px;
+			color: rgba(0, 0, 0, 0.54);
+			float: left;
+			display: inline-block;
+			vertical-align: middle;
+		}
+		select
+		{
+			border: 1px solid #CCC;
+			border-radius: 3px;
+			padding: 5px 10px;
+			transition: all 0.2s;
+			background: #FFF;
+			font-size: 13px;
+			display: inline-block;
+			vertical-align: middle;
+			height: 30px;
+			color: rgba(0,0,0,0.9);
+			width: 170px;
+			&:focus
+			{
+				outline: none;
+				border: 1px solid #FF7400;
+			}
+			option
+			{
+				color: rgba(0,0,0,0.54);
+			}
+		}
+	}
+	.user_actions
+	{
+		width: 100%;
+		float: left;
+		text-align: center;
+		padding-top: 10px;
+		button
+		{
+			width: 130px;
+		    height: 30px;
+		    color: rgba(255, 116, 0, 0.8);
+		    border: 1px solid #FF7400;
+		    border-radius: 4px;
+		    background: #FFF;
+		    cursor: pointer;
+		    font-weight: 400;
+		    margin: auto;
+		    margin-top: 10px;
+		    display: inline-block;
+		    padding: 5px;
+		    text-align: center;
+		    font-size: 13px;
+		    margin-bottom: 10px;
+		    letter-spacing: 0.5px;
+		    margin-right: 10px;
+		    &:focus
+		    {
+		    	outline: none;
+		    }
+		    &:hover
+		    {
+		    	color: rgba(255, 116, 0 , 1);
+		    }
+		}
+	}
+}
+
+.brands_container
+{
+	width: 100%;
+	float: left;
+	background: #FFF;
+	.heading
+	{
+		color: rgba(0,0,0,0.4);
+		margin-bottom: 15px;
+		font-size: 13px; 
+		width: 100%;
+		float: left;
+		letter-spacing: 0.3px;
+		text-transform: uppercase;
+		label
+		{
+			display: inline-block;
+			vertical-align: top;
+			font-weight: 500;
+			margin-bottom: 0;
+		}
+		p
+		{
+			text-transform: none;
+			color: rgba(0,0,0,0.54);
+			font-weight: 400;
+			margin: 0;
+			font-weight: 500;
+			display: inline-block;
+			vertical-align: top;
+			float: right;
+			text-align: right;
+		}
+	}
+	ul
+	{
+		padding: 0;
+		margin: 0;
+		font-weight: 400;
+		width: 100%;
+		float: left;
+		list-style: none;
+		height: 507px;
+		overflow: auto;
+	}
+	li
+	{
+		margin-bottom: 10px;
+		width: 100%;
+		float: left;
+		label
+		{
+			width: 70%;
+			font-weight: 400;
+			color: rgba(0,0,0,0.54);
+			font-size: 13px;
+			letter-spacing: 0.3px;
+			float: left;
+		}
+		p
+		{
+			width: 30%;
+			float: left;
+			color: #FF7400;
+			font-size: 13px;
+			text-align: right;
+			margin-bottom: 0;
+		}
+	}	
+}
+.brands_ml_container
+{
+	width: 49%;
+	float: left;
+	margin-right: 1%;
+	padding: 10px;
+	background: #FFF;
+	border: 1px solid #DDD;
+	.heading
+	{
+		color: rgba(0,0,0,0.4);
+		margin-bottom: 15px;
+		font-size: 13px; 
+		width: 100%;
+		float: left;
+		letter-spacing: 0.3px;
+		text-transform: uppercase;
+	}
+	ul
+	{
+		padding: 0;
+		margin: 0;
+		font-weight: 400;
+		width: 100%;
+		float: left;
+		list-style: none;
+		height: 374px;
+		overflow: auto;
+	}
+	li
+	{
+		margin-bottom: 10px;
+		width: 100%;
+		float: left;
+		label
+		{
+			width: 70%;
+			font-weight: 400;
+			color: rgba(0,0,0,0.54);
+			font-size: 13px;
+			letter-spacing: 0.3px;
+			float: left;
+		}
+		p
+		{
+			width: 30%;
+			float: left;
+			color: #FF7400;
+			font-size: 13px;
+			text-align: right;
+			margin-bottom: 0;
+		}
+	}	
+}
+.product_ml_container
+{
+	width: 49%;
+	margin-left: 1%;
+	float: left;
+	padding: 10px;
+	background: #FFF;
+	border: 1px solid #DDD;
+	.heading
+	{
+		color: rgba(0,0,0,0.4);
+		margin-bottom: 15px;
+		font-size: 13px; 
+		width: 100%;
+		float: left;
+		letter-spacing: 0.3px;
+		text-transform: uppercase;
+	}
+	ul
+	{
+		padding: 0;
+		margin: 0;
+		font-weight: 400;
+		width: 100%;
+		float: left;
+		list-style: none;
+		height: 374px;
+		overflow: auto;
+	}
+	li
+	{
+		margin-bottom: 10px;
+		width: 100%;
+		float: left;
+		label
+		{
+			font-weight: 400;
+			color: rgba(0,0,0,0.54);
+			font-size: 13px;
+			display: inline-block;
+			letter-spacing: 0.3px;
+			float: left;
+		}
+		input[type="checkbox"]
+		{
+			margin-right: 5px;
+		}
+	}
+}
+.cheque_upload_container 
+{
+  width: 100%;
+  border: 1px solid #DFDFDF;
+  float: left;
+  background: #FFF;
+  .check_upload
+  {
+  	width: 100%;
+  	float: left;
+  	.check_lab
+  	{
+  		padding: 10px;
+  		background: #DFDFDF;
+  		width: 100%;
+  		float: left;
+  		letter-spacing: 0.5px;
+  		font-weight: 500;
+  		font-size: 13px;
+  		color: #4F4F4F;
+  	}
+  	.upload_container
+  	{
+  		width: 100%;
+  		float: left;
+  		padding: 20px;
+  		text-align: center;
+  	}
+  	.input_upload
+	{
+		width: 250px;
+		padding: 10px;
+		border: 1px solid #DDD;
+		border-style: dashed;
+		display: inline-block;
+		margin-bottom: 20px;
+	}
+	.upload_btn
+	{
+		width: 130px;
+	    height: 30px;
+	    color: rgba(255, 116, 0, 0.8);
+	    border: 1px solid #FF7400;
+	    border-radius: 4px;
+	    background: #FFF;
+	    cursor: pointer;
+	    font-weight: 400;
+	    display: inline-block;
+	    padding: 5px;
+	    text-align: center;
+	    font-size: 13px;
+	    letter-spacing: 0.5px;
+	    &:focus
+	    {
+	    	outline: none;
+	    }
+	    &:hover
+	    {
+	    	color: rgba(255, 116, 0 , 1);
+	    }
+	}
+  }
+}
+.uploaded_images
+{
+	width: 100%;
+	float: left;
+	padding: 10px;
+	height: 185px;
+	overflow: auto;
+	margin-bottom: 5px;
+	white-space: nowrap;
+	.image_actions
+	{
+		width: 200px;
+		position: relative;
+		max-height: 165px;
+		height: 165px;
+		margin-right: 15px;
+		box-shadow: 0 0 1px 2px rgba(0,0,0,0.1);
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+		vertical-align: top;
+		.close
+		{
+		  position: absolute;
+		  top: -8px;
+		  right: -8px;
+		  width: 20px;
+		  height: 20px;
+		  border-radius: 100%;
+		  background: #353535;
+		  color: #FFF;
+		  font-size: 14px;
+		  text-align: center;
+		  cursor: pointer;
+		  margin: 0;
+		}
+	}
+	img
+	{
+		max-width: 100%;
+		max-height: 165px;
+		display: inline-block;
+		vertical-align: middle;
+	}
+	img:last-child
+	{
+	    margin-right: 0;
+	}
+}
+.upload_actions
+{
+	width: 100%;
+	float: left;
+	background: #FFF;
+  	border: 1px solid #FF7400;
+  	padding: 5px;
+  	border-style: dashed;
+  	input[type="file"]
+ 	{
+    	display: inline-block;
+    	height: 29px;
+    	cursor: pointer;
+    	&:focus
+    	{
+      		outline: none;
+    	}
+  	}
+    .upload_action_button
+    {
+        display: inline-block;
+        vertical-align: middle;
+        float: right;
+        button
+        {
+          background: #2B98DE;
+          color: rgba(255,255,255,0.9);
+          border-radius: 3px;
+          padding: 5px 15px;
+          border: 0;
+          &:focus
+          {
+            outline: none;
+          }
+          &:hover
+          {
+            color: rgba(255,255,255,1);
+          }
+        }
+    }
+}
+
+
+.device_container
+{
+	width: 100%;
+	float: left;
+	padding: 10px 45px;
+	text-align: center;
+	.save_promo_lay
+	{
+		width: 100%;
+		float: left;
+		button
+		{
+			width: 130px;
+		    height: 30px;
+		    color: rgba(255, 116, 0, 0.8);
+		    border: 1px solid #FF7400;
+		    border-radius: 4px;
+		    background: #FFF;
+		    cursor: pointer;
+		    font-weight: 400;
+		    margin: auto;
+		    margin-top: 10px;
+		    display: inline-block;
+		    padding: 5px;
+		    text-align: center;
+		    font-size: 13px;
+		    margin-bottom: 10px;
+		    letter-spacing: 0.5px;
+		    margin-right: 10px;
+		    &:focus
+		    {
+		    	outline: none;
+		    }
+		    &:hover
+		    {
+		    	color: rgba(255, 116, 0 , 1);
+		    }
+		}
+	}
+}
+.device_items_container
+{
+	width: 35%;
+	float: left;
+	background: #FFF;
+	padding: 20px 15px;
+	margin-right: 1%;
+	text-align: left;
+	.device_lab
+	{
+		color: rgba(0,0,0,0.54);
+		font-weight: 500;
+		margin-bottom: 10px;
+		font-size: 13px; 
+		text-transform: uppercase;
+		letter-spacing: 0.3px;	
+		p
+		{
+			float: right;
+			font-size: 12px;
+			color: rgba(0,0,0,0.54);
+		}
+	}
+	.add_promo_lab
+	{
+		color: #FF7400;
+    	font-size: 13px;
+    	letter-spacing: 0.3px;
+    	float: left;
+    	margin-bottom: 0;
+    	cursor: pointer;
+	}
+	.items_list_container
+	{
+		width: 100%;
+		float: left;
+		height: 500px;
+		overflow: auto;
+	}
+	.indiv_item
+	{
+		width: 100%;
+		float: left;
+		padding-top: 10px;
+		text-align: left;
+	}
+	.heading_container
+	{
+		width: 100%;
+		float: left;
+		.heading_lab
+		{
+			width: 70%;
+			float: left;
+			font-size: 13px;
+			color: rgba(0, 0, 0, 0.54);
+			margin-bottom: 2px;
+		}
+		.edit_lab
+		{
+			width: 30%;
+			float: left;
+			color: #FF7400;
+    		font-size: 13px;
+    		letter-spacing: 0.3px;
+    		cursor: pointer;
+    		text-align: center;
+    		margin-bottom: 2px;
+		}
+	}
+	.custom_table_td
+	{
+		border-bottom: 1px solid #CECECE;
+		margin-top: 5px;
+		padding-bottom: 5px;
+	}
+	.table_th
+	{
+		font-size: 11.5px;
+		color: rgba(0,0,0,0.54);
+		font-weight: 500;
+		margin-bottom: 2px;
+	}
+	.table_td
+	{
+		font-size: 12px;
+		color: rgba(0,0,0,0.54);
+	}
+}
+.promo_details_container
+{
+	width: 63%;
+	float: left;
+	margin-left: 1%;
+	background: #FFF;
+	padding: 20px 15px;
+	.success_msg_lab
+	{
+		color: rgba(0, 0, 0, 0.54);
+	    font-size: 13px;
+	    letter-spacing: 0.3px;
+	    width: 150px;
+	    float: left;
+	    text-align: left;
+	    font-weight: 400;
+	    display: inline-block;
+	    vertical-align: top;
+	}
+	.user_actions
+	{
+		width: 100%;
+		float: left;
+		text-align: center;
+		padding-top: 10px;
+		button
+		{
+			width: 130px;
+		    height: 30px;
+		    color: rgba(255, 116, 0, 0.8);
+		    border: 1px solid #FF7400;
+		    border-radius: 4px;
+		    background: #FFF;
+		    cursor: pointer;
+		    font-weight: 400;
+		    margin: auto;
+		    margin-top: 10px;
+		    display: inline-block;
+		    padding: 5px;
+		    text-align: center;
+		    font-size: 13px;
+		    margin-bottom: 10px;
+		    letter-spacing: 0.5px;
+		    margin-right: 10px;
+		    &:focus
+		    {
+		    	outline: none;
+		    }
+		    &:hover
+		    {
+		    	color: rgba(255, 116, 0 , 1);
+		    }
+		}
+	}
+	.margin_bottom
+	{
+		margin-bottom: 10px;
+	}
+	input[type="text"]
+	{
+		border: 1px solid #CCC;
+		border-radius: 3px;
+		padding: 5px 10px;
+		transition: all 0.2s;
+		background: #FFF;
+		font-size: 13px;
+		float: left;
+		height: 30px;
+		color: rgba(0,0,0,0.9);
+		width: 170px;
+		&:focus
+		{
+			outline: none;
+			border: 1px solid #FF7400;
+		}
+		option
+		{
+			color: rgba(0,0,0,0.54);
+		}
+	}
+}
