@@ -72,8 +72,7 @@ export RetailerManagementCreate from './RetailerManagement/CreateBranch/CreateBr
 
 export RetailerManagementBarCreate from './BarManagement/CreateBar/CreateBar';
 export RetailerManagementViewBar from './BarManagement/ViewBar/ViewBar';
-export BarManagementUnlockBar from './BarManagement/UnlockBar/UnlockBar';
-export BarManagementAddSKU from './BarManagement/UnlockBarAddSKU/UnlockBarAddSKU';
+
 export RetailerManagementSettlementDetails from './RetailerManagement/RedemptionHistory/SettlementDetails';
 export RetailerManagementDeviceDetail from './RetailerManagement/DeviceDetail/DeviceDetail';
 export RetailerManagementDisableDevice from './RetailerManagement/DisableDevice/DisableDevice';
@@ -131,5 +130,7 @@ export BarSkuLanding from './BarManagement/BarSku/BarSkuLanding';
 export BarSkuCreateLanding from './BarManagement/BarSkuCreateLanding/BarSkuCreateLanding';
 export BarSkuCreate from './BarManagement/CreateSKU/CreateSku';
 export BarList from './BarManagement/ListBar/ListBar';
+export BarManagementUnlockBar from './BarManagement/UnlockBar/UnlockBar';
+export BarManagementAddSKU from './BarManagement/UnlockBarAddSKU/UnlockBarAddSKU';
 
 /* */

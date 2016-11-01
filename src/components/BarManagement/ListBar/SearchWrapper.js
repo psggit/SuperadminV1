@@ -10,7 +10,7 @@ const SearchWrapper = ( {data} ) => {
     return (
           <tr key={index}>
             <td>
-              <Link to={'/hadmin/bar_management/edit_bar/' + dat.id}>
+              <Link to={'/hadmin/bar_management/add_sku/' + dat.id}>
                 <button className={styles.edit_btn} data-genre-id={dat.id}>
                   View
                 </button>
