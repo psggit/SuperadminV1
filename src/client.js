@@ -59,7 +59,7 @@ import {Login, Home, PageContainer,
   ParameterManagementNotepadCreateCode, ParameterManagementRetailerManualDebitCreditCodes, ParameterManagementRetailerManualCreateCode,
   ParameterManagementConsumerDisableAccountCode, ParameterManagementConsumerDisableAccountCreateCode, ParameterManagementConsumerDeviceAccountCodes,
   ParameterManagementConsumerDeviceAccountCreateCode, AccountingEODReport, AccountingSettlementReport, AccountingUploadPayUReport,
-  AccountingUploadSettlementReport,
+  AccountingUploadSettlementReport, BarManagementUnlockBar, BarManagementAddSKU,
   ViewBrandManager,
   EditBrandManager,
   ProfileKyc,
@@ -210,8 +210,8 @@ const main = (
 
         <Route path="bar_management/create_bar" component={RetailerManagementBarCreate} />
         <Route path="bar_management/edit_bar/:brId" component={RetailerManagementBarCreate} />
-
-
+        <Route path="bar_management/unlock_bar" component={BarManagementUnlockBar} />
+        <Route path="bar_management/add_sku" component={BarManagementAddSKU} />
         <Route path="bar_management/bar_profile_and_kyc" component={BarProfileKyc} />
         <Route path="bar_management/view_bars" component={RetailerManagementViewBar} />
 
