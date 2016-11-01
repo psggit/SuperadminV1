@@ -125,4 +125,10 @@ export ProfileKyc from './RetailerManagement/ProfileKyc/ProfileKyc';
 
 export BarProfileKyc from './BarManagement/ProfileKyc/BarProfileKyc';
 
+export BarSkuLanding from './BarManagement/BarSku/BarSkuLanding';
+
+export BarSkuCreateLanding from './BarManagement/BarSkuCreateLanding/BarSkuCreateLanding';
+export BarSkuCreate from './BarManagement/CreateSKU/CreateSku';
+export BarList from './BarManagement/ListBar/ListBar';
+
 /* */

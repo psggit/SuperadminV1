@@ -167,7 +167,7 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
                   <Link to={'/hadmin/bar_management/bar_profile_and_kyc'} className={ lastPathname === 'profiles' ? styles.active : '' }> Profile & KYC </Link>
               </label></li>
               <li className={styles.sidebar_list}><label>
-                  <Link to={'/hadmin/consumer/profiles'} className={ lastPathname === 'profiles' ? styles.active : '' }> Transactions </Link>
+                  <Link to={'/hadmin/bar_management/bar_sku_landing'} className={ lastPathname === 'profiles' ? styles.active : '' }> BAR SKU MANAGEMENT </Link>
               </label></li>
               </ul>
             </li>

@@ -63,7 +63,11 @@ import {Login, Home, PageContainer,
   ViewBrandManager,
   EditBrandManager,
   ProfileKyc,
-  BarProfileKyc
+  BarProfileKyc,
+  BarSkuLanding,
+  BarSkuCreateLanding,
+  BarSkuCreate,
+  BarList
 } from './components'; // eslint-disable-line no-unused-vars
 import {AddTable} from './components';
 import {loadCredentials} from './components/Login/Actions';
@@ -214,6 +218,11 @@ const main = (
 
         <Route path="bar_management/bar_profile_and_kyc" component={BarProfileKyc} />
         <Route path="bar_management/view_bars" component={RetailerManagementViewBar} />
+
+        <Route path="bar_management/bar_sku_landing" component={BarSkuLanding} />
+        <Route path="bar_management/bar_sku_create_landing" component={BarSkuCreateLanding} />
+        <Route path="bar_management/bar_sku_create/create_new" component={BarSkuCreate} />
+        <Route path="bar_management/list_bars" component={BarList} />
 
         <Route path="retailer_management/settlement_details" component={RetailerManagementSettlementDetails} />
         <Route path="retailer_management/device_details" component={RetailerManagementDeviceDetail} />
