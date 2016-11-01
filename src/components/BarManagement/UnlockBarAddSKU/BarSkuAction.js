@@ -45,7 +45,8 @@ const getSkus = ( cityId ) => {
         'cities': {
           'id': parseInt(cityId, 10)
         }
-      }
+      },
+      'is_active': true
     };
 
     const options = {
