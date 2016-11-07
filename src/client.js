@@ -9,7 +9,7 @@ import createLogger from 'redux-logger';
 import thunk from 'redux-thunk';
 
 import {Provider} from 'react-redux';
-import {Router, browserHistory, Route, IndexRoute} from 'react-router';
+import {Redirect, Router, browserHistory, Route, IndexRoute} from 'react-router';
 import {syncHistory} from 'redux-simple-router';
 import {compose, createStore, applyMiddleware} from 'redux';
 
@@ -125,6 +125,9 @@ const requireLoginAndSchema = (nextState, replaceState, cb) => {
 
 const main = (
     <Router history={browserHistory} >
+      {/* Redirect all root traffic to hadmin....so / has a route */}
+      <Redirect from="/" to="/hadmin" />
+      {/**/}
       <Route path="/hadmin/login" component={Login} />
       <Route path="/hadmin" component={PageContainer} onEnter={ requireLoginAndSchema }>
         <IndexRoute component={Home} />
@@ -202,8 +205,13 @@ const main = (
         <Route path="brands_offers_and_promos/brand_manager_edit/:Id" component={EditBrandManager} />
         <Route path="brands_offers_and_promos/create_brand_manager" component={CreateBrandManager} />
         <Route path="brands_offers_and_promos/ads" component={BrandAds} />
+        {/* Promo content */}
         <Route path="brands_offers_and_promos/promos" component={BrandPromos} />
+        {/* Promo choose menu*/}
+
+        {/* Promo instant Cashback*/}
         <Route path="brands_offers_and_promos/promos/instant_cashback" component={PromosInstantCashback} />
+
         <Route path="retailer_management/create_branch" component={RetailerManagementCreate} />
         <Route path="retailer_management/edit_branch/:brId" component={RetailerManagementCreate} />
         <Route path="retailer_management/settlement_details" component={RetailerManagementSettlementDetails} />
