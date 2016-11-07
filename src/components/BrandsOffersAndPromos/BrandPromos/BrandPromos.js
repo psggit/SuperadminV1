@@ -22,7 +22,7 @@ const BrandPromos = () => { // eslint-disable-line no-unused-vars
               <div className={styles.squarecontent}>
                   <div>
                       <span>
-                          <Link to={'/hadmin/consumer_transactions/reservations'}>Create Campaign</Link>
+                          <Link to={'/hadmin/brands_offers_and_promos/promos/all'}>Create Campaign</Link>
                       </span>
                   </div>
               </div>
