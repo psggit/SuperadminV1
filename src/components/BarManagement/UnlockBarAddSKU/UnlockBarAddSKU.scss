@@ -1,0 +1,230 @@
+.container
+{
+	width: 100%;
+	float: left;
+}
+.wrapper {
+  width: 100%;
+  float: left;
+}
+.device_details_head
+{
+	font-size: 14px;
+	text-transform: uppercase;
+	margin-bottom: 10px;
+	text-align: left;
+	color: #9F9E9E;
+	font-weight: 500;
+	margin-left: 45px;
+  margin-top: 125px;
+}
+.device_details_wrapper
+{
+  width: 35%;
+  margin-left: 45px;
+  margin-top: 20px;
+	margin-bottom: 10px;
+  float: left;
+  background-color: #fff;
+  overflow: auto;
+  padding: 20px 15px;
+	.unlock_add_head
+	{
+		color:#FF7400;
+		padding-left: 15px;
+    cursor: pointer;
+	}
+	.unlock_list_head
+	{
+		padding-top: 20px;
+		border-bottom: 1px solid #999;
+		padding-left: 15px;
+    padding-bottom: 5px;
+		text-transform: uppercase;
+	}
+	.unlock_listing
+	{
+		border-bottom: 1px solid #999;
+		.unlock_listing_name
+		{
+			padding-left: 15px;
+			padding-top: 15px;
+		}
+		.unlock_listing_date_container
+		{
+			padding-left: 15px;
+			padding-top: 15px;
+			.unlock_listing_fromdate
+			{
+				display: inline-block;
+				padding-right: 20px;
+			}
+			.unlock_listing_todate
+			{
+				display: inline-block;
+				padding-left: 20px;
+			}
+		}
+		.unlock_active_container
+		{
+			padding-left: 15px;
+			padding-top: 15px;
+			padding-bottom: 15px;
+			.unlock_active
+			{
+				display: inline-block;
+				width: 50%;
+			}
+			.unlock_view
+			{
+				display: inline-block;
+				color: #FF7400;
+				text-align: right;
+				width: 50%;
+        cursor: pointer;
+			}
+		}
+	}
+}
+.add_sku_wrapper
+{
+  width: 35%;
+  margin-left: 45px;
+  margin-top: 20px;
+	margin-bottom: 10px;
+  float: left;
+  background-color: #fff;
+  overflow: auto;
+  padding: 20px 15px;
+  .save_sku {
+    width: 50%;
+    padding-top: 20px;
+    margin: 0 auto;
+    text-align: center;
+    button {
+	    width: 130px;
+      height: 30px;
+      color: rgba(255, 116, 0, 0.8);
+      border: 1px solid #FF7400;
+      border-radius: 4px;
+      background: #FFF;
+      cursor: pointer;
+      font-weight: 400;
+      margin: auto;
+      margin-top: 20px;
+      display: block;
+      padding: 5px;
+      text-align: center;
+      font-size: 13px;
+      margin-bottom: 20px;
+      letter-spacing: 0.5px;
+      &:focus
+      {
+      	outline: none;
+      }
+      &:hover
+      {
+      	color: rgba(255, 116, 0 , 1);
+      }
+    }
+
+  }
+  .edit_sku {
+    width: 100%;
+    padding-top: 20px;
+    margin: 0 auto;
+    text-align: center;
+    button {
+	    width: 130px;
+      height: 30px;
+      color: rgba(255, 116, 0, 0.8);
+      border: 1px solid #FF7400;
+      border-radius: 4px;
+      background: #FFF;
+      cursor: pointer;
+      font-weight: 400;
+      margin: auto;
+      margin-top: 20px;
+      display: block;
+      padding: 5px;
+      text-align: center;
+      font-size: 13px;
+      margin-bottom: 20px;
+      letter-spacing: 0.5px;
+      &:focus
+      {
+      	outline: none;
+      }
+      &:hover
+      {
+      	color: rgba(255, 116, 0 , 1);
+      }
+    }
+    .edit_sku_cancel {
+      float: left;
+    }
+    .edit_sku_update {
+      float: right;
+    }
+  }
+	.add_sku_head
+	{
+		border-bottom: 1px solid #999;
+    padding-bottom: 5px;
+	}
+	.command_wrapper
+	{
+		margin-top: 10px;
+		.information_leftpanel
+	  {
+	    width: 40%;
+	    display: inline-block;
+	    color: #000;
+	    font-weight: 400;
+	  }
+	  .information_rightpanel
+	  {
+	    width: 60%;
+	    display: inline-block;
+	    color: #9F9E9E;
+	    font-weight: 400;
+			textarea
+			{
+				border: 1px solid #ccc;
+				border-radius: 4px;
+				padding: 5px 10px;
+				transition: all 0.2s;
+				background-color: #fff;
+				font-size: 13px;
+				vertical-align: top;
+				height: 100px;
+				resize: none;
+				color: #000;
+				width: 170px;
+				margin-bottom: 10px;
+			}
+			textarea:focus
+			{
+				outline: none;
+				border: 1px solid #FF7400;
+			}
+			input
+			{
+				border: 1px solid #ccc;
+				border-radius: 4px;
+				padding: 5px 10px;
+				transition: all 0.2s;
+				background-color: #fff;
+				font-size: 13px;
+				height: 30px;
+				color: #000;
+				width: 170px;
+			}
+			input:focus
+			{
+				outline: none;
+				border: 1px solid #FF7400;
+			}
+	  }
+	}
+}

@@ -36,7 +36,7 @@ const fetchBrands = (companyId) => {
     queryObj.where = {'company_id': companyId, 'regions': {'id': {'$gt': 0}}};
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -61,7 +61,7 @@ const fetchCompany = () => {
     queryObj.where = {'brands': { 'id': {'$gt': 0 }}};
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -84,7 +84,7 @@ const insertBrand = (brandObj) => {
 
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(insertObj)
     };
@@ -149,7 +149,7 @@ const sbListToOptions = (sbList, bmId) => {
   });
   const brOptions = {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
     credentials: globalCookiePolicy,
     body: JSON.stringify(brData),
   };
@@ -167,7 +167,7 @@ const bmInfoToOptions = (bmInfo) => {
   bmData.returning = ['id'];
   const options = {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
     credentials: globalCookiePolicy,
     body: JSON.stringify(bmData),
   };
@@ -187,7 +187,7 @@ const createBM = (bmInfo, sbList) => {
           console.log('Brand Map Saved!!');
           console.log(resp);
           return Promise.all([
-            dispatch(routeActions.push('/hadmin/brands_offers_and_promos/brand_manager_profile')),
+            dispatch(routeActions.push('/hadmin/brands_offers_and_promos/brand_managers_list')),
             dispatch({type: REQUEST_COMPLETED})
           ]);
         }).catch((brResp) => {
@@ -226,7 +226,7 @@ const getBrandCount = () => {
     const url = Endpoints.db + '/table/' + 'brand' + '/count';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -289,7 +289,7 @@ const getBrandData = (page, limit) => {
     const url = Endpoints.db + '/table/' + 'brand' + '/select';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };

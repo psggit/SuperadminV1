@@ -48,7 +48,7 @@ import {Login, Home, PageContainer,
   BrandManagerProfile,
   CreateBrandManager,
   CompaniesManagement,
-  ManageCompanies, BrandAds, BrandPromos, PromosInstantCashback, RetailerManagementCreate,
+  ManageCompanies, BrandAds, BrandPromos, PromosInstantCashback, RetailerManagementCreate, RetailerManagementBarCreate, RetailerManagementViewBar,
   RetailerManagementSettlementDetails, RetailerManagementDeviceDetail, RetailerManagementDisableDevice,
   RetailerManagementTransactions, RetailerManagementCreateOrganization, CustomerSupportCustomerProfile,
   RetailerManagementViewOrganization,
@@ -59,10 +59,15 @@ import {Login, Home, PageContainer,
   ParameterManagementNotepadCreateCode, ParameterManagementRetailerManualDebitCreditCodes, ParameterManagementRetailerManualCreateCode,
   ParameterManagementConsumerDisableAccountCode, ParameterManagementConsumerDisableAccountCreateCode, ParameterManagementConsumerDeviceAccountCodes,
   ParameterManagementConsumerDeviceAccountCreateCode, AccountingEODReport, AccountingSettlementReport, AccountingUploadPayUReport,
-  AccountingUploadSettlementReport,
+  AccountingUploadSettlementReport, BarManagementUnlockBar, BarManagementAddSKU,
   ViewBrandManager,
   EditBrandManager,
-  ProfileKyc
+  ProfileKyc,
+  BarProfileKyc,
+  BarSkuLanding,
+  BarSkuCreateLanding,
+  BarSkuCreate,
+  BarList
 } from './components'; // eslint-disable-line no-unused-vars
 import {AddTable} from './components';
 import {loadCredentials} from './components/Login/Actions';
@@ -214,6 +219,19 @@ const main = (
 
         <Route path="retailer_management/create_branch" component={RetailerManagementCreate} />
         <Route path="retailer_management/edit_branch/:brId" component={RetailerManagementCreate} />
+
+        <Route path="bar_management/create_bar" component={RetailerManagementBarCreate} />
+        <Route path="bar_management/edit_bar/:brId" component={RetailerManagementBarCreate} />
+        <Route path="bar_management/unlock_bar" component={BarManagementUnlockBar} />
+        <Route path="bar_management/add_sku/:barId" component={BarManagementAddSKU} />
+        <Route path="bar_management/bar_profile_and_kyc" component={BarProfileKyc} />
+        <Route path="bar_management/view_bars" component={RetailerManagementViewBar} />
+
+        <Route path="bar_management/bar_sku_landing" component={BarSkuLanding} />
+        <Route path="bar_management/bar_sku_create_landing" component={BarSkuCreateLanding} />
+        <Route path="bar_management/bar_sku_create/create_new" component={BarSkuCreate} />
+        <Route path="bar_management/list_bars" component={BarList} />
+
         <Route path="retailer_management/settlement_details" component={RetailerManagementSettlementDetails} />
         <Route path="retailer_management/device_details" component={RetailerManagementDeviceDetail} />
         <Route path="retailer_management/disable_device" component={RetailerManagementDisableDevice} />

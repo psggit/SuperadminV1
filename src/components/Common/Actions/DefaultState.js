@@ -127,7 +127,7 @@ const defaultConsumerState = {
 };
 
 const defaultBrandManagerProfileState = {
-  brandManagerList: []
+  lastSuccess: [{company: {}}]
 };
 
 const defaultCreateBrandManagerState = {
