@@ -70,10 +70,10 @@ class ViewBrandManager extends Component { // eslint-disable-line no-unused-vars
       return count;
     };
     // Remains same, fill it when component mounts
-    const selectedBrandsHtml = selectedBrandsList.map((sb) => {
+    const selectedBrandsHtml = selectedBrandsList.map((sb, index) => {
       const count = getActiveRegionCount([...sb.regions]);
       return (
-        <li>
+        <li key={index}>
           <label>{sb.brand_name}</label>
           <p className={styles.pointer_click} onClick={this.onClickExistingBrand.bind(this, sb.id)}>{count} {(count !== 1) ? 'Regions' : 'Region' }</p>
         </li>

@@ -157,21 +157,25 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
               </ul>
             </li>
           </ul>
-
-          {/*
+          {/* The Brand MANAGER UI*/}
           <ul>
             <li><input type="checkbox" id="cb5"/><label htmlFor="cb5">BRAND MANAGER</label>
               <ul>
-              <li className={styles.sidebar_list}><label>
-                  <Link to={'/hadmin/consumer/kycfunctions'} className={ lastPathname === 'profiles' ? styles.active : '' }> Brand 1 </Link>
-              </label></li>
-              <li className={styles.sidebar_list}><label>
-                  <Link to={'/hadmin/consumer/profiles'} className={ lastPathname === 'profiles' ? styles.active : '' }>Brand 2</Link>
-              </label></li>
+              <li className={styles.sidebar_list}>
+                <label>
+                  <Link to={'/hadmin/brands_offers_and_promos/promos'} className={ lastPathname === 'promos' ? styles.active : '' }> Promos </Link>
+                </label>
+              </li>
+              {/*
+                <li className={styles.sidebar_list}>
+                  <label>
+                    <Link to={'/hadmin/consumer/promos'} className={ lastPathname === 'profiles' ? styles.active : '' }>Brand 2</Link>
+                  </label>
+                </li>
+              */}
               </ul>
             </li>
           </ul>
-          */}
         </div>
         <div className={styles.main + ' col-md-9'}>
           <div className={styles.right_wrapper}>
