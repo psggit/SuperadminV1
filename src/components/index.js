@@ -67,6 +67,7 @@ export BrandManagerProfile from './BrandsOffersAndPromos/BrandManagerProfile/Bra
 export CreateBrandManager from './BrandsOffersAndPromos/CreateBrandManager/CreateBrandManager';
 export BrandAds from './BrandsOffersAndPromos/BrandAds/BrandAds';
 export BrandPromos from './BrandsOffersAndPromos/BrandPromos/BrandPromos';
+export CreatePromos from './BrandsOffersAndPromos/CreatePromos/CreatePromos';
 export PromosInstantCashback from './BrandsOffersAndPromos/PromosInstantCashback/PromosInstantCashback';
 export RetailerManagementCreate from './RetailerManagement/CreateBranch/CreateBranch';
 
