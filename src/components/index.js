@@ -65,7 +65,6 @@ export HomepageManagementAds from './HomepageManagement/Ads';
 export HomepageManagementSelectAds from './HomepageManagement/SelectAds';
 export BrandManagerProfile from './BrandsOffersAndPromos/BrandManagerProfile/BrandManagerProfile';
 export CreateBrandManager from './BrandsOffersAndPromos/CreateBrandManager/CreateBrandManager';
-export BrandAds from './BrandsOffersAndPromos/BrandAds/BrandAds';
 export BrandPromos from './BrandsOffersAndPromos/BrandPromos/BrandPromos';
 export PromosInstantCashback from './BrandsOffersAndPromos/PromosInstantCashback/PromosInstantCashback';
 export RetailerManagementCreate from './RetailerManagement/CreateBranch/CreateBranch';
@@ -121,16 +120,20 @@ export ListSku from './SkuManagement/Skus/ListSku/ListSku';
 /* Retailer Management */
 export ProfileKyc from './RetailerManagement/ProfileKyc/ProfileKyc';
 /* */
+
 /* Bar */
-
 export BarProfileKyc from './BarManagement/ProfileKyc/BarProfileKyc';
-
 export BarSkuLanding from './BarManagement/BarSku/BarSkuLanding';
-
 export BarSkuCreateLanding from './BarManagement/BarSkuCreateLanding/BarSkuCreateLanding';
 export BarSkuCreate from './BarManagement/CreateSKU/CreateSku';
 export BarList from './BarManagement/ListBar/ListBar';
 export BarManagementUnlockBar from './BarManagement/UnlockBar/UnlockBar';
 export BarManagementAddSKU from './BarManagement/UnlockBarAddSKU/UnlockBarAddSKU';
+/* */
 
+/* Ads */
+export AdsMain from './BrandsOffersAndPromos/Ads/AdsMain';
+export CreateMain from './BrandsOffersAndPromos/Ads/CreateMain';
+export AdsListing from './BrandsOffersAndPromos/AdsListing/AdsListing';
+export CreateImageAd from './BrandsOffersAndPromos/AdsCreateImageAd/CreateImageAd';
 /* */

@@ -42,6 +42,8 @@ import barSkuDataReducer from './components/BarManagement/UnlockBarAddSKU/BarSku
 
 import genreReducer from './components/SkuManagement/Genre/GenreAction';
 
+import adsListReducer from './components/BrandsOffersAndPromos/AdsListing/AdsListActions';
+
 const reducer = combineReducers({
   loginState: loginReducer,
   routing: routeReducer,
@@ -75,7 +77,8 @@ const reducer = combineReducers({
   branch_data: branchReducer,
   bar_data: barReducer,
   bar_sku_data: barSkuReducer,
-  bar_sku_create_data: barSkuDataReducer
+  bar_sku_create_data: barSkuDataReducer,
+  adslist_data: adsListReducer
 });
 
 export default reducer;

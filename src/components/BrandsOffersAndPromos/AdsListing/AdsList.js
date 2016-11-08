@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-const BrandManagersList = ( {data} ) => {
-  const styles = require('./BrandManagersList.scss');
+const AdsList = ( {data} ) => {
+  const styles = require('./AdsList.scss');
   let tableBody;
   let objHtml;
 
@@ -31,9 +31,6 @@ const BrandManagersList = ( {data} ) => {
             </td>
             <td>
                 { (dat.is_disabled) ? 'Disabled' : 'Active' }
-            </td>
-            <td>
-                { (dat.kyc_status) ? 'Done' : 'Pending' }
             </td>
             <td>
                 { dat.created_at }
@@ -82,7 +79,7 @@ const BrandManagersList = ( {data} ) => {
   return (
         <div className={styles.list_of_states_wrapper}>
           <label>
-            List of Brand Managers
+            List of Ads
           </label>
           <div className={styles.wd_80}>
             {objHtml}
@@ -91,4 +88,4 @@ const BrandManagersList = ( {data} ) => {
       );
 };
 
-export default BrandManagersList;
+export default AdsList;

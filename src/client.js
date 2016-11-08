@@ -48,7 +48,7 @@ import {Login, Home, PageContainer,
   BrandManagerProfile,
   CreateBrandManager,
   CompaniesManagement,
-  ManageCompanies, BrandAds, BrandPromos, PromosInstantCashback, RetailerManagementCreate, RetailerManagementBarCreate, RetailerManagementViewBar,
+  ManageCompanies, BrandPromos, PromosInstantCashback, RetailerManagementCreate, RetailerManagementBarCreate, RetailerManagementViewBar,
   RetailerManagementSettlementDetails, RetailerManagementDeviceDetail, RetailerManagementDisableDevice,
   RetailerManagementTransactions, RetailerManagementCreateOrganization, CustomerSupportCustomerProfile,
   RetailerManagementViewOrganization,
@@ -67,7 +67,11 @@ import {Login, Home, PageContainer,
   BarSkuLanding,
   BarSkuCreateLanding,
   BarSkuCreate,
-  BarList
+  BarList,
+  AdsListing,
+  AdsMain,
+  CreateMain,
+  CreateImageAd
 } from './components'; // eslint-disable-line no-unused-vars
 import {AddTable} from './components';
 import {loadCredentials} from './components/Login/Actions';
@@ -209,7 +213,11 @@ const main = (
         <Route path="brands_offers_and_promos/brand_manager_view/:Id" component={ViewBrandManager} />
         <Route path="brands_offers_and_promos/brand_manager_edit/:Id" component={EditBrandManager} />
         <Route path="brands_offers_and_promos/create_brand_manager" component={CreateBrandManager} />
-        <Route path="brands_offers_and_promos/ads" component={BrandAds} />
+        {/* Ads Routes*/}
+        <Route path="brands_offers_and_promos/ads" component={AdsMain} />
+        <Route path="brands_offers_and_promos/create_ad" component={CreateMain} />
+        <Route path="brands_offers_and_promos/view_all_ads" component={AdsListing} />
+        <Route path="brands_offers_and_promos/create_image_ad" component={CreateImageAd} />
         {/* Promo content */}
         <Route path="brands_offers_and_promos/promos" component={BrandPromos} />
         {/* Promo choose menu*/}

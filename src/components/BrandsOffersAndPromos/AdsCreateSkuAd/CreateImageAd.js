@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-const BrandAds = () => { // eslint-disable-line no-unused-vars
-  const styles = require('./BrandAds.scss');
+const CreateImageAd = () => { // eslint-disable-line no-unused-vars
+  const styles = require('./CreateImageAd.scss');
   // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
   return (
     <div className={styles.container}>
@@ -138,4 +138,4 @@ const BrandAds = () => { // eslint-disable-line no-unused-vars
     </div>);
 };
 
-export default connect()(BrandAds);
+export default connect()(CreateImageAd);

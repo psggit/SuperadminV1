@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { routeActions } from 'redux-simple-router';
 
 const PageContainer = ({location, children, dispatch}) => { // eslint-disable-line no-unused-vars
   const styles = require('./PageContainer.scss');
@@ -24,11 +23,6 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
             Logged in: <b>admin</b>
           </div>
           <hr/>
-          <br/><br/>
-          <button className={styles.addBtn + ' btn btn-primary'} onClick={(e) => {
-            e.preventDefault();
-            dispatch(routeActions.push('/hadmin/upload_file'));
-          }}>Upload File</button>
           <br/><br/>
           <ul>
           	<li><input type="checkbox" id="cb1"/><label htmlFor="cb1">CUSTOMER MANAGEMENT</label>
@@ -118,7 +112,6 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
               <li className={styles.sidebar_list}><label>
                 <Link to={'/hadmin/brands_offers_and_promos/brand_managers_list'} className={ lastPathname === 'kycfunctions' ? styles.active : '' }>Brand Manager Profile</Link>
               </label></li>
-              {/*
               <li className={styles.sidebar_list}><label>
                 <Link to={'/hadmin/brands_offers_and_promos/promos'} className={ lastPathname === 'profiles' ? styles.active : '' }>Promos</Link>
               </label></li>
@@ -127,7 +120,6 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
                     Ads
                 </Link>
               </label></li>
-              */}
               </ul>
             </li>
           </ul>
