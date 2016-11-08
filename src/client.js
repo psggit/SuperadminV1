@@ -59,6 +59,7 @@ import {Login, Home, PageContainer,
   ParameterManagementNotepadCreateCode, ParameterManagementRetailerManualDebitCreditCodes, ParameterManagementRetailerManualCreateCode,
   ParameterManagementConsumerDisableAccountCode, ParameterManagementConsumerDisableAccountCreateCode, ParameterManagementConsumerDeviceAccountCodes,
   ParameterManagementConsumerDeviceAccountCreateCode, AccountingEODReport, AccountingSettlementReport, AccountingUploadPayUReport,
+  BarManagementUnlockBar, BarManagementAddSKU,
   AccountingUploadSettlementReport,
   ViewBrandManager,
   EditBrandManager,
@@ -217,22 +218,33 @@ const main = (
         <Route path="brands_offers_and_promos/brand_manager_view/:Id" component={ViewBrandManager} />
         <Route path="brands_offers_and_promos/brand_manager_edit/:Id" component={EditBrandManager} />
         <Route path="brands_offers_and_promos/create_brand_manager" component={CreateBrandManager} />
-<<<<<<< HEAD
         {/* Ads Routes*/}
         <Route path="brands_offers_and_promos/ads" component={AdsMain} />
         <Route path="brands_offers_and_promos/create_ad" component={CreateMain} />
         <Route path="brands_offers_and_promos/view_all_ads" component={AdsListing} />
         <Route path="brands_offers_and_promos/create_image_ad" component={CreateImageAd} />
-=======
-        <Route path="brands_offers_and_promos/ads" component={BrandAds} />
-
->>>>>>> cb4eb4a88cbce8e5420675e1c8cf06308625ae04
         {/* Promo content */}
         <Route path="brands_offers_and_promos/promos" component={BrandPromos} />
         {/* Promo choose menu*/}
         <Route path="brands_offers_and_promos/promos/all" component={CreatePromos} />
         {/* Promo instant Cashback*/}
+
         <Route path="brands_offers_and_promos/promos/instant_cashback" component={PromosInstantCashback} />
+
+        <Route path="retailer_management/create_branch" component={RetailerManagementCreate} />
+        <Route path="retailer_management/edit_branch/:brId" component={RetailerManagementCreate} />
+
+        <Route path="bar_management/create_bar" component={RetailerManagementBarCreate} />
+        <Route path="bar_management/edit_bar/:brId" component={RetailerManagementBarCreate} />
+        <Route path="bar_management/unlock_bar" component={BarManagementUnlockBar} />
+        <Route path="bar_management/add_sku/:barId" component={BarManagementAddSKU} />
+        <Route path="bar_management/bar_profile_and_kyc" component={BarProfileKyc} />
+        <Route path="bar_management/view_bars" component={RetailerManagementViewBar} />
+
+        <Route path="bar_management/bar_sku_landing" component={BarSkuLanding} />
+        <Route path="bar_management/bar_sku_create_landing" component={BarSkuCreateLanding} />
+        <Route path="bar_management/bar_sku_create/create_new" component={BarSkuCreate} />
+        <Route path="bar_management/list_bars" component={BarList} />
 
         <Route path="retailer_management/create_branch" component={RetailerManagementCreate} />
         <Route path="retailer_management/edit_branch/:brId" component={RetailerManagementCreate} />
