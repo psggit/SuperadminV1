@@ -62,7 +62,6 @@ import {Login, Home, PageContainer,
   AccountingUploadSettlementReport,
   ViewBrandManager,
   EditBrandManager,
-<<<<<<< HEAD
   ProfileKyc,
   BarProfileKyc,
   BarSkuLanding,
@@ -73,9 +72,6 @@ import {Login, Home, PageContainer,
   AdsMain,
   CreateMain,
   CreateImageAd
-=======
-  ProfileKyc
->>>>>>> cb4eb4a88cbce8e5420675e1c8cf06308625ae04
 } from './components'; // eslint-disable-line no-unused-vars
 
 // ^== next level of importing
