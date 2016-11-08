@@ -153,7 +153,7 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
           </ul>
           {/* The Brand MANAGER UI*/}
           <ul>
-            <li><input type="checkbox" id="cb5"/><label htmlFor="cb5">BRAND MANAGER</label>
+            <li><input type="checkbox" id="cb6"/><label htmlFor="cb6">BRAND MANAGER</label>
               <ul>
               <li className={styles.sidebar_list}>
                 <label>

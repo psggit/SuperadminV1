@@ -66,6 +66,7 @@ export HomepageManagementSelectAds from './HomepageManagement/SelectAds';
 export BrandManagerProfile from './BrandsOffersAndPromos/BrandManagerProfile/BrandManagerProfile';
 export CreateBrandManager from './BrandsOffersAndPromos/CreateBrandManager/CreateBrandManager';
 export BrandPromos from './BrandsOffersAndPromos/BrandPromos/BrandPromos';
+export CreatePromos from './BrandsOffersAndPromos/CreatePromos/CreatePromos';
 export PromosInstantCashback from './BrandsOffersAndPromos/PromosInstantCashback/PromosInstantCashback';
 export RetailerManagementCreate from './RetailerManagement/CreateBranch/CreateBranch';
 
