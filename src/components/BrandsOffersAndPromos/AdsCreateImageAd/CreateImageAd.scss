@@ -342,6 +342,7 @@
 		margin-bottom: 10px;
 		label
 		{
+      width: 70%;
 			font-weight: 400;
 			color: rgba(0,0,0,0.54);
 			font-size: 13px;
@@ -383,10 +384,14 @@
 	width: 100%;
 	float: left;
 	padding: 10px;
-	height: 185px;
+	height: 210px;
 	overflow: auto;
 	margin-bottom: 5px;
 	white-space: nowrap;
+  .img_wrapper {
+    max-width: 100%;
+    max-height: 100%;
+  }
 	.image_actions
 	{
 		width: 200px;
@@ -439,6 +444,7 @@
  	{
     	display: inline-block;
     	height: 29px;
+      vertical-align: middle;
     	cursor: pointer;
     	&:focus
     	{
