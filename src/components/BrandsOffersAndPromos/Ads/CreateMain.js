@@ -25,7 +25,7 @@ const CreateMain = ({dispatch}) => { // eslint-disable-line no-unused-vars
                     <div className={styles.squarecontent}>
                         <div>
                             <span>
-                                <Link to={'/hadmin/brands_offers_and_promos/create_image_ad'}>Create Image Ad</Link>
+                                <Link to={'/hadmin/brands_offers_and_promos/create_url_ad'}>Create URL Ad</Link>
                             </span>
                         </div>
                     </div>

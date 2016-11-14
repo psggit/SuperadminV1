@@ -137,4 +137,5 @@ export AdsMain from './BrandsOffersAndPromos/Ads/AdsMain';
 export CreateMain from './BrandsOffersAndPromos/Ads/CreateMain';
 export AdsListing from './BrandsOffersAndPromos/AdsListing/AdsListing';
 export CreateImageAd from './BrandsOffersAndPromos/AdsCreateImageAd/CreateImageAd';
+export CreateUrlAd from './BrandsOffersAndPromos/AdsCreateUrlAd/CreateUrlAd';
 /* */
