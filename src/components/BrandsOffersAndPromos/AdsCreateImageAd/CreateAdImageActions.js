@@ -155,10 +155,9 @@ const insertCityMap = (adId) => {
     };
     return dispatch(requestAction(adImageUrl, options)).then((resp) => {
       console.log(resp);
-      alert('Yippie! AdCreated');
     }).catch((err) => {
       console.log(err);
-      alert('err');
+      alert(err);
     });
   };
 };
