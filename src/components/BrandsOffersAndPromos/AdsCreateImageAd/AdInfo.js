@@ -15,7 +15,7 @@ const AdInfo = () => {
             </li>
             <li>
               <label>Ad Title</label>
-              <input data-field-name="title" data-field-type="string" type="text" />
+              <input data-field-name="ad_title" data-field-type="string" type="text" />
             </li>
             <li>
               <label>Ad Location</label>
@@ -43,8 +43,10 @@ const AdInfo = () => {
             </li>
             <li>
               <label>Ad Status</label>
-              <select data-field-name="ad_status" data-field-type="string">
+              <select data-field-name="status" data-field-type="string">
                 <option>Select</option>
+                <option>Active</option>
+                <option>Inactive</option>
               </select>
             </li>
           </ul>

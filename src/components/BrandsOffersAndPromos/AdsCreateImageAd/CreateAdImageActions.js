@@ -125,7 +125,7 @@ const validBMEmail = (email) => {
   };
 };
 
-const insertCityMap = (bmId, adId) => {
+const insertCityMap = (adId) => {
   return (dispatch, state) => {
     // I need cityId, adId
     // [ad_id, city_id, created_at, updated_at]
@@ -137,10 +137,10 @@ const insertCityMap = (bmId, adId) => {
     // Make the insert data
     Object.keys(lCities).forEach((cityId) => {
       const obj = {};
-      obj.ad_id = adId;
-      obj.city_id = cityId;
+      obj.ad_id = parseInt(adId, 10);
+      obj.city_id = parseInt(cityId, 10);
       obj.created_at = new Date().toISOString();
-      obj.update_at = new Date().toISOString();
+      obj.updated_at = new Date().toISOString();
       adsData.push(obj);
     });
     const adImageUrl = Endpoints.db + '/table/ad_image_city/insert';
@@ -153,7 +153,6 @@ const insertCityMap = (bmId, adId) => {
       credentials: globalCookiePolicy,
       body: JSON.stringify(data)
     };
-
     return dispatch(requestAction(adImageUrl, options)).then((resp) => {
       console.log(resp);
       alert('Yippie! AdCreated');
@@ -174,6 +173,10 @@ const insertAdData = (bmId, imgUrl, adInfo) => {
     adInfo.created_at = new Date().toISOString();
     adInfo.updated_at = new Date().toISOString();
     adInfo.brand_manager_id = parseInt(bmId, 10);
+    adInfo.active_from = new Date(adInfo.active_from).toISOString();
+    adInfo.active_to = new Date(adInfo.active_to).toISOString();
+    delete adInfo.email;
+    console.log(adInfo);
     const adData = {};
     adData.objects = [adInfo];
     adData.returning = ['id'];
@@ -215,12 +218,19 @@ const checkBmEmail = () => {
           // Assume that the result is always 1. Should always be 1.
           // Time to insert data
           return Promise.all([
-            dispatch(insertAdData(res[0][0].id, imgUrl, lCamDetails)).then((insertRes) => {          // insert Ad Data (including Image)
+            // insert Ad Data (including Image)
+            dispatch(insertAdData(res[0][0].id, imgUrl, lCamDetails)).then((insertRes) => {
+              console.log('This is AdData:');
+              console.log(insertRes);
               return Promise.all([
-                dispatch(insertCityMap(res[0][0].id, insertRes)).then(() => {
+                dispatch(insertCityMap(insertRes.returning[0].id)).then(() => {
                   alert('Hurray!! Ad Created!');
+                }).catch((err) => {
+                  alert(err);
                 })
               ]);
+            }).catch((err) => {
+              alert(err);
             })
           ]);
         }
