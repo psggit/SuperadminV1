@@ -1,6 +1,6 @@
 /*
  * Will receive default state from Common
- * */
+ */
 
 import { defaultCreateBrandManagerState } from '../../Common/Actions/DefaultState';
 import requestAction from '../../Common/Actions/requestAction';

@@ -1,8 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchStates, citiesViewHandler, IMAGE_UPLOAD_SUCCESS, IMAGE_UPLOAD_ERROR, IMAGE_CANCEL} from './CreateAdImageActions';
-import { checkState, unCheckState } from './CreateAdImageActions';
-import { checkCity, unCheckCity, finalSave } from './CreateAdImageActions';
+import { fetchStates, citiesViewHandler, IMAGE_UPLOAD_SUCCESS, IMAGE_UPLOAD_ERROR, IMAGE_CANCEL} from './CreateAdUrlActions';
+import { checkState, unCheckState } from './CreateAdUrlActions';
+import { checkCity, unCheckCity, finalSave } from './CreateAdUrlActions';
 import uploadFile from '../../Common/Actions/upload';
 import Endpoints from '../../../Endpoints';
 /*
@@ -16,7 +16,7 @@ import BreadCrumb from '../../Common/BreadCrumb';
 /* Components */
 import AdInfo from './AdInfo';
 
-class CreateImageAd extends Component { // eslint-disable-line no-unused-vars
+class CreateUrlAd extends Component { // eslint-disable-line no-unused-vars
   constructor() {
     super();
     /* Data required for the bread component to render correctly */
@@ -27,7 +27,7 @@ class CreateImageAd extends Component { // eslint-disable-line no-unused-vars
       link: '#' // TODO
     });
     this.breadCrumbs.push({
-      title: 'Create Image Ad',
+      title: 'Create URL Ad',
       sequence: 2,
       link: '#' // TODO
     });
@@ -81,7 +81,7 @@ class CreateImageAd extends Component { // eslint-disable-line no-unused-vars
   // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
   render() {
     const {statesAll, hideCities, citiesView, selectedCities} = this.props;
-    const styles = require('./CreateImageAd.scss');
+    const styles = require('./CreateUrlAd.scss');
     const { imageUrl } = this.props;
     const imgUr = Endpoints.file_get + imageUrl;
     const checkAllStatesInCity = (state) => {
@@ -186,7 +186,7 @@ class CreateImageAd extends Component { // eslint-disable-line no-unused-vars
   }
 }
 
-CreateImageAd.propTypes = {
+CreateUrlAd.propTypes = {
   imageUrl: PropTypes.string.isRequired,
   statesAll: PropTypes.array.isRequired,
   dispatch: PropTypes.func.isRequired,
@@ -196,8 +196,8 @@ CreateImageAd.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  return {...state.page_data, ...state.createImageAd_data};
+  return {...state.page_data, ...state.createUrlAd_data};
 };
 
-const decoratedConnectedComponent = commonDecorator(CreateImageAd);// connect(mapStateToProps)(CommonDecorator);
+const decoratedConnectedComponent = commonDecorator(CreateUrlAd);// connect(mapStateToProps)(CommonDecorator);
 export default connect(mapStateToProps)(decoratedConnectedComponent);
