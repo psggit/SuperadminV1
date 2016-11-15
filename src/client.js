@@ -9,7 +9,7 @@ import createLogger from 'redux-logger';
 import thunk from 'redux-thunk';
 
 import {Provider} from 'react-redux';
-import {Router, browserHistory, Route, IndexRoute} from 'react-router';
+import {Redirect, Router, browserHistory, Route, IndexRoute} from 'react-router';
 import {syncHistory} from 'redux-simple-router';
 import {compose, createStore, applyMiddleware} from 'redux';
 
@@ -48,7 +48,7 @@ import {Login, Home, PageContainer,
   BrandManagerProfile,
   CreateBrandManager,
   CompaniesManagement,
-  ManageCompanies, BrandAds, BrandPromos, PromosInstantCashback, RetailerManagementCreate, RetailerManagementBarCreate, RetailerManagementViewBar,
+  ManageCompanies, BrandPromos, PromosInstantCashback, RetailerManagementCreate, RetailerManagementBarCreate, RetailerManagementViewBar,
   RetailerManagementSettlementDetails, RetailerManagementDeviceDetail, RetailerManagementDisableDevice,
   RetailerManagementTransactions, RetailerManagementCreateOrganization, CustomerSupportCustomerProfile,
   RetailerManagementViewOrganization,
@@ -60,11 +60,25 @@ import {Login, Home, PageContainer,
   ParameterManagementConsumerDisableAccountCode, ParameterManagementConsumerDisableAccountCreateCode, ParameterManagementConsumerDeviceAccountCodes,
   ParameterManagementConsumerDeviceAccountCreateCode, AccountingEODReport, AccountingSettlementReport, AccountingUploadPayUReport,
   AccountingUploadSettlementReport, BarManagementUnlockBar, BarManagementAddSKU, WhatsNewCreatePost,
+  BarManagementUnlockBar, BarManagementAddSKU,
   ViewBrandManager,
   EditBrandManager,
   ProfileKyc,
-  BarProfileKyc
+  BarProfileKyc,
+  BarSkuLanding,
+  BarSkuCreateLanding,
+  BarSkuCreate,
+  BarList,
+  AdsListing,
+  AdsMain,
+  CreateMain,
+  CreateImageAd,
+  CreateUrlAd
 } from './components'; // eslint-disable-line no-unused-vars
+
+// ^== next level of importing
+import {CreatePromos} from './components';
+
 import {AddTable} from './components';
 import {loadCredentials} from './components/Login/Actions';
 // import {loadSchema} from './components/Bills/DataActions';
@@ -126,6 +140,9 @@ const requireLoginAndSchema = (nextState, replaceState, cb) => {
 
 const main = (
     <Router history={browserHistory} >
+      {/* Redirect all root traffic to hadmin....so / has a route */}
+      <Redirect from="/" to="/hadmin" />
+      {/**/}
       <Route path="/hadmin/login" component={Login} />
       <Route path="/hadmin" component={PageContainer} onEnter={ requireLoginAndSchema }>
         <IndexRoute component={Home} />
@@ -202,19 +219,37 @@ const main = (
         <Route path="brands_offers_and_promos/brand_manager_view/:Id" component={ViewBrandManager} />
         <Route path="brands_offers_and_promos/brand_manager_edit/:Id" component={EditBrandManager} />
         <Route path="brands_offers_and_promos/create_brand_manager" component={CreateBrandManager} />
-        <Route path="brands_offers_and_promos/ads" component={BrandAds} />
+        {/* Ads Routes*/}
+        <Route path="brands_offers_and_promos/ads" component={AdsMain} />
+        <Route path="brands_offers_and_promos/create_ad" component={CreateMain} />
+        <Route path="brands_offers_and_promos/view_all_ads" component={AdsListing} />
+        <Route path="brands_offers_and_promos/create_image_ad" component={CreateImageAd} />
+        <Route path="brands_offers_and_promos/create_url_ad" component={CreateUrlAd} />
+        {/* Promo content */}
         <Route path="brands_offers_and_promos/promos" component={BrandPromos} />
+        {/* Promo choose menu*/}
+        <Route path="brands_offers_and_promos/promos/all" component={CreatePromos} />
+        {/* Promo instant Cashback*/}
+
         <Route path="brands_offers_and_promos/promos/instant_cashback" component={PromosInstantCashback} />
+
         <Route path="retailer_management/create_branch" component={RetailerManagementCreate} />
         <Route path="retailer_management/edit_branch/:brId" component={RetailerManagementCreate} />
 
         <Route path="bar_management/create_bar" component={RetailerManagementBarCreate} />
         <Route path="bar_management/edit_bar/:brId" component={RetailerManagementBarCreate} />
         <Route path="bar_management/unlock_bar" component={BarManagementUnlockBar} />
-        <Route path="bar_management/add_sku" component={BarManagementAddSKU} />
+        <Route path="bar_management/add_sku/:barId" component={BarManagementAddSKU} />
         <Route path="bar_management/bar_profile_and_kyc" component={BarProfileKyc} />
         <Route path="bar_management/view_bars" component={RetailerManagementViewBar} />
 
+        <Route path="bar_management/bar_sku_landing" component={BarSkuLanding} />
+        <Route path="bar_management/bar_sku_create_landing" component={BarSkuCreateLanding} />
+        <Route path="bar_management/bar_sku_create/create_new" component={BarSkuCreate} />
+        <Route path="bar_management/list_bars" component={BarList} />
+
+        <Route path="retailer_management/create_branch" component={RetailerManagementCreate} />
+        <Route path="retailer_management/edit_branch/:brId" component={RetailerManagementCreate} />
         <Route path="retailer_management/settlement_details" component={RetailerManagementSettlementDetails} />
         <Route path="retailer_management/device_details" component={RetailerManagementDeviceDetail} />
         <Route path="retailer_management/disable_device" component={RetailerManagementDisableDevice} />

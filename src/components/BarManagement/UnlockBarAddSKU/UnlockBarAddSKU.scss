@@ -32,6 +32,7 @@
 	{
 		color:#FF7400;
 		padding-left: 15px;
+    cursor: pointer;
 	}
 	.unlock_list_head
 	{
@@ -80,6 +81,7 @@
 				color: #FF7400;
 				text-align: right;
 				width: 50%;
+        cursor: pointer;
 			}
 		}
 	}
@@ -94,6 +96,77 @@
   background-color: #fff;
   overflow: auto;
   padding: 20px 15px;
+  .save_sku {
+    width: 50%;
+    padding-top: 20px;
+    margin: 0 auto;
+    text-align: center;
+    button {
+	    width: 130px;
+      height: 30px;
+      color: rgba(255, 116, 0, 0.8);
+      border: 1px solid #FF7400;
+      border-radius: 4px;
+      background: #FFF;
+      cursor: pointer;
+      font-weight: 400;
+      margin: auto;
+      margin-top: 20px;
+      display: block;
+      padding: 5px;
+      text-align: center;
+      font-size: 13px;
+      margin-bottom: 20px;
+      letter-spacing: 0.5px;
+      &:focus
+      {
+      	outline: none;
+      }
+      &:hover
+      {
+      	color: rgba(255, 116, 0 , 1);
+      }
+    }
+
+  }
+  .edit_sku {
+    width: 100%;
+    padding-top: 20px;
+    margin: 0 auto;
+    text-align: center;
+    button {
+	    width: 130px;
+      height: 30px;
+      color: rgba(255, 116, 0, 0.8);
+      border: 1px solid #FF7400;
+      border-radius: 4px;
+      background: #FFF;
+      cursor: pointer;
+      font-weight: 400;
+      margin: auto;
+      margin-top: 20px;
+      display: block;
+      padding: 5px;
+      text-align: center;
+      font-size: 13px;
+      margin-bottom: 20px;
+      letter-spacing: 0.5px;
+      &:focus
+      {
+      	outline: none;
+      }
+      &:hover
+      {
+      	color: rgba(255, 116, 0 , 1);
+      }
+    }
+    .edit_sku_cancel {
+      float: left;
+    }
+    .edit_sku_update {
+      float: right;
+    }
+  }
 	.add_sku_head
 	{
 		border-bottom: 1px solid #999;

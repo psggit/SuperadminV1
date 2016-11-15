@@ -1,5 +1,5 @@
 import React from 'react';
-const DisableInformation = ( { label, val } ) => {
+const DisableInformation = ( { label, val, options, fieldName, fieldType, currVal, disable } ) => {
   const styles = require('./DisableInformation.scss');
   return (
     <div className = {styles.disable_details_information}>
@@ -7,8 +7,9 @@ const DisableInformation = ( { label, val } ) => {
         {label}
       </div>
       <div className = {styles.information_rightpanel}>
-        <select>
-          <option value="Select">{val}</option>
+        <select data-field-name={ fieldName } data-field-type={ fieldType } value={ currVal } disabled={ disable }>
+          <option value="0">{val}</option>
+          { options }
         </select>
       </div>
     </div>

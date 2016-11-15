@@ -315,6 +315,10 @@ const onSave = () => {
             });
           });
 
+          if ( rObjs.objects.length === 0 ) {
+            return Promise.resolve({ message: 'resolving'} );
+          }
+
           /* Check for empty thing */
           options = {
             ...genOptions,

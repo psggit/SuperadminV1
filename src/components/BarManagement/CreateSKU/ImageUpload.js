@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import uploadFile from '../../Common/Actions/upload';
 import { connect } from 'react-redux';
 
-import Endpoints from '../../../Endpoints';
+// import Endpoints from '../../../Endpoints';
 
 class ImageUpload extends Component {
   constructor() {
@@ -20,7 +20,7 @@ class ImageUpload extends Component {
   render() {
     const styles = require('./BrandCreate.scss');
     const { imageUrl } = this.props;
-    const imgUr = Endpoints.file_get + imageUrl;
+    const imgUr = imageUrl;
     return (
         <div className={styles.upload_container}>
           <div className={styles.upload_lab}>Upload Images</div>

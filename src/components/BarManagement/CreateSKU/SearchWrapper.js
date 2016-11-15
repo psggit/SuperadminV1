@@ -1,46 +1,52 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-const BrandManagersList = ( {data} ) => {
-  const styles = require('./BrandManagersList.scss');
+const SearchWrapper = ( {data} ) => {
+  const styles = require('./SearchWrapper.scss');
   let tableBody;
   let objHtml;
 
   tableBody = data.map((dat, index) => {
+    let createdAt = dat.created_at;
+    let updatedAt = dat.updated_at;
+
+    createdAt = new Date(new Date(createdAt).getTime()).toLocaleString();
+    updatedAt = new Date(new Date(updatedAt).getTime()).toLocaleString();
+    const checkGenre = () => {
+      if ( dat.category.genre_short ) {
+        return dat.category.genre_short.genre_name;
+      }
+      return 'N/A';
+    };
+    const genreName = (dat.category) ? checkGenre() : 'N/A';
+
     return (
           <tr key={index}>
             <td>
-              <Link to={'/hadmin/brands_offers_and_promos/brand_manager_view/' + dat.id}>
-                <button className={styles.edit_btn} data-state-id={dat.id}>
+              <Link to={'/hadmin/brand_management/edit/' + dat.id}>
+                <button className={styles.edit_btn} data-genre-id={dat.id}>
                   View
                 </button>
               </Link>
             </td>
             <td> { dat.id } </td>
             <td>
-                { dat.name }
+                { dat.brand_name}
             </td>
             <td>
-                { dat.email }
+              Active
             </td>
             <td>
-                { dat.mobile_number }
+                { (dat.category) ? dat.category.name : 'N/A'}
             </td>
             <td>
-                { dat.company.name}
+                { genreName }
             </td>
             <td>
-                { (dat.is_disabled) ? 'Disabled' : 'Active' }
+                { (dat.company) ? dat.company.name : 'N/A'}
             </td>
-            <td>
-                { (dat.kyc_status) ? 'Done' : 'Pending' }
-            </td>
-            <td>
-                { dat.created_at }
-            </td>
-            <td>
-                { dat.updated_at }
-            </td>
+            <td> { createdAt } </td>
+            <td> { updatedAt } </td>
           </tr>
         );
   });
@@ -49,7 +55,7 @@ const BrandManagersList = ( {data} ) => {
     objHtml = () => {
       return (
         <div className={styles.error_message}>
-          Sorry no recharges
+          Sorry no Brands
         </div>
         );
     }();
@@ -61,14 +67,13 @@ const BrandManagersList = ( {data} ) => {
                 <tr>
                   <th> </th>
                   <th> ID </th>
-                  <th> Name </th>
-                  <th> Email </th>
-                  <th> Mobile </th>
-                  <th> Company </th>
+                  <th> State Name </th>
                   <th> Status </th>
-                  <th> KYC Status </th>
-                  <th> Created At </th>
+                  <th> Category </th>
+                  <th> Genre </th>
+                  <th> Company </th>
                   <th> Updated At </th>
+                  <th> Created At </th>
                 </tr>
               </thead>
               <tbody>
@@ -82,7 +87,7 @@ const BrandManagersList = ( {data} ) => {
   return (
         <div className={styles.list_of_states_wrapper}>
           <label>
-            List of Brand Managers
+            List of Brands
           </label>
           <div className={styles.wd_80}>
             {objHtml}
@@ -91,4 +96,4 @@ const BrandManagersList = ( {data} ) => {
       );
 };
 
-export default BrandManagersList;
+export default SearchWrapper;
