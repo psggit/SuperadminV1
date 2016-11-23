@@ -45,6 +45,8 @@ import genreReducer from './components/SkuManagement/Genre/GenreAction';
 // Ads
 import adsListReducer from './components/BrandsOffersAndPromos/AdsListing/AdsListActions';
 import adsCreateImageReducer from './components/BrandsOffersAndPromos/AdsCreateImageAd/CreateAdImageActions';
+import adsCreateBarReducer from './components/BrandsOffersAndPromos/AdsCreateBarAd/CreateAdBarActions';
+// import adsViewImageReducer from './components/BrandsOffersAndPromos/AdsViewImageAd/ViewAdImageActions';
 import adsCreateUrlReducer from './components/BrandsOffersAndPromos/AdsCreateUrlAd/CreateAdUrlActions';
 
 const reducer = combineReducers({
@@ -83,6 +85,7 @@ const reducer = combineReducers({
   bar_sku_create_data: barSkuDataReducer,
   adslist_data: adsListReducer,
   createImageAd_data: adsCreateImageReducer,
+  createBarAd_data: adsCreateBarReducer,
   createUrlAd_data: adsCreateUrlReducer
 });
 

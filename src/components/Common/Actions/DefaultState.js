@@ -279,6 +279,22 @@ const defaultcreateImageAdData = {
   imageUrl: ''
 };
 
+const defaultViewImageAdData = {
+  type: 'view',
+  campaignDetails: {},
+  statesAll: [{
+    state_name: '',
+    cities: [{}]
+  }],
+  selectedCities: {},
+  hideCities: 'hide',
+  citiesView: {
+    state_name: '',
+    cities: [{}]
+  },
+  imageUrl: ''
+};
+
 const defaultcreateUrlAdData = {
   type: 'create',
   campaignDetails: {},
@@ -292,6 +308,16 @@ const defaultcreateUrlAdData = {
     state_name: '',
     cities: [{}]
   },
+  imageUrl: ''
+};
+
+const defaultcreateBarAdData = {
+  type: 'create',
+  campaignDetails: {},
+  citiesAll: [{
+    bars: [{}]
+  }],
+  selectedCity: { bars: [] },
   imageUrl: ''
 };
 
@@ -315,5 +341,7 @@ export { defaultNotepadState
   , defaultCustomerSupportState
   , defaultGenreState
   , defaultcreateImageAdData
+  , defaultViewImageAdData
   , defaultcreateUrlAdData
+  , defaultcreateBarAdData
 };
