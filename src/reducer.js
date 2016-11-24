@@ -42,10 +42,14 @@ import barSkuDataReducer from './components/BarManagement/UnlockBarAddSKU/BarSku
 
 import genreReducer from './components/SkuManagement/Genre/GenreAction';
 
+// import whatsNewReducer from './components/WhatsNew/CreatePost/Action';
+import whatsNewReducer from './components/WhatsNewArticle/CreateArticle/CreateArticleAction';
+
 // Ads
 import adsListReducer from './components/BrandsOffersAndPromos/AdsListing/AdsListActions';
 import adsCreateImageReducer from './components/BrandsOffersAndPromos/AdsCreateImageAd/CreateAdImageActions';
 import adsCreateUrlReducer from './components/BrandsOffersAndPromos/AdsCreateUrlAd/CreateAdUrlActions';
+
 
 const reducer = combineReducers({
   loginState: loginReducer,
@@ -83,7 +87,8 @@ const reducer = combineReducers({
   bar_sku_create_data: barSkuDataReducer,
   adslist_data: adsListReducer,
   createImageAd_data: adsCreateImageReducer,
-  createUrlAd_data: adsCreateUrlReducer
+  createUrlAd_data: adsCreateUrlReducer,
+  whats_new_data: whatsNewReducer
 });
 
 export default reducer;

@@ -295,6 +295,8 @@ const defaultcreateUrlAdData = {
   imageUrl: ''
 };
 
+const defaultWhatsNew = {cities: [], citiesView: {'cities': []}, statesAll: [{'cities': []}], selectedCities: [], hideCities: ''};
+
 export default defaultState;
 export { defaultNotepadState
   , defaultBrandState
@@ -316,4 +318,5 @@ export { defaultNotepadState
   , defaultGenreState
   , defaultcreateImageAdData
   , defaultcreateUrlAdData
+  , defaultWhatsNew
 };
