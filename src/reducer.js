@@ -89,7 +89,7 @@ const reducer = combineReducers({
   bar_sku_create_data: barSkuDataReducer,
   adslist_data: adsListReducer,
   createImageAd_data: adsCreateImageReducer,
-  whats_new_data: whatsNewReducer
+  whats_new_data: whatsNewReducer,
   createBarAd_data: adsCreateBarReducer,
   createUrlAd_data: adsCreateUrlReducer
 });
