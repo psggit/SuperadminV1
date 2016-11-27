@@ -6,6 +6,7 @@ const fileUrl = 'https://api2.hipbar-stg.hasura-app.io';
 const Endpoints = {
   login: authUrl + '/login',
   db: dataUrl + '/api/1',
+  bulk: dataUrl + '/v1/query',
   getSchema: dataUrl + '/api/1/table',
   getConsumer: dataUrl + '/api/1/table/consumer/select',
   schemaChange: dataUrl + '/api/1/change',

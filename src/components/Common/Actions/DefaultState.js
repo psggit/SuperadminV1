@@ -263,6 +263,25 @@ const defaultAddTopPickData = {
   skuPricingId: 0
 };
 
+const defaultcreateSkuAdData = {
+  type: 'create',
+  campaignDetails: {},
+  brandsAll: [{}],
+  brandManagers: [{}],
+  statesAll: [{
+    state_name: '',
+    cities: [{}]
+  }],
+  selectedBrand: {skus: []},
+  selectedCities: {},
+  hideCities: 'hide',
+  citiesView: {
+    state_name: '',
+    cities: [{}]
+  },
+  imageUrl: ''
+};
+
 const defaultcreateImageAdData = {
   type: 'create',
   campaignDetails: {},
@@ -311,6 +330,7 @@ const defaultcreateUrlAdData = {
   imageUrl: ''
 };
 
+const defaultWhatsNew = {cities: [], citiesView: {'cities': []}, statesAll: [{'cities': []}], selectedCities: [], hideCities: ''};
 const defaultcreateBarAdData = {
   type: 'create',
   campaignDetails: {},
@@ -341,7 +361,9 @@ export { defaultNotepadState
   , defaultCustomerSupportState
   , defaultGenreState
   , defaultcreateImageAdData
+  , defaultcreateSkuAdData
   , defaultViewImageAdData
   , defaultcreateUrlAdData
+  , defaultWhatsNew
   , defaultcreateBarAdData
 };

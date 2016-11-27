@@ -102,7 +102,8 @@ export AccountingEODReport from './Accounting/EODReport/EODReport';
 export AccountingSettlementReport from './Accounting/SettlementReport/SettlementReport';
 export AccountingUploadPayUReport from './Accounting/UploadPayUReport/UploadPayUReport';
 export AccountingUploadSettlementReport from './Accounting/UploadSettlementReport/UploadSettlementReport';
-export WhatsNewCreatePost from './WhatsNew/CreatePost/CreatePost';
+// export WhatsNewCreatePost from './WhatsNew/CreatePost/CreatePost';
+export WhatsNewCreateArticle from './WhatsNewArticle/CreateArticle/CreateArticle';
 /* Consumer Transactions */
 
 export ConsumerRecharge from './CustomerTransaction/components/Recharge/Recharge';
@@ -138,6 +139,7 @@ export AdsMain from './BrandsOffersAndPromos/Ads/AdsMain';
 export CreateMain from './BrandsOffersAndPromos/Ads/CreateMain';
 export AdsListing from './BrandsOffersAndPromos/AdsListing/AdsListing';
 export CreateImageAd from './BrandsOffersAndPromos/AdsCreateImageAd/CreateImageAd';
+export CreateSkuAd from './BrandsOffersAndPromos/AdsCreateSkuAd/CreateSkuAd';
 export CreateUrlAd from './BrandsOffersAndPromos/AdsCreateUrlAd/CreateUrlAd';
 export CreateBarAd from './BrandsOffersAndPromos/AdsCreateBarAd/CreateBarAd';
 /* */
