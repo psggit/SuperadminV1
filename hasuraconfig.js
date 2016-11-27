@@ -1,3 +1,4 @@
+console.log(process.env);
 module.exports = {
   hmrPort: (parseInt(process.env.PORT, 10) + 1 || 3001),
   hmrHost: (process.env.HOST || '127.0.0.1'),
