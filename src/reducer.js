@@ -42,7 +42,13 @@ import barSkuDataReducer from './components/BarManagement/UnlockBarAddSKU/BarSku
 
 import genreReducer from './components/SkuManagement/Genre/GenreAction';
 
+// Reducer for PromosInstantCashback
+import PromosCashbackRedeem from './components/BrandsOffersAndPromos/PromosCashbackRedeem/actions';
+
 const reducer = combineReducers({
+  // The promos Side-menu states
+  promosCashbackRedeemState: PromosCashbackRedeem,
+  // Everything else.
   loginState: loginReducer,
   routing: routeReducer,
   profile: profileReducer,
