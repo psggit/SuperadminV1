@@ -1,7 +1,6 @@
 FROM nodesource/jessie:5.3.0
-
-ENV NODE_PATH /usr/lib/node_modules/
-
 COPY ./ /app 
+COPY ./node_modules /usr/lib/node_modules
+ENV NODE_PATH /usr/lib/node_modules/
 WORKDIR /app 
 ENTRYPOINT ["npm", "run", "start-prod"]
