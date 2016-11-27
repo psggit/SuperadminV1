@@ -263,6 +263,65 @@ const defaultAddTopPickData = {
   skuPricingId: 0
 };
 
+const defaultcreateImageAdData = {
+  type: 'create',
+  campaignDetails: {},
+  statesAll: [{
+    state_name: '',
+    cities: [{}]
+  }],
+  selectedCities: {},
+  hideCities: 'hide',
+  citiesView: {
+    state_name: '',
+    cities: [{}]
+  },
+  imageUrl: ''
+};
+
+const defaultViewImageAdData = {
+  type: 'view',
+  campaignDetails: {},
+  statesAll: [{
+    state_name: '',
+    cities: [{}]
+  }],
+  selectedCities: {},
+  hideCities: 'hide',
+  citiesView: {
+    state_name: '',
+    cities: [{}]
+  },
+  imageUrl: ''
+};
+
+const defaultcreateUrlAdData = {
+  type: 'create',
+  campaignDetails: {},
+  statesAll: [{
+    state_name: '',
+    cities: [{}]
+  }],
+  selectedCities: {},
+  hideCities: 'hide',
+  citiesView: {
+    state_name: '',
+    cities: [{}]
+  },
+  imageUrl: ''
+};
+
+const defaultWhatsNew = {cities: [], citiesView: {'cities': []}, statesAll: [{'cities': []}], selectedCities: [], hideCities: ''};
+const defaultcreateBarAdData = {
+  type: 'create',
+  campaignDetails: {},
+  citiesAll: [{
+    bars: [{}]
+  }],
+  selectedCity: { bars: [] },
+  imageUrl: ''
+};
+
 export default defaultState;
 export { defaultNotepadState
   , defaultBrandState
@@ -282,4 +341,9 @@ export { defaultNotepadState
   , defaultFreshdeskTicketState
   , defaultCustomerSupportState
   , defaultGenreState
+  , defaultcreateImageAdData
+  , defaultViewImageAdData
+  , defaultcreateUrlAdData
+  , defaultWhatsNew
+  , defaultcreateBarAdData
 };

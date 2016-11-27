@@ -48,7 +48,7 @@ import {Login, Home, PageContainer,
   BrandManagerProfile,
   CreateBrandManager,
   CompaniesManagement,
-  ManageCompanies, BrandAds, BrandPromos, PromosCashbackRedeem, RetailerManagementCreate,
+  ManageCompanies, BrandAds, BrandPromos, PromosCashbackRedeem, RetailerManagementCreate, RetailerManagementBarCreate, RetailerManagementViewBar,
   RetailerManagementSettlementDetails, RetailerManagementDeviceDetail, RetailerManagementDisableDevice,
   RetailerManagementTransactions, RetailerManagementCreateOrganization, CustomerSupportCustomerProfile,
   RetailerManagementViewOrganization,
@@ -59,10 +59,21 @@ import {Login, Home, PageContainer,
   ParameterManagementNotepadCreateCode, ParameterManagementRetailerManualDebitCreditCodes, ParameterManagementRetailerManualCreateCode,
   ParameterManagementConsumerDisableAccountCode, ParameterManagementConsumerDisableAccountCreateCode, ParameterManagementConsumerDeviceAccountCodes,
   ParameterManagementConsumerDeviceAccountCreateCode, AccountingEODReport, AccountingSettlementReport, AccountingUploadPayUReport,
-  AccountingUploadSettlementReport,
+  AccountingUploadSettlementReport, BarManagementUnlockBar, BarManagementAddSKU, WhatsNewCreateArticle,
   ViewBrandManager,
   EditBrandManager,
-  ProfileKyc
+  ProfileKyc,
+  BarProfileKyc,
+  BarSkuLanding,
+  BarSkuCreateLanding,
+  BarSkuCreate,
+  BarList,
+  AdsListing,
+  AdsMain,
+  CreateMain,
+  CreateImageAd,
+  CreateBarAd,
+  CreateUrlAd
 } from './components'; // eslint-disable-line no-unused-vars
 
 // ^== next level of importing
@@ -208,14 +219,34 @@ const main = (
         <Route path="brands_offers_and_promos/brand_manager_view/:Id" component={ViewBrandManager} />
         <Route path="brands_offers_and_promos/brand_manager_edit/:Id" component={EditBrandManager} />
         <Route path="brands_offers_and_promos/create_brand_manager" component={CreateBrandManager} />
-        <Route path="brands_offers_and_promos/ads" component={BrandAds} />
-
+        {/* Ads Routes*/}
+        <Route path="brands_offers_and_promos/ads" component={AdsMain} />
+        <Route path="brands_offers_and_promos/create_ad" component={CreateMain} />
+        <Route path="brands_offers_and_promos/view_all_ads" component={AdsListing} />
+        <Route path="brands_offers_and_promos/create_image_ad" component={CreateImageAd} />
+        <Route path="brands_offers_and_promos/create_url_ad" component={CreateUrlAd} />
+        <Route path="brands_offers_and_promos/create_bar_ad" component={CreateBarAd} />
         {/* Promo content */}
         <Route path="brands_offers_and_promos/promos" component={BrandPromos} />
         {/* Promo choose menu*/}
         <Route path="brands_offers_and_promos/promos/all" component={CreatePromos} />
-        {/* Promo instant Cashback*/}
+        {/* Promo Cashback redeem*/}
         <Route path="brands_offers_and_promos/promos/cashback_redeem" component={PromosCashbackRedeem} />
+
+        <Route path="retailer_management/create_branch" component={RetailerManagementCreate} />
+        <Route path="retailer_management/edit_branch/:brId" component={RetailerManagementCreate} />
+
+        <Route path="bar_management/create_bar" component={RetailerManagementBarCreate} />
+        <Route path="bar_management/edit_bar/:brId" component={RetailerManagementBarCreate} />
+        <Route path="bar_management/unlock_bar" component={BarManagementUnlockBar} />
+        <Route path="bar_management/add_sku/:barId" component={BarManagementAddSKU} />
+        <Route path="bar_management/bar_profile_and_kyc" component={BarProfileKyc} />
+        <Route path="bar_management/view_bars" component={RetailerManagementViewBar} />
+
+        <Route path="bar_management/bar_sku_landing" component={BarSkuLanding} />
+        <Route path="bar_management/bar_sku_create_landing" component={BarSkuCreateLanding} />
+        <Route path="bar_management/bar_sku_create/create_new" component={BarSkuCreate} />
+        <Route path="bar_management/list_bars" component={BarList} />
 
         <Route path="retailer_management/create_branch" component={RetailerManagementCreate} />
         <Route path="retailer_management/edit_branch/:brId" component={RetailerManagementCreate} />
@@ -250,6 +281,7 @@ const main = (
         <Route path="accounting/settlement_report" component={AccountingSettlementReport} />
         <Route path="accounting/upload_payu_report" component={AccountingUploadPayUReport} />
         <Route path="accounting/upload_settlement_report" component={AccountingUploadSettlementReport} />
+        <Route path="whats_new/create_article" component={WhatsNewCreateArticle} />
         /* End of SKU Management */
         { /*
         <Route path="notepad_entries" component={NotepadEntries} />

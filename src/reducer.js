@@ -44,6 +44,15 @@ import genreReducer from './components/SkuManagement/Genre/GenreAction';
 
 // Reducer for PromosInstantCashback
 import PromosCashbackRedeem from './components/BrandsOffersAndPromos/PromosCashbackRedeem/actions';
+// import whatsNewReducer from './components/WhatsNew/CreatePost/Action';
+import whatsNewReducer from './components/WhatsNewArticle/CreateArticle/CreateArticleAction';
+
+// Ads
+import adsListReducer from './components/BrandsOffersAndPromos/AdsListing/AdsListActions';
+import adsCreateImageReducer from './components/BrandsOffersAndPromos/AdsCreateImageAd/CreateAdImageActions';
+import adsCreateBarReducer from './components/BrandsOffersAndPromos/AdsCreateBarAd/CreateAdBarActions';
+// import adsViewImageReducer from './components/BrandsOffersAndPromos/AdsViewImageAd/ViewAdImageActions';
+import adsCreateUrlReducer from './components/BrandsOffersAndPromos/AdsCreateUrlAd/CreateAdUrlActions';
 
 const reducer = combineReducers({
   // The promos Side-menu states
@@ -81,7 +90,12 @@ const reducer = combineReducers({
   branch_data: branchReducer,
   bar_data: barReducer,
   bar_sku_data: barSkuReducer,
-  bar_sku_create_data: barSkuDataReducer
+  bar_sku_create_data: barSkuDataReducer,
+  adslist_data: adsListReducer,
+  createImageAd_data: adsCreateImageReducer,
+  whats_new_data: whatsNewReducer,
+  createBarAd_data: adsCreateBarReducer,
+  createUrlAd_data: adsCreateUrlReducer
 });
 
 export default reducer;

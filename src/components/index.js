@@ -65,7 +65,6 @@ export HomepageManagementAds from './HomepageManagement/Ads';
 export HomepageManagementSelectAds from './HomepageManagement/SelectAds';
 export BrandManagerProfile from './BrandsOffersAndPromos/BrandManagerProfile/BrandManagerProfile';
 export CreateBrandManager from './BrandsOffersAndPromos/CreateBrandManager/CreateBrandManager';
-export BrandAds from './BrandsOffersAndPromos/BrandAds/BrandAds';
 export BrandPromos from './BrandsOffersAndPromos/BrandPromos/BrandPromos';
 export CreatePromos from './BrandsOffersAndPromos/CreatePromos/CreatePromos';
 export PromosCashbackRedeem from './BrandsOffersAndPromos/PromosCashbackRedeem/PromosCashbackRedeem';
@@ -103,6 +102,8 @@ export AccountingEODReport from './Accounting/EODReport/EODReport';
 export AccountingSettlementReport from './Accounting/SettlementReport/SettlementReport';
 export AccountingUploadPayUReport from './Accounting/UploadPayUReport/UploadPayUReport';
 export AccountingUploadSettlementReport from './Accounting/UploadSettlementReport/UploadSettlementReport';
+// export WhatsNewCreatePost from './WhatsNew/CreatePost/CreatePost';
+export WhatsNewCreateArticle from './WhatsNewArticle/CreateArticle/CreateArticle';
 /* Consumer Transactions */
 
 export ConsumerRecharge from './CustomerTransaction/components/Recharge/Recharge';
@@ -122,16 +123,22 @@ export ListSku from './SkuManagement/Skus/ListSku/ListSku';
 /* Retailer Management */
 export ProfileKyc from './RetailerManagement/ProfileKyc/ProfileKyc';
 /* */
+
 /* Bar */
-
 export BarProfileKyc from './BarManagement/ProfileKyc/BarProfileKyc';
-
 export BarSkuLanding from './BarManagement/BarSku/BarSkuLanding';
-
 export BarSkuCreateLanding from './BarManagement/BarSkuCreateLanding/BarSkuCreateLanding';
 export BarSkuCreate from './BarManagement/CreateSKU/CreateSku';
 export BarList from './BarManagement/ListBar/ListBar';
 export BarManagementUnlockBar from './BarManagement/UnlockBar/UnlockBar';
 export BarManagementAddSKU from './BarManagement/UnlockBarAddSKU/UnlockBarAddSKU';
+/* */
 
+/* Ads */
+export AdsMain from './BrandsOffersAndPromos/Ads/AdsMain';
+export CreateMain from './BrandsOffersAndPromos/Ads/CreateMain';
+export AdsListing from './BrandsOffersAndPromos/AdsListing/AdsListing';
+export CreateImageAd from './BrandsOffersAndPromos/AdsCreateImageAd/CreateImageAd';
+export CreateUrlAd from './BrandsOffersAndPromos/AdsCreateUrlAd/CreateUrlAd';
+export CreateBarAd from './BrandsOffersAndPromos/AdsCreateBarAd/CreateBarAd';
 /* */
