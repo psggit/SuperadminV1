@@ -263,6 +263,25 @@ const defaultAddTopPickData = {
   skuPricingId: 0
 };
 
+const defaultcreatePromoAdData = {
+  type: 'create',
+  campaignDetails: {},
+  brandsAll: [{}],
+  brandManagers: [{}],
+  statesAll: [{
+    state_name: '',
+    cities: [{}]
+  }],
+  selectedBrand: {skus: []},
+  selectedCities: {},
+  hideCities: 'hide',
+  citiesView: {
+    state_name: '',
+    cities: [{}]
+  },
+  imageUrl: ''
+};
+
 const defaultcreateSkuAdData = {
   type: 'create',
   campaignDetails: {},
@@ -362,6 +381,7 @@ export { defaultNotepadState
   , defaultGenreState
   , defaultcreateImageAdData
   , defaultcreateSkuAdData
+  , defaultcreatePromoAdData
   , defaultViewImageAdData
   , defaultcreateUrlAdData
   , defaultWhatsNew

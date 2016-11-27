@@ -74,7 +74,8 @@ import {Login, Home, PageContainer,
   CreateImageAd,
   CreateBarAd,
   CreateUrlAd,
-  CreateSkuAd
+  CreateSkuAd,
+  CreatePromoAd
 } from './components'; // eslint-disable-line no-unused-vars
 
 // ^== next level of importing
@@ -227,6 +228,7 @@ const main = (
         <Route path="brands_offers_and_promos/view_all_ads" component={AdsListing} />
         <Route path="brands_offers_and_promos/create_image_ad" component={CreateImageAd} />
         <Route path="brands_offers_and_promos/create_sku_ad" component={CreateSkuAd} />
+        <Route path="brands_offers_and_promos/create_promo_ad" component={CreatePromoAd} />
         <Route path="brands_offers_and_promos/create_url_ad" component={CreateUrlAd} />
         <Route path="brands_offers_and_promos/create_bar_ad" component={CreateBarAd} />
 
