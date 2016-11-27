@@ -48,7 +48,7 @@ import {Login, Home, PageContainer,
   BrandManagerProfile,
   CreateBrandManager,
   CompaniesManagement,
-  ManageCompanies, BrandAds, BrandPromos, PromosInstantCashback, RetailerManagementCreate,
+  ManageCompanies, BrandAds, BrandPromos, PromosCashbackRedeem, RetailerManagementCreate,
   RetailerManagementSettlementDetails, RetailerManagementDeviceDetail, RetailerManagementDisableDevice,
   RetailerManagementTransactions, RetailerManagementCreateOrganization, CustomerSupportCustomerProfile,
   RetailerManagementViewOrganization,
@@ -215,7 +215,7 @@ const main = (
         {/* Promo choose menu*/}
         <Route path="brands_offers_and_promos/promos/all" component={CreatePromos} />
         {/* Promo instant Cashback*/}
-        <Route path="brands_offers_and_promos/promos/instant_cashback" component={PromosInstantCashback} />
+        <Route path="brands_offers_and_promos/promos/cashback_redeem" component={PromosCashbackRedeem} />
 
         <Route path="retailer_management/create_branch" component={RetailerManagementCreate} />
         <Route path="retailer_management/edit_branch/:brId" component={RetailerManagementCreate} />

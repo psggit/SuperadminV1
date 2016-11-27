@@ -19,4 +19,4 @@ const Endpoints = {
 const globalCookiePolicy = 'include';
 
 export default Endpoints;
-export {globalCookiePolicy};
+export {globalCookiePolicy, dataUrl, authUrl, fileUrl};
