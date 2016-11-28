@@ -76,7 +76,8 @@ import {Login, Home, PageContainer,
   CreateBarAd,
   CreateUrlAd,
   CreateSkuAd,
-  CreatePromoAd
+  CreatePromoAd,
+  ManageBarSkus
 } from './components'; // eslint-disable-line no-unused-vars
 
 // ^== next level of importing
@@ -254,6 +255,7 @@ const main = (
         <Route path="bar_management/bar_sku_create_landing" component={BarSkuCreateLanding} />
         <Route path="bar_management/bar_sku_create/create_new" component={BarSkuCreate} />
         <Route path="bar_management/list_bars" component={BarList} />
+        <Route path="bar_management/all_bar_skus" component={ManageBarSkus} />
 
         <Route path="retailer_management/create_branch" component={RetailerManagementCreate} />
         <Route path="retailer_management/edit_branch/:brId" component={RetailerManagementCreate} />
