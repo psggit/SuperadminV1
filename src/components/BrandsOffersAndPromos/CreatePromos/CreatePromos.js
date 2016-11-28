@@ -19,7 +19,7 @@ const CreatePromos = () => { // eslint-disable-line no-unused-vars
               <div className={styles.squarecontent}>
                   <div>
                       <span>
-                          <Link to={'/hadmin/brands_offers_and_promos/promos/instant_cashback'}>Instant Cashback</Link>
+                          <a onClick={unAvailableAlert.bind(this)}>Instant Cashback</a>
                       </span>
                   </div>
               </div>
@@ -28,7 +28,7 @@ const CreatePromos = () => { // eslint-disable-line no-unused-vars
               <div className={styles.squarecontent}>
                   <div>
                       <span>
-                          <a onClick={unAvailableAlert.bind(this)}>Cashback On Redeem</a>
+                        <Link to={'/hadmin/brands_offers_and_promos/promos/cashback_redeem'}>Cashback On Redeem</Link>
                       </span>
                   </div>
               </div>

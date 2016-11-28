@@ -42,18 +42,24 @@ import barSkuDataReducer from './components/BarManagement/UnlockBarAddSKU/BarSku
 
 import genreReducer from './components/SkuManagement/Genre/GenreAction';
 
+// Reducer for PromosInstantCashback
+import PromosCashbackRedeem from './components/BrandsOffersAndPromos/PromosCashbackRedeem/actions';
 // import whatsNewReducer from './components/WhatsNew/CreatePost/Action';
 import whatsNewReducer from './components/WhatsNewArticle/CreateArticle/CreateArticleAction';
 
 // Ads
 import adsListReducer from './components/BrandsOffersAndPromos/AdsListing/AdsListActions';
 import adsCreateImageReducer from './components/BrandsOffersAndPromos/AdsCreateImageAd/CreateAdImageActions';
+import adsCreateSkuReducer from './components/BrandsOffersAndPromos/AdsCreateSkuAd/CreateAdSkuActions';
+import adsCreatePromoReducer from './components/BrandsOffersAndPromos/AdsCreatePromoAd/CreateAdPromoActions';
 import adsCreateBarReducer from './components/BrandsOffersAndPromos/AdsCreateBarAd/CreateAdBarActions';
 // import adsViewImageReducer from './components/BrandsOffersAndPromos/AdsViewImageAd/ViewAdImageActions';
 import adsCreateUrlReducer from './components/BrandsOffersAndPromos/AdsCreateUrlAd/CreateAdUrlActions';
 
-
 const reducer = combineReducers({
+  // The promos Side-menu states
+  promosCashbackRedeemState: PromosCashbackRedeem,
+  // Everything else.
   loginState: loginReducer,
   routing: routeReducer,
   profile: profileReducer,
@@ -89,6 +95,8 @@ const reducer = combineReducers({
   bar_sku_create_data: barSkuDataReducer,
   adslist_data: adsListReducer,
   createImageAd_data: adsCreateImageReducer,
+  createSkuAd_data: adsCreateSkuReducer,
+  createPromoAd_data: adsCreatePromoReducer,
   whats_new_data: whatsNewReducer,
   createBarAd_data: adsCreateBarReducer,
   createUrlAd_data: adsCreateUrlReducer

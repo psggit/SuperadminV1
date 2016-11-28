@@ -48,7 +48,8 @@ import {Login, Home, PageContainer,
   BrandManagerProfile,
   CreateBrandManager,
   CompaniesManagement,
-  ManageCompanies, BrandPromos, PromosInstantCashback, RetailerManagementCreate, RetailerManagementBarCreate, RetailerManagementViewBar,
+  /* 'BrandAds' was removed from the below list of imports, not sure if I messed something up during merge*/
+  ManageCompanies, BrandPromos, PromosCashbackRedeem, RetailerManagementCreate, RetailerManagementBarCreate, RetailerManagementViewBar,
   RetailerManagementSettlementDetails, RetailerManagementDeviceDetail, RetailerManagementDisableDevice,
   RetailerManagementTransactions, RetailerManagementCreateOrganization, CustomerSupportCustomerProfile,
   RetailerManagementViewOrganization,
@@ -59,7 +60,7 @@ import {Login, Home, PageContainer,
   ParameterManagementNotepadCreateCode, ParameterManagementRetailerManualDebitCreditCodes, ParameterManagementRetailerManualCreateCode,
   ParameterManagementConsumerDisableAccountCode, ParameterManagementConsumerDisableAccountCreateCode, ParameterManagementConsumerDeviceAccountCodes,
   ParameterManagementConsumerDeviceAccountCreateCode, AccountingEODReport, AccountingSettlementReport, AccountingUploadPayUReport,
-  AccountingUploadSettlementReport, BarManagementUnlockBar, BarManagementAddSKU, WhatsNewCreateArticle,
+  AccountingUploadSettlementReport, BarManagementUnlockBar, BarManagementAddSKU, WhatsNewCreateArticle, WhatsNewViewArticle,
   ViewBrandManager,
   EditBrandManager,
   ProfileKyc,
@@ -73,7 +74,9 @@ import {Login, Home, PageContainer,
   CreateMain,
   CreateImageAd,
   CreateBarAd,
-  CreateUrlAd
+  CreateUrlAd,
+  CreateSkuAd,
+  CreatePromoAd
 } from './components'; // eslint-disable-line no-unused-vars
 
 // ^== next level of importing
@@ -219,20 +222,23 @@ const main = (
         <Route path="brands_offers_and_promos/brand_manager_view/:Id" component={ViewBrandManager} />
         <Route path="brands_offers_and_promos/brand_manager_edit/:Id" component={EditBrandManager} />
         <Route path="brands_offers_and_promos/create_brand_manager" component={CreateBrandManager} />
+
         {/* Ads Routes*/}
         <Route path="brands_offers_and_promos/ads" component={AdsMain} />
         <Route path="brands_offers_and_promos/create_ad" component={CreateMain} />
         <Route path="brands_offers_and_promos/view_all_ads" component={AdsListing} />
         <Route path="brands_offers_and_promos/create_image_ad" component={CreateImageAd} />
+        <Route path="brands_offers_and_promos/create_sku_ad" component={CreateSkuAd} />
+        <Route path="brands_offers_and_promos/create_promo_ad" component={CreatePromoAd} />
         <Route path="brands_offers_and_promos/create_url_ad" component={CreateUrlAd} />
         <Route path="brands_offers_and_promos/create_bar_ad" component={CreateBarAd} />
+
         {/* Promo content */}
         <Route path="brands_offers_and_promos/promos" component={BrandPromos} />
         {/* Promo choose menu*/}
         <Route path="brands_offers_and_promos/promos/all" component={CreatePromos} />
-        {/* Promo instant Cashback*/}
-
-        <Route path="brands_offers_and_promos/promos/instant_cashback" component={PromosInstantCashback} />
+        {/* Promo Cashback redeem*/}
+        <Route path="brands_offers_and_promos/promos/cashback_redeem" component={PromosCashbackRedeem} />
 
         <Route path="retailer_management/create_branch" component={RetailerManagementCreate} />
         <Route path="retailer_management/edit_branch/:brId" component={RetailerManagementCreate} />
@@ -283,6 +289,7 @@ const main = (
         <Route path="accounting/upload_payu_report" component={AccountingUploadPayUReport} />
         <Route path="accounting/upload_settlement_report" component={AccountingUploadSettlementReport} />
         <Route path="whats_new/create_article" component={WhatsNewCreateArticle} />
+        <Route path="whats_new" component={WhatsNewViewArticle} />
         /* End of SKU Management */
         { /*
         <Route path="notepad_entries" component={NotepadEntries} />

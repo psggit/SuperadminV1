@@ -1,7 +1,7 @@
 import React from 'react';
-import formValidator from '../../Common/CommonFormValidator';
+// import formValidator from '../../Common/CommonFormValidator';
 
-import {AD_INFO} from './CreateArticleAction';
+// import {AD_INFO} from './CreateArticleAction';
 
 const AdInfo = () => {
   const styles = require('./CreateImage.scss');
@@ -43,5 +43,6 @@ const AdInfo = () => {
 
 // Format
 // formValidator( Component, Form Attribute for Models)
-export default formValidator(AdInfo, 'data-field-name', 'data-field-type', AD_INFO);
+// export default formValidator(AdInfo, 'data-field-name', 'data-field-type', AD_INFO);
+export default AdInfo;
 // Change emitter is the function
