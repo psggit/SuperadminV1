@@ -14,7 +14,7 @@ import commonDecorator from '../../Common/CommonDecorator';
 import BreadCrumb from '../../Common/BreadCrumb';
 
 /* Components */
-// import AdInfo from './ArticleInput';
+import AdInfo from './ArticleInput';
 
 class CreateImageAd extends Component { // eslint-disable-line no-unused-vars
   constructor() {
@@ -74,9 +74,54 @@ class CreateImageAd extends Component { // eslint-disable-line no-unused-vars
     }
   }
   onClickSave() {
+    const title = document.getElementById('title').value;
+    const description = document.getElementById('description').value;
+    const content = document.getElementById('content_whatsnew').value;
+    let isFeatured = null;
+    if (document.querySelector('input[name="featured"]:checked') !== null) {
+      isFeatured = document.querySelector('input[name="featured"]:checked').value;
+    }
+    const image = '';
+
+    // var selectedCities = [];
+    // do validations
+    let error = 0;
+    let message = '';
+    if (title === '') {
+      error += 1;
+      message = 'Please enter the title';
+    }
+    if (description === '') {
+      error += 1;
+      message = 'Please enter the description';
+    }
+    if (content === '') {
+      error += 1;
+      message = 'Please enter the content';
+    }
+    if (isFeatured === null) {
+      error += 1;
+      message = 'Please select if the article is featured or not';
+    } else if (isFeatured === 'yes') {
+      isFeatured = true;
+    } else {
+      isFeatured = false;
+    }
+
+    console.log(this.props);
+    console.log(this.props.selectedCities);
+
+    if (error > 0) {
+      alert(message);
+    } else {
+      const dataObject = {'title': title, 'description': description, 'content': content, 'image': image, 'is_featured': isFeatured};
+      this.props.dispatch(finalSave(dataObject));
+    }
+    /*
     Promise.all([
       this.props.dispatch(finalSave())
     ]);
+    */
   }
   // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
   render() {
@@ -124,7 +169,7 @@ class CreateImageAd extends Component { // eslint-disable-line no-unused-vars
       <div className={styles.container}>
         <BreadCrumb breadCrumbs={this.breadCrumbs} />
         <div className={styles.brand_wrapper}>
-          {/* <AdInfo dispatch={this.props.dispatch}/> */}
+          <AdInfo dispatch={this.props.dispatch}/>
 
           {/* Image Upload */}
           <div className={styles.profile_view_right}>

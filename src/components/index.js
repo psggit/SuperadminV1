@@ -104,6 +104,7 @@ export AccountingUploadPayUReport from './Accounting/UploadPayUReport/UploadPayU
 export AccountingUploadSettlementReport from './Accounting/UploadSettlementReport/UploadSettlementReport';
 // export WhatsNewCreatePost from './WhatsNew/CreatePost/CreatePost';
 export WhatsNewCreateArticle from './WhatsNewArticle/CreateArticle/CreateArticle';
+export WhatsNewViewArticle from './WhatsNewArticle/ArticleList/ArticleManagement';
 /* Consumer Transactions */
 
 export ConsumerRecharge from './CustomerTransaction/components/Recharge/Recharge';

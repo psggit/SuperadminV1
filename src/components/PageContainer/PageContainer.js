@@ -170,6 +170,17 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
               </ul>
             </li>
           </ul>
+          <ul>
+            <li><input type="checkbox" id="cb7"/><label htmlFor="cb7">WHATS NEW</label>
+              <ul>
+              <li className={styles.sidebar_list}>
+                <label>
+                  <Link to={'/hadmin/whats_new'} className={ lastPathname === 'whats_new' ? styles.active : '' }> WHATS NEW</Link>
+                </label>
+              </li>
+              </ul>
+            </li>
+          </ul>
         </div>
         <div className={styles.main + ' col-md-9'}>
           <div className={styles.right_wrapper}>

@@ -59,7 +59,7 @@ import {Login, Home, PageContainer,
   ParameterManagementNotepadCreateCode, ParameterManagementRetailerManualDebitCreditCodes, ParameterManagementRetailerManualCreateCode,
   ParameterManagementConsumerDisableAccountCode, ParameterManagementConsumerDisableAccountCreateCode, ParameterManagementConsumerDeviceAccountCodes,
   ParameterManagementConsumerDeviceAccountCreateCode, AccountingEODReport, AccountingSettlementReport, AccountingUploadPayUReport,
-  AccountingUploadSettlementReport, BarManagementUnlockBar, BarManagementAddSKU, WhatsNewCreateArticle,
+  AccountingUploadSettlementReport, BarManagementUnlockBar, BarManagementAddSKU, WhatsNewCreateArticle, WhatsNewViewArticle,
   ViewBrandManager,
   EditBrandManager,
   ProfileKyc,
@@ -283,6 +283,7 @@ const main = (
         <Route path="accounting/upload_payu_report" component={AccountingUploadPayUReport} />
         <Route path="accounting/upload_settlement_report" component={AccountingUploadSettlementReport} />
         <Route path="whats_new/create_article" component={WhatsNewCreateArticle} />
+        <Route path="whats_new" component={WhatsNewViewArticle} />
         /* End of SKU Management */
         { /*
         <Route path="notepad_entries" component={NotepadEntries} />
