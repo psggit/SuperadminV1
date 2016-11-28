@@ -151,9 +151,29 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
               </ul>
             </li>
           </ul>
+
+          {/* Bar Management */}
+          <ul>
+            <li>
+              <input type="checkbox" id="cb6"/><label htmlFor="cb6">BAR MANAGEMENT</label>
+              <ul>
+                <li className={styles.sidebar_list}>
+                  <label>
+                    <Link to={'/hadmin/bar_management/bar_profile_and_kyc'} className={ lastPathname === 'profiles' ? styles.active : '' }> Profile & KYC </Link>
+                  </label>
+                </li>
+                <li className={styles.sidebar_list}>
+                  <label>
+                    <Link to={'/hadmin/bar_management/bar_sku_landing'} className={ lastPathname === 'profiles' ? styles.active : '' }> BAR SKU MANAGEMENT </Link>
+                  </label>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          {/* End of it */}
           {/* The Brand MANAGER UI*/}
           <ul>
-            <li><input type="checkbox" id="cb6"/><label htmlFor="cb6">BRAND MANAGER</label>
+            <li><input type="checkbox" id="cb7"/><label htmlFor="cb6">BRAND MANAGER</label>
               <ul>
               <li className={styles.sidebar_list}>
                 <label>
@@ -171,7 +191,7 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
             </li>
           </ul>
           <ul>
-            <li><input type="checkbox" id="cb7"/><label htmlFor="cb7">WHATS NEW</label>
+            <li><input type="checkbox" id="cb8"/><label htmlFor="cb7">WHATS NEW</label>
               <ul>
               <li className={styles.sidebar_list}>
                 <label>
