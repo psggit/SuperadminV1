@@ -67,7 +67,7 @@ export BrandManagerProfile from './BrandsOffersAndPromos/BrandManagerProfile/Bra
 export CreateBrandManager from './BrandsOffersAndPromos/CreateBrandManager/CreateBrandManager';
 export BrandPromos from './BrandsOffersAndPromos/BrandPromos/BrandPromos';
 export CreatePromos from './BrandsOffersAndPromos/CreatePromos/CreatePromos';
-export PromosInstantCashback from './BrandsOffersAndPromos/PromosInstantCashback/PromosInstantCashback';
+export PromosCashbackRedeem from './BrandsOffersAndPromos/PromosCashbackRedeem/PromosCashbackRedeem';
 export RetailerManagementCreate from './RetailerManagement/CreateBranch/CreateBranch';
 
 export RetailerManagementBarCreate from './BarManagement/CreateBar/CreateBar';
@@ -140,6 +140,8 @@ export AdsMain from './BrandsOffersAndPromos/Ads/AdsMain';
 export CreateMain from './BrandsOffersAndPromos/Ads/CreateMain';
 export AdsListing from './BrandsOffersAndPromos/AdsListing/AdsListing';
 export CreateImageAd from './BrandsOffersAndPromos/AdsCreateImageAd/CreateImageAd';
+export CreateSkuAd from './BrandsOffersAndPromos/AdsCreateSkuAd/CreateSkuAd';
+export CreatePromoAd from './BrandsOffersAndPromos/AdsCreatePromoAd/CreatePromoAd';
 export CreateUrlAd from './BrandsOffersAndPromos/AdsCreateUrlAd/CreateUrlAd';
 export CreateBarAd from './BrandsOffersAndPromos/AdsCreateBarAd/CreateBarAd';
 /* */

@@ -1,46 +1,74 @@
-const isEmpty = value => value === undefined || value === null || value === '';
+export const isEmpty = (value) => (value === undefined || value === null || value === '' || value.toString().trim() === '');
+
 const join = (rules) => (value, data) => rules.map(rule => rule(value, data)).filter(error => !!error)[0 /* first error */ ];
+
+export function isNumber(value) {
+  return !isNaN(value);
+}
 
 export function email(value) {
   // Let's not start a debate on email regex. This is just for an example app!
-  if (!isEmpty(value) && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
-    return 'Invalid email address';
+  if (isEmpty(value) || !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
+    return false;
   }
+  return true;
+}
+
+export function timeCheck(value) {
+  if (isEmpty(value) || !/^([0-9]|0[0-9]|1[0-2])(:|\.)[0-5][0-9]\s*(AM|PM)$/.test(value)) {
+    return false;
+  }
+  return true;
+}
+
+export function phoneNumberCheck(value) {
+  // RIGHT ==> /^\+(?:[0-9]?){6,14}[0-9]$/ =
+  // Currently it check for 10 digit number....
+  // /^(?:[0-9]?){6,14}[0-9]$/
+  if (isEmpty(value) || !/^(?:[0-9]?){6,14}[0-9]$/i.test(value)) {
+    return false;
+  }
+  return true;
 }
 
 export function required(value) {
   if (isEmpty(value)) {
-    return 'Required';
+    return false;
   }
+  return true;
 }
 
 export function minLength(min) {
   return value => {
     if (!isEmpty(value) && value.length < min) {
-      return `Must be at least ${min} characters`;
+      return false;
     }
+    return true;
   };
 }
 
 export function maxLength(max) {
   return value => {
     if (!isEmpty(value) && value.length > max) {
-      return `Must be no more than ${max} characters`;
+      return false;
     }
+    return true;
   };
 }
 
 export function integer(value) {
   if (!Number.isInteger(Number(value))) {
-    return 'Must be an integer';
+    return false;
   }
+  return true;
 }
 
 export function oneOf(enumeration) {
   return value => {
     if (!~enumeration.indexOf(value)) {
-      return `Must be one of: ${enumeration.join(', ')}`;
+      return false;
     }
+    return true;
   };
 }
 
@@ -48,8 +76,9 @@ export function match(field) {
   return (value, data) => {
     if (data) {
       if (value !== data[field]) {
-        return 'Do not match';
+        return false;
       }
+      return true;
     }
   };
 }

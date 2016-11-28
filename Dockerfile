@@ -1,14 +1,8 @@
-FROM nodesource/jessie:5.3.0
-
+FROM nodesource/jessie:6.5.0
+COPY ./ /app 
 ENV NODE_PATH /usr/lib/node_modules/
-
+COPY node_modules /usr/lib/node_modules
 WORKDIR /app 
-
-COPY . /app 
-
-ADD package.json .
-
-RUN npm install
-
-#ENTRYPOINT ["npm", "run", "start-dev"]
-ENTRYPOINT ["/bin/bash"]
+# RUN npm install
+RUN npm run build
+ENTRYPOINT ["npm", "run", "start-prod"]

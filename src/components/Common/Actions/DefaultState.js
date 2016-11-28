@@ -263,6 +263,52 @@ const defaultAddTopPickData = {
   skuPricingId: 0
 };
 
+const defaultcreatePromoAdData = {
+  type: 'create',
+  campaignDetails: {},
+  campaignsAll: [{
+    cashback_promos:
+      [{skus:
+        [{sku_pricing:
+          {sku: {brand: {}}}
+        }]
+      }],
+    brand_manager: {}
+  }],
+  bmInfo: {},
+  statesAll: [{
+    state_name: '',
+    cities: [{}]
+  }],
+  skus: {},
+  selectedCities: {},
+  hideCities: 'hide',
+  citiesView: {
+    state_name: '',
+    cities: [{}]
+  },
+  imageUrl: ''
+};
+
+const defaultcreateSkuAdData = {
+  type: 'create',
+  campaignDetails: {},
+  brandsAll: [{}],
+  brandManagers: [{}],
+  statesAll: [{
+    state_name: '',
+    cities: [{}]
+  }],
+  selectedBrand: {skus: []},
+  selectedCities: {},
+  hideCities: 'hide',
+  citiesView: {
+    state_name: '',
+    cities: [{}]
+  },
+  imageUrl: ''
+};
+
 const defaultcreateImageAdData = {
   type: 'create',
   campaignDetails: {},
@@ -358,6 +404,8 @@ export { defaultNotepadState
   , defaultCustomerSupportState
   , defaultGenreState
   , defaultcreateImageAdData
+  , defaultcreateSkuAdData
+  , defaultcreatePromoAdData
   , defaultViewImageAdData
   , defaultcreateUrlAdData
   , defaultWhatsNew
