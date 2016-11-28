@@ -12,9 +12,8 @@ import { MAKE_REQUEST,
 // import commonReducer from '../Common/Actions/CommonReducer';
 
 const STATES_FETCH = 'AD_CREATE_PROMO/STATES_FETCH';
-const BRANDS_FETCH = 'AD_CREATE_PROMO/BRANDS_FETCH';
-const BRAND_SELECT_FOR_SKU = 'AD_CREATE_PROMO/BRAND_SELECT_FOR_SKU';
-const BRAND_MANAGERS_FETCH = 'AD_CREATE_PROMO/BRAND_MANAGERS_FETCH';
+const CAMPAIGNS_FETCH = 'AD_CREATE_PROMO/CAMPAIGNS_FETCH';
+const CAMPAIGN_SELECT_FOR_PROMO = 'AD_CREATE_PROMO/CAMPAIGN_SELECT_FOR_PROMO';
 const AD_INFO = 'AD_CREATE_PROMO/AD_INFO';
 const CITIES_VIEW = 'AD_CREATE_PROMO/CITIES_VIEW';
 const IMAGE_UPLOAD_SUCCESS = 'AD_CREATE_PROMO/IMAGE_UPLOAD_SUCCESS';
@@ -24,13 +23,25 @@ const UPDATED_CITIES_SELECTION = 'AD_CREATE_PROMO/UPDATED_CITIES_SELECTION';
 
 /* ****** Action Creators ******** */
 
-const brandManagerFetch = (brandId) => {
+const fetchCampaigns = () => {
   return (dispatch) => {
     /* Url */
-    const url = Endpoints.db + '/table/brand_manager/select';
+    const url = Endpoints.db + '/table/campaign/select';
     const queryObj = {};
-    queryObj.columns = ['*', {'name': 'brands', 'columns': ['*']}];
-    queryObj.where = {'brands': {'brand_id': parseInt(brandId, 10)}};
+    const now = new Date().toISOString();
+    queryObj.columns = ['*',
+      {'name': 'brand_manager', 'columns': ['*']},
+      {'name': 'cashback_promos', 'columns': ['*',
+        {'name': 'skus', 'columns': ['*',
+          {'name': 'sku_pricing', 'columns': ['*',
+            {'name': 'sku', 'columns': ['*',
+              {'name': 'brand', 'columns': ['*']}
+            ]}
+          ]}
+        ]}
+      ]}
+    ];
+    queryObj.where = {'$and': [{'status': 'active'}, {'active_to': {'$gt': now}}]};
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
@@ -40,28 +51,7 @@ const brandManagerFetch = (brandId) => {
     /* Make a MAKE_REQUEST action */
     dispatch({type: MAKE_REQUEST});
     return Promise.all([
-      dispatch(requestAction(url, options, BRAND_MANAGERS_FETCH, REQUEST_ERROR)),
-      dispatch({type: REQUEST_COMPLETED})
-    ]);
-  };
-};
-
-const fetchBrands = () => {
-  return (dispatch) => {
-    /* Url */
-    const url = Endpoints.db + '/table/brand/select';
-    const queryObj = {};
-    queryObj.columns = ['*', {'name': 'skus', 'columns': ['*']}];
-    const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(queryObj),
-    };
-    /* Make a MAKE_REQUEST action */
-    dispatch({type: MAKE_REQUEST});
-    return Promise.all([
-      dispatch(requestAction(url, options, BRANDS_FETCH, REQUEST_ERROR)),
+      dispatch(requestAction(url, options, CAMPAIGNS_FETCH, REQUEST_ERROR)),
       dispatch({type: REQUEST_COMPLETED})
     ]);
   };
@@ -144,28 +134,6 @@ const unCheckCity = (cityObj) => {
   };
 };
 
-const validBMId = (bmId) => {
-  return (dispatch) => {
-    const url = Endpoints.db + '/table/brand_manager/select';
-    const queryObj = {};
-    queryObj.columns = ['id'];
-    queryObj.where = {'$and': [{'id': parseInt(bmId, 10)}, {'is_disabled': false}]};
-    const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(queryObj),
-    };
-    return Promise.all([
-      dispatch(requestAction(url, options)).then((res) => {
-        return (res);
-      }).catch((err) => {
-        return (err);
-      })
-    ]);
-  };
-};
-
 const insertCityMap = (adId) => {
   return (dispatch, state) => {
     // I need cityId, adId
@@ -184,7 +152,7 @@ const insertCityMap = (adId) => {
       obj.updated_at = new Date().toISOString();
       adsData.push(obj);
     });
-    const adImageUrl = Endpoints.db + '/table/ad_sku_city/insert';
+    const adImageUrl = Endpoints.db + '/table/ad_promo_city/insert';
     const data = {};
     data.objects = adsData;
     data.returning = ['id'];
@@ -203,21 +171,20 @@ const insertCityMap = (adId) => {
   };
 };
 
-const insertAdData = (imgUrl, adInfo) => {
+const insertAdData = (imgUrl, adInfo, bminfo) => {
   return (dispatch) => {
     // I need Image url.
     // I will return Ad Id, if success.
     // I will return Error message, if error.
-    const adUrl = Endpoints.db + '/table/ad_sku/insert';
+    const adUrl = Endpoints.db + '/table/ad_promo/insert';
     adInfo.image_url = imgUrl;
+    adInfo.brand_manager_id = bminfo.id;
     adInfo.created_at = new Date().toISOString();
     adInfo.updated_at = new Date().toISOString();
-    adInfo.brand_manager_id = parseInt(adInfo.brand_manager_id, 10);
-    adInfo.sku_id = parseInt(adInfo.sku_id, 10);
+    adInfo.cash_back_offer_sku_id = parseInt(adInfo.cash_back_offer_sku_id, 10);
     adInfo.active_from = new Date(adInfo.active_from).toISOString();
     adInfo.active_to = new Date(adInfo.active_to).toISOString();
-    delete adInfo.brand;
-    console.log(adInfo);
+    delete adInfo.campaign;
     const adData = {};
     adData.objects = [adInfo];
     adData.returning = ['id'];
@@ -240,6 +207,7 @@ const checkBmId = () => {
   return (dispatch, state) => {
     const lstate = state().createPromoAd_data;
     const lCamDetails = {...lstate.campaignDetails};
+    const lbmInfo = {...lstate.bmInfo};
     const imgUrl = lstate.imageUrl;
     const imgRe = /^.*?\:\/\/\/.*?\/\d+\/\w+\/.*$/;
     if (!imgRe.test(imgUrl)) {
@@ -248,27 +216,18 @@ const checkBmId = () => {
       ]);
     }
     return Promise.all([
-      dispatch(validBMId(lCamDetails.brand_manager_id)).then((res) => {
-        if (res[0].length > 0) {
-          return Promise.all([
-            dispatch(insertAdData(imgUrl, lCamDetails)).then((insertRes) => {
-              console.log('This is AdData:');
-              console.log(insertRes);
-              return Promise.all([
-                dispatch(insertCityMap(insertRes.returning[0].id)).then(() => {
-                  alert('Hurray!! Ad Created!');
-                }).catch((err) => {
-                  alert(err);
-                })
-              ]);
-            }).catch((err) => {
-              alert(err);
-            })
-          ]);
-        }
-        alert('BrandManager Id is not in DB: ' + lCamDetails.email);
+      dispatch(insertAdData(imgUrl, lCamDetails, lbmInfo)).then((insertRes) => {
+        console.log('This is AdData:');
+        console.log(insertRes);
+        return Promise.all([
+          dispatch(insertCityMap(insertRes.returning[0].id)).then(() => {
+            alert('Hurray!! Ad Created!');
+          }).catch((err) => {
+            alert(err);
+          })
+        ]);
       }).catch((err) => {
-        alert('Error: ' + err);
+        alert(err);
       })
     ]);
   };
@@ -282,20 +241,29 @@ const finalSave = () => {
   };
 };
 
+const getSkusFromCampaign = (sc) => {
+  const finalSkus = {};
+  sc.cashback_promos.forEach((cbPromo) => {
+    cbPromo.skus.forEach((cbos) => {
+      finalSkus[cbos.id] = cbos.sku_pricing.sku;
+      finalSkus[cbos.id].name = cbos.sku_pricing.sku.brand.brand_name;
+    });
+  });
+  return {...finalSkus};
+};
+
 const adsCreatePromoReducer = (state = defaultcreatePromoAdData, action) => {
   switch (action.type) {
-    case BRAND_SELECT_FOR_SKU:
-      let sb = {};
-      state.brandsAll.forEach((brand) => {
-        if (brand.id === parseInt(action.data, 10)) {
-          sb = {...brand};
+    case CAMPAIGN_SELECT_FOR_PROMO:
+      let sc = {};
+      state.campaignsAll.forEach((c) => {
+        if (c.id === parseInt(action.data, 10)) {
+          sc = {...c};
         }
       });
-      return {...state, selectedBrand: sb};
-    case BRANDS_FETCH:
-      return {...state, brandsAll: action.data};
-    case BRAND_MANAGERS_FETCH:
-      return {...state, brandManagers: action.data};
+      return {...state, skus: getSkusFromCampaign(sc), bmInfo: {...sc.brand_manager} };
+    case CAMPAIGNS_FETCH:
+      return {...state, campaignsAll: action.data};
     case STATES_FETCH:
       return {...state, statesAll: action.data};
     case IMAGE_UPLOAD_SUCCESS:
@@ -320,7 +288,7 @@ const adsCreatePromoReducer = (state = defaultcreatePromoAdData, action) => {
 
 export {
   fetchStates,
-  fetchBrands,
+  fetchCampaigns,
   AD_INFO,
   citiesViewHandler,
   IMAGE_UPLOAD_SUCCESS,
@@ -331,8 +299,7 @@ export {
   checkCity,
   unCheckCity,
   finalSave,
-  brandManagerFetch,
-  BRAND_SELECT_FOR_SKU
+  CAMPAIGN_SELECT_FOR_PROMO
 };
 
 export default adsCreatePromoReducer;

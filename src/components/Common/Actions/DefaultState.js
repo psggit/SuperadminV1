@@ -266,13 +266,21 @@ const defaultAddTopPickData = {
 const defaultcreatePromoAdData = {
   type: 'create',
   campaignDetails: {},
-  brandsAll: [{}],
-  brandManagers: [{}],
+  campaignsAll: [{
+    cashback_promos:
+      [{skus:
+        [{sku_pricing:
+          {sku: {brand: {}}}
+        }]
+      }],
+    brand_manager: {}
+  }],
+  bmInfo: {},
   statesAll: [{
     state_name: '',
     cities: [{}]
   }],
-  selectedBrand: {skus: []},
+  skus: {},
   selectedCities: {},
   hideCities: 'hide',
   citiesView: {

@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchStates, fetchBrands, citiesViewHandler, IMAGE_UPLOAD_SUCCESS, IMAGE_UPLOAD_ERROR, IMAGE_CANCEL} from './CreateAdPromoActions';
+import { fetchStates, fetchCampaigns, citiesViewHandler, IMAGE_UPLOAD_SUCCESS, IMAGE_UPLOAD_ERROR, IMAGE_CANCEL} from './CreateAdPromoActions';
 import { checkState, unCheckState } from './CreateAdPromoActions';
 import { checkCity, unCheckCity, finalSave } from './CreateAdPromoActions';
 import uploadFile from '../../Common/Actions/upload';
@@ -34,7 +34,7 @@ class CreatePromoAd extends Component { // eslint-disable-line no-unused-vars
   }
   componentWillMount() {
     Promise.all([
-      this.props.dispatch(fetchBrands()),
+      this.props.dispatch(fetchCampaigns()),
       this.props.dispatch(fetchStates())
     ]);
   }
@@ -123,7 +123,7 @@ class CreatePromoAd extends Component { // eslint-disable-line no-unused-vars
       <div className={styles.container}>
         <BreadCrumb breadCrumbs={this.breadCrumbs} />
         <div className={styles.brand_wrapper}>
-          <AdInfo dispatch={this.props.dispatch} brands={this.props.brandsAll} sb={this.props.selectedBrand} bms={this.props.brandManagers} />
+          <AdInfo dispatch={this.props.dispatch} campaigns={this.props.campaignsAll} skl={this.props.skus} bmi={this.props.bmInfo}/>
 
           {/* Image Upload */}
           <div className={styles.profile_view_right}>
@@ -190,9 +190,9 @@ class CreatePromoAd extends Component { // eslint-disable-line no-unused-vars
 CreatePromoAd.propTypes = {
   imageUrl: PropTypes.string.isRequired,
   statesAll: PropTypes.array.isRequired,
-  brandsAll: PropTypes.array.isRequired,
-  brandManagers: PropTypes.array.isRequired,
-  selectedBrand: PropTypes.object.isRequired,
+  campaignsAll: PropTypes.array.isRequired,
+  skus: PropTypes.object.isRequired,
+  bmInfo: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
   hideCities: PropTypes.string.isRequired,
   citiesView: PropTypes.object.isRequired,

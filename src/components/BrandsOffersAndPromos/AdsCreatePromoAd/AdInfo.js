@@ -1,24 +1,19 @@
 import React from 'react';
 import formValidator from '../../Common/CommonFormValidator';
-import { brandManagerFetch } from './CreateAdPromoActions.js';
 
-import {AD_INFO, BRAND_SELECT_FOR_SKU} from './CreateAdPromoActions';
+import {AD_INFO, CAMPAIGN_SELECT_FOR_PROMO} from './CreateAdPromoActions';
 
-const AdInfo = ({dispatch, brands, sb, bms}) => {
+const AdInfo = ({dispatch, campaigns, skl, bmi}) => {
   const styles = require('./CreatePromoAd.scss');
-  const brandsDropDownHtml = brands.map((brand) => {
-    return (<option value={brand.id}> {brand.brand_name} </option>);
+  const campaignsDropDownHtml = campaigns.map((campaign) => {
+    return (<option value={campaign.id}>{campaign.id} : {campaign.name} </option>);
   });
-  const skusDropdownHtml = sb.skus.map((sku) => {
-    return (<option value={sku.id}> {sku.volume} ml</option>);
+  const promosDropdownHtml = Object.keys(skl).map((key) => {
+    return (<option value={skl[key].id}> {skl[key].id} : {skl[key].name} : {skl[key].volume} ml</option>);
   });
-  const bmDropDownHtml = bms.map((bm) => {
-    return (<option value={bm.id}> {bm.name} / {bm.email} </option>);
-  });
-  const onBrandSelect = (e) => {
+  const onCampaignSelect = (e) => {
     Promise.all([
-      dispatch({type: BRAND_SELECT_FOR_SKU, data: e.target.value}),
-      dispatch(brandManagerFetch(e.target.value))
+      dispatch({type: CAMPAIGN_SELECT_FOR_PROMO, data: e.target.value}),
     ]);
   };
   return (
@@ -26,25 +21,22 @@ const AdInfo = ({dispatch, brands, sb, bms}) => {
         <div className={styles.heading + ' ' + styles.wd_100}>CAMPAIGN DETAILS</div>
           <ul>
             <li>
-              <label>Select Brand</label>
-              <select data-field-name="brand" data-field-type="string" onChange={onBrandSelect.bind(this)}>
+              <label>Select Campaign</label>
+              <select data-field-name="campaign" data-field-type="string" onChange={onCampaignSelect.bind(this)}>
                 <option>Select</option>
-                {brandsDropDownHtml}
+                {campaignsDropDownHtml}
               </select>
             </li>
             <li>
-              <label>Select SKU</label>
-              <select data-field-name="sku_id" data-field-type="string">
+              <label>Select Promo</label>
+              <select data-field-name="cash_back_offer_sku_id" data-field-type="string">
                 <option>Select</option>
-                {skusDropdownHtml}
+                {promosDropdownHtml}
               </select>
             </li>
             <li>
-              <label>Select Brand Manager</label>
-              <select data-field-name="brand_manager_id" data-field-type="string">
-                <option>Select</option>
-                {bmDropDownHtml}
-              </select>
+              <label>Brand Manager</label>
+              <input data-field-name="brand_manager_id" value={ bmi.id + ' : ' + bmi.email + ' : ' + bmi.name} data-field-type="string" type="text" />
             </li>
             <li>
               <label>Ad Title</label>
