@@ -10,7 +10,7 @@ const AdsList = ( {data} ) => {
     return (
           <tr key={index}>
             <td>
-              <Link to={'/hadmin/brands_offers_and_promos/brand_manager_view/' + dat.id}>
+              <Link to={'#'}>
                 <button className={styles.edit_btn} data-state-id={dat.id}>
                   View
                 </button>
@@ -18,19 +18,22 @@ const AdsList = ( {data} ) => {
             </td>
             <td> { dat.id } </td>
             <td>
-                { dat.name }
+                { dat.type }
             </td>
             <td>
-                { dat.email }
+                { dat.ad_title }
             </td>
             <td>
-                { dat.mobile_number }
+                { dat.ad_location }
             </td>
             <td>
-                { dat.company.name}
+                { dat.status }
             </td>
             <td>
-                { (dat.is_disabled) ? 'Disabled' : 'Active' }
+                { dat.active_from }
+            </td>
+            <td>
+                { dat.active_to }
             </td>
             <td>
                 { dat.created_at }
@@ -58,13 +61,13 @@ const AdsList = ( {data} ) => {
                 <tr>
                   <th> </th>
                   <th> ID </th>
-                  <th> Name </th>
-                  <th> Email </th>
-                  <th> Mobile </th>
-                  <th> Company </th>
-                  <th> Status </th>
-                  <th> KYC Status </th>
-                  <th> Created At </th>
+                  <th> Type </th>
+                  <th> Title</th>
+                  <th> Ad Location</th>
+                  <th> Status</th>
+                  <th> Active From</th>
+                  <th> Active To</th>
+                  <th> Created At</th>
                   <th> Updated At </th>
                 </tr>
               </thead>

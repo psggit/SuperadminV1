@@ -28,13 +28,13 @@ const getBrandManagerData = (page, limit) => {
     offset = (page - 1) * limit;
 
     const payload = {
-      columns: ['*', {'name': 'company', 'columns': ['*']}],
+      columns: ['*'],
       limit: limit,
       offset: offset,
       order_by: '+id'
     };
 
-    const url = Endpoints.db + '/table/' + 'brand_manager' + '/select';
+    const url = Endpoints.db + '/table/' + 'common_ads_listing_sa' + '/select';
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
@@ -76,7 +76,7 @@ const getBrandManagerCount = () => {
       'columns': ['*']
     };
 
-    const url = Endpoints.db + '/table/' + 'brand_manager' + '/count';
+    const url = Endpoints.db + '/table/' + 'common_ads_listing_sa' + '/count';
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
