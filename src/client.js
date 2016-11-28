@@ -48,7 +48,8 @@ import {Login, Home, PageContainer,
   BrandManagerProfile,
   CreateBrandManager,
   CompaniesManagement,
-  ManageCompanies, BrandPromos, PromosInstantCashback, RetailerManagementCreate, RetailerManagementBarCreate, RetailerManagementViewBar,
+  /* 'BrandAds' was removed from the below list of imports, not sure if I messed something up during merge*/
+  ManageCompanies, BrandPromos, PromosCashbackRedeem, RetailerManagementCreate, RetailerManagementBarCreate, RetailerManagementViewBar,
   RetailerManagementSettlementDetails, RetailerManagementDeviceDetail, RetailerManagementDisableDevice,
   RetailerManagementTransactions, RetailerManagementCreateOrganization, CustomerSupportCustomerProfile,
   RetailerManagementViewOrganization,
@@ -236,9 +237,8 @@ const main = (
         <Route path="brands_offers_and_promos/promos" component={BrandPromos} />
         {/* Promo choose menu*/}
         <Route path="brands_offers_and_promos/promos/all" component={CreatePromos} />
-        {/* Promo instant Cashback*/}
-
-        <Route path="brands_offers_and_promos/promos/instant_cashback" component={PromosInstantCashback} />
+        {/* Promo Cashback redeem*/}
+        <Route path="brands_offers_and_promos/promos/cashback_redeem" component={PromosCashbackRedeem} />
 
         <Route path="retailer_management/create_branch" component={RetailerManagementCreate} />
         <Route path="retailer_management/edit_branch/:brId" component={RetailerManagementCreate} />

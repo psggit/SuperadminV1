@@ -47,7 +47,9 @@ babelLoaderQuery.extra['react-transform'].transforms.push({
 });
 
 module.exports = {
-    eval: 'cheap-module-eval-source-map',
+    // cheap-module-eval-source-map
+    // eval: 'cheap-module-eval-source-map',
+    devtool: 'source-map',
     context: path.resolve(__dirname, '..'),
     entry: {
       'main': [
@@ -93,7 +95,7 @@ module.exports = {
         __CLIENT__: true,
         __SERVER__: false,
         __DEVELOPMENT__: true,
-        __DEVTOOLS__: true  // <-------- DISABLE redux-devtools HERE
+        __DEVTOOLS__: false  // <-------- DISABLE redux-devtools HERE
       }),
       webpackIsomorphicToolsPlugin.development()
     ]

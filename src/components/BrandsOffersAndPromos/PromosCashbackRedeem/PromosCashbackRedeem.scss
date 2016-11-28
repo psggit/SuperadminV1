@@ -18,7 +18,7 @@
 	color: rgba(0,0,0,0.54);
 	font-weight: 500;
 	margin-bottom: 10px;
-	font-size: 13px; 
+	font-size: 13px;
 	text-align: left;
 	text-transform: uppercase;
 	letter-spacing: 0.3px;
@@ -50,7 +50,7 @@
 		float: left;
 		label
 		{
-			width: 170px;
+			width: 250px;
 			font-weight: 400;
 			color: rgba(0,0,0,0.54);
 			font-size: 13px;
@@ -66,7 +66,8 @@
 			font-size: 13px;
 			height: 30px;
 			color: rgba(0,0,0,0.9);
-			width: 170px;
+			min-width: 250px;
+			max-width: 270px;
 			&:focus
 			{
 				outline: none;
@@ -394,7 +395,7 @@
 		{
 			color: rgba(0,0,0,0.4);
 			margin-bottom: 15px;
-			font-size: 13px; 
+			font-size: 13px;
 			width: 100%;
 			float: left;
 			letter-spacing: 0.3px;
@@ -454,7 +455,7 @@
 				text-align: right;
 				margin-bottom: 0;
 			}
-		}	
+		}
 	}
 	.product_ml_container
 	{
@@ -468,7 +469,7 @@
 		{
 			color: rgba(0,0,0,0.4);
 			margin-bottom: 15px;
-			font-size: 13px; 
+			font-size: 13px;
 			width: 100%;
 			float: left;
 			letter-spacing: 0.3px;
@@ -530,7 +531,7 @@
 	}
 	.input_val:focus
 	{
-		outline: none;	
+		outline: none;
 	}
 	.user_actions
 	{
