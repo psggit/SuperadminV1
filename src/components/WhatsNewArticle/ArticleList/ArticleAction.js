@@ -111,6 +111,46 @@ const getArticleData = (page, limit) => {
   };
 };
 
+const changeArticleStatus = (dataObject) => {
+  return (dispatch) => {
+    dispatch({ type: MAKE_REQUEST});
+    const url = Endpoints.bulk;
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(dataObject),
+    };
+    // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
+
+    return fetch(url, options)
+           .then(
+             (response) => {
+               if (response.ok) { // 2xx status
+                 response.json().then(
+                   (d) => {
+                     // return dispatch({type: REQUEST_SUCCESS, data: d});
+                     alert('Successfully updated');
+                     console.log('Article is_active Flag changed' + d);
+                     window.location.reload();
+                   },
+                   () => {
+                     // return dispatch({type: REQUEST_ERROR, data: 'Error.Try again'});
+                     alert('Error occured. Please try later');
+                   }
+                 );
+               } else {
+                 alert('Error occured. Please try later');
+                 // return dispatch({type: REQUEST_ERROR, data: 'Error.Try again'});
+               }
+             },
+             (error) => {
+               console.log(error);
+               return dispatch({type: REQUEST_ERROR, data: 'Error.Try again'});
+             });
+  };
+};
+
 const getAllArticleData = (page, limit) => {
   const gotPage = page;
   const gotLimit = limit;
@@ -150,6 +190,7 @@ const articleReducer = (state = defaultArticleState, action) => {
 
 export {
   getArticleData,
-  getAllArticleData
+  getAllArticleData,
+  changeArticleStatus
 };
 export default articleReducer;

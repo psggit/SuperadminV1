@@ -1,7 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router';
 
-const SearchWrapper = ( {data} ) => {
+import Endpoints from '../../../Endpoints';
+
+const SearchWrapper = ( {data, onClickActivate} ) => {
   const styles = require('./SearchWrapper.scss');
   let tableBody;
   let objHtml;
@@ -25,26 +26,32 @@ const SearchWrapper = ( {data} ) => {
       cities += dat.cities[i].city.name;
     }
 
+    let articleStatus = 'Deactivate';
+    let buttonClass = 'btn btn-danger';
+    if (dat.is_active === false) {
+      articleStatus = 'Activate';
+      buttonClass = 'btn btn-success';
+    }
+
     return (
           <tr key={index}>
             <td>
-              <Link to={'/hadmin/whats_new/edit/' + dat.id}>
-                <button className={styles.edit_btn} data-genre-id={dat.id}>
-                  Edit
+                <button className={buttonClass} data-article-id={dat.id} data-is-active={dat.is_active} onClick={onClickActivate}>
+                {articleStatus}
                 </button>
-              </Link>
             </td>
             <td> { dat.id } </td>
             <td> { dat.title } </td>
             <td> { dat.description } </td>
             <td> { dat.content } </td>
             <td> { cities } </td>
-            <td> <img src={ dat.image }></img> </td>
+            <td> <img src={ Endpoints.file_get + dat.image }></img> </td>
             <td> { createdAt } </td>
             <td> { updatedAt } </td>
           </tr>
         );
   });
+
 
   if (tableBody.length === 0) {
     objHtml = () => {

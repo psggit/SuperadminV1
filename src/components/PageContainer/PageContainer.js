@@ -175,7 +175,7 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
           {/* End of it */}
           {/* The Brand MANAGER UI*/}
           <ul>
-            <li><input type="checkbox" id="cb7"/><label htmlFor="cb6">BRAND MANAGER</label>
+            <li><input type="checkbox" id="cb7"/><label htmlFor="cb7">BRAND MANAGER</label>
               <ul>
               <li className={styles.sidebar_list}>
                 <label>
@@ -193,11 +193,16 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
             </li>
           </ul>
           <ul>
-            <li><input type="checkbox" id="cb8"/><label htmlFor="cb7">WHATS NEW</label>
+            <li><input type="checkbox" id="cb8"/><label htmlFor="cb8">WHATS NEW</label>
               <ul>
               <li className={styles.sidebar_list}>
                 <label>
-                  <Link to={'/hadmin/whats_new'} className={ lastPathname === 'whats_new' ? styles.active : '' }> WHATS NEW</Link>
+                  <Link to={'/hadmin/whats_new'} className={ lastPathname === 'whats_new' ? styles.active : '' }>Manage Articles</Link>
+                </label>
+              </li>
+              <li className={styles.sidebar_list}>
+                <label>
+                  <Link to={'/hadmin/whats_new/create_article'} className={ lastPathname === 'create_article' ? styles.active : '' }>Create Article</Link>
                 </label>
               </li>
               </ul>
