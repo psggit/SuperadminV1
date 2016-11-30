@@ -2,7 +2,7 @@
  * Will receive default state from Common
  */
 
-import { defaultcreateImageAdData} from '../../Common/Actions/DefaultState';
+import { whatsNewDefaultData } from '../../Common/Actions/DefaultState';
 import requestAction from '../../Common/Actions/requestAction';
 import Endpoints, { globalCookiePolicy } from '../../../Endpoints';
 import { MAKE_REQUEST,
@@ -18,8 +18,11 @@ const IMAGE_UPLOAD_SUCCESS = 'AD_CREATE_IMAGE/IMAGE_UPLOAD_SUCCESS';
 const IMAGE_UPLOAD_ERROR = 'AD_CREATE_IMAGE/IMAGE_UPLOAD_SUCCESS';
 const IMAGE_CANCEL = 'AD_CREATE_IMAGE/IMAGE_CANCEL';
 const UPDATED_CITIES_SELECTION = 'AD_CREATE_IMAGE/UPDATED_CITIES_SELECTION';
+const REQUEST_SUCCESS = 'AD_CREATE_IMAGE/REQUEST_SUCCESS';
+// const REQUEST_ERROR = 'CTSKU/REQUEST_ERROR';
 
 /* ****** Action Creators ******** */
+const requestFailed = (data) => ({type: REQUEST_ERROR, data: data});
 
 const fetchStates = () => {
   return (dispatch) => {
@@ -98,184 +101,104 @@ const unCheckCity = (cityObj) => {
   };
 };
 
-const validateEmail = (email) => {
-  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(email);
-};
-
-const validBMEmail = (email) => {
-  return (dispatch) => {
-    const url = Endpoints.db + '/table/brand_manager/select';
-    const queryObj = {};
-    queryObj.columns = ['id', 'email'];
-    queryObj.where = {'$and': [{'email': email}, {'is_disabled': false}]};
-    const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(queryObj),
-    };
-    return Promise.all([
-      dispatch(requestAction(url, options)).then((res) => {
-        return (res);
-      }).catch((err) => {
-        return (err);
-      })
-    ]);
-  };
-};
-
-const insertCityMap = (adId) => {
+const finalSave = (dataObject) => {
   return (dispatch, state) => {
-    // I need cityId, adId
-    // [ad_id, city_id, created_at, updated_at]
-    // I will return a list of Id's for all the maps, if success
-    // An Error message if anything else
+    console.log(dataObject);
     const lstate = state().whats_new_data;
-    const lCities = {...lstate.selectedCities};
-    const adsData = [];
-    // Make the insert data
-    Object.keys(lCities).forEach((cityId) => {
-      const obj = {};
-      obj.ad_id = parseInt(adId, 10);
-      obj.city_id = parseInt(cityId, 10);
-      obj.created_at = new Date().toISOString();
-      obj.updated_at = new Date().toISOString();
-      adsData.push(obj);
-    });
-    const adImageUrl = Endpoints.db + '/table/ad_image_city/insert';
-    const data = {};
-    data.objects = adsData;
-    data.returning = ['id'];
-    const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(data)
-    };
-    return dispatch(requestAction(adImageUrl, options)).then((resp) => {
-      console.log(resp);
-    }).catch((err) => {
-      console.log(err);
-      alert(err);
-    });
-  };
-};
-
-const insertAdData = (bmId, imgUrl, adInfo) => {
-  return (dispatch) => {
-    // I need BrandManager ID, Image url.
-    // I will return Ad Id, if success.
-    // I will return Error message, if error.
-    const adUrl = Endpoints.db + '/table/ad_image/insert';
-    adInfo.image_url = imgUrl;
-    adInfo.created_at = new Date().toISOString();
-    adInfo.updated_at = new Date().toISOString();
-    adInfo.brand_manager_id = parseInt(bmId, 10);
-    adInfo.active_from = new Date(adInfo.active_from).toISOString();
-    adInfo.active_to = new Date(adInfo.active_to).toISOString();
-    delete adInfo.email;
-    console.log(adInfo);
-    const adData = {};
-    adData.objects = [adInfo];
-    adData.returning = ['id'];
-    const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(adData),
-    };
-
-    return dispatch(requestAction(adUrl, options)).then((resp) => {
-      return resp;
-    }).catch((err) => {
-      return err;
-    });
-  };
-};
-
-const checkBmEmail = () => {
-  return (dispatch, state) => {
-    const lstate = state().whats_new_data;
-    const lCamDetails = {...lstate.campaignDetails};
-    const imgUrl = lstate.imageUrl;
-    const imgRe = /^.*?\:\/\/\/.*?\/\d+\/\w+\/.*$/;
-    if (!imgRe.test(imgUrl)) {
-      return Promise.all([
-        alert('Please upload an image')
-      ]);
+    let imgUrl = '';
+    if (imgUrl !== undefined) {
+      console.log('IMAGE EXISTS');
+      console.log(lstate);
+      imgUrl = lstate.imageUrl;
     }
-    if (!validateEmail(lCamDetails.email)) {
-      return Promise.all([
-        alert('Invalid Email Address: ' + lCamDetails.email)
-      ]);
-    }
-    return Promise.all([
-      dispatch(validBMEmail(lCamDetails.email)).then((res) => {
-        if (res[0].length > 0) {
-          // BM Exists! Yippie!
-          // Assume that the result is always 1. Should always be 1.
-          // Time to insert data
-          return Promise.all([
-            // insert Ad Data (including Image)
-            dispatch(insertAdData(res[0][0].id, imgUrl, lCamDetails)).then((insertRes) => {
-              console.log('This is AdData:');
-              console.log(insertRes);
-              return Promise.all([
-                dispatch(insertCityMap(insertRes.returning[0].id)).then(() => {
-                  alert('Hurray!! Ad Created!');
-                }).catch((err) => {
-                  alert(err);
-                })
-              ]);
-            }).catch((err) => {
-              alert(err);
-            })
-          ]);
-        }
-        alert('BrandManager email is not in DB: ' + lCamDetails.email);
-      }).catch((err) => {
-        alert('Error: ' + err);
-      })
-    ]);
+    const insertArticleObj = {'type': 'insert', 'args': {'table': 'whats_new_article', 'objects': [{'is_featured': dataObject.is_featured, 'title': dataObject.title, 'description': dataObject.description, 'content': dataObject.content, 'image': imgUrl, 'is_active': true}], 'returning': ['id']}};
+
+    const payload = {'type': 'bulk', 'args': [insertArticleObj]};
+
+    console.log(payload);
+
+    const url = Endpoints.bulk;
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(payload),
+    };
+    // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
+    return fetch(url, options)
+       .then(
+         (response) => {
+           if (response.ok) { // 2xx status
+             response.json().then(
+               (d) => {
+                 console.log('Article Successfully Inserted');
+                 console.log(d);
+                 const articleId = d[0].returning[0].id;
+                 console.log(articleId);
+                 // now insert city mapping for this article id
+                 const selectedCities = lstate.selectedCities;
+                 console.log(selectedCities);
+                 const cityIds = Object.keys(selectedCities);
+                 const cityInserts = [];
+                 for ( let i = 0; i < cityIds.length; i++) {
+                   const insertCityObj = {'whats_new_article_id': articleId, 'city_id': parseInt(cityIds[i], 10)};
+                   cityInserts.push(insertCityObj);
+                 }
+
+                 const payloadCity = {'type': 'insert', 'args': {'table': 'whats_new_article_city', 'objects': cityInserts, 'returning': ['id']}};
+
+                 console.log(payloadCity);
+
+                 const cityUrl = Endpoints.bulk;
+                 const cityOptions = {
+                   method: 'POST',
+                   headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+                   credentials: globalCookiePolicy,
+                   body: JSON.stringify(payloadCity),
+                 };
+                 // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
+                 return fetch(cityUrl, cityOptions)
+                  .then(
+                    (cityResponse) => {
+                      if (cityResponse.ok) {
+                        cityResponse.json().then(
+                          (d1) => {
+                            console.log(d1);
+                            alert('Article has been inserted successfully');
+                            console.log('city mapping successful');
+                            window.location.reload();
+                           /*
+                           return Promise.all([
+                             dispatch({type: REQUEST_SUCCESS, data: d})
+                           ]);
+                           */
+                          }
+                        );
+                      }
+                    }
+                  );
+               },
+               () => {
+                 return dispatch(requestFailed('Error. Try again!'));
+               }
+             );
+           } else {
+             return dispatch(requestFailed('Error. Try again!'));
+           }
+         },
+         (error) => {
+           console.log(error);
+           return dispatch(requestFailed(error.text));
+         });
   };
 };
 
-
-const validateForm = () => {
-  return (dispatch, state) => {
-    const lstate = state().whats_new_data;
-    const lCamDetails = {...lstate.campaignDetails};
-    return Promise.all([
-      console.log(lCamDetails)
-    ]);
-  };
-};
-
-const createAd = () => {
-  return (dispatch, state) => {
-    const lstate = state().whats_new_data;
-    const lCamDetails = {...lstate.campaignDetails};
-    return Promise.all([
-      console.log(lCamDetails)
-    ]);
-  };
-};
-
-const finalSave = () => {
-  return (dispatch) => {
-    return Promise.all([
-      dispatch(checkBmEmail()).then(
-        dispatch(validateForm()).then(
-          dispatch(createAd())
-        )
-      )
-    ]);
-  };
-};
-
-const createArticleReducer = (state = defaultcreateImageAdData, action) => {
+const createArticleReducer = (state = whatsNewDefaultData, action) => {
   switch (action.type) {
+    case REQUEST_SUCCESS:
+      return {...state, cities: action.data};
+    case REQUEST_ERROR:
+      return {...state, cities: []};
     case STATES_FETCH:
       return {...state, statesAll: action.data};
     case IMAGE_UPLOAD_SUCCESS:

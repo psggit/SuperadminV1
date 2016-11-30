@@ -1,9 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchStates, citiesViewHandler, IMAGE_UPLOAD_SUCCESS, IMAGE_UPLOAD_ERROR, IMAGE_CANCEL} from './CreateArticleAction';
-import { checkState, unCheckState } from './CreateArticleAction';
-import { checkCity, unCheckCity, finalSave } from './CreateArticleAction';
-import uploadFile from '../../Common/Actions/upload';
+import { fetchAd} from './ViewAdImageActions';
 import Endpoints from '../../../Endpoints';
 /*
   Decorator which adds couple of use ful features like
@@ -14,27 +11,27 @@ import commonDecorator from '../../Common/CommonDecorator';
 import BreadCrumb from '../../Common/BreadCrumb';
 
 /* Components */
-import AdInfo from './ArticleInput';
+import AdInfo from './AdInfo';
 
-class CreateImageAd extends Component { // eslint-disable-line no-unused-vars
+class ViewImageAd extends Component { // eslint-disable-line no-unused-vars
   constructor() {
     super();
     /* Data required for the bread component to render correctly */
     this.breadCrumbs = [];
     this.breadCrumbs.push({
-      title: 'Whats New',
+      title: 'Ads Management',
       sequence: 1,
       link: '#' // TODO
     });
     this.breadCrumbs.push({
-      title: 'Create Article',
+      title: 'View Image Ad',
       sequence: 2,
       link: '#' // TODO
     });
   }
   componentWillMount() {
     Promise.all([
-      this.props.dispatch(fetchStates())
+      this.props.dispatch(fetchAd(parseInt(this.props.params.Id, 10)))
     ]);
   }
   onClickCitiesView(stateObj) {
@@ -74,59 +71,14 @@ class CreateImageAd extends Component { // eslint-disable-line no-unused-vars
     }
   }
   onClickSave() {
-    const title = document.getElementById('title').value;
-    const description = document.getElementById('description').value;
-    const content = document.getElementById('content_whatsnew').value;
-    let isFeatured = null;
-    if (document.querySelector('input[name="featured"]:checked') !== null) {
-      isFeatured = document.querySelector('input[name="featured"]:checked').value;
-    }
-    const image = '';
-
-    // var selectedCities = [];
-    // do validations
-    let error = 0;
-    let message = '';
-    if (title === '') {
-      error += 1;
-      message = 'Please enter the title';
-    }
-    if (description === '') {
-      error += 1;
-      message = 'Please enter the description';
-    }
-    if (content === '') {
-      error += 1;
-      message = 'Please enter the content';
-    }
-    if (isFeatured === null) {
-      error += 1;
-      message = 'Please select if the article is featured or not';
-    } else if (isFeatured === 'yes') {
-      isFeatured = true;
-    } else {
-      isFeatured = false;
-    }
-
-    console.log(this.props);
-    console.log(this.props.selectedCities);
-
-    if (error > 0) {
-      alert(message);
-    } else {
-      const dataObject = {'title': title, 'description': description, 'content': content, 'image': image, 'is_featured': isFeatured};
-      this.props.dispatch(finalSave(dataObject));
-    }
-    /*
     Promise.all([
       this.props.dispatch(finalSave())
     ]);
-    */
   }
   // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
   render() {
     const {statesAll, hideCities, citiesView, selectedCities} = this.props;
-    const styles = require('./CreateImage.scss');
+    const styles = require('./ViewImageAd.scss');
     const { imageUrl } = this.props;
     const imgUr = Endpoints.file_get + imageUrl;
     const checkAllStatesInCity = (state) => {
@@ -153,8 +105,6 @@ class CreateImageAd extends Component { // eslint-disable-line no-unused-vars
         </li>
       );
     });
-    console.log('CITY HTML');
-    console.log(citiesHTML);
     const statesHTML = statesAll.map((state) => {
       return (
         <li key={state.id}>
@@ -169,12 +119,12 @@ class CreateImageAd extends Component { // eslint-disable-line no-unused-vars
       <div className={styles.container}>
         <BreadCrumb breadCrumbs={this.breadCrumbs} />
         <div className={styles.brand_wrapper}>
-          <AdInfo dispatch={this.props.dispatch}/>
+          <AdInfo dispatch={this.props.dispatch} adDetails={this.props.campaignDetails}/>
 
           {/* Image Upload */}
           <div className={styles.profile_view_right}>
             <div className={styles.upload_white}>
-              <p className={styles.upload_header}> Upload Image </p>
+              <p className={styles.upload_header}> Upload Ad Image </p>
               <div className={styles.uploaded_images}>
                 {
                   (imageUrl.length > 0) ?
@@ -225,7 +175,7 @@ class CreateImageAd extends Component { // eslint-disable-line no-unused-vars
           </div>
           <div className="clearfix"></div>
           <button className={styles.edit_brand_btn} onClick={this.onClickSave.bind(this)}>
-            Create Article
+            Save Ad
           </button>
         </div>
       </div>
@@ -233,18 +183,19 @@ class CreateImageAd extends Component { // eslint-disable-line no-unused-vars
   }
 }
 
-CreateImageAd.propTypes = {
+ViewImageAd.propTypes = {
   imageUrl: PropTypes.string.isRequired,
   statesAll: PropTypes.array.isRequired,
   dispatch: PropTypes.func.isRequired,
   hideCities: PropTypes.string.isRequired,
   citiesView: PropTypes.object.isRequired,
+  campaignDetails: PropTypes.object.isRequired,
   selectedCities: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) => {
-  return {...state.page_data, ...state.whats_new_data};
+  return {...state.page_data, ...state.viewImageAd_data};
 };
 
-const decoratedConnectedComponent = commonDecorator(CreateImageAd);// connect(mapStateToProps)(CommonDecorator);
+const decoratedConnectedComponent = commonDecorator(ViewImageAd);// connect(mapStateToProps)(CommonDecorator);
 export default connect(mapStateToProps)(decoratedConnectedComponent);

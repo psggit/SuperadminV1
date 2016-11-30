@@ -143,17 +143,39 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
             <li><input type="checkbox" id="cb5"/><label htmlFor="cb5">RETAILER MANAGEMENT</label>
               <ul>
               <li className={styles.sidebar_list}><label>
-                  <Link to={'/hadmin/retailer_management/profile_and_kyc'} className={ lastPathname === 'profiles' ? styles.active : '' }> Profile & KYC </Link>
+                  <Link to={'/hadmin/retailer_management/profile_and_kyc'} > Profile & KYC </Link>
               </label></li>
+              {/*
               <li className={styles.sidebar_list}><label>
                   <Link to={'/hadmin/consumer/profiles'} className={ lastPathname === 'profiles' ? styles.active : '' }> Transactions </Link>
               </label></li>
+              */}
               </ul>
             </li>
           </ul>
+
+          {/* Bar Management */}
+          <ul>
+            <li>
+              <input type="checkbox" id="cb6"/><label htmlFor="cb6">BAR MANAGEMENT</label>
+              <ul>
+                <li className={styles.sidebar_list}>
+                  <label>
+                    <Link to={'/hadmin/bar_management/bar_profile_and_kyc'} > Profile & KYC </Link>
+                  </label>
+                </li>
+                <li className={styles.sidebar_list}>
+                  <label>
+                    <Link to={'/hadmin/bar_management/bar_sku_landing'} > BAR SKU MANAGEMENT </Link>
+                  </label>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          {/* End of it */}
           {/* The Brand MANAGER UI*/}
           <ul>
-            <li><input type="checkbox" id="cb6"/><label htmlFor="cb6">BRAND MANAGER</label>
+            <li><input type="checkbox" id="cb7"/><label htmlFor="cb7">BRAND MANAGER</label>
               <ul>
               <li className={styles.sidebar_list}>
                 <label>
@@ -167,6 +189,22 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
                   </label>
                 </li>
               */}
+              </ul>
+            </li>
+          </ul>
+          <ul>
+            <li><input type="checkbox" id="cb8"/><label htmlFor="cb8">WHATS NEW</label>
+              <ul>
+              <li className={styles.sidebar_list}>
+                <label>
+                  <Link to={'/hadmin/whats_new'} className={ lastPathname === 'whats_new' ? styles.active : '' }>Manage Articles</Link>
+                </label>
+              </li>
+              <li className={styles.sidebar_list}>
+                <label>
+                  <Link to={'/hadmin/whats_new/create_article'} className={ lastPathname === 'create_article' ? styles.active : '' }>Create Article</Link>
+                </label>
+              </li>
               </ul>
             </li>
           </ul>
