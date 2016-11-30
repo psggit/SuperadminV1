@@ -12,6 +12,7 @@ const finalTestObj = {
   isPromoSectionShown: false,
 
   // brand campaign dictionary
+  brandManagerIdMap: {},
   brandManagerCampaignMap: {},
   brandManagerBrandMap: {},
 

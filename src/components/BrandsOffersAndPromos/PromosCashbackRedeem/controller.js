@@ -327,7 +327,7 @@ const mapDispatchToProps = (dispatch) => {
           status: values.campaignStatus,
           active_from: convertStrToPosgresDateStr(values.activeFrom),
           active_to: convertStrToPosgresDateStr(values.activeTo),
-          brand_manager_id: values.brandManagerBrandMap[values.brandEmail][0].id,
+          brand_manager_id: values.brandManagerIdMap[values.brandEmail],
           budgeted_amount: parseFloat(values.budgetedAmount),
           funds_credited: parseFloat(values.fundsCredited)
         });
@@ -335,7 +335,7 @@ const mapDispatchToProps = (dispatch) => {
         dispatch(makeRequest(insertCampaignQuery.url, createFetchOption(insertCampaignQuery.query), DO_NOTHING, ON_FAILED, ON_LOADING)).then((campaign) => {
           // the array will have a single campaign
           const insertPromosQuery = insertCampaignAndPromos.insertPromos({
-            campaign_id: campaign[0].id,
+            campaign_id: campaign.returning[0].id,
             promos: values.promos
           });
           dispatch(makeRequest(insertPromosQuery.url, createFetchOption(insertPromosQuery.query), DO_NOTHING, ON_FAILED, ON_LOADING)).then((cashbackOffers) => {

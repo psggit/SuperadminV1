@@ -24,6 +24,7 @@ export default class PromosCashbackRedeem extends Component {
     currentEditingPromo: PropTypes.number,
     isPromoSectionShown: PropTypes.bool,
 
+    brandManagerIdMap: PropTypes.object,
     brandManagerCampaignMap: PropTypes.object,
     brandManagerBrandMap: PropTypes.object,
 
@@ -66,7 +67,9 @@ export default class PromosCashbackRedeem extends Component {
     // state variables.
     const {brandManagers, brandEmail, campaignName, budgetedAmount, fundsCredited,
       currentEditingPromo, isPromoSectionShown, onRemovePromo, promos, activeFrom, activeTo,
-      brands, campaignStatus, brandManagerCampaignMap, brandManagerBrandMap} = this.props;
+      brands, campaignStatus, brandManagerCampaignMap, brandManagerBrandMap,
+      brandManagerIdMap} = this.props;
+
     // controllers.
     const {onValueChange, onBrandManagerChange, onAddPromo, onEditPromo, onSubmitData,
       onChangePromoObjInfo, onChangePromoInfo} = this.props;
@@ -187,6 +190,7 @@ export default class PromosCashbackRedeem extends Component {
 
                 promos: promos,
 
+                brandManagerIdMap: brandManagerIdMap,
                 brandManagerBrandMap: brandManagerBrandMap,
               })}>Save Promo</button>
             </div>
