@@ -81,7 +81,7 @@ class ManageBarSku extends Component {
     const { ongoingRequest, lastError, lastSuccess, count} = this.props;
     const {query} = this.props.location;
 
-    const paginationUrl = '/hadmin/bar_management/assign_skus';
+    const paginationUrl = '/hadmin/bar_management/all_bar_skus';
 
     const page = (Object.keys(query).length > 0) ? parseInt(query.p, 10) : 1;
     console.log(lastError);
