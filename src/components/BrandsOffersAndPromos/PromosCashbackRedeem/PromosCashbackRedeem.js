@@ -30,7 +30,10 @@ export default class PromosCashbackRedeem extends Component {
     brandEmail: PropTypes.string,
     campaignName: PropTypes.string,
     budgetedAmount: PropTypes.number.isRequired,
-    fundsCredited: PropTypes.number.isRequired | PropTypes.string.isRequired,
+    fundsCredited: PropTypes.oneOfType([
+      PropTypes.number.isRequired,
+      PropTypes.string.isRequired
+    ]),
 
     activeFrom: PropTypes.string.isRequired,
     activeTo: PropTypes.string.isRequired,
@@ -177,6 +180,7 @@ export default class PromosCashbackRedeem extends Component {
                 campaignName: campaignName,
                 budgetedAmount: budgetedAmount,
                 fundsCredited: fundsCredited,
+                minAmount: 1,
                 activeFrom: activeFrom,
                 activeTo: activeTo,
                 campaignStatus: campaignStatus,

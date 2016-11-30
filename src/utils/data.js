@@ -177,7 +177,9 @@ const convertListToBoolDict = (list) => {
         [next]: true
       }
     };
-  }) : { [newList[0]]: true };
+  }) : {
+    [newList[0]]: true
+  };
 };
 
 /**
@@ -271,9 +273,42 @@ const convertStrToISODate = (curDateStr, convertToISO = true) => {
     new Date(curDateStr);
 };
 
+/**
+ * Pad Digit will pad the given number input with the padCharacter. The max number
+ * of padded character is determined by the padLegth
+ * @param  {Number} number       the number which needs to padded
+ * @param  {Character} padCharacter the character used for the padding.
+ * @param  {Integer} padLength    the number of character in the paddedString
+ * @return {String}              The digit in padded String
+ */
+const padDigit = (number, padCharacter, padLength) => {
+  const str = '' + number;
+  const pad = padCharacter.repeat(padLength);
+  return pad.substr(0, pad.length - str.length) + str;
+};
+
+/**
+ * Convert the string back to a postgres safe date-string.
+ * @param  {String}  curDateStr          The current date in ISOString or and other Date complient string.
+ * @param  {Boolean} [convertToISO=true] If the date is ISO then convert it to the correct date object.
+ * @return {String}                      [description]
+ */
+const convertStrToPosgresDateStr = (curDateStr, convertToISO = true) => {
+  const actualDate = convertToISO ?
+    new Date(new Date(curDateStr).toISOString().split('.')[0]) :
+    new Date(curDateStr);
+  // 2016-11-29 04:19:24.000+05:30
+  // 2016-09-28 00:49:21.980221+05:30
+  return '' + actualDate.getFullYear() + '-' + padDigit((actualDate.getMonth() + 1), '0', 2) + '-'
+    + padDigit(actualDate.getDate(), '0', 2) + 'T' + padDigit(actualDate.getHours(), '0', 2) + ':'
+    + padDigit(actualDate.getMinutes(), '0', 2) + ':' + padDigit(actualDate.getSeconds(), '0', 2)
+    + '.000000+05:30';
+};
+
 export {
   getJSONObjFromArray,
   convertStrToISODate,
+  convertStrToPosgresDateStr,
   findDuplicatesIndices,
   removeElementsFromArray,
   convertListToDictUsingKV,
