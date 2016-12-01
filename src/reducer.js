@@ -56,7 +56,7 @@ import adsCreateBarReducer from './components/BrandsOffersAndPromos/AdsCreateBar
 // import adsViewImageReducer from './components/BrandsOffersAndPromos/AdsViewImageAd/ViewAdImageActions';
 import adsCreateUrlReducer from './components/BrandsOffersAndPromos/AdsCreateUrlAd/CreateAdUrlActions';
 
-import filterReducer from './components/CustomerTransaction/components/Recharge/FilterState';
+import filterReducer from './components/Common/SearchComponent/FilterState';
 
 const reducer = combineReducers({
   // The promos Side-menu states

@@ -2,17 +2,26 @@ import React, {Component, PropTypes} from 'react';
 
 import TableHeader from '../../../Common/TableHeader';
 
+import SearchComponent from '../../../Common/SearchComponent/SearchComponent';
+
 import {connect} from 'react-redux';
 
 // import {getRechargeData, getRechargeCount} from '../../actions/Action';
 import {
   getAllCancellationData
+  , downloadCancellationCSV
+  , RESET
 } from '../../actions/Action';
 
 import {
   MAKE_REQUEST,
   REQUEST_COMPLETED
 } from '../../../Common/Actions/Actions';
+
+import {
+  TOGGLE_SEARCH,
+  RESET_FILTER
+} from '../../../Common/SearchComponent/FilterState';
 
 import CancellationSearchWrapper from './SearchWrapper';
 import PaginationContainer from './Pagination';
@@ -50,6 +59,8 @@ class ConsumerCancellation extends Component {
   }
   componentWillUnmount() {
     console.log('Unmounted');
+    this.props.dispatch( { type: RESET } );
+    this.props.dispatch({ type: RESET_FILTER });
   }
   onClickHandle(e) {
     // e.preventDefault();
@@ -66,6 +77,24 @@ class ConsumerCancellation extends Component {
       });
     }
   }
+  enableSearch() {
+    const page = 1;
+
+    const { userId: consumerId } = this.props.params;
+
+    Promise.all([
+      this.props.dispatch({ type: MAKE_REQUEST }),
+      this.props.dispatch({ type: TOGGLE_SEARCH }),
+      this.props.dispatch(getAllCancellationData(page, ( consumerId ? consumerId : '') ))
+    ])
+    .then( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED });
+    });
+  }
+  genCsv() {
+    const { userId: consumerId } = this.props.params;
+    this.props.dispatch(downloadCancellationCSV( consumerId ));
+  }
   render() {
     const styles = require('./Cancellation.scss');
     const { ongoingRequest, lastError, lastSuccess, count} = this.props;
@@ -81,6 +110,16 @@ class ConsumerCancellation extends Component {
     return (
           <div className={styles.recharge_container}>
             <TableHeader title={'Customer Management/Customer Cancellations'} />
+            <SearchComponent>
+              <button className={styles.common_btn} onClick={ this.enableSearch.bind(this) }>
+                Search
+              </button>
+            </SearchComponent>
+            <div className={ styles.export_as_csv + ' ' + styles.wd_100 }>
+              <button className={ styles.common_btn } onClick={ this.genCsv.bind(this) }>
+                Export as CSV
+              </button>
+            </div>
             <CancellationSearchWrapper data={lastSuccess}/>
             <PaginationContainer limit="10" onClickHandler={this.onClickHandle.bind(this)} currentPage={page} showMax="5" count={count} parentUrl={ paginationUrl } />
           </div>

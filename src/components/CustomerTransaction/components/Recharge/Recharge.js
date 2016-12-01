@@ -4,10 +4,13 @@ import TableHeader from '../../../Common/TableHeader';
 
 import {connect} from 'react-redux';
 
+import SearchComponent from '../../../Common/SearchComponent/SearchComponent';
+
 // import {getRechargeData, getRechargeCount} from '../../actions/Action';
 import {
   getAllRechargeData,
-  downloadRechargeCSV
+  downloadRechargeCSV,
+  RESET
 } from '../../actions/Action';
 
 import {
@@ -17,9 +20,9 @@ import {
 
 
 import {
-  ADD_DELETE_FILTER,
-  TOGGLE_SEARCH
-} from './FilterState';
+  TOGGLE_SEARCH,
+  RESET_FILTER
+} from '../../../Common/SearchComponent/FilterState';
 
 import RechargeSearchWrapper from './SearchWrapper';
 import PaginationContainer from './Pagination';
@@ -57,6 +60,10 @@ class ConsumerRecharge extends Component {
   }
   componentWillUnmount() {
     console.log('Unmounted');
+    Promise.all([
+      this.props.dispatch( { type: RESET } ),
+      this.props.dispatch({ type: RESET_FILTER })
+    ]);
   }
   onClickHandle(e) {
     // e.preventDefault();
@@ -73,30 +80,8 @@ class ConsumerRecharge extends Component {
       });
     }
   }
-  filterChange(e) {
-    const parentNode = e.target.parentNode;
-    const filterValue = parentNode.querySelectorAll('[data-field-name="value"]')[0].value;
-    const filterOperator = parentNode.querySelectorAll('select[data-field-name=operator]')[0].selectedOptions[0].value;
-    const filterField = parentNode.querySelectorAll('select[data-field-name=field]')[0].selectedOptions[0].value;
-
-    if ( filterValue.length && filterOperator !== 'Select' && filterField !== 'Select' ) {
-      const dateString = new Date(filterValue);
-      try {
-        const filterObj = {
-          [filterField]: {
-            [filterOperator]: dateString.toISOString()
-          }
-        };
-        this.props.dispatch({ type: ADD_DELETE_FILTER, data: { 'filter': parentNode.getAttribute('data-field-name'), data: filterObj } });
-      } catch (err) {
-        console.log(err);
-        alert('invalid Date');
-      }
-    }
-  }
   enableSearch() {
-    const {query} = this.props.location;
-    const page = (Object.keys(query).length > 0) ? parseInt(query.p, 10) : 1;
+    const page = 1;
 
     const { userId: consumerId } = this.props.params;
 
@@ -128,28 +113,11 @@ class ConsumerRecharge extends Component {
     return (
           <div className={styles.recharge_container}>
             <TableHeader title={'Customer Management/Customer Recharges'} />
-           	<div className={styles.search_wrapper + ' ' + styles.wd_100}>
-           		<p>Search</p>
-           		<div className={styles.search_form + ' ' + styles.wd_100} data-field-name="filter1" onChange={ this.filterChange.bind(this) } >
-                <select data-field-name="field">
-                  <option value="created_at"> Date </option>
-                </select>
-                <select data-field-name="operator">
-                  <option value="$gt"> Greater </option>
-                </select>
-           			<input type="text" placeholder="Contains" data-field-name="value"/>
-           		</div>
-           		<div className={styles.search_form + ' ' + styles.wd_100} data-field-name="filter2" onChange={ this.filterChange.bind(this) }>
-                <select data-field-name="field">
-                  <option value="created_at"> Date </option>
-                </select>
-                <select data-field-name="operator">
-                  <option value="$lt"> Less Than </option>
-                </select>
-           			<input type="text" placeholder="Contains" data-field-name="value"/>
-           			<button className={styles.common_btn} onClick={ this.enableSearch.bind(this) }>Search</button>
-           		</div>
-           	</div>
+            <SearchComponent>
+              <button className={styles.common_btn} onClick={ this.enableSearch.bind(this) }>
+                Search
+              </button>
+            </SearchComponent>
             <div className={ styles.export_as_csv + ' ' + styles.wd_100 }>
               <button className={ styles.common_btn } onClick={ this.genCsv.bind(this) }>
                 Export as CSV

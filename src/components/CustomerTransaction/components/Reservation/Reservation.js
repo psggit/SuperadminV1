@@ -4,8 +4,11 @@ import TableHeader from '../../../Common/TableHeader';
 
 import {connect} from 'react-redux';
 
+import SearchComponent from '../../../Common/SearchComponent/SearchComponent';
+
 import {
   getAllReservationData
+  , downloadReservationCSV
   , RESET
 } from '../../actions/Action';
 import SearchWrapper from './SearchWrapper';
@@ -15,6 +18,11 @@ import {
   MAKE_REQUEST,
   REQUEST_COMPLETED
 } from '../../../Common/Actions/Actions';
+
+import {
+  TOGGLE_SEARCH,
+  RESET_FILTER
+} from '../../../Common/SearchComponent/FilterState';
 
 import commonDecorator from '../../../Common/CommonDecorator';
 
@@ -36,6 +44,7 @@ class ConsumerReservation extends Component {
   componentWillUnmount() {
     console.log('Unmounted');
     this.props.dispatch( { type: RESET } );
+    this.props.dispatch({ type: RESET_FILTER });
   }
   onClickHandle(e) {
     // e.preventDefault();
@@ -50,6 +59,24 @@ class ConsumerReservation extends Component {
         this.props.dispatch({ type: REQUEST_COMPLETED });
       });
     }
+  }
+  enableSearch() {
+    const page = 1;
+
+    const { userId: consumerId } = this.props.params;
+
+    Promise.all([
+      this.props.dispatch({ type: MAKE_REQUEST }),
+      this.props.dispatch({ type: TOGGLE_SEARCH }),
+      this.props.dispatch(getAllReservationData(page, ( consumerId ? consumerId : '') ))
+    ])
+    .then( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED });
+    });
+  }
+  genCsv() {
+    const { userId: consumerId } = this.props.params;
+    this.props.dispatch(downloadReservationCSV( consumerId ));
   }
   render() {
     const styles = require('./Reservation.scss');
@@ -66,6 +93,16 @@ class ConsumerReservation extends Component {
     return (
           <div className={styles.reservation_container}>
             <TableHeader title={'Customer Management/Customer Reservations'} />
+            <SearchComponent>
+              <button className={styles.common_btn} onClick={ this.enableSearch.bind(this) }>
+                Search
+              </button>
+            </SearchComponent>
+            <div className={ styles.export_as_csv + ' ' + styles.wd_100 }>
+              <button className={ styles.common_btn } onClick={ this.genCsv.bind(this) }>
+                Export as CSV
+              </button>
+            </div>
             <SearchWrapper data={lastSuccess}/>
             <PaginationContainer limit="10" onClickHandler={this.onClickHandle.bind(this)} currentPage={page} showMax="5" count={count} parentUrl={ paginationUrl } />
           </div>
