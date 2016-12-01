@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { getAllArticleData, getArticleData } from './ArticleAction';
+import { getAllArticleData, getArticleData, changeArticleStatus } from './ArticleAction';
 import SearchWrapper from './SearchWrapper';
 
 import PaginationWrapper from '../../Common/PaginationWrapper.js';
@@ -40,6 +40,15 @@ class ArticleManagement extends React.Component { // eslint-disable-line no-unus
     });
   }
   // Hook used by pagination wrapper to fetch the initial data
+  onClickActivate(e) {
+    console.log(e.target);
+    const articleStatus = e.target.getAttribute('data-is-active');
+    const articleId = e.target.getAttribute('data-article-id');
+    // form the data object
+    const changedisActive = articleStatus === 'true' ? false : true;
+    const dataObject = {'type': 'update', 'args': {'table': 'whats_new_article', '$set': {'is_active': changedisActive}, 'where': {'id': parseInt(articleId, 10)}}};
+    this.props.dispatch(changeArticleStatus(dataObject));
+  }
   fetchInitialData(page, limit) {
     this.props.dispatch(getAllArticleData(page, limit));
   }
@@ -56,19 +65,16 @@ class ArticleManagement extends React.Component { // eslint-disable-line no-unus
           <BreadCrumb breadCrumbs={this.breadCrumbs} />
 
           <div className={styles.create_layout + ' ' + styles.wd_100}>
-            <Link to={'/hadmin/whats_new/create_article'}>
-              <button className={styles.common_btn}>Create Article</button>
-            </Link>
+            <Link to={'/hadmin/whats_new/create_article'}> <button className={styles.common_btn}>Create Article</button> </Link>
           </div>
-          <SearchWrapper data={lastSuccess}/>
+          <SearchWrapper data={lastSuccess} onClickActivate = {this.onClickActivate.bind(this)} />
           <PaginationWrapper
             {...this.props }
             fetchInitialData = { this.fetchInitialData.bind(this) }
             limit = "5"
             triggerPageChange={ this.triggerPageChange.bind(this) }
             showMax="5"
-            parentUrl="/hadmin/whats_new"
-          />
+            parentUrl="/hadmin/whats_new"/>
         </div>
       );
   }

@@ -6,7 +6,7 @@ const selectBrandManagers = {
     type: 'select',
     args: {
       table: 'brand_manager',
-      columns: ['email', 'name', {
+      columns: ['email', 'name', 'id', {
         name: 'company',
         columns: ['name']
       }, {
@@ -124,18 +124,15 @@ const insertCampaignAndPromos = {
   insertPromos: ({campaign_id, promos}) => {
     const bulkInsert = promos.map((promo) => {
       return {
-        url: dataUrl + '/v1/query',
-        query: {
-          type: 'insert',
-          args: {
-            table: 'cash_back_offer',
-            returning: ['id'],
-            objects: [{
-              campaign_id: campaign_id,
-              amount: (promo.type === 'amount' ? promo.amount : null),
-              percentage: (promo.type === 'percentage' ? promo.amount : null)
-            }]
-          }
+        type: 'insert',
+        args: {
+          table: 'cash_back_offer',
+          returning: ['id'],
+          objects: [{
+            campaign_id: campaign_id,
+            amount: (promo.type === 'amount' ? parseFloat(promo.price) : null),
+            percentage: (promo.type === 'percentage' ? parseFloat(promo.price) : null)
+          }]
         }
       };
     });
@@ -151,18 +148,16 @@ const insertCampaignAndPromos = {
   insertPromosSKUs: ({promos, offers}) => {
     const bulkInsert = promos.map((promo, index) => {
       return {
-        url: dataUrl + '/v1/query',
-        query: {
-          type: 'insert',
-          args: {
-            table: 'cash_back_offer',
-            returning: ['id'],
-            objects: [{
-              sku_pricing_id: promos.pricing.id,
-              offer_id: offers[index].id,
-              quantity: promo.quantity
-            }]
-          }
+        type: 'insert',
+        args: {
+          table: 'cash_back_offer_sku',
+          returning: ['id'],
+          objects: [{
+            sku_pricing_id: promo.pricing.id,
+            // better to make bulk inserts in one query TODO: fix this later
+            offer_id: offers[index].returning[0].id,
+            quantity: (promo.quantity ? parseInt(promo.quantity, 10) : 0)
+          }]
         }
       };
     });
