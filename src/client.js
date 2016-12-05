@@ -60,7 +60,7 @@ import {Login, Home, PageContainer,
   ParameterManagementNotepadCreateCode, ParameterManagementRetailerManualDebitCreditCodes, ParameterManagementRetailerManualCreateCode,
   ParameterManagementConsumerDisableAccountCode, ParameterManagementConsumerDisableAccountCreateCode, ParameterManagementConsumerDeviceAccountCodes,
   ParameterManagementConsumerDeviceAccountCreateCode, AccountingEODReport, AccountingSettlementReport, AccountingUploadPayUReport,
-  AccountingUploadSettlementReport, BarManagementUnlockBar, BarManagementAddSKU, WhatsNewCreateArticle,
+  AccountingUploadSettlementReport, BarManagementUnlockBar, BarManagementAddSKU, WhatsNewCreateArticle, WhatsNewViewArticle,
   ViewBrandManager,
   EditBrandManager,
   ProfileKyc,
@@ -76,7 +76,8 @@ import {Login, Home, PageContainer,
   CreateBarAd,
   CreateUrlAd,
   CreateSkuAd,
-  CreatePromoAd
+  CreatePromoAd,
+  ManageBarSkus
 } from './components'; // eslint-disable-line no-unused-vars
 
 // ^== next level of importing
@@ -254,6 +255,7 @@ const main = (
         <Route path="bar_management/bar_sku_create_landing" component={BarSkuCreateLanding} />
         <Route path="bar_management/bar_sku_create/create_new" component={BarSkuCreate} />
         <Route path="bar_management/list_bars" component={BarList} />
+        <Route path="bar_management/all_bar_skus" component={ManageBarSkus} />
 
         <Route path="retailer_management/create_branch" component={RetailerManagementCreate} />
         <Route path="retailer_management/edit_branch/:brId" component={RetailerManagementCreate} />
@@ -289,6 +291,7 @@ const main = (
         <Route path="accounting/upload_payu_report" component={AccountingUploadPayUReport} />
         <Route path="accounting/upload_settlement_report" component={AccountingUploadSettlementReport} />
         <Route path="whats_new/create_article" component={WhatsNewCreateArticle} />
+        <Route path="whats_new" component={WhatsNewViewArticle} />
         /* End of SKU Management */
         { /*
         <Route path="notepad_entries" component={NotepadEntries} />

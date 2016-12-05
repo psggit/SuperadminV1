@@ -104,6 +104,7 @@ export AccountingUploadPayUReport from './Accounting/UploadPayUReport/UploadPayU
 export AccountingUploadSettlementReport from './Accounting/UploadSettlementReport/UploadSettlementReport';
 // export WhatsNewCreatePost from './WhatsNew/CreatePost/CreatePost';
 export WhatsNewCreateArticle from './WhatsNewArticle/CreateArticle/CreateArticle';
+export WhatsNewViewArticle from './WhatsNewArticle/ArticleList/ArticleManagement';
 /* Consumer Transactions */
 
 export ConsumerRecharge from './CustomerTransaction/components/Recharge/Recharge';
@@ -132,6 +133,12 @@ export BarSkuCreate from './BarManagement/CreateSKU/CreateSku';
 export BarList from './BarManagement/ListBar/ListBar';
 export BarManagementUnlockBar from './BarManagement/UnlockBar/UnlockBar';
 export BarManagementAddSKU from './BarManagement/UnlockBarAddSKU/UnlockBarAddSKU';
+
+/* All Bar Skus */
+
+export ManageBarSkus from './BarManagement/ManageBarSku/ManageBarSku';
+
+/* */
 /* */
 
 /* Ads */

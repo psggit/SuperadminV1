@@ -4,15 +4,25 @@ import TableHeader from '../../../Common/TableHeader';
 
 import {connect} from 'react-redux';
 
+import SearchComponent from '../../../Common/SearchComponent/SearchComponent';
+
 // import {getRechargeData, getRechargeCount} from '../../actions/Action';
 import {
-  getAllRechargeData
+  getAllRechargeData,
+  downloadRechargeCSV,
+  RESET
 } from '../../actions/Action';
 
 import {
   MAKE_REQUEST,
   REQUEST_COMPLETED
 } from '../../../Common/Actions/Actions';
+
+
+import {
+  TOGGLE_SEARCH,
+  RESET_FILTER
+} from '../../../Common/SearchComponent/FilterState';
 
 import RechargeSearchWrapper from './SearchWrapper';
 import PaginationContainer from './Pagination';
@@ -50,6 +60,10 @@ class ConsumerRecharge extends Component {
   }
   componentWillUnmount() {
     console.log('Unmounted');
+    Promise.all([
+      this.props.dispatch( { type: RESET } ),
+      this.props.dispatch({ type: RESET_FILTER })
+    ]);
   }
   onClickHandle(e) {
     // e.preventDefault();
@@ -66,6 +80,24 @@ class ConsumerRecharge extends Component {
       });
     }
   }
+  enableSearch() {
+    const page = 1;
+
+    const { userId: consumerId } = this.props.params;
+
+    Promise.all([
+      this.props.dispatch({ type: MAKE_REQUEST }),
+      this.props.dispatch({ type: TOGGLE_SEARCH }),
+      this.props.dispatch(getAllRechargeData(page, ( consumerId ? consumerId : '') ))
+    ])
+    .then( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED });
+    });
+  }
+  genCsv() {
+    const { userId: consumerId } = this.props.params;
+    this.props.dispatch(downloadRechargeCSV( consumerId ));
+  }
   render() {
     const styles = require('./Recharge.scss');
     const { ongoingRequest, lastError, lastSuccess, count} = this.props;
@@ -81,6 +113,16 @@ class ConsumerRecharge extends Component {
     return (
           <div className={styles.recharge_container}>
             <TableHeader title={'Customer Management/Customer Recharges'} />
+            <SearchComponent>
+              <button className={styles.common_btn} onClick={ this.enableSearch.bind(this) }>
+                Search
+              </button>
+            </SearchComponent>
+            <div className={ styles.export_as_csv + ' ' + styles.wd_100 }>
+              <button className={ styles.common_btn } onClick={ this.genCsv.bind(this) }>
+                Export as CSV
+              </button>
+            </div>
             <RechargeSearchWrapper data={lastSuccess}/>
             <PaginationContainer limit="10" onClickHandler={this.onClickHandle.bind(this)} currentPage={page} showMax="5" count={count} parentUrl={ paginationUrl } />
           </div>
@@ -99,7 +141,7 @@ ConsumerRecharge.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  return {...state.transaction_data, ongoingRequest: state.page_data.ongoingRequest };
+  return {...state.transaction_data, ongoingRequest: state.page_data.ongoingRequest, filterData: { ...state.filter_data }};
 };
 
 

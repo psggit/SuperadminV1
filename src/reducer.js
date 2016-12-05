@@ -56,6 +56,8 @@ import adsCreateBarReducer from './components/BrandsOffersAndPromos/AdsCreateBar
 // import adsViewImageReducer from './components/BrandsOffersAndPromos/AdsViewImageAd/ViewAdImageActions';
 import adsCreateUrlReducer from './components/BrandsOffersAndPromos/AdsCreateUrlAd/CreateAdUrlActions';
 
+import filterReducer from './components/Common/SearchComponent/FilterState';
+
 const reducer = combineReducers({
   // The promos Side-menu states
   promosCashbackRedeemState: PromosCashbackRedeem,
@@ -99,7 +101,8 @@ const reducer = combineReducers({
   createPromoAd_data: adsCreatePromoReducer,
   whats_new_data: whatsNewReducer,
   createBarAd_data: adsCreateBarReducer,
-  createUrlAd_data: adsCreateUrlReducer
+  createUrlAd_data: adsCreateUrlReducer,
+  filter_data: filterReducer
 });
 
 export default reducer;

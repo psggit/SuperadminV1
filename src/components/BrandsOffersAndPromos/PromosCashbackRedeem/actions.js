@@ -118,9 +118,11 @@ const reducer = (state = defaultState, action) => {
 
       const brandManagerCampaignMap = convertListToDictUsingKV('email', 'campaigns', brandManagerList);
       const brandManagerBrandMap = convertListToDictUsingKV('email', 'brands', brandManagerList);
+      const brandManagerIdMap = convertListToDictUsingKV('email', 'id', brandManagerList);
 
       return { ...state,
         brandManagers: brandManagerList,
+        brandManagerIdMap: brandManagerIdMap,
         campaigns: campaigns,
         brands: brands,
         brandManagerCampaignMap: brandManagerCampaignMap,

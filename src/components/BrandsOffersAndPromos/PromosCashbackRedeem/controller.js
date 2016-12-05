@@ -24,7 +24,7 @@ import {
 import { email as emailValidate,
   isEmpty, isNumber } from '../../../utils/validation';
 
-import { convertStrToISODate } from '../../../utils/data';
+import { convertStrToISODate, convertStrToPosgresDateStr } from '../../../utils/data';
 
 // initial state
 const fetchData = (getState, dispatch) => {
@@ -98,7 +98,7 @@ const campaignValidatorsDict = {
     };
   },
   fundsCredited: (value, otherValues) => {
-    return isNumber(value) && value <= otherValues.minAmount ? () => {
+    return isNumber(value) && parseFloat(value) >= otherValues.minAmount ? () => {
       return true;
     } : () => {
       if (isNaN(value)) {
@@ -253,7 +253,7 @@ const promoValidatorDict = {
       }
       return true;
     })();
-    return isValid && quantity >= 0 ? () => {
+    return isValid && parseInt(quantity, 10) >= 0 ? () => {
       return true;
     } : () => {
       alert('The quantity and price is more than the funded credited.');
@@ -297,12 +297,23 @@ const mapDispatchToProps = (dispatch) => {
         for (let i = 0; i < values.promos.length; i++ ) {
           const promo = values.promos[i];
           // there are multiple promos.
-          if (!validators(promoValidatorDict, 'type', promo.type, values)
+          if (!validators(promoValidatorDict, 'type', promo.type, {...values,
+            price: promo.price,
+            type: promo.type,
+            maxPrice: (promo.pricing ? promo.pricing.price : 0)})
           || !validators(promoValidatorDict, 'brandName', promo.brandName, values)
-          || !validators(promoValidatorDict, 'price', promo.price, values)
+          || !validators(promoValidatorDict, 'price', promo.price, {...values,
+            price: promo.price,
+            type: promo.type,
+            maxPrice: (promo.pricing ? promo.pricing.price : 0)})
           || !validators(promoValidatorDict, 'sku', promo.sku, values)
           || !validators(promoValidatorDict, 'pricing', promo.pricing, values)
-          || !validators(promoValidatorDict, 'quantity', promo.quantity, values)) {
+          || !validators(promoValidatorDict, 'quantity', promo.quantity, {...values,
+            price: promo.price,
+            type: promo.type,
+            maxPrice: (promo.pricing ? promo.pricing.price : 0),
+            currentEditingPromo: i
+          })) {
             return;
           }
         }
@@ -312,19 +323,19 @@ const mapDispatchToProps = (dispatch) => {
         // by transaction, but since HasuraDB doesn't yet support transaction with
         // references.
         const insertCampaignQuery = insertCampaignAndPromos.insertCampaign({
-          name: values.brandName,
+          name: values.campaignName,
           status: values.campaignStatus,
-          active_from: values.activeFrom,
-          active_to: values.activeTo,
-          brand_manager_id: values.brandManagerBrandMap[values.brandEmail],
-          budgeted_amount: values.budgetedAmount,
-          funds_credited: values.fundsCredited
+          active_from: convertStrToPosgresDateStr(values.activeFrom),
+          active_to: convertStrToPosgresDateStr(values.activeTo),
+          brand_manager_id: values.brandManagerIdMap[values.brandEmail],
+          budgeted_amount: parseFloat(values.budgetedAmount),
+          funds_credited: parseFloat(values.fundsCredited)
         });
 
         dispatch(makeRequest(insertCampaignQuery.url, createFetchOption(insertCampaignQuery.query), DO_NOTHING, ON_FAILED, ON_LOADING)).then((campaign) => {
           // the array will have a single campaign
           const insertPromosQuery = insertCampaignAndPromos.insertPromos({
-            campaign_id: campaign[0].id,
+            campaign_id: campaign.returning[0].id,
             promos: values.promos
           });
           dispatch(makeRequest(insertPromosQuery.url, createFetchOption(insertPromosQuery.query), DO_NOTHING, ON_FAILED, ON_LOADING)).then((cashbackOffers) => {

@@ -325,6 +325,22 @@ const defaultcreateImageAdData = {
   imageUrl: ''
 };
 
+const whatsNewDefaultData = {
+  type: 'create',
+  campaignDetails: {},
+  statesAll: [{
+    state_name: '',
+    cities: [{}]
+  }],
+  selectedCities: {},
+  hideCities: 'hide',
+  citiesView: {
+    state_name: '',
+    cities: [{}]
+  },
+  imageUrl: ''
+};
+
 const defaultViewImageAdData = {
   type: 'view',
   campaignDetails: {},
@@ -394,4 +410,5 @@ export { defaultNotepadState
   , defaultcreateUrlAdData
   , defaultWhatsNew
   , defaultcreateBarAdData
+  , whatsNewDefaultData
 };
