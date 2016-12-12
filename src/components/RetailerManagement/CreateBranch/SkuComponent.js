@@ -14,7 +14,7 @@ const SkuComponent = ( {
   const skuServerHtml = ( Object.keys(serverSkus).length > 0 ) ? Object.keys(serverSkus).map( ( sku ) => {
     return (
       <li key={ serverSkus[sku].id } >
-        <label>{ serverSkus[sku].brand_name } - { serverSkus[sku].volume } ML </label>
+        <label>{ serverSkus[sku].brand_name } - { serverSkus[sku].volume } ML / ( { serverSkus[sku].inventory_status_name ? serverSkus[sku].inventory_status_name : 'N/A' } ) </label>
         <p onClick={ () => { return disableSKUs.call( undefined, serverSkus[sku].id ); } }>
           Delete
         </p>
@@ -35,7 +35,7 @@ const SkuComponent = ( {
   const inactiveHtml = ( Object.keys(inactiveSkus).length > 0 ) ? Object.keys(inactiveSkus).map( ( sku ) => {
     return (
       <li key={ inactiveSkus[sku].id } >
-        <label>{ inactiveSkus[sku].brand_name } - { inactiveSkus[sku].volume } ML </label>
+        <label>{ inactiveSkus[sku].brand_name } - { inactiveSkus[sku].volume } ML / ( { inactiveSkus[sku].inventory_status_name ? inactiveSkus[sku].inventory_status_name : 'N/A' } )</label>
         <p onClick={ () => { return enableSKUs.call( undefined, inactiveSkus[sku].id ); } }>
           Activate
         </p>
