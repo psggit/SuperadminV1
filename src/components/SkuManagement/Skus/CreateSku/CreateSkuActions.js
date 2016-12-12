@@ -37,6 +37,7 @@ const SKU_INFORMATION_CHANGE = 'SKU/SKU_INFORMATION_CHANGE';
 const STATE_MRP_INFORMATION = 'SKU/STATE_MRP_INFORMATION';
 
 const UPDATE_COMPONENT_STATE = 'SKU/UPDATE_COMPONENT_STATE';
+const FETCHED_RESERVED_ITEMS = 'SKU/FETCHED_RESERVED_ITEMS';
 const POPULATE_SKU_DATA = 'SKU/POPULATE_SKU_DATA';
 
 /* Variable */
@@ -176,6 +177,36 @@ const fetchState = () => {
         if ( getState().create_sku_data.currentPage === 'edit_page') {
           return dispatch( hydrateStateObj() );
         }
+      });
+  };
+};
+
+const disableSku = () => {
+  return ( dispatch ) => {
+    console.log(dispatch);
+    console.log('Disabling SKU');
+  };
+};
+
+const getReservedItems = ( Id ) => {
+  return (dispatch) => {
+    /* Url */
+    const url = Endpoints.db + '/table/reserved_items/select';
+    const queryObj = {};
+    queryObj.columns = ['*'];
+    queryObj.where = {
+      'sku_id': parseInt(Id, 10)
+    };
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(queryObj)
+    };
+    /* Make a MAKE_REQUEST action */
+    // dispatch({type: MAKE_REQUEST});
+    // return Promise.all([
+    return dispatch(requestAction(url, options))
+      .then( ( data ) => {
+        dispatch({ type: FETCHED_RESERVED_ITEMS, data: data });
       });
   };
 };
@@ -971,7 +1002,9 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
       });
       /* for each state price loop and get the selected states */
       /* for each retailer get the selected city */
-      return { ...state, skuReqObj: { ...localSkuInfo, 'brand_id': state.brandIdMap[localSkuInfo.brand_id] }, stateCityMapping: { ...localStateCityMapping }, cityRetailerMapping: { ...localCityRetailerMapping }, retailerMapping: { ...localRetailerMapping }, skuImageUrl: (localSkuInfo.image ? localSkuInfo.image : ''), skuStatePricingMap: { ...skuStatePricingMap }};
+      return { ...state, skuReqObj: { ...localSkuInfo, 'brand_id': state.brandIdMap[localSkuInfo.brand_id], status: localSkuInfo.is_active }, stateCityMapping: { ...localStateCityMapping }, cityRetailerMapping: { ...localCityRetailerMapping }, retailerMapping: { ...localRetailerMapping }, skuImageUrl: (localSkuInfo.image ? localSkuInfo.image : ''), skuStatePricingMap: { ...skuStatePricingMap }};
+    case FETCHED_RESERVED_ITEMS:
+      return { ...state, reservedItems: action.data };
     default: return state;
   }
 };
@@ -997,7 +1030,9 @@ export {
   STATE_MRP_INFORMATION,
   onSave,
   onUpdate,
-  updateComponentState
+  updateComponentState,
+  getReservedItems,
+  disableSku
 };
 
 export default createSKUReducer;

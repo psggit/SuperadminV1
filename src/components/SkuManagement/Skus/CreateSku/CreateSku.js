@@ -24,6 +24,8 @@ const CreateSku = ({ brandList
     , onUpdate
     , skuReqObj
     , page
+    , reservedItems
+    , disableSKUs
   }) => { // eslint-disable-line no-unused-vars
   const styles = require('./CreateSku.scss');
   const submitButton = ( page !== 'edit_page' ) ? (
@@ -37,7 +39,7 @@ const CreateSku = ({ brandList
       {
         /* Shows entry form for entering sku infomation */
       }
-      <SkuInfo dispatch={ dispatch } brandList={brandList} skuReqObj = { skuReqObj }/>
+      <SkuInfo dispatch={ dispatch } brandList={brandList} skuReqObj = { skuReqObj } reservedItems = { reservedItems } page = { page } disableSKUs = { disableSKUs }/>
       {
         /* Component to display the list of states and their corresponding prices */
       }

@@ -20,8 +20,15 @@ import { fetchBrand
   , onSave
   , onUpdate
   , updateComponentState
+  , getReservedItems
+  , disableSku
   , RESET
 } from './CreateSkuActions';
+
+import {
+  REQUEST_COMPLETED,
+  MAKE_REQUEST
+} from '../../../Common/Actions/Actions';
 /* */
 
 class SkuWrapper extends Component {
@@ -41,15 +48,40 @@ class SkuWrapper extends Component {
     });
   }
   componentDidMount() {
-    this.props.dispatch(fetchBrand());
-    this.props.dispatch(fetchState());
     /* Check if its a view request */
     /* Load more information incase of view/edit page */
     const { Id } = this.props.params;
 
     /* If a particular page is requested then load the page */
     if ( Id ) {
-      this.props.dispatch(updateComponentState('edit_page', parseInt(Id, 10)));
+      Promise.all([
+        this.props.dispatch({ type: MAKE_REQUEST }),
+
+        this.props.dispatch(fetchBrand()),
+        this.props.dispatch(fetchState()),
+        this.props.dispatch(updateComponentState('edit_page', parseInt(Id, 10))),
+        this.props.dispatch(getReservedItems(Id))
+      ])
+      .then( ( ) => {
+        this.props.dispatch({ type: REQUEST_COMPLETED});
+        console.log('Done');
+      })
+      .catch( () => {
+        this.props.dispatch({ type: REQUEST_COMPLETED});
+        console.log('Caught');
+      });
+    } else {
+      Promise.all([
+        this.props.dispatch({ type: MAKE_REQUEST }),
+        this.props.dispatch(fetchBrand()),
+        this.props.dispatch(fetchState())
+      ])
+      .then( () => {
+        this.props.dispatch({ type: REQUEST_COMPLETED});
+      })
+      .catch( () => {
+        this.props.dispatch({ type: REQUEST_COMPLETED});
+      });
     }
   }
   componentWillUnmount() {
@@ -103,10 +135,24 @@ class SkuWrapper extends Component {
   }
   onUpdateClick() {
     console.log('updating');
-    this.props.dispatch(onUpdate());
+    Promise.all([
+      this.props.dispatch({ type: MAKE_REQUEST }),
+      this.props.dispatch(onUpdate())
+    ])
+    .then( ( ) => {
+      this.props.dispatch({ type: REQUEST_COMPLETED});
+    })
+    .catch( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED});
+    });
   }
   onSkuInfoChange(e) {
     console.log(e.target);
+  }
+
+  disableSKUs() {
+    console.log('clicked');
+    this.props.dispatch( disableSku() );
   }
 
   render() {
@@ -126,6 +172,7 @@ class SkuWrapper extends Component {
               skuReqObj = { this.props.skuReqObj }
               page = { this.props.currentPage }
               onUpdate = { this.onUpdateClick.bind(this) }
+              disableSKUs = { this.disableSKUs.bind(this) }
             />
           </div>
         );
@@ -141,6 +188,7 @@ SkuWrapper.propTypes = {
   params: PropTypes.object.isRequired,
   brandList: PropTypes.array.isRequired,
   stateList: PropTypes.array.isRequired,
+  reservedItems: PropTypes.array.isRequired,
   stateCityMapping: PropTypes.object.isRequired,
   cityRetailerMapping: PropTypes.object.isRequired,
   viewedCity: PropTypes.object.isRequired,
