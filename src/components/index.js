@@ -76,7 +76,7 @@ export RetailerManagementViewBar from './BarManagement/ViewBar/ViewBar';
 export RetailerManagementSettlementDetails from './RetailerManagement/RedemptionHistory/SettlementDetails';
 export RetailerManagementDeviceDetail from './RetailerManagement/DeviceDetail/DeviceDetail';
 export RetailerManagementDisableDevice from './RetailerManagement/DisableDevice/DisableDevice';
-export RetailerManagementTransactions from './Sku/Transactions/Transactions';
+export RetailerManagementTransactions from './RetailerManagement/DebitsCredits/Transactions';
 export RetailerManagementCreateOrganization from './RetailerManagement/CreateOrganization/CreateOrganization';
 export RetailerManagementViewOrganization from './RetailerManagement/ViewOrganization/ViewOrganization';
 export RetailerManagementViewBranch from './RetailerManagement/ViewBranch/ViewBranch';
@@ -151,3 +151,7 @@ export CreatePromoAd from './BrandsOffersAndPromos/AdsCreatePromoAd/CreatePromoA
 export CreateUrlAd from './BrandsOffersAndPromos/AdsCreateUrlAd/CreateUrlAd';
 export CreateBarAd from './BrandsOffersAndPromos/AdsCreateBarAd/CreateBarAd';
 /* */
+
+/* Retailer Transactions */
+
+export TransactionLanding from './RetailerManagement/Transactions/TransactionLanding/TransactionLanding';

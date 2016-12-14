@@ -77,7 +77,8 @@ import {Login, Home, PageContainer,
   CreateUrlAd,
   CreateSkuAd,
   CreatePromoAd,
-  ManageBarSkus
+  ManageBarSkus,
+  TransactionLanding
 } from './components'; // eslint-disable-line no-unused-vars
 
 // ^== next level of importing
@@ -262,12 +263,15 @@ const main = (
         <Route path="retailer_management/settlement_details" component={RetailerManagementSettlementDetails} />
         <Route path="retailer_management/device_details" component={RetailerManagementDeviceDetail} />
         <Route path="retailer_management/disable_device" component={RetailerManagementDisableDevice} />
-        <Route path="retailer_management/transactions" component={RetailerManagementTransactions} />
+        <Route path="retailer_management/debit_credit_transactions" component={RetailerManagementTransactions} />
         <Route path="retailer_management/create_organization" component={RetailerManagementCreateOrganization} />
         <Route path="retailer_management/edit_organization/:orgId" component={RetailerManagementCreateOrganization} />
         <Route path="retailer_management/view_organizations" component={RetailerManagementViewOrganization} />
         <Route path="retailer_management/view_branches" component={RetailerManagementViewBranch} />
         <Route path="retailer_management/profile_and_kyc" component={ProfileKyc} />
+
+        <Route path="retailer_management/transactionlanding" component={TransactionLanding} />
+
         <Route path="customer_support" component={CustomerSupportSupport} />
         <Route path="customer_support/customer_profile/:Id" component={CustomerSupportCustomerProfile} />
         <Route path="customer_support/freshdesk_ticket/:Id" component={CustomerSupportFreshdeskTicket} />

@@ -58,6 +58,8 @@ import adsCreateUrlReducer from './components/BrandsOffersAndPromos/AdsCreateUrl
 
 import filterReducer from './components/Common/SearchComponent/FilterState';
 
+import retailerDebitCreditRedicer from './components/RetailerManagement/DebitsCredits/Actions';
+
 const reducer = combineReducers({
   // The promos Side-menu states
   promosCashbackRedeemState: PromosCashbackRedeem,
@@ -102,7 +104,8 @@ const reducer = combineReducers({
   whats_new_data: whatsNewReducer,
   createBarAd_data: adsCreateBarReducer,
   createUrlAd_data: adsCreateUrlReducer,
-  filter_data: filterReducer
+  filter_data: filterReducer,
+  retailer_debit_credit: retailerDebitCreditRedicer
 });
 
 export default reducer;

@@ -78,6 +78,14 @@ const BranchDetails = ( { currState, organisationData } ) => { // eslint-disable
           <input type="text" data-field-name="cst_number" data-field-type="text" value={ currState.cst_number } />
         </li>
         <li>
+          <label>Discount Percent</label>
+          <input type="text" data-field-name="discount_percent" data-field-type="text" value={ currState.discount_percent } />
+        </li>
+        <li>
+          <label>Service Charge Percent</label>
+          <input type="text" data-field-name="service_charge_percent" data-field-type="text" value={ currState.service_charge_percent } />
+        </li>
+        <li>
           <div className={styles.wd_50}>
             <label>KYC Verified</label>
             <select data-field-name="kyc_status" data-field-type="text" value={ currState.kyc_status }>
