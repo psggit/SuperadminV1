@@ -78,7 +78,8 @@ import {Login, Home, PageContainer,
   CreateSkuAd,
   CreatePromoAd,
   ManageBarSkus,
-  TransactionLanding
+  TransactionLanding,
+  ViewDebitCredit
 } from './components'; // eslint-disable-line no-unused-vars
 
 // ^== next level of importing
@@ -270,7 +271,11 @@ const main = (
         <Route path="retailer_management/view_branches" component={RetailerManagementViewBranch} />
         <Route path="retailer_management/profile_and_kyc" component={ProfileKyc} />
 
+        {/* Retailer Transaction */}
         <Route path="retailer_management/transactionlanding" component={TransactionLanding} />
+        <Route path="retailer_management/debits_credits_landing" component={ViewDebitCredit} />
+
+        <Route path="retailer_management/debit_credit_transactions/:Id" component={RetailerManagementTransactions} />
 
         <Route path="customer_support" component={CustomerSupportSupport} />
         <Route path="customer_support/customer_profile/:Id" component={CustomerSupportCustomerProfile} />

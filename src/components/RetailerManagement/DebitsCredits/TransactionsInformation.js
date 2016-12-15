@@ -7,7 +7,7 @@ const TransactionsInformation = ( { label, currentVal, options, fieldName, field
         {label}
       </div>
       <div className = {styles.information_rightpanel}>
-        <select selected={ currentVal } data-field-name = { fieldName } data-field-type = { fieldType } >
+        <select value={ currentVal } data-field-name = { fieldName } data-field-type = { fieldType } >
           <option value="Select">{ placeholder }</option>
           { options }
         </select>

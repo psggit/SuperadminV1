@@ -52,7 +52,7 @@ const TransactionLanding = ({dispatch}) => { // eslint-disable-line no-unused-va
                     <div className={styles.squarecontent}>
                         <div>
                             <span>
-                                <Link to={'/hadmin/retailer_management/debit_credit_transactions'}> Debits and Credits </Link>
+                                <Link to={'/hadmin/retailer_management/debits_credits_landing'}> Debits and Credits </Link>
                             </span>
                         </div>
                     </div>

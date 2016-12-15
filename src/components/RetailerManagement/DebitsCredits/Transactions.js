@@ -10,13 +10,16 @@ import { connect } from 'react-redux';
 
 import {
   MAKE_REQUEST,
-  REQUEST_COMPLETED
+  REQUEST_COMPLETED,
+  RESET
 } from '../../Common/Actions/Actions';
 
 import {
   INPUT_CHANGED,
   getInitData,
-  saveTransaction
+  saveTransaction,
+  updateTransaction,
+  RESET_TXN_INFO
 } from './Actions';
 
 class Transactions extends React.Component {
@@ -32,7 +35,7 @@ class Transactions extends React.Component {
     this.breadCrumbs.push({
       title: 'Transactions',
       sequence: 2,
-      link: '#'
+      link: '/hadmin/retailer_management/debits_credits_landing'
     });
     this.breadCrumbs.push({
       title: 'Debits & Credits',
@@ -41,9 +44,10 @@ class Transactions extends React.Component {
     });
   }
   componentDidMount() {
+    const { Id } = this.props.params;
     Promise.all([
       this.props.dispatch({ type: MAKE_REQUEST }),
-      this.props.dispatch( getInitData() )
+      this.props.dispatch( getInitData(Id) )
     ])
     .then( ( ) => {
       this.props.dispatch({ type: REQUEST_COMPLETED });
@@ -52,11 +56,43 @@ class Transactions extends React.Component {
       this.props.dispatch({ type: REQUEST_COMPLETED });
     });
   }
+  componentWillUnmount() {
+    Promise.all([
+      this.props.dispatch({ type: RESET }),
+      this.props.dispatch({ type: RESET_TXN_INFO })
+    ]);
+  }
   saveTransaction() {
-    this.props.dispatch( saveTransaction() );
+    Promise.all([
+      this.props.dispatch({ type: MAKE_REQUEST }),
+      this.props.dispatch( saveTransaction() )
+    ])
+    .then( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED });
+    })
+    .catch( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED });
+    });
+  }
+  updateTransaction() {
+    const { Id } = this.props.params;
+    if ( Id ) {
+      Promise.all([
+        this.props.dispatch({ type: MAKE_REQUEST }),
+        this.props.dispatch( updateTransaction(Id) )
+      ])
+      .then( () => {
+        this.props.dispatch({ type: REQUEST_COMPLETED });
+      })
+      .catch( () => {
+        this.props.dispatch({ type: REQUEST_COMPLETED });
+      });
+    }
   }
   render() {
     const styles = require('./Transactions.scss');
+
+    const { Id } = this.props.params;
 
     const {
       retailers,
@@ -64,8 +100,15 @@ class Transactions extends React.Component {
       amount,
       comment,
       retailer_id: retailerId,
-      retailer_credits_and_debit_codes_id: codeId
+      retailer_credits_and_debit_codes_id: codeId,
+      ongoingRequest
     } = this.props;
+
+    const submitButton = ( !Id ) ? (
+      <button onClick={ this.saveTransaction.bind(this) } disabled={ ongoingRequest ? true : false }> Confirm </button>
+    ) : (
+      <button onClick={ this.updateTransaction.bind(this) } disabled={ ongoingRequest ? true : false }> Update </button>
+    );
 
     const retailerOptions = retailers.map( ( retailer, index ) => {
       return (
@@ -104,7 +147,7 @@ class Transactions extends React.Component {
             </div>
           </div>
           <div className={styles.transactions_btn}>
-            <button onClick={ this.saveTransaction.bind(this) }> Confirm </button>
+            { submitButton }
           </div>
         </div>
       </div>
