@@ -16,7 +16,7 @@ const TransactionLanding = ({dispatch}) => { // eslint-disable-line no-unused-va
                     <div className={styles.squarecontent}>
                         <div>
                             <span>
-                                <Link to={'#'}> Settlement Report </Link>
+                                <Link to={'/hadmin/retailer_management/retailer_settlement_reports'}> Settlement Report </Link>
                             </span>
                         </div>
                     </div>
@@ -34,7 +34,7 @@ const TransactionLanding = ({dispatch}) => { // eslint-disable-line no-unused-va
                     <div className={styles.squarecontent}>
                         <div>
                             <span>
-                                <Link to={'#'}> Daily Reports </Link>
+                                <Link to={'/hadmin/retailer_management/retailer_reports'}> Daily Reports </Link>
                             </span>
                         </div>
                     </div>
@@ -43,7 +43,7 @@ const TransactionLanding = ({dispatch}) => { // eslint-disable-line no-unused-va
                     <div className={styles.squarecontent}>
                         <div>
                             <span>
-                                <Link to={'#'}> Settlement Status </Link>
+                                <Link to={'/hadmin/retailer_management/retailer_settlement_status'}> Settlement Status </Link>
                             </span>
                         </div>
                     </div>

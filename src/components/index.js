@@ -157,6 +157,10 @@ export CreateBarAd from './BrandsOffersAndPromos/AdsCreateBarAd/CreateBarAd';
 export TransactionLanding from './RetailerManagement/Transactions/TransactionLanding/TransactionLanding';
 export ViewDebitCredit from './RetailerManagement/DebitsCredits/ViewDebitCredit/ViewDebitCredit';
 
+export ViewDailyReports from './RetailerManagement/Transactions/ViewDailyReports/ViewDailyReports';
+export RetailerSettlements from './RetailerManagement/Transactions/Settlements/Settlements';
+export RetailerSettlementsStatus from './RetailerManagement/Transactions/SettlementsStatus/Settlements';
+
 /* Bar Transactions */
 
 export BarTransactionLanding from './RetailerManagement/Transactions/BarTransactionLanding/BarTransactionLanding';
