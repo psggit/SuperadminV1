@@ -5,11 +5,11 @@ import { Link } from 'react-router';
 import TableHeader from '../../../Common/TableHeader';
 
 const TransactionLanding = ({dispatch}) => { // eslint-disable-line no-unused-vars
-  const styles = require('./TransactionLanding.scss');
+  const styles = require('./BarTransactionLanding.scss');
   // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
   return (
         <div className={ styles.entry_point_wrapper }>
-            <TableHeader title={'Retailer Management/ Transactions'} />
+            <TableHeader title={'Bar Management/ Transactions'} />
             <div className="clearfix"></div>
             <div className={styles.entry_point_links}>
                 <div className = {styles.box_wrapper}>
@@ -52,7 +52,7 @@ const TransactionLanding = ({dispatch}) => { // eslint-disable-line no-unused-va
                     <div className={styles.squarecontent}>
                         <div>
                             <span>
-                                <Link to={'/hadmin/retailer_management/debits_credits_landing'}> Debits and Credits </Link>
+                                <Link to={'/hadmin/bar_management/debits_credits_landing'}> Debits and Credits </Link>
                             </span>
                         </div>
                     </div>

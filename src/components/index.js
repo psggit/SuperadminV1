@@ -156,3 +156,9 @@ export CreateBarAd from './BrandsOffersAndPromos/AdsCreateBarAd/CreateBarAd';
 
 export TransactionLanding from './RetailerManagement/Transactions/TransactionLanding/TransactionLanding';
 export ViewDebitCredit from './RetailerManagement/DebitsCredits/ViewDebitCredit/ViewDebitCredit';
+
+/* Bar Transactions */
+
+export BarTransactionLanding from './RetailerManagement/Transactions/BarTransactionLanding/BarTransactionLanding';
+export BarViewDebitCredit from './RetailerManagement/BarDebitsCredits/ViewDebitCredit/ViewDebitCredit';
+export BarDebitTransactions from './RetailerManagement/BarDebitsCredits/Transactions';

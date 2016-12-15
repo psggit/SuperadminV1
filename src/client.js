@@ -79,7 +79,10 @@ import {Login, Home, PageContainer,
   CreatePromoAd,
   ManageBarSkus,
   TransactionLanding,
-  ViewDebitCredit
+  ViewDebitCredit,
+  BarTransactionLanding,
+  BarViewDebitCredit,
+  BarDebitTransactions
 } from './components'; // eslint-disable-line no-unused-vars
 
 // ^== next level of importing
@@ -276,6 +279,14 @@ const main = (
         <Route path="retailer_management/debits_credits_landing" component={ViewDebitCredit} />
 
         <Route path="retailer_management/debit_credit_transactions/:Id" component={RetailerManagementTransactions} />
+
+        {/* Bar Transaction */}
+
+        <Route path="bar_management/bartransactionlanding" component={BarTransactionLanding} />
+
+        <Route path="bar_management/debits_credits_landing" component={BarViewDebitCredit} />
+        <Route path="bar_management/debit_credit_transactions" component={BarDebitTransactions} />
+        <Route path="bar_management/debit_credit_transactions/:Id" component={BarDebitTransactions} />
 
         <Route path="customer_support" component={CustomerSupportSupport} />
         <Route path="customer_support/customer_profile/:Id" component={CustomerSupportCustomerProfile} />

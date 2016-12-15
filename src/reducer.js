@@ -59,6 +59,7 @@ import adsCreateUrlReducer from './components/BrandsOffersAndPromos/AdsCreateUrl
 import filterReducer from './components/Common/SearchComponent/FilterState';
 
 import retailerDebitCreditRedicer from './components/RetailerManagement/DebitsCredits/Actions';
+import barDebitCreditRedicer from './components/RetailerManagement/BarDebitsCredits/Actions';
 
 const reducer = combineReducers({
   // The promos Side-menu states
@@ -105,7 +106,8 @@ const reducer = combineReducers({
   createBarAd_data: adsCreateBarReducer,
   createUrlAd_data: adsCreateUrlReducer,
   filter_data: filterReducer,
-  retailer_debit_credit: retailerDebitCreditRedicer
+  retailer_debit_credit: retailerDebitCreditRedicer,
+  bar_debit_credit: barDebitCreditRedicer
 });
 
 export default reducer;
