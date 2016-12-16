@@ -79,11 +79,11 @@ const BranchDetails = ( { currState, organisationData } ) => { // eslint-disable
         </li>
         <li>
           <label>Discount Percent</label>
-          <input type="text" data-field-name="discount_percent" data-field-type="text" value={ currState.discount_percent } />
+          <input type="number" data-field-name="discount_percent" data-field-type="float" value={ currState.discount_percent } />
         </li>
         <li>
           <label>Service Charge Percent</label>
-          <input type="text" data-field-name="service_charge_percent" data-field-type="text" value={ currState.service_charge_percent } />
+          <input type="number" data-field-name="service_charge_percent" data-field-type="float" value={ currState.service_charge_percent } />
         </li>
         <li>
           <div className={styles.wd_50}>
