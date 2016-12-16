@@ -15,62 +15,47 @@ const SearchWrapper = ( {data} ) => {
           <tr key={index}>
             <td> { dat.id } </td>
             <td>
-                { dat.retailer.org_name}
+                { dat.bar.name }
             </td>
             <td>
-                Rs { dat.net_manual_credits }
+                Rs { dat.net_manual_debits >= 0 ? dat.net_manual_debits : 'N/A' }
             </td>
             <td>
-                Rs { dat.net_amount }
+                Rs { dat.net_manual_credits >= 0 ? dat.net_manual_credits : 'N/A' }
             </td>
             <td>
-                Rs { dat.discount }
+                Rs { dat.discount >= 0 ? dat.discount : 'N/A' }
             </td>
             <td>
-                Rs { dat.service_tax }
+                Rs { dat.service_tax >= 0 ? dat.service_tax : 'N/A' }
             </td>
             <td>
-                { dat.payment_status }
+                Rs { dat.opening_balance >= 0 ? dat.opening_balance : 'N/A' }
             </td>
             <td>
-                Rs { dat.opening_balance }
+                Rs { dat.closing_balance >= 0 ? dat.closing_balance : 'N/A' }
             </td>
             <td>
-                Rs { dat.closing_balance }
+                Rs { dat.bar_price >= 0 ? dat.bar_price : 'N/A' }
             </td>
             <td>
-                Rs { dat.escrow_amount }
-            </td>
-            <td>
-                Rs { dat.promo_reserve_amount }
+                Rs { dat.hipbar_deal_price >= 0 ? dat.hipbar_deal_price : 'N/A' }
             </td>
 
             <td>
-                Rs { dat.location }
+                Rs { dat.commission >= 0 ? dat.commission : 'N/A' }
             </td>
             <td>
-                Rs { dat.amount_being_paid }
+                Rs { dat.net_settlement_amt >= 0 ? dat.net_settlement_amt : 'N/A' }
             </td>
             <td>
-                Rs { dat.icb_rcb_dbr_amount }
+                Rs { dat.being_paid_today >= 0 ? dat.being_paid_today : 'N/A' }
             </td>
             <td>
-                Rs { dat.net_gift_amount }
+                Rs { dat.voucher >= 0 ? dat.voucher : 'N/A' }
             </td>
             <td>
-                Rs { dat.voucher }
-            </td>
-            <td>
-                Rs { dat.net_consumer_amount }
-            </td>
-            <td>
-                Rs { dat.net_brand_amount }
-            </td>
-            <td>
-                Rs { dat.gross_amount }
-            </td>
-            <td>
-                Rs { dat.net_manual_debits }
+                Rs { dat.hipbar_menu_price >= 0 ? dat.hipbar_menu_price : 'N/A' }
             </td>
             <td> { createdAt } </td>
             <td> { updatedAt } </td>
@@ -82,7 +67,7 @@ const SearchWrapper = ( {data} ) => {
     objHtml = () => {
       return (
         <div className={styles.error_message}>
-          Sorry no settlements status
+          Sorry no settlements
         </div>
         );
     }();
@@ -93,24 +78,20 @@ const SearchWrapper = ( {data} ) => {
               <thead>
                 <tr>
                   <th> ID </th>
-                  <th> Branch Name </th>
+                  <th> Bar Name </th>
+                  <th> Net Manual Debits </th>
                   <th> Net Manual Credits </th>
-                  <th> Net Amount </th>
                   <th> Discount </th>
                   <th> Service Tax </th>
-                  <th> Payment Status </th>
                   <th> Opening Balance </th>
                   <th> Closing Balance </th>
-                  <th> Escrow Amount </th>
-                  <th> Promo Reserve Amount </th>
-                  <th> Location </th>
-                  <th> Amount Being Paid </th>
-                  <th> ICB RCB DBR Amount </th>
+                  <th> Bar Price </th>
+                  <th> Hipbar Deal Price </th>
+                  <th> Commission </th>
+                  <th> Net Settlement Amount </th>
+                  <th> Being Today </th>
                   <th> Voucher </th>
-                  <th> Net Consumer Amount </th>
-                  <th> Net Brand Amount </th>
-                  <th> Gross Amount </th>
-                  <th> Net Manual Debits </th>
+                  <th> Hipbar Menu Price</th>
                   <th> Created At </th>
                   <th> Updated At </th>
                 </tr>
@@ -126,7 +107,7 @@ const SearchWrapper = ( {data} ) => {
   return (
         <div className={styles.list_of_states_wrapper}>
           <label>
-            Retailer Settlements Status
+            Bar Settlements
           </label>
           <div className={styles.wd_80}>
             {objHtml}

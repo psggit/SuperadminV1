@@ -166,3 +166,7 @@ export RetailerSettlementsStatus from './RetailerManagement/Transactions/Settlem
 export BarTransactionLanding from './RetailerManagement/Transactions/BarTransactionLanding/BarTransactionLanding';
 export BarViewDebitCredit from './RetailerManagement/BarDebitsCredits/ViewDebitCredit/ViewDebitCredit';
 export BarDebitTransactions from './RetailerManagement/BarDebitsCredits/Transactions';
+
+export BarDailyReports from './BarManagement/Transactions/ViewDailyReports/ViewDailyReports';
+
+export BarSettlements from './BarManagement/Transactions/Settlements/Settlements';

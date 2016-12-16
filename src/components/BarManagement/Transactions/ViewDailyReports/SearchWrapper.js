@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router';
 
 const SearchWrapper = ( {data} ) => {
   const styles = require('./SearchWrapper.scss');
@@ -14,25 +13,33 @@ const SearchWrapper = ( {data} ) => {
     updatedAt = new Date(new Date(updatedAt).getTime()).toLocaleString();
     return (
           <tr key={index}>
-            <td>
-              <Link to={'/hadmin/bar_management/debit_credit_transactions/' + dat.id}>
-                <button className={styles.edit_btn} data-genre-id={dat.id}>
-                  Edit
-                </button>
-              </Link>
-            </td>
             <td> { dat.id } </td>
             <td>
                 { dat.bar.name }
             </td>
             <td>
-                { (dat.bar_credits_and_debit_codes ) ? dat.bar_credits_and_debit_codes.code : 'N/A'}
+                Rs { dat.opening_balance }
             </td>
             <td>
-                { dat.amount }
+                Rs { dat.closing_balance }
             </td>
             <td>
-                { dat.comment }
+                Rs { dat.net_consumer_amount }
+            </td>
+            <td>
+                Rs { dat.net_brand_amount }
+            </td>
+            <td>
+                Rs { dat.net_manual_credits }
+            </td>
+            <td>
+                Rs { dat.net_manual_debits }
+            </td>
+            <td>
+                Rs { dat.net_discount_amount }
+            </td>
+            <td>
+                Rs { dat.net_gifting_amount }
             </td>
             <td> { createdAt } </td>
             <td> { updatedAt } </td>
@@ -44,7 +51,7 @@ const SearchWrapper = ( {data} ) => {
     objHtml = () => {
       return (
         <div className={styles.error_message}>
-          Sorry no Debits And Credits
+          Sorry no daily reports
         </div>
         );
     }();
@@ -54,12 +61,16 @@ const SearchWrapper = ( {data} ) => {
             <table className={'table table-striped'}>
               <thead>
                 <tr>
-                  <th> </th>
                   <th> ID </th>
-                  <th> Branch Name </th>
-                  <th> Code </th>
-                  <th> Amount </th>
-                  <th> Comment </th>
+                  <th> Bar Name </th>
+                  <th> Opening Balance </th>
+                  <th> Closing Balance </th>
+                  <th> Net Consumer Amount </th>
+                  <th> Net Brand Amount </th>
+                  <th> Net Manual Credits </th>
+                  <th> Net Manual Debits </th>
+                  <th> Net Discount Amount </th>
+                  <th> Net Gifting Amount </th>
                   <th> Created At </th>
                   <th> Updated At </th>
                 </tr>
@@ -75,7 +86,7 @@ const SearchWrapper = ( {data} ) => {
   return (
         <div className={styles.list_of_states_wrapper}>
           <label>
-            Bar Debits and Credits
+            Bar Daily Reports
           </label>
           <div className={styles.wd_80}>
             {objHtml}

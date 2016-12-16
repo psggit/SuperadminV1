@@ -70,7 +70,7 @@ const SearchWrapper = ( {data} ) => {
                 Rs { dat.gross_amount }
             </td>
             <td>
-                Rs { dat.net_manual_credits }
+                Rs { dat.net_manual_debits }
             </td>
             <td> { createdAt } </td>
             <td> { updatedAt } </td>
