@@ -44,7 +44,6 @@ const SearchWrapper = ( {data} ) => {
             <td>
                 Rs { dat.promo_reserve_amount }
             </td>
-
             <td>
                 Rs { dat.location }
             </td>
@@ -106,6 +105,7 @@ const SearchWrapper = ( {data} ) => {
                   <th> Location </th>
                   <th> Amount Being Paid </th>
                   <th> ICB RCB DBR Amount </th>
+                  <th> Net Gift Amount </th>
                   <th> Voucher </th>
                   <th> Net Consumer Amount </th>
                   <th> Net Brand Amount </th>
