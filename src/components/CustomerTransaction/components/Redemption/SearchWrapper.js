@@ -24,6 +24,12 @@ const SearchWrapper = ( {data} ) => {
                 { dat.consumer_id }
               </Link>
             </td>
+            <td>
+              { dat.retailer_pos.retailer ? dat.retailer_pos.retailer.id : dat.retailer_pos.bar.id }
+            </td>
+            <td>
+              { dat.retailer_pos.retailer ? dat.retailer_pos.retailer.org_name : dat.retailer_pos.bar.name }
+            </td>
             <td> { dat.amount } </td>
             <td> { dat.rating } </td>
             <td> { dat.itemtype } </td>
@@ -51,6 +57,8 @@ const SearchWrapper = ( {data} ) => {
             <tr>
               <th> ID </th>
               <th> Consumer ID </th>
+              <th> ID </th>
+              <th> Retailer Name </th>
               <th> Amount </th>
               <th> Rating </th>
               <th> Item Type </th>
