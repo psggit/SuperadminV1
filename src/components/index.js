@@ -113,6 +113,7 @@ export WhatsNewViewArticle from './WhatsNewArticle/ArticleList/ArticleManagement
 /* Consumer Transactions */
 
 export ConsumerRecharge from './CustomerTransaction/components/Recharge/Recharge';
+export ConsumerDevice from './CustomerTransaction/components/Devices/Devices';
 export ConsumerCancellation from './CustomerTransaction/components/Cancellation/Cancellation';
 export ConsumerReservation from './CustomerTransaction/components/Reservation/Reservation';
 export ConsumerRedemption from './CustomerTransaction/components/Redemption/Redemption';

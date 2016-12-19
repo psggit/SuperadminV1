@@ -58,7 +58,7 @@ const SearchWrapper = ( {data} ) => {
               <th> ID </th>
               <th> Consumer ID </th>
               <th> ID </th>
-              <th> Retailer Name </th>
+              <th> Retailer/Bar Name </th>
               <th> Amount </th>
               <th> Rating </th>
               <th> Item Type </th>

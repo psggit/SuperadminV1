@@ -2,3 +2,4 @@ sample.txt
 components/KycUpload/NotUsed/*
 components/KycUpload/old/*
 client.js~
+components/CustomerTransaction/components/Devices_old/*

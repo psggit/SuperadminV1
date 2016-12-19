@@ -31,6 +31,23 @@
 			letter-spacing: 0.3px;
 			padding: 10px 8px;
 		}
+    tbody tr td:nth-child(1)
+    {
+      a
+      {
+        color: rgba(255, 116, 0, 0.9);
+      }
+    }
+    tbody tr td a {
+      &:hover {
+        color: rgba(255, 116, 0, 1);
+        text-decoration: none;
+      }
+      &:focus
+      {
+        text-decoration: none;
+      }
+    }
 		.id
 		{
 			font-weight: 500;

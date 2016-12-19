@@ -72,6 +72,9 @@ const getUserData = ( f ) => {
             'columns': ['*', {
               'name': 'device',
               'columns': ['*']
+            }, {
+              'name': 'old_devices',
+              'columns': ['id']
             }],
             'where': {
               'id': f

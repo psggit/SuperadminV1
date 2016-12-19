@@ -78,7 +78,7 @@ class ViewCredits extends React.Component { // eslint-disable-line no-unused-var
             limit = "10"
             triggerPageChange={ this.triggerPageChange.bind(this) }
             showMax="5"
-            parentUrl="/hadmin/customer_transactions/view_all_credits"
+            parentUrl="/hadmin/consumer_transactions/view_all_credits"
           />
         </div>
       );

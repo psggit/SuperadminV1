@@ -38,6 +38,11 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
                     Customer Transactions
                 </Link>
               </label></li>
+              <li className={styles.sidebar_list}><label>
+                <Link to={'/hadmin/consumer_transactions/devices'} className={ lastPathname === 'devices' ? styles.active : '' }>
+                    Customer Devices
+                </Link>
+              </label></li>
               {/*
               <li className={styles.sidebar_list}><label>
                 <Link to={'/hadmin/customer_support'} className={ lastPathname === 'customer_support' ? styles.active : '' }>
