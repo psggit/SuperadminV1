@@ -136,7 +136,7 @@ class Transactions extends React.Component {
               Amount
             </div>
             <div className = {styles.information_rightpanel}>
-              <input type="text" data-field-name="amount" data-field-type="int" value = { amount } /> </div>
+              <input type="number" min="0" data-field-name="amount" data-field-type="int" value = { amount } /> </div>
           </div>
           <div className = {styles.command_wrapper}>
             <div className = {styles.information_leftpanel}>
