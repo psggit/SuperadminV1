@@ -18,58 +18,58 @@ const SearchWrapper = ( {data} ) => {
                 { dat.retailer.org_name}
             </td>
             <td>
-                Rs { dat.net_manual_credits }
+                Rs { dat.net_manual_credits ? dat.net_manual_credits : 0 }
             </td>
             <td>
-                Rs { dat.net_amount }
+                Rs { dat.net_amount ? dat.net_amount : 0 }
             </td>
             <td>
-                Rs { dat.discount }
+                Rs { dat.discount ? dat.discount : 0 }
             </td>
             <td>
-                Rs { dat.service_tax }
+                Rs { dat.service_tax ? dat.service_tax : 0 }
             </td>
             <td>
-                { dat.payment_status }
+                { dat.payment_status ? dat.payment_status : 'N/A' }
             </td>
             <td>
-                Rs { dat.opening_balance }
+                Rs { dat.opening_balance ? dat.opening_balance : 0 }
             </td>
             <td>
-                Rs { dat.closing_balance }
+                Rs { dat.closing_balance ? dat.closing_balance : 0 }
             </td>
             <td>
-                Rs { dat.escrow_amount }
+                Rs { dat.escrow_amount ? dat.escrow_amount : 0 }
             </td>
             <td>
-                Rs { dat.promo_reserve_amount }
+                Rs { dat.promo_reserve_amount ? dat.promo_reserve_amount : 0 }
             </td>
             <td>
-                Rs { dat.location }
+                Rs { dat.location ? dat.location : 0 }
             </td>
             <td>
-                Rs { dat.amount_being_paid }
+                Rs { dat.amount_being_paid ? dat.amount_being_paid : 0 }
             </td>
             <td>
-                Rs { dat.icb_rcb_dbr_amount }
+                Rs { dat.icb_rcb_dbr_amount ? dat.icb_rcb_dbr_amount : 0 }
             </td>
             <td>
-                Rs { dat.net_gift_amount }
+                Rs { dat.net_gift_amount ? dat.net_gift_amount : 0 }
             </td>
             <td>
-                Rs { dat.voucher }
+                Rs { dat.voucher ? dat.voucher : 0 }
             </td>
             <td>
-                Rs { dat.net_consumer_amount }
+                Rs { dat.net_consumer_amount ? dat.net_consumer_amount : 0 }
             </td>
             <td>
-                Rs { dat.net_brand_amount }
+                Rs { dat.net_brand_amount ? dat.net_brand_amount : 0 }
             </td>
             <td>
-                Rs { dat.gross_amount }
+                Rs { dat.gross_amount ? dat.gross_amount : 0 }
             </td>
             <td>
-                Rs { dat.net_manual_debits }
+                Rs { dat.net_manual_debits ? dat.net_manual_debits : 0 }
             </td>
             <td> { createdAt } </td>
             <td> { updatedAt } </td>

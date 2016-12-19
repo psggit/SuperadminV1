@@ -16,7 +16,7 @@ const SkuComponent = ( {
       <li key={ serverSkus[sku].id } >
         <label>{ serverSkus[sku].brand_name } - { serverSkus[sku].volume } ML / ( { serverSkus[sku].inventory_status_name ? serverSkus[sku].inventory_status_name : 'N/A' } ) </label>
         <p onClick={ () => { return disableSKUs.call( undefined, serverSkus[sku].id ); } }>
-          Delete
+          Deactivate
         </p>
       </li>
     );
@@ -26,7 +26,7 @@ const SkuComponent = ( {
       <li key={ skus[sku].id } >
         <label>{ skus[sku].brand_name } - { skus[sku].volume } ML </label>
         <p onClick={ () => { return deleteSkuLocal.call( undefined, skus[sku].id ); } }>
-          Delete
+          Deactivate
         </p>
       </li>
     );

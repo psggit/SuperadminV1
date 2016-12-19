@@ -11,11 +11,11 @@ const BranchDetails = ( { currState, organisationData } ) => { // eslint-disable
 
   const kycSelectObj = [
     {
-      'label': 'True',
+      'label': 'Verified',
       'value': true
     },
     {
-      'label': 'False',
+      'label': 'Unverified',
       'value': false
     }
   ];

@@ -12,12 +12,14 @@ const SkuSelectWrapper = ( props, { isSkuActive }) => { // eslint-disable-line n
         <div className={styles.heading}>
           select available skus
         </div>
+        {/*
         <div className={styles.copy_sku}>
           <p>Copy SKUs From</p>
           <select>
             <option>select</option>
           </select>
         </div>
+        */}
         <SkuSelectBrands { ...props } />
         <SkuSelectBrandsItems { ...props } />
       </div>

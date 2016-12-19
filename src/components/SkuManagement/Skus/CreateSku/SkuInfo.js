@@ -38,10 +38,10 @@ const SkuInfo = ({ brandList, skuReqObj, disableSKUs, reservedItems, page }) => 
               <button className={ !skuReqObj.is_active && !skuReqObj.status && ( page === 'edit_page' ) ? '' : 'hide' } onClick={ disableSKUs }>Disable</button>
             </div>
             <div className={ styles.warning_block + ' ' + ( !skuReqObj.is_active && !skuReqObj.status && ( page === 'edit_page' ) ? '' : 'hide' ) }>
-              * Will cancel { reservedItems ? reservedItems.length : 0 } open reservations
+              * Click on Disable button to cancel { reservedItems ? reservedItems.length : 0 } open reservations
             </div>
             <div className={ styles.warning_block + ' ' + ( !skuReqObj.is_active && skuReqObj.status && ( page === 'edit_page' ) ? '' : ' hide ' ) }>
-              * Click save and disable { reservedItems ? reservedItems.length : 0 } open reservations
+              * Click on Update to Deactivate an SKU
             </div>
 
           </div>
