@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 // import {getRechargeData, getRechargeCount} from '../../actions/Action';
 import {
   getAllBarSkusData,
+  getBarSkuReservations,
   toggleBarSkuStatus
 } from './Actions';
 
@@ -33,7 +34,8 @@ class ManageBarSku extends Component {
 
     Promise.all([
       this.props.dispatch({ type: MAKE_REQUEST }),
-      this.props.dispatch(getAllBarSkusData(page, ( consumerId ? consumerId : '') ))
+      this.props.dispatch(getAllBarSkusData(page, ( consumerId ? consumerId : '') )),
+      this.props.dispatch(getBarSkuReservations())
     ])
     .then( () => {
       this.props.dispatch({ type: REQUEST_COMPLETED });
@@ -55,10 +57,21 @@ class ManageBarSku extends Component {
     this.props.dispatch({ type: RESET });
   }
 
-  onToggleStatus( e, id, isActive ) {
+  onToggleStatus( e, id, isActive, pricingId, barId ) {
     const {query} = this.props.location;
     const currentPage = (Object.keys(query).length > 0) ? parseInt(query.p, 10) : 1;
-    this.props.dispatch(toggleBarSkuStatus(id, isActive, currentPage ));
+    Promise.all([
+      this.props.dispatch({ type: MAKE_REQUEST }),
+      this.props.dispatch(toggleBarSkuStatus(id, isActive, currentPage, pricingId, barId ))
+    ])
+    .then( () => {
+      console.log('Then called');
+      this.props.dispatch({ type: REQUEST_COMPLETED });
+    })
+    .catch( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED });
+      console.log('Catch called');
+    });
   }
 
   onClickHandle(e) {
@@ -107,7 +120,7 @@ ManageBarSku.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  return { ...state.page_data };
+  return { ...state.page_data, ...state.all_bar_skus };
 };
 
 

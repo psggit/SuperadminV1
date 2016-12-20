@@ -12,6 +12,12 @@ import {
 
 /* Fetch Cancel Products */
 
+/* Action constants */
+
+const BAR_SKU_FETCHED = '@barAllSku/BAR_SKU_FETCHED';
+
+/* */
+
 const getBarSkusCount = ( ) => {
   return (dispatch) => {
     // dispatch({ type: MAKE_REQUEST, f});
@@ -85,10 +91,49 @@ const getAllBarSkusData = (page ) => {
   };
 };
 
-const toggleBarSkuStatus = ( id, isActive, currPage ) => {
+
+const getBarSkuReservations = () => {
   return ( dispatch ) => {
-    console.log(id);
-    console.log(dispatch);
+    const barUrl = Endpoints.db + '/table/bar_reserved_items/select';
+    const filterObj = {
+      'columns': ['*']
+    };
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(filterObj)
+    };
+    return dispatch( requestAction( barUrl, options, BAR_SKU_FETCHED ) )
+    .catch( () => {
+      alert('Error While fetching BAR SKU');
+      return Promise.reject();
+    });
+  };
+};
+
+const toggleBarSkuStatus = ( id, isActive, currPage, pricingId, barId ) => {
+  return ( dispatch, getState ) => {
+    const currState = getState().all_bar_skus;
+
+    const uniqueIdentifier = pricingId + '@' + barId;
+
+    if ( uniqueIdentifier in currState.barSKUs ) {
+      const resp = confirm('It will cancel ' + currState.barSKUs[uniqueIdentifier].length + ' open reservations');
+      if ( ! resp ) {
+        return Promise.reject();
+      }
+    }
+
+    const cancelReservations = ( items ) => {
+      const cancelUrl = Endpoints.blogicUrl + '/admin/cancel/bar';
+      const reservationObjs = {};
+      reservationObjs.itemId = items;
+      const options = {
+        ...genOptions,
+        body: JSON.stringify(reservationObjs),
+        method: 'PUT'
+      };
+      return (requestAction(cancelUrl, options ));
+    };
 
     const invUrl = Endpoints.db + '/table/bars_inventory/update';
 
@@ -110,6 +155,8 @@ const toggleBarSkuStatus = ( id, isActive, currPage ) => {
       if ( resp.returning.length > 0 ) {
         alert('Updated');
         return Promise.all([
+          ( !isActive === false && currState.barSKUs[uniqueIdentifier] ) ?
+          dispatch(cancelReservations(currState.barSKUs[uniqueIdentifier])) : Promise.resolve(1),
           dispatch(getAllBarSkusData( currPage ))
         ]);
       }
@@ -119,7 +166,36 @@ const toggleBarSkuStatus = ( id, isActive, currPage ) => {
   };
 };
 
+/* Default State */
+
+const defaultAllBarSku = {
+  barSKUs: {}
+};
+
+/* */
+
+const barAllSkuReducer = ( state = defaultAllBarSku, action ) => {
+  switch ( action.type ) {
+    case BAR_SKU_FETCHED:
+      const barSKUs = {};
+      action.data.forEach( ( data ) => {
+        if ( ( data.sku_pricing_id + '@' + data.bar_id ) in barSKUs ) {
+          barSKUs[ data.sku_pricing_id + '@' + data.bar_id ].push(data.item_id);
+        } else {
+          barSKUs[data.sku_pricing_id + '@' + data.bar_id] = [];
+          barSKUs[data.sku_pricing_id + '@' + data.bar_id].push(data.item_id);
+        }
+      });
+      return { ...state, barSKUs: { ...barSKUs }};
+    default:
+      return { ...state };
+  }
+};
+
+export default barAllSkuReducer;
+
 export {
   getAllBarSkusData,
-  toggleBarSkuStatus
+  toggleBarSkuStatus,
+  getBarSkuReservations
 };

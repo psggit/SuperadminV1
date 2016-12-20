@@ -10,7 +10,7 @@ const SearchWrapper = ( { data, onClickHandler } ) => {
     return (
           <tr key={index}>
             <td>
-              <button className={styles.edit_btn} data-inventory-id={dat.id} onClick={ (e) => { return onClickHandler.call(undefined, e, dat.id, dat.is_active ); }}>
+              <button className={styles.edit_btn} data-inventory-id={dat.id} onClick={ (e) => { return onClickHandler.call(undefined, e, dat.id, dat.is_active, dat.sku_pricing_id, dat.bar_id ); }}>
                 { dat.is_active ? 'Disable' : 'Enable' }
               </button>
             </td>
