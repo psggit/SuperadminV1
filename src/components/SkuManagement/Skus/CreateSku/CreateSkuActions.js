@@ -1031,6 +1031,8 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
       const localRetailerMapping = { ...state.retailerMapping };
       const skuStatePricingMap = {};
       delete localSkuInfo.pricings;
+      console.log('selectedStates');
+      console.log(selectedStates);
       selectedStates.forEach( ( sState ) => {
         /* Check if the retailer exists in the state */
         /* To avoid error data */
