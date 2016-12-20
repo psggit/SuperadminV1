@@ -174,7 +174,7 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
                 </li>
                 <li className={styles.sidebar_list}>
                   <label>
-                    <Link to={'/hadmin/bar_management/bar_sku_landing'} > BAR SKU MANAGEMENT </Link>
+                    <Link to={'/hadmin/bar_management/bar_sku_landing'} > Add Bar SKUs</Link>
                   </label>
                 </li>
                 <li className={styles.sidebar_list}>
