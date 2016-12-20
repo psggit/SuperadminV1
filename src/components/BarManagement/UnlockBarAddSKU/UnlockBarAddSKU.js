@@ -222,21 +222,29 @@ class UnlockBarAddSKU extends Component {
           <div className={styles.add_sku_head}>
             SKU
           </div>
-          <DisableInformation label = "Select SKU" val = "Select" options={ skuHtml } fieldName="sku_pricing_id" fieldType="int" currVal = { newSkuData.sku_pricing_id ? newSkuData.sku_pricing_id : 0} disable = { isEdit } />
+          <DisableInformation label = "Select SKU" val = "Select" options={ skuHtml } fieldName="bar_sku_price" fieldType="int" currVal = { newSkuData.sku_pricing_id ? newSkuData.sku_pricing_id : 0} disable = { isEdit } />
           <div className = {styles.command_wrapper}>
             <div className = {styles.information_leftpanel}>
-              Bar Price
+              Bar SKU  Price
             </div>
             <div className = {styles.information_rightpanel}>
-              <input type="text" data-field-name="menuPrice" data-field-type="int" value={ newSkuData.menuPrice }/>
+              <input type="text" data-field-name="bar_menu_price" data-field-type="int" value={ newSkuData.bar_menu_price}/>
             </div>
           </div>
           <div className = {styles.command_wrapper}>
             <div className = {styles.information_leftpanel}>
-              Hipbar Price
+              Negotiated SKU Price
             </div>
             <div className = {styles.information_rightpanel}>
-              <input type="text" data-field-name="hipbarPrice" data-field-type="int" value={ newSkuData.hipbarPrice }/>
+              <input type="text" data-field-name="negotiated_sku_price" data-field-type="int" value={ newSkuData.negotiated_sku_price}/>
+            </div>
+          </div>
+          <div className = {styles.command_wrapper}>
+            <div className = {styles.information_leftpanel}>
+              Tax percentage for SKU
+            </div>
+            <div className = {styles.information_rightpanel}>
+              <input type="text" data-field-name="tax_percentage_for_sku" data-field-type="int" value={ newSkuData.tax_percentage_for_sku}/>
             </div>
           </div>
           <div className = {styles.command_wrapper}>
