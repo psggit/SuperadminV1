@@ -1219,6 +1219,21 @@ const getRedemptionData = ( page, consumerId, filterObj, isSearched ) => {
       }, {
         'name': 'bar_redemptions',
         'columns': ['*']
+      }, {
+        'name': 'retailer_pos',
+        'columns': [{
+          'name': 'retailer',
+          'columns': [
+            'org_name',
+            'id'
+          ]
+        }, {
+          'name': 'bar',
+          'columns': [
+            'name',
+            'id'
+          ]}
+        ]
       }],
       'limit': limit,
       'offset': offset

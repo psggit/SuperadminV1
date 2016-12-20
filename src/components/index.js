@@ -58,9 +58,14 @@ export CreateSku from './SkuManagement/Skus/CreateSku/CreateSkuWrapper';
 export SkuManagementViewSkus from './SkuManagement/Skus/ViewSku/ViewSku';
 // export SkuManagementToppicks from './SkuManagement/Skus/ToppicksIn/ToppicksIn';
 
+/* Customer Transaction */
 export AddCredit from './CustomerTransaction/components/Credits/CreateCredit';
 export ConfirmCredit from './CustomerTransaction/components/Credits/ConfirmCredits';
 export ViewCredits from './CustomerTransaction/components/Credits/ViewCredits';
+
+export ViewAllCredits from './CustomerTransaction/components/ViewCredits/ViewCredits';
+
+/* */
 export HomepageManagementAds from './HomepageManagement/Ads';
 export HomepageManagementSelectAds from './HomepageManagement/SelectAds';
 export BrandManagerProfile from './BrandsOffersAndPromos/BrandManagerProfile/BrandManagerProfile';
@@ -76,7 +81,7 @@ export RetailerManagementViewBar from './BarManagement/ViewBar/ViewBar';
 export RetailerManagementSettlementDetails from './RetailerManagement/RedemptionHistory/SettlementDetails';
 export RetailerManagementDeviceDetail from './RetailerManagement/DeviceDetail/DeviceDetail';
 export RetailerManagementDisableDevice from './RetailerManagement/DisableDevice/DisableDevice';
-export RetailerManagementTransactions from './Sku/Transactions/Transactions';
+export RetailerManagementTransactions from './RetailerManagement/DebitsCredits/Transactions';
 export RetailerManagementCreateOrganization from './RetailerManagement/CreateOrganization/CreateOrganization';
 export RetailerManagementViewOrganization from './RetailerManagement/ViewOrganization/ViewOrganization';
 export RetailerManagementViewBranch from './RetailerManagement/ViewBranch/ViewBranch';
@@ -108,6 +113,7 @@ export WhatsNewViewArticle from './WhatsNewArticle/ArticleList/ArticleManagement
 /* Consumer Transactions */
 
 export ConsumerRecharge from './CustomerTransaction/components/Recharge/Recharge';
+export ConsumerDevice from './CustomerTransaction/components/Devices/Devices';
 export ConsumerCancellation from './CustomerTransaction/components/Cancellation/Cancellation';
 export ConsumerReservation from './CustomerTransaction/components/Reservation/Reservation';
 export ConsumerRedemption from './CustomerTransaction/components/Redemption/Redemption';
@@ -151,3 +157,23 @@ export CreatePromoAd from './BrandsOffersAndPromos/AdsCreatePromoAd/CreatePromoA
 export CreateUrlAd from './BrandsOffersAndPromos/AdsCreateUrlAd/CreateUrlAd';
 export CreateBarAd from './BrandsOffersAndPromos/AdsCreateBarAd/CreateBarAd';
 /* */
+
+/* Retailer Transactions */
+
+export TransactionLanding from './RetailerManagement/Transactions/TransactionLanding/TransactionLanding';
+export ViewDebitCredit from './RetailerManagement/DebitsCredits/ViewDebitCredit/ViewDebitCredit';
+
+export ViewDailyReports from './RetailerManagement/Transactions/ViewDailyReports/ViewDailyReports';
+export RetailerSettlements from './RetailerManagement/Transactions/Settlements/Settlements';
+export RetailerSettlementsStatus from './RetailerManagement/Transactions/SettlementsStatus/Settlements';
+export RetailerRedemptions from './RetailerManagement/Transactions/Redemptions/Redemptions';
+
+/* Bar Transactions */
+
+export BarTransactionLanding from './RetailerManagement/Transactions/BarTransactionLanding/BarTransactionLanding';
+export BarViewDebitCredit from './RetailerManagement/BarDebitsCredits/ViewDebitCredit/ViewDebitCredit';
+export BarDebitTransactions from './RetailerManagement/BarDebitsCredits/Transactions';
+
+export BarDailyReports from './BarManagement/Transactions/ViewDailyReports/ViewDailyReports';
+
+export BarSettlements from './BarManagement/Transactions/Settlements/Settlements';

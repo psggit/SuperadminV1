@@ -123,6 +123,20 @@ class ViewConsumerProfile extends Component {
           </div>
         );
 
+      const deviceHtml = ( profileInfo.old_devices.length ) ?
+        (
+          <div className={styles.wd_60_link} >
+            <Link to={'/hadmin/consumer_transactions/devices/' + profileInfo.id }>
+              { profileInfo.old_devices.length }
+            </Link>
+          </div>
+        ) :
+        (
+          <div >
+            { 0 }
+          </div>
+        );
+
       const rechargeHTML = ( rechargeCount ) ?
         (
           <div className={styles.wd_60_link} >
@@ -251,6 +265,14 @@ class ViewConsumerProfile extends Component {
             </div>
             <div className={styles.wd_60} >
               { profileInfo.device.device_num }
+            </div>
+          </div>
+          <div className={styles.profile_information}>
+            <div className={styles.wd_40}>
+              Device History
+            </div>
+            <div className={styles.wd_60} >
+              { deviceHtml }
             </div>
           </div>
           <div className={styles.profile_information}>

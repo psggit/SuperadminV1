@@ -41,7 +41,7 @@ const commonFormValidator = ( Component, fieldName, fieldType, changeEmitter) =>
         if ( fieldT === 'boolean') {
           return Boolean(parseInt(e.target.value, 10));
         } else if (fieldT === 'float') {
-          return parseFloat(e.target.value);
+          return parseFloat(e.target.value ? e.target.value : 0);
         }
         return e.target.value;
       };

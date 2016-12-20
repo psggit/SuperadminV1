@@ -238,9 +238,11 @@ const retailerBrandReducer = ( state = { ...defaultRetBrandState }, action ) => 
         if ( dat.is_active ) {
           serverSKUs[dat.sku_pricing.sku.id] = dat.sku_pricing.sku;
           serverSKUs[dat.sku_pricing.sku.id].brand_name = dat.sku_pricing.sku.brand.brand_name;
+          serverSKUs[dat.sku_pricing.sku.id].inventory_status_name = dat.inventory_status_name;
         } else {
           inactiveSkus[dat.sku_pricing.sku.id] = dat.sku_pricing.sku;
           inactiveSkus[dat.sku_pricing.sku.id].brand_name = dat.sku_pricing.sku.brand.brand_name;
+          inactiveSkus[dat.sku_pricing.sku.id].inventory_status_name = dat.inventory_status_name;
         }
       });
       return { ...state, serverSkus: { ...serverSKUs }, inactiveSkus: { ...inactiveSkus }};

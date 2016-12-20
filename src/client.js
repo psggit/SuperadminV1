@@ -77,7 +77,20 @@ import {Login, Home, PageContainer,
   CreateUrlAd,
   CreateSkuAd,
   CreatePromoAd,
-  ManageBarSkus
+  ManageBarSkus,
+  TransactionLanding,
+  ViewDebitCredit,
+  BarTransactionLanding,
+  BarViewDebitCredit,
+  BarDebitTransactions,
+  ViewDailyReports,
+  RetailerSettlements,
+  RetailerSettlementsStatus,
+  BarDailyReports,
+  BarSettlements,
+  RetailerRedemptions,
+  ViewAllCredits,
+  ConsumerDevice
 } from './components'; // eslint-disable-line no-unused-vars
 
 // ^== next level of importing
@@ -178,6 +191,9 @@ const main = (
 
         /* Customer Transactions */
         <Route path="consumer_transactions" component={CustomerTransaction} />
+        <Route path="consumer_transactions/devices" component={ConsumerDevice} />
+        <Route path="consumer_transactions/devices/:userId" component={ConsumerDevice} />
+        <Route path="consumer_transactions/view_all_credits" component={ViewAllCredits} />
         <Route path="consumer_transactions/recharges" component={ConsumerRecharge} />
         <Route path="consumer_transactions/:userId/recharges" component={ConsumerRecharge} />
         <Route path="consumer_transactions/reservations" component={ConsumerReservation} />
@@ -262,12 +278,35 @@ const main = (
         <Route path="retailer_management/settlement_details" component={RetailerManagementSettlementDetails} />
         <Route path="retailer_management/device_details" component={RetailerManagementDeviceDetail} />
         <Route path="retailer_management/disable_device" component={RetailerManagementDisableDevice} />
-        <Route path="retailer_management/transactions" component={RetailerManagementTransactions} />
+        <Route path="retailer_management/debit_credit_transactions" component={RetailerManagementTransactions} />
         <Route path="retailer_management/create_organization" component={RetailerManagementCreateOrganization} />
         <Route path="retailer_management/edit_organization/:orgId" component={RetailerManagementCreateOrganization} />
         <Route path="retailer_management/view_organizations" component={RetailerManagementViewOrganization} />
         <Route path="retailer_management/view_branches" component={RetailerManagementViewBranch} />
         <Route path="retailer_management/profile_and_kyc" component={ProfileKyc} />
+
+        {/* Retailer Transaction */}
+        <Route path="retailer_management/transactionlanding" component={TransactionLanding} />
+        <Route path="retailer_management/debits_credits_landing" component={ViewDebitCredit} />
+
+        <Route path="retailer_management/debit_credit_transactions/:Id" component={RetailerManagementTransactions} />
+        <Route path="retailer_management/retailer_reports" component={ViewDailyReports} />
+        <Route path="retailer_management/retailer_settlement_reports" component={RetailerSettlements} />
+        <Route path="retailer_management/retailer_settlement_status" component={RetailerSettlementsStatus} />
+        <Route path="retailer_management/redemptions" component={RetailerRedemptions} />
+
+        {/* Bar Transaction */}
+
+        <Route path="bar_management/bartransactionlanding" component={BarTransactionLanding} />
+        <Route path="bar_management/debits_credits_landing" component={BarViewDebitCredit} />
+        <Route path="bar_management/debit_credit_transactions" component={BarDebitTransactions} />
+        <Route path="bar_management/debit_credit_transactions/:Id" component={BarDebitTransactions} />
+        <Route path="bar_management/bar_reports" component={BarDailyReports} />
+
+        <Route path="bar_management/bar_settlement_reports" component={BarSettlements} />
+
+        {/* End of it */}
+
         <Route path="customer_support" component={CustomerSupportSupport} />
         <Route path="customer_support/customer_profile/:Id" component={CustomerSupportCustomerProfile} />
         <Route path="customer_support/freshdesk_ticket/:Id" component={CustomerSupportFreshdeskTicket} />

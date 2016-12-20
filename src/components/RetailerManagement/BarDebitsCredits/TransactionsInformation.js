@@ -1,5 +1,5 @@
 import React from 'react';
-const TransactionsInformation = ( { label, val } ) => {
+const TransactionsInformation = ( { label, currentVal, options, fieldName, fieldType, placeholder } ) => {
   const styles = require('./TransactionsInformation.scss');
   return (
     <div className = {styles.transactions_information}>
@@ -7,8 +7,9 @@ const TransactionsInformation = ( { label, val } ) => {
         {label}
       </div>
       <div className = {styles.information_rightpanel}>
-        <select>
-          <option value="Select">{val}</option>
+        <select value={ currentVal } data-field-name = { fieldName } data-field-type = { fieldType } >
+          <option value="Select">{ placeholder }</option>
+          { options }
         </select>
       </div>
     </div>

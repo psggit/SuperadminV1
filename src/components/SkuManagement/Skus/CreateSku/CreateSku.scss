@@ -16,6 +16,32 @@
 		width: 100%;
 		float: left;
 		margin-bottom: 15px;
+    .status_div {
+      width: 50%;
+      float: left;
+      button {
+        margin-left: 15px;
+        width: 40%;
+			  float: left;
+			  border: 1px solid #CCC;
+			  background: #FFF;
+			  font-size: 13px;
+			  height: 30px;
+			  border-radius: 3px;
+        color: rgba(255, 116, 0, 0.8);
+			  padding: 5px 10px;
+        &:hover {
+          color: #ff7400;
+          border: 1px solid #FF7400;
+        }
+      }
+    }
+    .warning_block {
+      float: left;
+      width: 100%;
+      padding-top: 10px;
+      color: #D8000C;
+    }
 		label
 		{
 			font-weight: 400;

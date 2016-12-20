@@ -74,7 +74,9 @@ const saveBranch = () => {
       'city_id',
       'excise_licence_number',
       'org_name',
-      'kyc_outlet'
+      'kyc_outlet',
+      'service_charge_percent',
+      'discount_percent'
     ];
     let brCheckStatus = true;
 
@@ -367,7 +369,9 @@ const updateBranch = () => {
       'branch_status',
       'city_id',
       'excise_licence_number',
-      'org_name'
+      'org_name',
+      'service_charge_percent',
+      'discount_percent'
     ];
 
     let brCheckStatus = true;
@@ -550,7 +554,9 @@ const branchDataReducer = ( state = { organisationData: [], branchDetail: {}, br
         'kyc_status',
         'branch_status',
         'excise_licence_number',
-        'org_name'
+        'org_name',
+        'service_charge_percent',
+        'discount_percent'
       ];
 
       const branchContactKeys = ['branch_address', 'pincode', 'city_id', 'state_id', 'email', 'mobile_number', 'landline_number', 'retailer_id', 'gps_cordinates'];

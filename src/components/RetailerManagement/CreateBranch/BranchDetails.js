@@ -11,11 +11,11 @@ const BranchDetails = ( { currState, organisationData } ) => { // eslint-disable
 
   const kycSelectObj = [
     {
-      'label': 'True',
+      'label': 'Verified',
       'value': true
     },
     {
-      'label': 'False',
+      'label': 'Unverified',
       'value': false
     }
   ];
@@ -76,6 +76,14 @@ const BranchDetails = ( { currState, organisationData } ) => { // eslint-disable
         <li>
           <label>CST Number</label>
           <input type="text" data-field-name="cst_number" data-field-type="text" value={ currState.cst_number } />
+        </li>
+        <li>
+          <label>Discount Percent</label>
+          <input type="number" data-field-name="discount_percent" data-field-type="float" value={ currState.discount_percent } />
+        </li>
+        <li>
+          <label>Service Charge Percent</label>
+          <input type="number" data-field-name="service_charge_percent" data-field-type="float" value={ currState.service_charge_percent } />
         </li>
         <li>
           <div className={styles.wd_50}>
