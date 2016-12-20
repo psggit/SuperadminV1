@@ -2,6 +2,7 @@
 const dataUrl = 'https://data.hipbar-stg.hasura-app.io';
 const authUrl = 'https://auth.hipbar-stg.hasura-app.io';
 const fileUrl = 'https://api2.hipbar-stg.hasura-app.io';
+const blogicUrl = 'https://api1.hipbar-stg.hasura-app.io';
 // const base = '';
 const Endpoints = {
   login: authUrl + '/login',
@@ -15,7 +16,8 @@ const Endpoints = {
   file_get: fileUrl + '/get?fs_url=',
   integrations_dataUrl: 'http://localhost:5000',
   baseUrl: dataUrl,
-  authUrl: authUrl
+  authUrl: authUrl,
+  blogicUrl: blogicUrl
 };
 const globalCookiePolicy = 'include';
 

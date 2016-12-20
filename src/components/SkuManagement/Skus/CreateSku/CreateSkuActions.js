@@ -182,9 +182,68 @@ const fetchState = () => {
 };
 
 const disableSku = () => {
-  return ( dispatch ) => {
+  return ( dispatch, getState ) => {
     console.log(dispatch);
     console.log('Disabling SKU');
+    const skuState = getState().create_sku_data.reservedItems;
+
+    const normalUrl = Endpoints.blogicUrl + '/admin/cancel/normal';
+    const cashbackUrl = Endpoints.blogicUrl + '/admin/cancel/cashback';
+
+    if ( skuState.length === 0 ) {
+      alert('Nothing to cancel');
+      return Promise.resolve();
+    }
+
+    const cashbackItems = [];
+    const normalItems = [];
+
+    skuState.forEach( ( sku ) => {
+      if ( sku.reservation_type === 'cashback' ) {
+        cashbackItems.push(sku.id);
+      } else {
+        normalItems.push(sku.id);
+      }
+    });
+    console.log('normal');
+    console.log(normalItems);
+    console.log('cachbac');
+    console.log(cashbackItems);
+
+    const normalCancel = () => {
+      if ( normalItems.length > 0 ) {
+        const optionsNormal = {
+          ...genOptions,
+          body: JSON.stringify({ 'itemId': normalItems }),
+          method: 'PUT'
+        };
+        return dispatch(requestAction(normalUrl, optionsNormal));
+      }
+      return Promise.resolve();
+    };
+    const cashbackCancel = () => {
+      if ( cashbackItems.length > 0 ) {
+        const optionsCashback = {
+          ...genOptions,
+          body: JSON.stringify({ 'itemId': cashbackItems }),
+          method: 'PUT'
+        };
+        return dispatch(requestAction(cashbackUrl, optionsCashback));
+      }
+      return Promise.resolve();
+    };
+    return Promise.all([
+      normalCancel(),
+      cashbackCancel()
+    ])
+    .then( () => {
+      console.log('request queued');
+      return dispatch(routeActions.push('/hadmin/skus/list_sku'));
+    })
+    .catch( () => {
+      console.log('request error');
+      // return dispatch(routeActions.push('/hadmin/skus/list_sku'));
+    });
   };
 };
 
