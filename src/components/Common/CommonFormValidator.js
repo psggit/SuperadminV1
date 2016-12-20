@@ -46,12 +46,20 @@ const commonFormValidator = ( Component, fieldName, fieldType, changeEmitter) =>
         return e.target.value;
       };
 
-      const makeIntValue = (value) => {
-        const intVal = parseInt(value, 10);
+      const makeIntValue = (value, isNegative ) => {
+        let intVal = parseInt(value, 10);
+        if ( isNegative ) {
+          intVal = () => {
+            if ( !Boolean(parseInt(isNegative, 10)) ) {
+              return Math.abs(intVal);
+            }
+            return intVal;
+          }();
+        }
         return ( intVal ) ? intVal : 0;
       };
 
-      data.value = (e.target.getAttribute(fieldType) === 'int') ? makeIntValue(e.target.value) : fetchVal();
+      data.value = (e.target.getAttribute(fieldType) === 'int') ? makeIntValue(e.target.value, e.target.getAttribute('data-is-negative')) : fetchVal();
       this.props.dispatch({ type: changeEmitter, data: data});
     }
     render() {
