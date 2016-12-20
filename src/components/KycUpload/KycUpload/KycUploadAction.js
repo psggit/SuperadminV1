@@ -28,7 +28,7 @@ const fetchConsumerCount = () => {
     // payload.where = {
     //   'status': 'open'
     // };
-    const url = Endpoints.db + '/table/' + 'consumer_kyc' + '/count';
+    const url = Endpoints.db + '/table/' + 'consumer' + '/count';
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -63,7 +63,7 @@ const fetchConsumerCount = () => {
 const fetchConsumer = (page) => {
   return (dispatch) => {
     /* Url */
-    const url = Endpoints.db + '/table/consumer_kyc/select';
+    const url = Endpoints.db + '/table/consumer/select';
     const queryObj = {};
 
     let offset = 0;
@@ -75,18 +75,13 @@ const fetchConsumer = (page) => {
     limit = 10;
     offset = (page - 1) * 10;
 
-    queryObj.columns = [
-      {
-        'name': 'consumer',
-        'columns': ['*']
-      }
-    ];
-    // queryObj.where = {
-    //   'status': 'open'
-    // };
+    queryObj.columns = ['*'];
+    queryObj.where = {
+      'level_id': 1
+    };
     queryObj.limit = limit;
     queryObj.offset = offset;
-    queryObj.order_by = '+consumer.id';
+    queryObj.order_by = '+id';
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
