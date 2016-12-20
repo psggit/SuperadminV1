@@ -222,13 +222,13 @@ class UnlockBarAddSKU extends Component {
           <div className={styles.add_sku_head}>
             SKU
           </div>
-          <DisableInformation label = "Select SKU" val = "Select" options={ skuHtml } fieldName="bar_sku_price" fieldType="int" currVal = { newSkuData.sku_pricing_id ? newSkuData.sku_pricing_id : 0} disable = { isEdit } />
+          <DisableInformation label = "Select SKU" val = "Select" options={ skuHtml } fieldName="sku_pricing_id" fieldType="int" currVal = { newSkuData.sku_pricing_id ? newSkuData.sku_pricing_id : 0} disable = { isEdit } />
           <div className = {styles.command_wrapper}>
             <div className = {styles.information_leftpanel}>
-              Bar SKU  Price
+              Base SKU  Price
             </div>
             <div className = {styles.information_rightpanel}>
-              <input type="text" data-field-name="bar_menu_price" data-field-type="int" value={ newSkuData.bar_menu_price}/>
+              <input type="text" data-field-name="base_sku_price" data-field-type="string" value={ newSkuData.bar_menu_price}/>
             </div>
           </div>
           <div className = {styles.command_wrapper}>
@@ -236,15 +236,15 @@ class UnlockBarAddSKU extends Component {
               Negotiated SKU Price
             </div>
             <div className = {styles.information_rightpanel}>
-              <input type="text" data-field-name="negotiated_sku_price" data-field-type="int" value={ newSkuData.negotiated_sku_price}/>
+              <input type="text" data-field-name="negotiated_sku_price" data-field-type="string" value={ newSkuData.negotiated_sku_price}/>
             </div>
           </div>
           <div className = {styles.command_wrapper}>
             <div className = {styles.information_leftpanel}>
-              Tax percentage for SKU
+              Charges And Tax percentage at Bar
             </div>
             <div className = {styles.information_rightpanel}>
-              <input type="text" data-field-name="tax_percentage_for_sku" data-field-type="int" value={ newSkuData.tax_percentage_for_sku}/>
+              <input type="text" data-field-name="charges_and_tax_percentage" data-field-type="string" value={ newSkuData.charges_and_tax_percentage}/>
             </div>
           </div>
           <div className = {styles.command_wrapper}>
