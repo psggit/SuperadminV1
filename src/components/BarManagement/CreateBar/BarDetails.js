@@ -11,11 +11,11 @@ const BarDetails = ( { currState, organisationData } ) => { // eslint-disable-li
 
   const kycSelectObj = [
     {
-      'label': 'True',
+      'label': 'Verified',
       'value': true
     },
     {
-      'label': 'False',
+      'label': 'Not Verified',
       'value': false
     }
   ];

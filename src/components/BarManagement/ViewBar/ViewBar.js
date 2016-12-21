@@ -71,14 +71,14 @@ class Bar extends Component {
     const { ongoingRequest, lastError, lastSuccess, count} = this.props;
     const {query} = this.props.location;
 
-    const paginationUrl = '/hadmin/retailer_management/view_branches';
+    const paginationUrl = '/hadmin/bar_management/view_bars';
 
     const page = (Object.keys(query).length > 0) ? parseInt(query.p, 10) : 1;
     console.log(lastError);
     console.log(ongoingRequest);
     return (
           <div className={styles.recharge_container}>
-            <TableHeader title={'Retailer Management/ View Bars'} />
+            <TableHeader title={'Bar Management/ View Bars'} />
             <BarSearchWrapper data={lastSuccess}/>
             <PaginationContainer limit="10" onClickHandler={this.onClickHandle.bind(this)} currentPage={page} showMax="5" count={count} parentUrl={ paginationUrl } />
           </div>

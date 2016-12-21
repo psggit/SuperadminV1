@@ -28,7 +28,7 @@ const SearchWrapper = ( {data} ) => {
             <td> { dat.name } </td>
             <td> { dat.addresses.length ? dat.addresses[0].branch_address : 'N/A' } </td>
             <td> { dat.type } </td>
-            <td> { dat.kyc_status ? dat.kyc_status : 'N/A' } </td>
+            <td> { dat.kyc_status === 'true' ? 'Verified' : 'Not Verified' } </td>
             <td> { dat.branch_status ? dat.branch_status : 'N/A'} </td>
             <td> { createdAt } </td>
             <td> { updatedAt} </td>
