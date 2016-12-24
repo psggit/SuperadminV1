@@ -12,6 +12,7 @@ const commonFormValidator = ( Component, fieldName, fieldType, changeEmitter) =>
       super();
       this.eventHandlers = {};
       this.eventHandlers.handleInputChange = this.handleInputChange.bind(this);
+      this.eventHandlers.handleClicks = this.handleClicks.bind(this);
       this.eventHandlers.lookFor = fieldName;
     }
     componentWillMount() {
@@ -19,6 +20,10 @@ const commonFormValidator = ( Component, fieldName, fieldType, changeEmitter) =>
     }
     componentWillUnmount() {
       console.log('Form Validator is being unmounted');
+    }
+    handleClicks(e) {
+      console.log(e.target);
+      console.log('clicked');
     }
     handleInputChange(e) {
       /* Get the attribute name which was given when initialized */
@@ -64,8 +69,8 @@ const commonFormValidator = ( Component, fieldName, fieldType, changeEmitter) =>
     }
     render() {
       return (
-          <div className="attacher" onChange={ this.eventHandlers.handleInputChange }>
-            <Component { ...this.props } />
+          <div className="attacher" onChange={ this.eventHandlers.handleInputChange } >
+            <Component { ...this.props } onClick={ this.eventHandlers.handleClicks }/>
           </div>
         );
     }

@@ -4,7 +4,6 @@ import Loading from '../Common/Loading';
 import {
   getUserData,
   uploadAndSave,
-  RESET,
   UPDATE_STATUSES,
   updateKycs,
   /*
@@ -19,8 +18,18 @@ import {
   deleteFromServer,
   UPDATE_CONSUMER_COMMENT_DATA,
   UPDATE_ID_COMMENT_DATA,
-  UPDATE_ADDRESS_COMMENT_DATA
+  UPDATE_ADDRESS_COMMENT_DATA,
+  RESET_KYC_DATA
 } from './KycUploadViewActions';
+
+import {
+  MAKE_REQUEST,
+  REQUEST_COMPLETED,
+  RESET
+} from '../Common/Actions/Actions';
+
+import commonDecorator from '../Common/CommonDecorator';
+
 // import { makeRequest} from '../FileUpload/Actions';
 import TableProfileHeader from './TableProfileHeader';
 import Endpoints from '../../Endpoints';
@@ -31,10 +40,22 @@ import Endpoints from '../../Endpoints';
 class KycUploadProfile extends Component {
   componentWillMount() {
     // this.props.dispatch({type: GET_CONSUMER, data: this.props.params.Id});
-    this.props.dispatch(getUserData(parseInt(this.props.params.Id, 10)));
+    Promise.all([
+      this.props.dispatch({ type: MAKE_REQUEST }),
+      this.props.dispatch(getUserData(parseInt(this.props.params.Id, 10)))
+    ])
+    .then( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED});
+    })
+    .catch( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED});
+    });
   }
   componentWillUnmount() {
-    this.props.dispatch({type: RESET});
+    Promise.all([
+      this.props.dispatch({type: RESET}),
+      this.props.dispatch({type: RESET_KYC_DATA})
+    ]);
   }
   /* Function which listens on upload click on the page and dispatches it to the reducer */
   onUploadClick(domId, e) {
@@ -48,9 +69,9 @@ class KycUploadProfile extends Component {
     // let domId;
     let fileDOM;
 
-    idToTypeMap.customer_upload = 'CONSUMERPIC';
-    idToTypeMap.id_proof = 'IDPROOF';
-    idToTypeMap.address_proof = 'ADDRESSPROOF';
+    idToTypeMap.customer_upload = 'USERPHOTO';
+    idToTypeMap.id_proof = 'IDPROOFFRONT';
+    idToTypeMap.address_proof = 'ADDRESSPROOFFRONT';
 
     idToFileMap.customer_upload = 'customer_upload';
     idToFileMap.id_proof = 'id_proof';
@@ -66,7 +87,16 @@ class KycUploadProfile extends Component {
       /* Call a function to upload the file then insert it into the consumer kyc Table
        * */
 
-      this.props.dispatch(uploadAndSave(formData, idToTypeMap[domId]));
+      Promise.all([
+        this.props.dispatch(uploadAndSave(formData, idToTypeMap[domId])),
+        this.props.dispatch({ type: MAKE_REQUEST })
+      ])
+      .then( () => {
+        this.props.dispatch({ type: REQUEST_COMPLETED });
+      })
+      .catch( () => {
+        this.props.dispatch({ type: REQUEST_COMPLETED });
+      });
     }
   }
   /* Function which handles image delete (Both from local and from the server)
@@ -152,10 +182,10 @@ class KycUploadProfile extends Component {
     const { consumerPIC, idProof, addressProof, isConsumerPICUploaded, isIdProofUploaded, isAddressProofUploaded} = this.props;
 
     /* Consumer KYC need to exist first then id will be present */
-    const kycId = this.props.lastSuccess[0].kycs[0].id;
+    const kycId = this.props.lastSuccess[0].kyc_requests[0].id;
     const { Id: userId } = this.props.params;
     /* Consumer KYC need to exist first then files will atleast be an empty array */
-    const kycFiles = this.props.lastSuccess[0].kycs[0].files;
+    const kycFiles = this.props.lastSuccess[0].kyc_requests[0].kyc_files;
 
     /* Verified Status */
     let consumerPICVerification = document.querySelectorAll('[data-field-name=consumer_status] option:checked')[0].value;
@@ -187,6 +217,15 @@ class KycUploadProfile extends Component {
     const proofType = document.querySelectorAll('[data-field-name=addressProofType] option:checked')[0].value;
     const insertObjs = [];
 
+    if ( !panID ) {
+      alert('Pan number is mandatory');
+      return false;
+    }
+    if ( !address1 || !address2 || !city || !pincode || !proofType ) {
+      alert('All the fields under Address are mandatory');
+      return false;
+    }
+
     /* Variable Declaration */
 
     const consumerObjs = {};
@@ -206,36 +245,42 @@ class KycUploadProfile extends Component {
     if (isConsumerPICUploaded || isIdProofUploaded || isAddressProofUploaded) {
       consumerPIC.forEach((file) => {
         const singleObj = {};
-        singleObj.proof_type = 'CONSUMERPIC';
+        singleObj.proof_type = 'USERPHOTO';
         singleObj.file = file;
         singleObj.comment = consumerComment;
         singleObj.status = consumerPICVerification;
-        singleObj.consumer_kyc_id = kycId;
+        singleObj.kyc_request_id = kycId;
         singleObj.is_active = true;
         singleObj.created_at = new Date().toISOString();
         singleObj.updated_at = new Date().toISOString();
         insertObjs.push(singleObj);
       });
-      idProof.forEach((file) => {
+      idProof.forEach(( file, index ) => {
         const singleObj = {};
-        singleObj.proof_type = 'IDPROOF';
+        const existingFiles = this.props.lastSuccess[0].kyc_requests[0].kyc_files.filter( ( f ) => {
+          return ( f.proof_type === 'IDPROOFFRONT' );
+        });
+        singleObj.proof_type = ( index === 0 && existingFiles.length === 0 ) ? 'IDPROOFFRONT' : 'IDPROOFBACK';
         singleObj.file = file;
         singleObj.comment = idComment;
         singleObj.status = idProofVerification;
-        singleObj.consumer_kyc_id = kycId;
+        singleObj.kyc_request_id = kycId;
         singleObj.created_at = new Date().toISOString();
         singleObj.updated_at = new Date().toISOString();
         singleObj.pan_number = panID;
         singleObj.is_active = true;
         insertObjs.push(singleObj);
       });
-      addressProof.forEach((file) => {
+      addressProof.forEach(( file, index ) => {
         const singleObj = {};
-        singleObj.proof_type = 'ADDRESSPROOF';
+        const existingFiles = this.props.lastSuccess[0].kyc_requests[0].kyc_files.filter( ( f) => {
+          return ( f.proof_type === 'ADDRESSPROOFFRONT' );
+        });
+        singleObj.proof_type = ( index === 0 && existingFiles.length === 0 ) ? 'ADDRESSPROOFFRONT' : 'ADDRESSPROOFBACK';
         singleObj.file = file;
         singleObj.comment = addressComment;
         singleObj.status = addressProofVerification;
-        singleObj.consumer_kyc_id = kycId;
+        singleObj.kyc_request_id = kycId;
         singleObj.created_at = new Date().toISOString();
         singleObj.updated_at = new Date().toISOString();
         singleObj.address1 = address1;
@@ -278,12 +323,12 @@ class KycUploadProfile extends Component {
 
       /* Get kycIds for Consumer KYCS */
       kycFiles.forEach( (file) => {
-        if (file.proof_type === 'CONSUMERPIC') {
+        if (file.proof_type === 'USERPHOTO') {
           updateConsumers = true;
           consumerWhere.$or.push({
             'id': file.id
           });
-        } else if (file.proof_type === 'IDPROOF') {
+        } else if (file.proof_type === 'IDPROOFFRONT' || file.proof_type === 'IDPROOFBACK' ) {
           updateIdProof = true;
           idWhere.$or.push({
             'id': file.id
@@ -438,10 +483,10 @@ class KycUploadProfile extends Component {
           );
         });
       } if (lastSuccess.length > 0) {
-        if (lastSuccess[0].kycs) {
-          consumerPic = lastSuccess[0].kycs[0].files.map((file, index) => {
+        if (lastSuccess[0].kyc_requests) {
+          consumerPic = lastSuccess[0].kyc_requests[0].kyc_files.map((file, index) => {
             const imgUrl = Endpoints.file_get + file.file;
-            if (file.proof_type === 'CONSUMERPIC') {
+            if (file.proof_type === 'USERPHOTO') {
               // consumerComment = file.comment;
               hasConsumerPic = true;
               return (
@@ -453,9 +498,9 @@ class KycUploadProfile extends Component {
             }
           });
 
-          idPic = lastSuccess[0].kycs[0].files.map((file, index) => {
+          idPic = lastSuccess[0].kyc_requests[0].kyc_files.map((file, index) => {
             const imgUrl = Endpoints.file_get + file.file;
-            if (file.proof_type === 'IDPROOF') {
+            if (file.proof_type === 'IDPROOFFRONT' || file.proof_type === 'IDPROOFBACK' ) {
               // idProofComment = file.comment;
               hasIDProofPic = true;
               return (
@@ -467,9 +512,9 @@ class KycUploadProfile extends Component {
             }
           });
 
-          addressPic = lastSuccess[0].kycs[0].files.map((file, index) => {
+          addressPic = lastSuccess[0].kyc_requests[0].kyc_files.map((file, index) => {
             const imgUrl = Endpoints.file_get + file.file;
-            if (file.proof_type === 'ADDRESSPROOF') {
+            if (file.proof_type === 'ADDRESSPROOFFRONT' || file.proof_type === 'ADDRESSPROOFBACK') {
               hasAddressPic = true;
               // addressProofComment = file.comment;
               return (
@@ -894,4 +939,5 @@ const mapStateToProps = (state) => {
   return {...state.kyc, ...state.page_data};
 };
 
-export default connect(mapStateToProps)(KycUploadProfile);
+const decoratedComponent = commonDecorator(KycUploadProfile);// connect(mapStateToProps)(CommonDecorator);
+export default connect(mapStateToProps)(decoratedComponent);

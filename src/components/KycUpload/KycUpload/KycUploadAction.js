@@ -23,12 +23,18 @@ const fetchConsumerCount = () => {
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
     const payload = {
-      'columns': ['id']
+      'columns': ['id'],
+      'where': {
+        'is_open': true,
+        'is_sa_validated': false
+      },
+      'order_by': '+id'
+
     };
     // payload.where = {
     //   'status': 'open'
     // };
-    const url = Endpoints.db + '/table/' + 'consumer_kyc' + '/count';
+    const url = Endpoints.db + '/table/' + 'kyc_request' + '/count';
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -63,7 +69,7 @@ const fetchConsumerCount = () => {
 const fetchConsumer = (page) => {
   return (dispatch) => {
     /* Url */
-    const url = Endpoints.db + '/table/consumer_kyc/select';
+    const url = Endpoints.db + '/table/kyc_request/select';
     const queryObj = {};
 
     let offset = 0;
@@ -79,14 +85,20 @@ const fetchConsumer = (page) => {
       {
         'name': 'consumer',
         'columns': ['*']
-      }
+      },
+      'created_at'
     ];
+    queryObj.where = {
+      'is_open': true,
+      'is_sa_validated': false
+    };
     // queryObj.where = {
     //   'status': 'open'
     // };
     queryObj.limit = limit;
     queryObj.offset = offset;
-    queryObj.order_by = '+consumer.id';
+    queryObj.order_by = '-created_at';
+
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

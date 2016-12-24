@@ -12,6 +12,9 @@
 import { defaultKycState } from '../Common/Actions/DefaultState';
 import requestAction from '../Common/Actions/requestAction';
 import Endpoints, { globalCookiePolicy } from '../../Endpoints';
+
+import { routeActions } from 'redux-simple-router';
+
 import { MAKE_REQUEST,
   REQUEST_SUCCESS,
   REQUEST_COMPLETED,
@@ -30,6 +33,7 @@ const UPDATE_ADDRESS_PROOF_PIC = 'KYCREDUCER/UPDATE_ADDRESS_PROOF_PIC';
 const UPDATE_ID_PROOF_PIC = 'KYCREDUCER/UPDATE_ID_PROOF_PIC';
 const UPDATE_CONSUMER_PIC = 'KYCREDUCER/UPDATE_CONSUMER_PIC';
 const RETRIEVE_INITIAL_STATUSES = 'KYCREDUCER/RETRIEVE_INITIAL_STATUSES';
+const RESET_KYC_DATA = 'KYCREDUCER/RESET_KYC_DATA';
 
 const UPDATE_STATUSES = 'KYCREDUCER/UPDATE_STATUSES';
 const CLEAR_LOCAL_FILES = 'KYCREDUCER/CLEAR_LOCAL_FILES';
@@ -106,7 +110,6 @@ const uploadAndSave = (formData, proofType) => {
   return (dispatch) => {
     const fileUploadUrl = Endpoints.file_upload;
 
-    dispatch({ type: MAKE_REQUEST});
     // const currentUser = consumerId;
     const pType = proofType;
     // const fetchedObj = {};
@@ -117,9 +120,9 @@ const uploadAndSave = (formData, proofType) => {
     };
 
     const proofActionMap = {};
-    proofActionMap.CONSUMERPIC = ADD_CONSUMER_PIC;
-    proofActionMap.IDPROOF = ADD_ID_PROOF;
-    proofActionMap.ADDRESSPROOF = ADD_ADDRESS_PROOF;
+    proofActionMap.USERPHOTO = ADD_CONSUMER_PIC;
+    proofActionMap.IDPROOFFRONT = ADD_ID_PROOF;
+    proofActionMap.ADDRESSPROOFFRONT = ADD_ADDRESS_PROOF;
 
     /* Fetch the Consumer KYC ID */
     /*
@@ -183,8 +186,7 @@ const uploadAndSave = (formData, proofType) => {
     */
 
     return Promise.all([
-      dispatch(requestAction(fileUploadUrl, options, proofActionMap[pType], REQUEST_ERROR)),
-      dispatch({ type: REQUEST_COMPLETED})
+      dispatch(requestAction(fileUploadUrl, options, proofActionMap[pType], REQUEST_ERROR))
     ]);
     /*
       .then(saveFileUrl)
@@ -441,11 +443,11 @@ const updateKycs = (requestObjs, insertObjs, kycId, kycStatus, consumerId) => {
     ])
     .then( () => {
       return Promise.all([
-        dispatch(getUserData(parseInt(currConsumerId, 10))),
-        dispatch({ type: REQUEST_COMPLETED})
+        dispatch(routeActions.push('/hadmin/consumer/kycfunctions'))
       ]);
     })
     .catch( () => {
+      alert('Something went wrong');
       console.log('Error Occured');
     });
   };
@@ -570,6 +572,8 @@ const kycReducer = (state = defaultKycState, action) => {
       return {...state, addressProof: [...expr], isAddressProofUploaded: flag, ...consumerPICInfo, ...idProofInfo, ...addressProofInfo};
     case UPDATE_STATUSES:
       return {...state, ...action.data};
+    case RESET_KYC_DATA:
+      return { ...defaultKycState };
     default: return state;
   }
 };
@@ -594,5 +598,6 @@ export {
   UPDATE_CONSUMER_COMMENT_DATA,
   UPDATE_ID_COMMENT_DATA,
   updateExistingKycs,
-  updateKycs
+  updateKycs,
+  RESET_KYC_DATA
 };
