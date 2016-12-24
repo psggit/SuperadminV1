@@ -269,6 +269,22 @@ class UnlockBarAddSKU extends Component {
             </div>
           </div>
           <DisableInformation label = "Status" val = "Status" options={ statusHtml } fieldName = "is_active" fieldType = "boolean" currVal = { newSkuData.is_active ? 1 : 0 }/>
+          <div className = {styles.command_wrapper}>
+            <div className = {styles.information_leftpanel}>
+              Start Date
+            </div>
+            <div className = {styles.information_rightpanel}>
+              <input data-field-name="start_date" data-field-type="time" type="datetime-local" value={ newSkuData.start_date}/>
+            </div>
+          </div>
+          <div className = {styles.command_wrapper}>
+            <div className = {styles.information_leftpanel}>
+              End Date
+            </div>
+            <div className = {styles.information_rightpanel}>
+              <input data-field-name="end_date" data-field-type="time" type="datetime-local" value={ newSkuData.end_date}/>
+            </div>
+          </div>
           <div className={ styles.warning_block + ' ' + ( !newSkuData.is_active && !newSkuData.status ? '' : 'hide' ) }>
             * Click on Disable button to cancel { newSkuData.sku_pricing_id in barSKUs ? barSKUs[newSkuData.sku_pricing_id].length : 0 } open reservations
             <button className={ styles.edit_sku_disable } onClick={ this.disableSku.bind(this) }>

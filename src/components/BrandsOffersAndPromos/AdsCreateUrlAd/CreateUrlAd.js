@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchStates, citiesViewHandler, IMAGE_UPLOAD_SUCCESS, IMAGE_UPLOAD_ERROR, IMAGE_CANCEL} from './CreateAdUrlActions';
+import { fetchStates, fetchBrands, citiesViewHandler, IMAGE_UPLOAD_SUCCESS, IMAGE_UPLOAD_ERROR, IMAGE_CANCEL} from './CreateAdUrlActions';
 import { checkState, unCheckState } from './CreateAdUrlActions';
 import { checkCity, unCheckCity, finalSave } from './CreateAdUrlActions';
 import uploadFile from '../../Common/Actions/upload';
@@ -34,6 +34,7 @@ class CreateUrlAd extends Component { // eslint-disable-line no-unused-vars
   }
   componentWillMount() {
     Promise.all([
+      this.props.dispatch(fetchBrands()),
       this.props.dispatch(fetchStates())
     ]);
   }
@@ -122,7 +123,7 @@ class CreateUrlAd extends Component { // eslint-disable-line no-unused-vars
       <div className={styles.container}>
         <BreadCrumb breadCrumbs={this.breadCrumbs} />
         <div className={styles.brand_wrapper}>
-          <AdInfo dispatch={this.props.dispatch}/>
+          <AdInfo dispatch={this.props.dispatch} brands={this.props.brandsAll} sb={this.props.selectedBrand} bms={this.props.brandManagers} />
 
           {/* Image Upload */}
           <div className={styles.profile_view_right}>
@@ -189,6 +190,9 @@ class CreateUrlAd extends Component { // eslint-disable-line no-unused-vars
 CreateUrlAd.propTypes = {
   imageUrl: PropTypes.string.isRequired,
   statesAll: PropTypes.array.isRequired,
+  brandsAll: PropTypes.array.isRequired,
+  brandManagers: PropTypes.array.isRequired,
+  selectedBrand: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
   hideCities: PropTypes.string.isRequired,
   citiesView: PropTypes.object.isRequired,

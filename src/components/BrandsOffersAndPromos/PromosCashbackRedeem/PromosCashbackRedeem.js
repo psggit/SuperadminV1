@@ -171,9 +171,7 @@ export default class PromosCashbackRedeem extends Component {
               isPromoSectionShown={isPromoSectionShown}
               onChangePromoInfo={onChangePromoInfo}
               onChangePromoObjInfo={onChangePromoObjInfo}
-
               fundsCredited={fundsCredited}
-
               activeFrom={activeFrom}
               activeTo={activeTo}
             />
@@ -187,9 +185,7 @@ export default class PromosCashbackRedeem extends Component {
                 activeFrom: activeFrom,
                 activeTo: activeTo,
                 campaignStatus: campaignStatus,
-
                 promos: promos,
-
                 brandManagerIdMap: brandManagerIdMap,
                 brandManagerBrandMap: brandManagerBrandMap,
               })}>Save Promo</button>

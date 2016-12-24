@@ -12,14 +12,62 @@ import { MAKE_REQUEST,
 // import commonReducer from '../Common/Actions/CommonReducer';
 
 const STATES_FETCH = 'AD_CREATE_IMAGE/STATES_FETCH';
+const BRANDS_FETCH = 'AD_CREATE_IMAGE/BRANDS_FETCH';
+const BRAND_SELECT_FOR_SKU = 'AD_CREATE_IMAGE/BRAND_SELECT_FOR_SKU';
+const BRAND_MANAGERS_FETCH = 'AD_CREATE_IMAGE/BRAND_MANAGERS_FETCH';
 const AD_INFO = 'AD_CREATE_IMAGE/AD_INFO';
 const CITIES_VIEW = 'AD_CREATE_IMAGE/CITIES_VIEW';
 const IMAGE_UPLOAD_SUCCESS = 'AD_CREATE_IMAGE/IMAGE_UPLOAD_SUCCESS';
-const IMAGE_UPLOAD_ERROR = 'AD_CREATE_IMAGE/IMAGE_UPLOAD_SUCCESS';
+const IMAGE_UPLOAD_ERROR = 'AD_CREATE_IMAGE/IMAGE_UPLOAD_ERROR';
 const IMAGE_CANCEL = 'AD_CREATE_IMAGE/IMAGE_CANCEL';
 const UPDATED_CITIES_SELECTION = 'AD_CREATE_IMAGE/UPDATED_CITIES_SELECTION';
 
 /* ****** Action Creators ******** */
+
+
+const brandManagerFetch = (brandId) => {
+  return (dispatch) => {
+    /* Url */
+    const url = Endpoints.db + '/table/brand_manager/select';
+    const queryObj = {};
+    queryObj.columns = ['*', {'name': 'brands', 'columns': ['*']}];
+    queryObj.where = {'brands': {'brand_id': parseInt(brandId, 10)}};
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(queryObj),
+    };
+    /* Make a MAKE_REQUEST action */
+    dispatch({type: MAKE_REQUEST});
+    return Promise.all([
+      dispatch(requestAction(url, options, BRAND_MANAGERS_FETCH, REQUEST_ERROR)),
+      dispatch({type: REQUEST_COMPLETED})
+    ]);
+  };
+};
+
+const fetchBrands = () => {
+  return (dispatch) => {
+    /* Url */
+    const url = Endpoints.db + '/table/brand/select';
+    const queryObj = {};
+    queryObj.columns = ['*', {'name': 'skus', 'columns': ['*']}];
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(queryObj),
+    };
+    /* Make a MAKE_REQUEST action */
+    dispatch({type: MAKE_REQUEST});
+    return Promise.all([
+      dispatch(requestAction(url, options, BRANDS_FETCH, REQUEST_ERROR)),
+      dispatch({type: REQUEST_COMPLETED})
+    ]);
+  };
+};
+
 
 const fetchStates = () => {
   return (dispatch) => {
@@ -98,17 +146,12 @@ const unCheckCity = (cityObj) => {
   };
 };
 
-const validateEmail = (email) => {
-  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(email);
-};
-
-const validBMEmail = (email) => {
+const validBMId = (bmId) => {
   return (dispatch) => {
     const url = Endpoints.db + '/table/brand_manager/select';
     const queryObj = {};
-    queryObj.columns = ['id', 'email'];
-    queryObj.where = {'$and': [{'email': email}, {'is_disabled': false}]};
+    queryObj.columns = ['id'];
+    queryObj.where = {'$and': [{'id': parseInt(bmId, 10)}, {'is_disabled': false}]};
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
@@ -172,9 +215,10 @@ const insertAdData = (bmId, imgUrl, adInfo) => {
     adInfo.created_at = new Date().toISOString();
     adInfo.updated_at = new Date().toISOString();
     adInfo.brand_manager_id = parseInt(bmId, 10);
+    adInfo.sku_id = parseInt(adInfo.sku_id, 10);
     adInfo.active_from = new Date(adInfo.active_from).toISOString();
     adInfo.active_to = new Date(adInfo.active_to).toISOString();
-    delete adInfo.email;
+    delete adInfo.brand;
     console.log(adInfo);
     const adData = {};
     adData.objects = [adInfo];
@@ -205,19 +249,10 @@ const checkBmEmail = () => {
         alert('Please upload an image')
       ]);
     }
-    if (!validateEmail(lCamDetails.email)) {
-      return Promise.all([
-        alert('Invalid Email Address: ' + lCamDetails.email)
-      ]);
-    }
     return Promise.all([
-      dispatch(validBMEmail(lCamDetails.email)).then((res) => {
+      dispatch(validBMId(lCamDetails.brand_manager_id)).then((res) => {
         if (res[0].length > 0) {
-          // BM Exists! Yippie!
-          // Assume that the result is always 1. Should always be 1.
-          // Time to insert data
           return Promise.all([
-            // insert Ad Data (including Image)
             dispatch(insertAdData(res[0][0].id, imgUrl, lCamDetails)).then((insertRes) => {
               console.log('This is AdData:');
               console.log(insertRes);
@@ -274,8 +309,21 @@ const finalSave = () => {
   };
 };
 
+
 const adsCreateImageReducer = (state = defaultcreateImageAdData, action) => {
   switch (action.type) {
+    case BRAND_SELECT_FOR_SKU:
+      let sb = {};
+      state.brandsAll.forEach((brand) => {
+        if (brand.id === parseInt(action.data, 10)) {
+          sb = {...brand};
+        }
+      });
+      return {...state, selectedBrand: sb};
+    case BRANDS_FETCH:
+      return {...state, brandsAll: action.data};
+    case BRAND_MANAGERS_FETCH:
+      return {...state, brandManagers: action.data};
     case STATES_FETCH:
       return {...state, statesAll: action.data};
     case IMAGE_UPLOAD_SUCCESS:
@@ -300,6 +348,7 @@ const adsCreateImageReducer = (state = defaultcreateImageAdData, action) => {
 
 export {
   fetchStates,
+  fetchBrands,
   AD_INFO,
   citiesViewHandler,
   IMAGE_UPLOAD_SUCCESS,
@@ -309,7 +358,9 @@ export {
   unCheckState,
   checkCity,
   unCheckCity,
-  finalSave
+  finalSave,
+  brandManagerFetch,
+  BRAND_SELECT_FOR_SKU
 };
 
 export default adsCreateImageReducer;

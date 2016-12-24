@@ -155,7 +155,9 @@ const saveSku = ( barId ) => {
       bar_id: parseInt(barId, 10),
       base_sku_price: parseFloat(barState.newSkuData.base_sku_price),
       negotiated_sku_price: parseFloat(barState.newSkuData.negotiated_sku_price),
-      charges_and_tax_percentage: parseFloat(barState.newSkuData.charges_and_tax_percentage)
+      charges_and_tax_percentage: parseFloat(barState.newSkuData.charges_and_tax_percentage),
+      start_date: new Date(barState.newSkuData.start_date).toISOString(),
+      end_date: new Date(barState.newSkuData.end_date).toISOString()
     };
 
     const brInsertCheck = [
@@ -165,6 +167,8 @@ const saveSku = ( barId ) => {
       'base_sku_price',
       'negotiated_sku_price',
       'charges_and_tax_percentage',
+      'start_date',
+      'end_date'
     ];
     let brCheckStatus = true;
 
@@ -223,6 +227,8 @@ const updateSku = ( barId ) => {
       'base_sku_price',
       'negotiated_sku_price',
       'charges_and_tax_percentage',
+      'start_date',
+      'end_date'
     ];
     let brCheckStatus = true;
 

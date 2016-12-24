@@ -19,6 +19,20 @@ const ModalInstance = ({styles, onSave, onClose, promoTitle, brands}) => {
           <ul>
             <li>
               <label>Sku Name</label>
+              <select data-field-name="name" type="text" name="company_name"
+                value={brandEmail} onChange={onBrandManagerChange.bind(this, brandManagerCampaignMap)} >
+                {brandManagerOptions}
+              </select>
+            </li>
+            <li>
+              <label>Sku Name</label>
+              <select data-field-name="name" type="text" name="brand_name"
+                value={brand} onChange={onBrandManagerChange.bind(this, brandManagerCampaignMap)} >
+                {brandManagerOptions}
+              </select>
+            </li>
+            <li>
+              <label>Sku Name</label>
               <select data-field-name="name" type="text" name="brand_email"
                 value={brandEmail} onChange={onBrandManagerChange.bind(this, brandManagerCampaignMap)} >
                 {brandManagerOptions}
