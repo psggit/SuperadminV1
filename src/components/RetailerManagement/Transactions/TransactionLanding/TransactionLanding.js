@@ -25,7 +25,7 @@ const TransactionLanding = ({dispatch}) => { // eslint-disable-line no-unused-va
                     <div className={styles.squarecontent}>
                         <div>
                             <span>
-                                <Link to={'#'}> Redemptions </Link>
+                                <Link to={'/hadmin/retailer_management/redemptions'}> Redemptions </Link>
                             </span>
                         </div>
                     </div>

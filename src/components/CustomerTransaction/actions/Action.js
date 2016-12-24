@@ -833,6 +833,10 @@ const checkValidity = (emailIds, data) => {
                if (response.ok) { // 2xx status
                  response.json().then(
                    (d) => {
+                     if ( d.length === 0 ) {
+                       alert('Sorry! no customer found');
+                       return Promise.resolve();
+                     }
                      d.forEach((email, i) => {
                        currentData.data[currentData[email.email]].is_valid = true;
                        currentData.data[currentData[email.email]].full_name = email.full_name;

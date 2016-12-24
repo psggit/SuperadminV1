@@ -201,6 +201,7 @@ const updateConsumerKyc = ( id, status ) => {
     const url = Endpoints.db + '/table/kyc_request/update';
     userUpdate.values = {
       'is_sa_validated': ( status === 'Verified' ) ? true : false,
+      'is_open': ( status === 'Verified' ) ? true : false
     };
     userUpdate.returning = ['id'];
     userUpdate.where = {
