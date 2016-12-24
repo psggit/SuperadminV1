@@ -47,7 +47,10 @@ const getSkus = ( cityId ) => {
           'id': parseInt(cityId, 10)
         }
       },
-      'is_active': true
+      'is_active': true,
+      'sku': {
+        'is_active': true
+      }
     };
 
     const options = {

@@ -6,20 +6,48 @@ import SearchWrapper from './SearchWrapper';
 
 import PaginationContainer from '../../CustomerTransaction/components/Recharge/Pagination';
 
+import commonDecorator from '../../Common/CommonDecorator';
+
+import {
+  MAKE_REQUEST,
+  REQUEST_COMPLETED,
+  RESET
+} from '../../Common/Actions/Actions';
+
 class UploadKyc extends React.Component { // eslint-disable-line no-unused-vars
   componentDidMount() {
     /* Fetch the state data */
     const {query} = this.props.location;
     const page = (Object.keys(query).length > 0) ? parseInt(query.p, 10) : 1;
-
-    this.props.dispatch(fetchConsumer(page));
-    this.props.dispatch(fetchConsumerCount());
+    Promise.all([
+      this.props.dispatch({ type: MAKE_REQUEST }),
+      this.props.dispatch(fetchConsumer(page)),
+      this.props.dispatch(fetchConsumerCount())
+    ])
+    .then( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED});
+    })
+    .catch( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED});
+    });
+  }
+  componentWillUnmount() {
+    this.props.dispatch({ type: RESET });
   }
   onClickHandle(e) {
     // e.preventDefault();
     const currentPage = parseInt(e.target.href.split('?p=')[1], 10);
     if (currentPage) {
-      this.props.dispatch(fetchConsumer(currentPage));
+      Promise.all([
+        this.props.dispatch({ type: MAKE_REQUEST }),
+        this.props.dispatch(fetchConsumer(currentPage))
+      ])
+      .then( () => {
+        this.props.dispatch({ type: REQUEST_COMPLETED});
+      })
+      .catch( () => {
+        this.props.dispatch({ type: REQUEST_COMPLETED});
+      });
     }
   }
   render() {
@@ -66,4 +94,5 @@ const mapStateToProps = (state) => {
   return {...state.page_data};
 };
 
-export default connect(mapStateToProps)(UploadKyc);
+const decoratedComponent = commonDecorator(UploadKyc);// connect(mapStateToProps)(CommonDecorator);
+export default connect(mapStateToProps)(decoratedComponent);

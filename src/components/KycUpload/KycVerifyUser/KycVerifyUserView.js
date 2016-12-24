@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import Loading from '../../Common/Loading';
 import {
   getUserData,
-  RESET,
   UPDATE_STATUSES,
   updateKycs,
   UPDATE_CONSUMER_COMMENT,
@@ -11,8 +10,13 @@ import {
   UPDATE_ADDRESS_COMMENT,
   UPDATE_CONSUMER_COMMENT_DATA,
   UPDATE_ID_COMMENT_DATA,
-  UPDATE_ADDRESS_COMMENT_DATA
+  UPDATE_ADDRESS_COMMENT_DATA,
+  RESET_KYC_DATA
 } from '../KycUploadViewActions';
+
+import {
+  RESET
+} from '../../Common/Actions/Actions';
 // import { makeRequest} from '../FileUpload/Actions';
 import TableProfileHeader from '../TableProfileHeader';
 import Endpoints from '../../../Endpoints';
@@ -27,6 +31,7 @@ class KycVerifyProfile extends Component {
   }
   componentWillUnmount() {
     this.props.dispatch({type: RESET});
+    this.props.dispatch({type: RESET_KYC_DATA});
   }
 
   onInputFieldChanges(e) {
