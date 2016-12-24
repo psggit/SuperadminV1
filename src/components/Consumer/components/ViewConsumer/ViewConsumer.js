@@ -10,8 +10,6 @@ import PaginationWrapper from '../../../Common/PaginationWrapper.js';
 
 import SearchWrapper from './SearchWrapper';
 
-import SearchComponent from '../../../Common/SearchComponentGen/SearchComponent.js';
-
 /*
  * Decorator which adds couple of use ful features like
  * 1. Clearing the state on component unmount
@@ -61,12 +59,6 @@ class ViewConsumer extends Component {
     return (
           <div className={styles.container}>
             <BreadCrumb breadCrumbs={this.breadCrumbs} />
-
-            <SearchComponent>
-              <button className={styles.common_btn} >
-                Search
-              </button>
-            </SearchComponent>
 
             {/*
             <div className={styles.create_layout + ' ' + styles.wd_100}>

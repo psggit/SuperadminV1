@@ -879,6 +879,23 @@ const setCreditState = (data, emailIds) => {
 };
 */
 
+const sendEMAILSMS = ( objs ) => {
+  return ( dispatch ) => {
+    const url = Endpoints.blogicUrl + '/admin/transaction/consumer/trigger';
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(objs)
+    };
+    return dispatch(requestAction(url, options))
+    .then( ( message ) => {
+      console.log('message ' + message);
+    })
+    .catch( () => {
+      console.log('Email Error');
+    });
+  };
+};
+
 const insertCredits = (creditObjs, batchNumber) => {
   return (dispatch) => {
     dispatch({ type: MAKE_REQUEST});
@@ -907,6 +924,7 @@ const insertCredits = (creditObjs, batchNumber) => {
                      alert('Credits Successfully Inserted');
                      return Promise.all([
                        dispatch({type: REQUEST_SUCCESS, data: d.returning}),
+                       dispatch(sendEMAILSMS(d.returning)),
                        dispatch(routeActions.push('/hadmin/consumer_transactions/view_credits/' + currentBatchNumber))
                      ]);
                    },
