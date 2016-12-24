@@ -55,6 +55,12 @@ const getOrganizationData = ( page ) => {
         'columns': ['*'],
         'order_by': '-created_at',
         'limit': 1
+      }, {
+        'name': 'retailers',
+        'columns': ['id']
+      }, {
+        'name': 'bars',
+        'columns': ['id']
       }],
       limit: limit,
       offset: offset

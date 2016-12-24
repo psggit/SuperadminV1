@@ -261,13 +261,13 @@ class UnlockBarAddSKU extends Component {
             </div>
           </div>
           <DisableInformation label = "Status" val = "Status" options={ statusHtml } fieldName = "is_active" fieldType = "boolean" currVal = { newSkuData.is_active ? 1 : 0 }/>
-          <div className={ styles.warning_block + ' ' + ( !newSkuData.is_active && !newSkuData.status ? '' : 'hide' ) }>
+          <div className={ styles.warning_block + ' ' + ( isEdit && !newSkuData.is_active && !newSkuData.status ? '' : 'hide' ) }>
             * Click on Disable button to cancel { newSkuData.sku_pricing_id in barSKUs ? barSKUs[newSkuData.sku_pricing_id].length : 0 } open reservations
             <button className={ styles.edit_sku_disable } onClick={ this.disableSku.bind(this) }>
               Disable
             </button>
           </div>
-          <div className={ styles.warning_block + ' ' + ( !newSkuData.is_active && newSkuData.status ? '' : ' hide ' ) }>
+          <div className={ styles.warning_block + ' ' + ( isEdit && !newSkuData.is_active && newSkuData.status ? '' : ' hide ' ) }>
             * Click on Update to Deactivate an SKU
           </div>
           { actionButton }

@@ -27,7 +27,8 @@ const SearchWrapper = ( {data} ) => {
             </td>
             <td> { dat.organisation_name } </td>
             <td> { dat.type_of_organisation } </td>
-            <td> 0 </td>
+            <td> { dat.bars.length } </td>
+            <td> { dat.retailers.length } </td>
             <td> { dat.kyc_status } </td>
             <td> { dat.status } </td>
             <td> { dat.pan_number } </td>
@@ -58,6 +59,7 @@ const SearchWrapper = ( {data} ) => {
                   <th> ID </th>
                   <th> Organisation Name </th>
                   <th> Type of Organisation </th>
+                  <th> Bar Outlets </th>
                   <th> Retail Outlets </th>
                   <th> Kyc Status </th>
                   <th> Organisation Status </th>
