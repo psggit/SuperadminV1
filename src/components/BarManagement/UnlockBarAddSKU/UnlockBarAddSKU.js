@@ -286,6 +286,7 @@ class UnlockBarAddSKU extends Component {
             </div>
           </div>
           <div className={ styles.warning_block + ' ' + ( !newSkuData.is_active && !newSkuData.status ? '' : 'hide' ) }>
+          </div>
           <div className={ styles.warning_block + ' ' + ( isEdit && !newSkuData.is_active && !newSkuData.status ? '' : 'hide' ) }>
             * Click on Disable button to cancel { newSkuData.sku_pricing_id in barSKUs ? barSKUs[newSkuData.sku_pricing_id].length : 0 } open reservations
             <button className={ styles.edit_sku_disable } onClick={ this.disableSku.bind(this) }>
@@ -296,7 +297,7 @@ class UnlockBarAddSKU extends Component {
             * Click on Update to Deactivate an SKU
           </div>
           { actionButton }
-          {/*
+          /*
           <div className = {styles.command_wrapper}>
             <div className = {styles.information_leftpanel}>
               From Date
@@ -313,7 +314,7 @@ class UnlockBarAddSKU extends Component {
               <input type="text" />
             </div>
           </div>
-          */}
+          */
         </div>
       </div>
     );
