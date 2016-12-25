@@ -3,18 +3,6 @@ import React from 'react';
 const PromoSelectionMenu = ({styles, promos, onEditPromo, onAddPromo,
   onRemovePromo}) => {
   const promoSelectMenu = promos.map((promo, index) => {
-    // Abstract function to make the name for the promo
-    const promoName = (() => {
-      if (!promo.brandName) {
-        return 'No-Name-yet';
-      } else if (!promo.sku || !promo.sku.volume) {
-        return promo.brandName;
-      } else if (!promo.pricing || !promo.pricing.state_short || !promo.pricing.state_short.state_name) {
-        return promo.brandName + ' (' + promo.sku.volume + 'ml)';
-      }
-      return promo.brandName + ' (' + promo.sku.volume + 'ml) for ' + promo.pricing.state_short.state_name;
-    })();
-
     return (
       <div className={styles.indiv_item} key={index}>
         <div className={styles.heading_container}>
@@ -22,7 +10,7 @@ const PromoSelectionMenu = ({styles, promos, onEditPromo, onAddPromo,
             <a onClick={onRemovePromo.bind(this, index)}>X</a>
           </p>
           <p className={styles.heading_lab}>
-            {promoName}
+            {promo.promoName}
           </p>
           <p className={styles.edit_lab} onClick={onEditPromo.bind(this, index)}>
             Edit

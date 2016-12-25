@@ -10,13 +10,14 @@
  */
 
 // Get all the actions which can be dispatched.
-import {VALUE_CHANGE, INIT_BRAND_MANAGERS,
+import {VALUE_CHANGE, INIT_BRAND_MANAGERS, INIT_COMPANY,
   ADD_PROMO, REMOVE_PROMO, EDIT_PROMO, PROMO_CHANGE,
   DO_NOTHING, ON_FAILED, ON_LOADING} from './actions';
 // Request maker
 import {makeRequest, createFetchOption} from '../../../utils/fetch';
 // All queries for the page. NOTE: We can reuse query across pages.
 import {
+  selectCompanies,
   selectBrandManagers,
   insertCampaignAndPromos } from './fetchQueries';
 
@@ -27,10 +28,33 @@ import { email as emailValidate,
 import { convertStrToISODate, convertStrToPosgresDateStr } from '../../../utils/data';
 
 // initial state
-const fetchData = (getState, dispatch) => {
+const fetchData = (dispatch) => {
   const promises = [];
-  promises.push(dispatch(makeRequest(selectBrandManagers.url, createFetchOption(selectBrandManagers.query), INIT_BRAND_MANAGERS, ON_FAILED, ON_LOADING)));
+  promises.push(dispatch(makeRequest(selectCompanies.url, createFetchOption(selectCompanies.query),
+    INIT_COMPANY, ON_FAILED, ON_LOADING)).then((companies) => {
+      const company = companies && companies[0] ? companies[0].name : '';
+      const selectBrandManagersQuery = selectBrandManagers(company);
+      return dispatch(makeRequest(selectBrandManagersQuery.url, createFetchOption(selectBrandManagersQuery.query),
+        INIT_BRAND_MANAGERS, ON_FAILED, ON_LOADING)).then((brandManager) => {
+          if (brandManager.length > 0) {
+            dispatch({type: VALUE_CHANGE, data: {brandEmail: brandManager[0].email}});
+          }
+        });
+    })
+  );
+  return Promise.all(promises);
+};
 
+const fetchBrandManager = (dispatch, getState) => {
+  const promises = [];
+  const company = getState().promosCashbackRedeemState.company;
+  const selectBrandManagersQuery = selectBrandManagers(company);
+  promises.push(dispatch(makeRequest(selectBrandManagersQuery.url, createFetchOption(selectBrandManagersQuery.query),
+    INIT_BRAND_MANAGERS, ON_FAILED, ON_LOADING)).then((brandManager) => {
+      if (brandManager.length > 0) {
+        dispatch({type: VALUE_CHANGE, data: {brandEmail: brandManager[0].email}});
+      }
+    }));
   return Promise.all(promises);
 };
 
@@ -81,30 +105,25 @@ const campaignValidatorsDict = {
     return !isEmpty(value) ? () => {
       return true;
     } : () => {
-      alert('Campaign name can\'t be empty!');
-      return false;
+      return confirm('Campaign name can\'t be empty!. Do you want to continue?');
     };
   },
-  budgetedAmount: (value, otherValues) => {
-    return isNumber(value) && parseFloat(value) <= parseFloat(otherValues.fundsCredited) ? () => {
+  budgetedAmount: (value) => {
+    return isNumber(value) ? () => {
       return true;
     } : () => {
       if (isNaN(value)) {
         alert('Amount has to be number.');
-      } else {
-        alert('Budgeted-amount is much more than funds-credited!');
       }
       return false;
     };
   },
-  fundsCredited: (value, otherValues) => {
-    return isNumber(value) && parseFloat(value) >= otherValues.minAmount ? () => {
+  fundsCredited: (value) => {
+    return isNumber(value) ? () => {
       return true;
     } : () => {
       if (isNaN(value)) {
         alert('Amount has to be number.');
-      } else {
-        alert('Funds credited is less than 1 Re!');
       }
       return false;
     };
@@ -130,6 +149,23 @@ const campaignValidatorsDict = {
 
 const promoValidatorDict = {
   // below are the validations for promo array.
+  promoName: (value) => {
+    return value && value.trim() !== '' ? () => {
+      return true;
+    } : () => {
+      return confirm('promo name can\'t be empty. Are you sure you want to continue?');
+    };
+  },
+  serviceCharge: (value) => {
+    return isNumber(value) ? () => {
+      return true;
+    } : () => {
+      if (isNaN(value)) {
+        alert('Amount has to be number.');
+      }
+      return false;
+    };
+  },
   type: (value, otherValues) => {
     const maxPriceFloat = parseFloat(otherValues.maxPrice);
     const priceFloat = parseFloat(otherValues.price);
@@ -144,7 +180,7 @@ const promoValidatorDict = {
       } : () => {
         alert('Promo type should be percentage \'or\' amount. If the discount'
         + ' is percentage keep it below 100 and if amount then cost should be'
-        + ' below max price.');
+        + ' below max price of the bottle.');
         return false;
       };
   },
@@ -223,9 +259,9 @@ const promoValidatorDict = {
 
       const priceFloat = parseFloat(otherValues.price);
       const itemPriceFloat = parseFloat(otherValues.itemPrice);
-
+      /*
       const fundsCreditedFloat = parseFloat(otherValues.fundsCredited);
-
+      */
       let budgetAmount = bugetAmountCalc(otherValues.promos);
       const promo = otherValues.promos[otherValues.currentEditingPromo];
 
@@ -248,9 +284,9 @@ const promoValidatorDict = {
         * quantityInt);
       }
 
-      if (budgetAmount > fundsCreditedFloat) {
+      /* if (budgetAmount > fundsCreditedFloat) {
         return false;
-      }
+      }*/
       return true;
     })();
     return isValid && parseInt(quantity, 10) >= 0 ? () => {
@@ -301,6 +337,8 @@ const mapDispatchToProps = (dispatch) => {
             price: promo.price,
             type: promo.type,
             maxPrice: (promo.pricing ? promo.pricing.price : 0)})
+          || !validators(promoValidatorDict, 'promoName', promo.promoName)
+          || !validators(promoValidatorDict, 'serviceCharge', promo.serviceCharge)
           || !validators(promoValidatorDict, 'brandName', promo.brandName, values)
           || !validators(promoValidatorDict, 'price', promo.price, {...values,
             price: promo.price,
@@ -394,6 +432,23 @@ const mapDispatchToProps = (dispatch) => {
       }
     },
 
+    onCompanyChange: (e) => {
+      const newValueObj = {};
+      // store the brand manager related information.
+      newValueObj.company = e.target.value;
+      newValueObj.brandEmail = '';
+      newValueObj.campaigns = [];
+      newValueObj.brands = [];
+      // Reset all the promos stored. Onces the user changes
+      // NOTE: If you got time in the future you can use browser.storage
+      newValueObj.promos = [];
+      newValueObj.currentEditingPromo = 0;
+      newValueObj.isPromoSectionShown = false;
+      newValueObj.budgetedAmount = 0;
+      dispatch({type: VALUE_CHANGE, data: newValueObj});
+      dispatch(fetchBrandManager);
+    },
+
     onBrandManagerChange: (brandManagerCampaignMap, brandManagerBrandMap, e) => {
       const newValueObj = {};
       // store the brand manager related information.
@@ -421,6 +476,7 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export {
+  fetchBrandManager,
   promoDefaultDict,
   bugetAmountCalc,
   fetchData,
