@@ -10,7 +10,7 @@ import PaginationWrapper from '../../../Common/PaginationWrapper.js';
 
 import SearchWrapper from './SearchWrapper';
 
-import SearchComponent from '../../../Common/SearchComponentGen/SearchComponent.js';
+import SearchComponent from '../../../Common/SearchComponent/SearchComponent.js';
 
 /*
  * Decorator which adds couple of use ful features like
