@@ -297,24 +297,24 @@ class UnlockBarAddSKU extends Component {
             * Click on Update to Deactivate an SKU
           </div>
           { actionButton }
-          /*
-          <div className = {styles.command_wrapper}>
-            <div className = {styles.information_leftpanel}>
-              From Date
+          {/*
+            <div className = {styles.command_wrapper}>
+              <div className = {styles.information_leftpanel}>
+                From Date
+              </div>
+              <div className = {styles.information_rightpanel}>
+                <input type="text" />
+              </div>
             </div>
-            <div className = {styles.information_rightpanel}>
-              <input type="text" />
+            <div className = {styles.command_wrapper}>
+              <div className = {styles.information_leftpanel}>
+                To Date
+              </div>
+              <div className = {styles.information_rightpanel}>
+                <input type="text" />
+              </div>
             </div>
-          </div>
-          <div className = {styles.command_wrapper}>
-            <div className = {styles.information_leftpanel}>
-              To Date
-            </div>
-            <div className = {styles.information_rightpanel}>
-              <input type="text" />
-            </div>
-          </div>
-          */
+          */}
         </div>
       </div>
     );
