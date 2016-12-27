@@ -1,8 +1,12 @@
 // const base = 'http://130.211.246.199';
-const dataUrl = 'https://data.hipbar-stg.hasura-app.io';
-const authUrl = 'https://auth.hipbar-stg.hasura-app.io';
-const fileUrl = 'https://api2.hipbar-stg.hasura-app.io';
-const blogicUrl = 'https://api1.hipbar-stg.hasura-app.io';
+const scheme = window.location.href.split('/')[0];
+const baseHost = window.__env.baseDomain;
+const dataUrl = scheme + '://data' + baseHost;
+const authUrl = scheme + '://auth' + baseHost;
+const fileUrl = scheme + '://api2' + baseHost;
+const blogicUrl = scheme + '://api1' + baseHost;
+const downloadRepUrl = scheme + '://downloadrep' + baseHost;
+
 // const base = '';
 const Endpoints = {
   login: authUrl + '/login',
@@ -22,4 +26,4 @@ const Endpoints = {
 const globalCookiePolicy = 'include';
 
 export default Endpoints;
-export {globalCookiePolicy, dataUrl, authUrl, fileUrl};
+export {globalCookiePolicy, dataUrl, authUrl, fileUrl, downloadRepUrl};

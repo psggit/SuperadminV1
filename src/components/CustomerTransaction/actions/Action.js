@@ -153,7 +153,7 @@ const downloadCancellationCSV = ( consumerId = '') => {
   return ( dispatch, getState ) => {
     const converter = 'convertCancellation';
     const fields = ['consumer_id', 'order_id'];
-    const url = 'https://data.hipbar-stg.hasura-app.io/api/1/table/transaction_history/select';
+    const url = Endpoints.dataUrl + '/api/1/table/transaction_history/select';
 
     /* Computation */
     const filterData = getState().filter_data;
@@ -192,7 +192,7 @@ const downloadCancellationCSV = ( consumerId = '') => {
       queryObj: queryObj
     };
 
-    const genUrl = 'https://downloadrep.hipbar-stg.hasura-app.io/generate_csv';
+    const genUrl = Endpoints.downloadRepUrl + '/generate_csv';
 
     const options = {
       ...genOptions,
@@ -387,7 +387,7 @@ const downloadRechargeCSV = ( consumerId = '') => {
   return ( dispatch, getState ) => {
     const converter = 'convertRecharge';
     const fields = ['id', 'consumer_id', 'transaction_id', 'payu_txn_id', 'bank_ref_num', 'amount', 'status', 'mode'];
-    const url = 'https://data.hipbar-stg.hasura-app.io/api/1/table/recharge_wallet/select';
+    const url = Endpoints.dataUrl + '/api/1/table/recharge_wallet/select';
 
     /* Computation */
     const filterData = getState().filter_data;
@@ -420,7 +420,7 @@ const downloadRechargeCSV = ( consumerId = '') => {
       queryObj: queryObj
     };
 
-    const genUrl = 'https://downloadrep.hipbar-stg.hasura-app.io/generate_csv';
+    const genUrl = Endpoints.downloadRepUrl + '/generate_csv';
 
     const options = {
       ...genOptions,
@@ -527,7 +527,7 @@ const downloadReservationCSV = ( consumerId = '') => {
   return ( dispatch, getState ) => {
     const converter = 'convertReservation';
     const fields = ['id', 'consumer_id', 'amount'];
-    const url = 'https://data.hipbar-stg.hasura-app.io/api/1/table/reservation/select';
+    const url = Endpoints.dataUrl + '/api/1/table/reservation/select';
 
     /* Computation */
     const filterData = getState().filter_data;
@@ -582,7 +582,7 @@ const downloadReservationCSV = ( consumerId = '') => {
       queryObj: queryObj
     };
 
-    const genUrl = 'https://downloadrep.hipbar-stg.hasura-app.io/generate_csv';
+    const genUrl = Endpoints.downloadRepUrl + '/generate_csv';
 
     const options = {
       ...genOptions,
@@ -1100,7 +1100,7 @@ const downloadRedemptionCSV = ( consumerId = '') => {
   return ( dispatch, getState ) => {
     const converter = 'convertRedemption';
     const fields = ['id', 'consumer_id', 'amount', 'rating', 'itemtype', 'feedback', 'status'];
-    const url = 'https://data.hipbar-stg.hasura-app.io/api/1/table/order/select';
+    const url = Endpoints.dataUrl + '/api/1/table/order/select';
 
     /* Computation */
     const filterData = getState().filter_data;
@@ -1146,7 +1146,7 @@ const downloadRedemptionCSV = ( consumerId = '') => {
       queryObj: queryObj
     };
 
-    const genUrl = 'https://downloadrep.hipbar-stg.hasura-app.io/generate_csv';
+    const genUrl = Endpoints.downloadRepUrl + '/generate_csv';
 
     const options = {
       ...genOptions,
