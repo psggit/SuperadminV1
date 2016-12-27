@@ -351,6 +351,33 @@ const deleteFromServer = (id, imageIdentifier, userId) => {
   };
 };
 
+// Validate the value entered with the constraints of the type
+/*  Possible Types
+    'pan_number' : Number of length 10,
+*/
+const validation = (value, type) => {
+  const p1 = new Promise( (resolve, reject) => {
+    if (type === 'pan_number') {
+      if (value.length === 10) {
+        resolve();
+      } else {
+        alert('Pan Number Invalid');
+        reject();
+      }
+    } else if (type === 'pin_code') {
+      if (value.length === 6) {
+        resolve();
+      } else {
+        alert('Pin Number Invalid');
+        reject();
+      }
+    } else {
+      reject();
+    }
+  });
+  return p1;
+};
+
 const updateExistingKycs = (requestObjs) => {
   return (dispatch) => {
     const url = Endpoints.db + '/table/kyc_files/update';
@@ -415,40 +442,55 @@ const updateExistingKycs = (requestObjs) => {
 
 /* Function to update */
 const updateKycs = (requestObjs, insertObjs, kycId, kycStatus, consumerId) => {
+  const currId = kycId;
+  const currStatus = kycStatus;
+  const currConsumerId = consumerId;
+  let panId;
+  let pinCode;
+  console.log('>>> UpdateKycs-Action Received the Following :');
+  console.log(JSON.stringify(requestObjs));
+  requestObjs.forEach(function(indiv) {
+    panId = indiv.values.hasOwnProperty('pan_number') ? indiv.values.pan_number : panId;
+    pinCode = indiv.values.hasOwnProperty('pin_code') ? indiv.values.pin_code : pinCode;
+  });
   return (dispatch) => {
-    const currId = kycId;
-    const currStatus = kycStatus;
-    const currConsumerId = consumerId;
-
-    dispatch({ type: MAKE_REQUEST});
-    if (insertObjs.length > 0) {
+    Promise.all([
+      validation(panId, 'pan_number'),
+      validation(pinCode, 'pin_code')
+    ]).then(() => {
+      dispatch({ type: MAKE_REQUEST});
+      if (insertObjs.length > 0) {
+        return Promise.all([
+          dispatch(updateExistingKycs(requestObjs)),
+          dispatch(uploadKycsAndUpdate(insertObjs)),
+          dispatch(updateConsumerKyc(currId, currStatus, currConsumerId))
+        ])
+        .then( () => {
+          return Promise.all([
+            dispatch(getUserData(parseInt(currConsumerId, 10))),
+            dispatch({ type: REQUEST_COMPLETED})
+          ]);
+        })
+        .catch( () => {
+          console.log('Error Occured');
+        });
+      }
       return Promise.all([
         dispatch(updateExistingKycs(requestObjs)),
-        dispatch(uploadKycsAndUpdate(insertObjs)),
         dispatch(updateConsumerKyc(currId, currStatus, currConsumerId))
       ])
       .then( () => {
         return Promise.all([
-          dispatch(getUserData(parseInt(currConsumerId, 10))),
-          dispatch({ type: REQUEST_COMPLETED})
+          dispatch(routeActions.push('/hadmin/consumer/kycfunctions'))
         ]);
       })
       .catch( () => {
+        alert('Something went wrong');
         console.log('Error Occured');
       });
-    }
-    return Promise.all([
-      dispatch(updateExistingKycs(requestObjs)),
-      dispatch(updateConsumerKyc(currId, currStatus, currConsumerId))
-    ])
-    .then( () => {
-      return Promise.all([
-        dispatch(routeActions.push('/hadmin/consumer/kycfunctions'))
-      ]);
     })
     .catch( () => {
-      alert('Something went wrong');
-      console.log('Error Occured');
+      console.log('Validation Failed');
     });
   };
 };
@@ -580,7 +622,6 @@ const kycReducer = (state = defaultKycState, action) => {
 
 /* End of Reducer Definition */
 
-export default kycReducer;
 export {
   getUserData,
   loadCredentials,
@@ -601,3 +642,4 @@ export {
   updateKycs,
   RESET_KYC_DATA
 };
+export default kycReducer;
