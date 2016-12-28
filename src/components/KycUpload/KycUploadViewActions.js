@@ -12,6 +12,7 @@
 import { defaultKycState } from '../Common/Actions/DefaultState';
 import requestAction from '../Common/Actions/requestAction';
 import Endpoints, { globalCookiePolicy } from '../../Endpoints';
+import { validation } from '../Common/Actions/Validator';
 
 import { routeActions } from 'redux-simple-router';
 
@@ -351,32 +352,6 @@ const deleteFromServer = (id, imageIdentifier, userId) => {
   };
 };
 
-// Validate the value entered with the constraints of the type
-/*  Possible Types
-    'pan_number' : Number of length 10,
-*/
-const validation = (value, type) => {
-  const p1 = new Promise( (resolve, reject) => {
-    if (type === 'pan_number') {
-      if (value.length === 10) {
-        resolve();
-      } else {
-        alert('Pan Number Invalid');
-        reject();
-      }
-    } else if (type === 'pin_code') {
-      if (value.length === 6) {
-        resolve();
-      } else {
-        alert('Pin Number Invalid');
-        reject();
-      }
-    } else {
-      reject();
-    }
-  });
-  return p1;
-};
 
 const updateExistingKycs = (requestObjs) => {
   return (dispatch) => {
@@ -441,10 +416,14 @@ const updateExistingKycs = (requestObjs) => {
 };
 
 /* Function to update */
+// Validate all Mandatory Attributes
+// Send Action
 const updateKycs = (requestObjs, insertObjs, kycId, kycStatus, consumerId) => {
   const currId = kycId;
   const currStatus = kycStatus;
   const currConsumerId = consumerId;
+  const listOfValidations = [];
+  const commentField = [];
   let panId;
   let pinCode;
   console.log('>>> UpdateKycs-Action Received the Following :');
@@ -452,12 +431,18 @@ const updateKycs = (requestObjs, insertObjs, kycId, kycStatus, consumerId) => {
   requestObjs.forEach(function(indiv) {
     panId = indiv.values.hasOwnProperty('pan_number') ? indiv.values.pan_number : panId;
     pinCode = indiv.values.hasOwnProperty('pin_code') ? indiv.values.pin_code : pinCode;
+    if (indiv.values.status === 'Verifed') {
+      commentField.push(indiv.values.comment);
+    }
+  });
+  listOfValidations.push(validation(panId, 'pan_number'));
+  listOfValidations.push(validation(pinCode, 'pin_code'));
+  commentField.forEach(function(indiv) {
+    listOfValidations.push(validation(indiv, 'non_empty_field'));
   });
   return (dispatch) => {
-    Promise.all([
-      validation(panId, 'pan_number'),
-      validation(pinCode, 'pin_code')
-    ]).then(() => {
+    Promise.all(listOfValidations
+    ).then(() => {
       dispatch({ type: MAKE_REQUEST});
       if (insertObjs.length > 0) {
         return Promise.all([
