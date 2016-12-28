@@ -85,14 +85,12 @@ const updateUser = (userObj, userId) => {
   // Configuring Validations
   const listOfValidation = [];
   let userName;
-  let dateOfBirth;
   userName = userObj.values.full_name;
-  dateOfBirth = userObj.values.dob;
-  console.log(dateOfBirth);
-  listOfValidation.push(validation(userName, 'non_empty_field'));
-  Promise.all(listOfValidation
-  ).then(() => {
-    return (dispatch) => {
+  console.log(userName);
+  listOfValidation.push(validation(userName, 'non_empty_text'));
+  return (dispatch) => {
+    Promise.all(listOfValidation
+    ).then(() => {
       const url = Endpoints.db + '/table/consumer/update';
 
       const options = {
@@ -114,11 +112,11 @@ const updateUser = (userObj, userId) => {
           alert('Something wrong happened while creating a notepad entry');
           return dispatch({type: REQUEST_COMPLETED});
         });
-    };
-  })
-  .catch( () => {
-    console.log('Error Occured');
-  });
+    })
+    .catch(() => {
+      console.log('Error Occured');
+    });
+  };
 };
 
 /* End of it */
