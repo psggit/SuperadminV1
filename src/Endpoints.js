@@ -1,5 +1,5 @@
 // const base = 'http://130.211.246.199';
-const scheme = window.location.href.split('/')[0];
+const scheme = window.location.href.split(':')[0];
 const baseHost = window.__env.baseDomain;
 const dataUrl = scheme + '://data' + baseHost;
 const authUrl = scheme + '://auth' + baseHost;
