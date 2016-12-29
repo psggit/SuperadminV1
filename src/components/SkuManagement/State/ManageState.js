@@ -73,12 +73,13 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
   }
   storeCityInput(e) {
     const inputVal = e.target.getAttribute('data-field-name');
-
+    console.log('!!!!!!!!!!!!!!!!!!!');
+    console.log(CITY_INPUT_CHANGED);
+    console.log(this.props);
     this.props.dispatch({ type: CITY_INPUT_CHANGED, data: { 'key': inputVal, 'value': e.target.value } });
   }
   storeStateInput(e) {
     const inputVal = e.target.getAttribute('data-field-name');
-
     this.props.dispatch({ type: STATE_INPUT_CHANGED, data: { 'key': inputVal, 'value': e.target.value } });
   }
   saveCityToLocal() {
@@ -147,7 +148,7 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
           return (
                 <li key={ city } data-city-id={ city } type="local">
                   <label data-city-id={ city } data-type="local"> { cities[city].cityInput } </label>
-                  <p data-city-name={ cities[city].cityInput } data-city-id={ city } data-type="local" onClick={ this.editCity.bind(this) }>Edit</p>
+                  <p data-city-name={ cities[city].cityInput } data-city-id={ city } data-type="local" onClick={ this.editCity.bind(this) }>(Unsaved) Edit</p>
                   {/*
                   <p>3 Cities</p>
                   */}
@@ -181,7 +182,7 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
             </div>
             <div className={styles.create_state_wrapper}>
               <p>
-                Edit State
+                Save Changes
               </p>
               <div className={styles.create_form}>
                 <div className={styles.indiv_form}>
@@ -276,7 +277,7 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
             </div>
           </div>
           <div className="clearfix"></div>
-          <div className={styles.city_wrapper}>
+          <div className="hide">
             <p>CITIES</p>
             <label className={styles.add_new_btn} onClick={ this.toggleCityComponent.bind(this) }>+ Add New</label>
             <ul>
@@ -297,7 +298,7 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
               (
                 <div className={styles.user_actions}>
                   <button className={styles.cancel_btn + ' ' + styles.common_btn} onClick={ this.toggleCityComponent.bind(this) } >Cancel</button>
-                  <button className={styles.save_btn + ' ' + styles.common_btn} onClick={ this.saveCityToLocal.bind(this) } >Save</button>
+                  <button className={styles.save_btn + ' ' + styles.common_btn} onClick={ this.saveCityToLocal.bind(this) } >Save 1</button>
                 </div>
               )
               :

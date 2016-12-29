@@ -25,7 +25,16 @@ const validation = (value, type) => {
       if (value.length > 0) {
         resolve();
       } else {
-        alert('Comment Field Empty: Please Enter atleast 1 character.');
+        alert('Field Empty: Please Enter atleast 1 character.');
+        reject();
+      }
+    } else if (type === 'gps') {
+      // TODO : Change to Regex
+      const gps = /^(-?\d{1,2}\.\d{6}),(-?\d{1,2}\.\d{6})$/;
+      if (value.match(gps)) {
+        resolve();
+      } else {
+        alert('GPS format invlaid: Expected Format : Comma separated string containing coordiantes upto 6 decimal places');
         reject();
       }
     } else {

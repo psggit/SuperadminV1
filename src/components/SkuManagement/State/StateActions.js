@@ -10,6 +10,7 @@
 */
 
 import { defaultStateManagementState } from '../../Common/Actions/DefaultState';
+import { validation } from '../../Common/Actions/Validator';
 import crypto from 'crypto';
 import requestAction from '../../Common/Actions/requestAction';
 import Endpoints, { globalCookiePolicy } from '../../../Endpoints';
@@ -35,64 +36,74 @@ const RESET = '@state_mgt/RESET';
 /* Action creators */
 
 const saveState = () => {
+  const listOfValidation = [];
   return (dispatch, getState) => {
-    console.log(dispatch);
-    const currState = getState().state_data;
-    const stateUrl = Endpoints.db + '/table/state/insert';
-    if ( currState.stateInput.length === 0 || currState.shortName.length === 0 ) {
-      alert('Kindly check start name or short name');
-      return Promise.reject();
-    }
-    const insertObj = {
-    };
-    insertObj.objects = [
-      {
-        'state_name': currState.stateInput,
-        'short_name': currState.shortName,
-        'created_at': new Date().toISOString(),
-        'updated_at': new Date().toISOString()
+    listOfValidation.push(validation(getState().state_data.stateInput, 'non_empty_text'));
+    listOfValidation.push(validation(getState().state_data.shortName, 'non_empty_text'));
+    Promise.all(listOfValidation
+    ).then(() => {
+      console.log(dispatch);
+      const currState = getState().state_data;
+      const stateUrl = Endpoints.db + '/table/state/insert';
+      if ( currState.stateInput.length === 0 || currState.shortName.length === 0 ) {
+        alert('Kindly check start name or short name');
+        return Promise.reject();
       }
-    ];
-    insertObj.returning = ['id', 'short_name'];
-    const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin'},
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(insertObj),
-    };
-    return dispatch(requestAction(stateUrl, options))
-      .then((stateResponse) => {
-        const cityUrl = Endpoints.db + '/table/city/insert';
-        const cityObjs = [];
-        /* Check for empty cities */
-        const cities = Object.keys(currState.cities);
-        if ( cities.length > 0) {
-          let i = 0;
-          while ( i < cities.length) {
-            const returnObj = {};
-            returnObj.name = currState.cities[cities[i]].cityInput;
-            returnObj.state_short_name = stateResponse.returning[0].short_name;
-            returnObj.gps = currState.cities[cities[i]].cityGPS;
-            returnObj.created_at = new Date().toISOString();
-            returnObj.updated_at = new Date().toISOString();
-            cityObjs.push(returnObj);
-            i += 1;
-          }
-          // console.log(cityObjs);
-          insertObj.objects = cityObjs;
-          insertObj.returning = ['id'];
-          options.body = JSON.stringify(insertObj);
-          return dispatch(requestAction(cityUrl, options));
+      const insertObj = {
+      };
+      insertObj.objects = [
+        {
+          'state_name': currState.stateInput,
+          'short_name': currState.shortName,
+          'created_at': new Date().toISOString(),
+          'updated_at': new Date().toISOString()
         }
-        // console.log('return empty');
-        return [];
-      })
-      .then(() => {
-        return dispatch(routeActions.push('/hadmin/state_management'));
-      })
-      .catch(() => {
-        alert('something went wrong while creating state');
-      });
+      ];
+      insertObj.returning = ['id', 'short_name'];
+      const options = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin'},
+        credentials: globalCookiePolicy,
+        body: JSON.stringify(insertObj),
+      };
+      return dispatch(requestAction(stateUrl, options))
+        .then((stateResponse) => {
+          const cityUrl = Endpoints.db + '/table/city/insert';
+          const cityObjs = [];
+          /* Check for empty cities */
+          const cities = Object.keys(currState.cities);
+          if ( cities.length > 0) {
+            let i = 0;
+            while ( i < cities.length) {
+              const returnObj = {};
+              returnObj.name = currState.cities[cities[i]].cityInput;
+              returnObj.state_short_name = stateResponse.returning[0].short_name;
+              returnObj.gps = currState.cities[cities[i]].cityGPS;
+              returnObj.created_at = new Date().toISOString();
+              returnObj.updated_at = new Date().toISOString();
+              cityObjs.push(returnObj);
+              i += 1;
+            }
+            // console.log(cityObjs);
+            insertObj.objects = cityObjs;
+            insertObj.returning = ['id'];
+            options.body = JSON.stringify(insertObj);
+            return dispatch(requestAction(cityUrl, options));
+          }
+          // console.log('return empty');
+          return [];
+        })
+        .then(() => {
+          return dispatch(routeActions.push('/hadmin/state_management'));
+        })
+        .catch(() => {
+          alert('Update Unsuccessful!!!');
+        });
+    })
+    .catch((error) => {
+      console.log('Error Occured');
+      console.log(error);
+    });
   };
 };
 
@@ -117,91 +128,111 @@ const fetchState = (stateId) => {
 };
 
 const saveCity = (id, name, gps, stateId) => {
+  const listOfValidation = [];
   return (dispatch) => {
-    const currStateId = stateId;
-    const dataObj = {};
-    const updateObj = {};
-    const url = Endpoints.db + '/table/city/update';
-    dataObj.name = name;
-    dataObj.gps = gps;
-    updateObj.values = dataObj;
-    updateObj.where = {
-      'id': parseInt(id, 10)
-    };
-    const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin'},
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(updateObj),
-    };
-    return dispatch(requestAction(url, options))
-      .then((cityResp) => {
-        console.log(cityResp);
-        return Promise.all([
-          dispatch({ type: TOGGLE_CITY_COMPONENT}),
-          dispatch(fetchState(currStateId))
-        ]);
-      });
+    listOfValidation.push(validation(name, 'non_empty_text'));
+    listOfValidation.push(validation(gps, 'gps'));
+    Promise.all(listOfValidation
+    ).then(() => {
+      const currStateId = stateId;
+      const dataObj = {};
+      const updateObj = {};
+      const url = Endpoints.db + '/table/city/update';
+      dataObj.name = name;
+      dataObj.gps = gps;
+      updateObj.values = dataObj;
+      updateObj.where = {
+        'id': parseInt(id, 10)
+      };
+      const options = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin'},
+        credentials: globalCookiePolicy,
+        body: JSON.stringify(updateObj),
+      };
+      return dispatch(requestAction(url, options))
+        .then((cityResp) => {
+          console.log(cityResp);
+          return Promise.all([
+            dispatch({ type: TOGGLE_CITY_COMPONENT}),
+            dispatch(fetchState(currStateId))
+          ]);
+        });
+    })
+    .catch((error) => {
+      console.log('Error Occured');
+      console.log(error);
+    });
   };
 };
 
 const updateStateSaveCity = () => {
+  const listOfValidation = [];
   return (dispatch, getState) => {
-    const currProps = getState().state_data;
-    const dataObj = {};
-    const updateObj = {};
-    const url = Endpoints.db + '/table/state/update';
-    const insertObj = {};
-    dataObj.state_name = currProps.stateInput;
-    dataObj.short_name = currProps.shortName;
-    updateObj.values = dataObj;
-    updateObj.where = {
-      'id': parseInt(currProps.fromDB[0].id, 10)
-    };
-    updateObj.returning = ['id', 'short_name'];
-    const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin'},
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(updateObj),
-    };
-    return dispatch(requestAction(url, options))
-      .then(( resp ) => {
-        const cityUrl = Endpoints.db + '/table/city/insert';
-        const cityObjs = [];
-        /* Check for empty cities */
-        const cities = Object.keys(currProps.cities);
-        if ( cities.length > 0) {
-          let i = 0;
-          while ( i < cities.length) {
-            const returnObj = {};
-            returnObj.name = currProps.cities[cities[i]].cityInput;
-            returnObj.state_short_name = resp.returning[0].short_name;
-            returnObj.gps = currProps.cities[cities[i]].cityGPS;
-            returnObj.created_at = new Date().toISOString();
-            returnObj.updated_at = new Date().toISOString();
-            cityObjs.push(returnObj);
-            i += 1;
+    listOfValidation.push(validation(getState().state_data.stateInput, 'non_empty_text'));
+    listOfValidation.push(validation(getState().state_data.shortName, 'non_empty_text'));
+    Promise.all(listOfValidation
+    ).then(() => {
+      const currProps = getState().state_data;
+      const dataObj = {};
+      const updateObj = {};
+      const url = Endpoints.db + '/table/state/update';
+      const insertObj = {};
+      dataObj.state_name = currProps.stateInput;
+      dataObj.short_name = currProps.shortName;
+      updateObj.values = dataObj;
+      updateObj.where = {
+        'id': parseInt(currProps.fromDB[0].id, 10)
+      };
+      updateObj.returning = ['id', 'short_name'];
+      const options = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin'},
+        credentials: globalCookiePolicy,
+        body: JSON.stringify(updateObj),
+      };
+      return dispatch(requestAction(url, options))
+        .then(( resp ) => {
+          const cityUrl = Endpoints.db + '/table/city/insert';
+          const cityObjs = [];
+          /* Check for empty cities */
+          const cities = Object.keys(currProps.cities);
+          if ( cities.length > 0) {
+            let i = 0;
+            while ( i < cities.length) {
+              const returnObj = {};
+              returnObj.name = currProps.cities[cities[i]].cityInput;
+              returnObj.state_short_name = resp.returning[0].short_name;
+              returnObj.gps = currProps.cities[cities[i]].cityGPS;
+              returnObj.created_at = new Date().toISOString();
+              returnObj.updated_at = new Date().toISOString();
+              cityObjs.push(returnObj);
+              i += 1;
+            }
+            // console.log(cityObjs);
+            insertObj.objects = cityObjs;
+            insertObj.returning = ['id'];
+            options.body = JSON.stringify(insertObj);
+            return dispatch(requestAction(cityUrl, options));
           }
-          // console.log(cityObjs);
-          insertObj.objects = cityObjs;
-          insertObj.returning = ['id'];
-          options.body = JSON.stringify(insertObj);
-          return dispatch(requestAction(cityUrl, options));
-        }
-        // console.log('return empty');
-        return [];
-      })
-      .then(() => {
-        return Promise.all([
-          dispatch(fetchState(currProps.fromDB[0].id)),
-          dispatch({ type: CLEAR_CITY})
-        ]);
-      })
-      .catch((error) => {
-        console.log('error');
-        console.log(error);
-      });
+          // console.log('return empty');
+          return [];
+        })
+        .then(() => {
+          return Promise.all([
+            dispatch(fetchState(currProps.fromDB[0].id)),
+            dispatch({ type: CLEAR_CITY})
+          ]);
+        })
+        .catch((error) => {
+          console.log('error');
+          console.log(error);
+        });
+    })
+    .catch((error) => {
+      console.log('error');
+      console.log(error);
+    });
   };
 };
 
@@ -243,6 +274,7 @@ const deleteCity = (cityId, name, stateId) => {
 
 const stateReducer = ( state = defaultStateManagementState, action) => {
   let hash = '';
+  const listOfValidation = [];
   const valueObj = {};
   switch ( action.type ) {
     case TOGGLE_CITY_COMPONENT:
@@ -254,21 +286,39 @@ const stateReducer = ( state = defaultStateManagementState, action) => {
       valueObj[action.data.key] = action.data.value;
       return { ...state, ...valueObj };
     case STORE_CITY_LOCAL:
-      const cityObj = {};
-      hash = crypto.createHash('sha1').update(state.cityInput.toLowerCase()).digest('hex');
-      cityObj[hash] = {};
-      cityObj[hash].cityInput = state.cityInput;
-      cityObj[hash].cityGPS = state.cityGPS;
-      return { ...state, cities: Object.assign({}, state.cities, cityObj), hideCityComponent: true, cityInput: '' };
+      listOfValidation.push(validation(state.cityInput, 'non_empty_text'));
+      listOfValidation.push(validation(state.cityGPS, 'gps'));
+      Promise.all(listOfValidation
+      ).then(() => {
+        const cityObj = {};
+        hash = crypto.createHash('sha1').update(state.cityInput.toLowerCase()).digest('hex');
+        cityObj[hash] = {};
+        cityObj[hash].cityInput = state.cityInput;
+        cityObj[hash].cityGPS = state.cityGPS;
+        return { ...state, cities: Object.assign({}, state.cities, cityObj), hideCityComponent: true, cityInput: '' };
+      })
+      .catch(() => {
+        console.log('Error Occured');
+      });
+      /* falls through */
     case UPDATE_CITY_LOCAL:
-      hash = crypto.createHash('sha1').update(state.cityInput.toLowerCase()).digest('hex');
-      const updateCityObj = {};
-      updateCityObj[hash] = {};
-      updateCityObj[hash].cityInput = state.cityInput;
-      updateCityObj[hash].cityGPS = state.cityGPS;
-      const prevCityObj = Object.assign({}, state.cities);
-      delete prevCityObj[state.cityId];
-      return { ...state, cities: Object.assign({}, prevCityObj, updateCityObj), isCityLocal: false, isCityEdit: false, cityId: '0', hideCityComponent: true};
+      listOfValidation.push(validation(state.cityInput, 'non_empty_text'));
+      listOfValidation.push(validation(state.cityGPS, 'gps'));
+      Promise.all(listOfValidation
+      ).then(() => {
+        hash = crypto.createHash('sha1').update(state.cityInput.toLowerCase()).digest('hex');
+        const updateCityObj = {};
+        updateCityObj[hash] = {};
+        updateCityObj[hash].cityInput = state.cityInput;
+        updateCityObj[hash].cityGPS = state.cityGPS;
+        const prevCityObj = Object.assign({}, state.cities);
+        delete prevCityObj[state.cityId];
+        return { ...state, cities: Object.assign({}, prevCityObj, updateCityObj), isCityLocal: false, isCityEdit: false, cityId: '0', hideCityComponent: true};
+      })
+      .catch(() => {
+        console.log('Error Occured');
+      });
+      /* falls through */
     case DELETE_CITY_LOCAL:
       const deleteObj = Object.assign({}, state.cities);
       delete deleteObj[state.cityId];
