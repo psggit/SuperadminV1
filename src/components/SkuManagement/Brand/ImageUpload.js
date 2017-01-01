@@ -37,7 +37,7 @@ class ImageUpload extends Component {
                   </div>
                   )
                   :
-                  ( <input type="file" id="skuImage"/> )
+                  ( <input type="file" accept="image/*" id="skuImage"/> )
               }
             </div>
           </div>
