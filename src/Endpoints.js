@@ -1,4 +1,5 @@
 // const base = 'http://130.211.246.199';
+// TODO: CHANGE integrations_dataUrl to live
 const dataUrl = 'https://data.hipbar-stg.hasura-app.io';
 const authUrl = 'https://auth.hipbar-stg.hasura-app.io';
 const fileUrl = 'https://api2.hipbar-stg.hasura-app.io';
