@@ -12,10 +12,13 @@
 .search_form
 {
   padding-bottom: 20px;
+  float: left;
+  width: 100%;
 	input, select
 	{
 		display: inline-block;
 		width: 170px;
+    float: left;
 		border: 1px solid #CCCCCC;
 		border-radius: 4px;
 		background: #FFF;
@@ -33,4 +36,12 @@
 			border: 1px solid #FF7400;
 		}
 	}
+  .cross {
+    float: left;
+    padding: 4px;
+    cursor: pointer;
+    &:hover {
+      background-color: #eee;
+    }
+  }
 }

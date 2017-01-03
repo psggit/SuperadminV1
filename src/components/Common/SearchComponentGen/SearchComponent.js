@@ -3,67 +3,63 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import {
-  ADD_DELETE_FILTER
+  INPUT_CHANGED,
+  INCREMENT_FILTER,
+  CLEAR_FILTER
 } from './FilterState';
 
-class SearchComponent extends Component {
-  filterChange(e) {
-    const parentNode = e.target.parentNode;
-    const filterValue = parentNode.querySelectorAll('[data-field-name="value"]')[0].value;
-    const filterOperator = parentNode.querySelectorAll('select[data-field-name=operator]')[0].selectedOptions[0].value;
-    const filterField = parentNode.querySelectorAll('select[data-field-name=field]')[0].selectedOptions[0].value;
+import SearchFields from './SearchFields';
 
-    if ( filterValue.length && filterOperator !== 'Select' && filterField !== 'Select' ) {
-      try {
-        const filterObj = {
-          [filterField]: {
-            [filterOperator]: filterValue
-          }
-        };
-        parentNode.querySelectorAll('[data-field-name="value"]')[0].value = '';
-        parentNode.querySelectorAll('select[data-field-name=operator]')[0].selectedOptions[0].value = '';
-        parentNode.querySelectorAll('select[data-field-name=field]')[0].selectedOptions[0].value = '';
-        this.props.dispatch({ type: ADD_DELETE_FILTER, data: { 'filter': filterField, data: filterObj } });
-      } catch (err) {
-        console.log(err);
-        alert('invalid Val');
-      }
+class SearchComponent extends Component {
+  onTabOut( e ) {
+    /* Monitors focus out event */
+    console.log('Focussed Out');
+    const fieldId = parseInt( e.target.parentNode.getAttribute('data-field-id'), 10 );
+
+    /* Check all the values */
+    const currFilterObj = { ...this.props.currFilter.filters[fieldId] };
+
+    if ( currFilterObj.field && currFilterObj.operator && currFilterObj.value ) {
+      this.props.dispatch({ type: INCREMENT_FILTER, data: fieldId });
     }
+  }
+  onClose( e ) {
+    const fieldId = parseInt( e.target.parentNode.getAttribute('data-field-id'), 10 );
+    this.props.dispatch({ type: CLEAR_FILTER, data: fieldId });
+  }
+  trackChanges(e) {
+    /* Monitors changes on the form fields */
+    console.log('Tracked');
+    const fieldN = e.target.getAttribute('data-field-name');
+    const val = e.target.value;
+    const fieldId = e.target.parentNode.getAttribute('data-field-id');
+    this.props.dispatch({ type: INPUT_CHANGED, data: { id: fieldId, values: { [fieldN]: val }}});
   }
   render() {
     const styles = require('./SearchComponent.scss');
-    const fields = ['name', 'id', 'email'];
-    const operator = ['$eq'];
-    const operatorMap = {};
-    operatorMap.$eq = 'Equal';
 
-    const selectHtml = fields.map( ( field, index ) => {
-      return (
-        <option key={ index } value={ field }> { field.toUpperCase() } </option>
-      );
-    });
+    const { currentFilter, selectedFields } = this.props.currFilter;
 
-    const operatorHtml = operator.map( ( op, index ) => {
-      return (
-        <option key={ index } value={ op } > { operatorMap[op].toUpperCase() } </option>
-      );
-    });
+    const filters = Object.keys(this.props.currFilter.filters);
+
+    const selectedFilters = [];
+
+    if ( filters.length > 0 ) {
+      filters.forEach( ( filter, index ) => {
+        if ( this.props.currFilter.filters[filter].isValid ) {
+          selectedFilters.push(
+            <SearchFields key={ index } id = { parseInt(filter, 10) } monitorChanges={ this.trackChanges.bind(this) } onTabOut={ this.onTabOut.bind(this) } isDisabled="1" values = { this.props.currFilter.filters[filter] } selectedFilters={ selectedFields } clearFilter={ this.onClose.bind(this) }/>
+          );
+        }
+      });
+    }
 
     return (
       <div className={styles.search_wrapper + ' ' + styles.wd_100}>
       	<p>Search</p>
-      	<div className={styles.search_form + ' ' + styles.wd_100} >
-          <select data-field-name="field">
-            <option value=""> Select Field </option>
-            { selectHtml }
-          </select>
-          <select data-field-name="operator">
-            <option value=""> Select Operator </option>
-            { operatorHtml }
-          </select>
-      		<input type="text" placeholder="Contains" data-field-name="value" onBlur={ this.filterChange.bind(this) } />
-          { this.props.children }
-      	</div>
+        { selectedFilters }
+        <SearchFields id = { currentFilter } monitorChanges={ this.trackChanges.bind(this) } onTabOut={ this.onTabOut.bind(this) } isDisabled="0" values={ this.props.currFilter.filters[currentFilter] ? this.props.currFilter.filters[currentFilter] : {} } selectedFilters={ selectedFields } clearFilter={ this.onClose.bind(this) } />
+        { this.props.children }
       </div>
     );
   }
@@ -72,7 +68,7 @@ class SearchComponent extends Component {
 SearchComponent.propTypes = {
   dispatch: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
-  currFilter: PropTypes.object.isRequired
+  currFilter: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = ( state ) => {
