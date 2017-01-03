@@ -5,7 +5,7 @@ const defaultState = {
   'selectedFields': [],
   'filters': {
     '1': {
-      'fields': '',
+      'field': '',
       'operator': '',
       'value': ''
     }
@@ -32,7 +32,7 @@ const genSearchReducer = ( state = defaultState, action ) => {
       return { ...state, isSearched: true };
     case INCREMENT_FILTER:
       const fields = [ state.filters[action.data].field ];
-      return { ...state, selectedFields: [ ...state.selectedFields, ...fields ], currentFilter: action.data + 1, filters: { ...state.filters, [action.data]: { ...state.filters[action.data], isValid: true}, [ action.data + 1 ]: { 'fields': '', 'operator': '', 'value': '' } } };
+      return { ...state, selectedFields: [ ...state.selectedFields, ...fields ], currentFilter: action.data + 1, filters: { ...state.filters, [action.data]: { ...state.filters[action.data], isValid: true}, [ action.data + 1 ]: { 'field': '', 'operator': '', 'value': '' } } };
     case INPUT_CHANGED:
       return { ...state, filters: { ...state.filters, [action.data.id]: { ...state.filters[action.data.id], ...action.data.values } } };
     case CLEAR_FILTER:

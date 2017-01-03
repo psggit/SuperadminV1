@@ -5,9 +5,18 @@ class SearchFields extends Component {
     const styles = require('./SearchComponent.scss');
     const { id, onTabOut, monitorChanges, isDisabled, values, selectedFilters, clearFilter } = this.props;
     let fields = ['name', 'id', 'email'];
-    const operator = ['$eq'];
+    // const operator = ['$eq'];
+    const fieldOperatorMap = {
+      'name': ['$eq', '$like', '$ilike'],
+      'email': ['$eq', '$like', '$ilike'],
+      'id': ['$eq', '$gt', '$lt']
+    };
     const operatorMap = {};
     operatorMap.$eq = 'Equal';
+    operatorMap.$like = 'LIKE';
+    operatorMap.$ilike = 'UNCASEDLIKE';
+    operatorMap.$gt = 'GREATER';
+    operatorMap.$lt = 'LESSTHAN';
 
     if ( !parseInt(isDisabled, 10 ) ) {
       fields = fields.filter( ( f ) => {
@@ -21,11 +30,11 @@ class SearchFields extends Component {
       );
     });
 
-    const operatorHtml = operator.map( ( op, index ) => {
+    const operatorHtml = ( values.field ) ? fieldOperatorMap[values.field].map( ( op, index ) => {
       return (
         <option key={ index } value={ op } > { operatorMap[op].toUpperCase() } </option>
       );
-    });
+    }) : [];
     return (
       <div className={styles.search_form + ' ' + styles.wd_100 } data-field-id={ id } onChange={ monitorChanges } >
         <select data-field-name="field" disabled={ parseInt(isDisabled, 10) ? true : '' } value={ values ? values.field : '' } >
