@@ -18,6 +18,7 @@ const EDIT_PROMO = '@PromosInstantCashback/EDIT_PROMO';
 
 const PROMO_CHANGE = '@PromosInstantCashback/PROMO_CHANGE';
 
+const INIT_COMPANY = '@PromosInstantCashback/INIT_COMPANY';
 const INIT_BRAND_MANAGERS = '@PromosInstantCashback/INIT_BRAND_MANAGERS';
 
 /**
@@ -58,27 +59,17 @@ const reducer = (state = defaultState, action) => {
       }
       let budgetedAmount = bugetAmountCalc(newPromosList);
 
-      if (budgetedAmount <= state.fundsCredited) {
-        return {
-          ...state,
-          budgetedAmount: budgetedAmount,
-          currentEditingPromo: currentEditingPromo,
-          promos: newPromosList
-        };
-      }
-
-      // invalid state... message
-      alert('Dude... Stop playing with the UI, we are getting inconsistency ' +
-        'budget data which passes the preliminary input validations. ' +
-        'So, figure what you need to do first and then start making the inputs. ' +
-        'I am resetting the data to a stable state...');
       return {
-        ...state
+        ...state,
+        budgetedAmount: budgetedAmount,
+        currentEditingPromo: currentEditingPromo,
+        promos: newPromosList
       };
 
     case ADD_PROMO:
       newPromosList = state.promos.concat({
         brandName: '',
+        promoName: '',
         sku: {},
         pricing: {},
         price: 0,
@@ -95,7 +86,7 @@ const reducer = (state = defaultState, action) => {
       // action data is the index which should be removed.
       newPromosList = state.promos.slice(0, action.data).concat(state.promos.slice(action.data + 1));
 
-      budgetedAmount = bugetAmountCalc(newPromosList);
+      budgetedAmount = newPromosList.length > 0 ? bugetAmountCalc(newPromosList) : 0;
 
       return { ...state,
         promos: newPromosList,
@@ -109,6 +100,12 @@ const reducer = (state = defaultState, action) => {
         ...state,
         currentEditingPromo: action.data,
         isPromoSectionShown: true,
+      };
+
+    case INIT_COMPANY:
+      return {
+        ...state,
+        companies: action.data
       };
 
     case INIT_BRAND_MANAGERS:
@@ -145,6 +142,7 @@ const reducer = (state = defaultState, action) => {
 export {
   reducer,
   VALUE_CHANGE,
+  INIT_COMPANY,
   INIT_BRAND_MANAGERS,
   ADD_PROMO,
   EDIT_PROMO,

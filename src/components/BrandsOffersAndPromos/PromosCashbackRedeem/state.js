@@ -2,6 +2,8 @@ const currentDate = new Date();
 
 const finalTestObj = {
   // options which are used for the dropdown and checkout
+  company: '',
+  companies: [],
   brandManagers: [],
   campaigns: [],
   brands: [],

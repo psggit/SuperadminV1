@@ -155,21 +155,34 @@ const saveSku = ( barId ) => {
     const barState = getState().bar_sku_create_data;
     const barDataObj = {
       ...barState.newSkuData,
-      bar_id: parseInt(barId, 10)
+      bar_id: parseInt(barId, 10),
+      base_sku_price: parseFloat(barState.newSkuData.base_sku_price),
+      negotiated_sku_price: parseFloat(barState.newSkuData.negotiated_sku_price),
+      charges_and_tax_percentage: parseFloat(barState.newSkuData.charges_and_tax_percentage),
+      start_date: new Date(barState.newSkuData.start_date).toISOString(),
+      end_date: new Date(barState.newSkuData.end_date).toISOString()
     };
 
     const brInsertCheck = [
       'listingOrder',
       'sku_pricing_id',
       'quantity',
-      'hipbarPrice',
-      'menuPrice'
+      'base_sku_price',
+      'negotiated_sku_price',
+      'charges_and_tax_percentage',
+      'start_date',
+      'end_date'
     ];
     let brCheckStatus = true;
 
     brInsertCheck.forEach( ( i ) => {
       brCheckStatus = brCheckStatus && ( barDataObj[i] ? true : false );
     });
+
+    // This is the G spot
+    barDataObj.menuPrice = barDataObj.base_sku_price + (barDataObj.base_sku_price * barDataObj.charges_and_tax_percentage / 100);
+    barDataObj.hipbarPrice = barDataObj.negotiated_sku_price + (barDataObj.negotiated_sku_price * barDataObj.charges_and_tax_percentage / 100);
+
 
     if ( !brCheckStatus ) {
       alert('All the fields for Bar are mandatory');
@@ -214,8 +227,11 @@ const updateSku = ( barId ) => {
       'listingOrder',
       'sku_pricing_id',
       'quantity',
-      'hipbarPrice',
-      'menuPrice'
+      'base_sku_price',
+      'negotiated_sku_price',
+      'charges_and_tax_percentage',
+      'start_date',
+      'end_date'
     ];
     let brCheckStatus = true;
 

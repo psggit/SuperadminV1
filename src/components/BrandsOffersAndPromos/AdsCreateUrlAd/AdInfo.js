@@ -1,17 +1,50 @@
 import React from 'react';
 import formValidator from '../../Common/CommonFormValidator';
+import { brandManagerFetch } from './CreateAdUrlActions.js';
 
-import {AD_INFO} from './CreateAdUrlActions';
+import {AD_INFO, BRAND_SELECT_FOR_SKU} from './CreateAdUrlActions';
 
-const AdInfo = () => {
+const AdInfo = ({dispatch, brands, sb, bms}) => {
   const styles = require('./CreateUrlAd.scss');
+  const brandsDropDownHtml = brands.map((brand) => {
+    return (<option value={brand.id}> {brand.brand_name} </option>);
+  });
+  const skusDropdownHtml = sb.skus.map((sku) => {
+    return (<option value={sku.id}> {sku.volume} ml</option>);
+  });
+  const bmDropDownHtml = bms.map((bm) => {
+    return (<option value={bm.id}> {bm.name} / {bm.email} </option>);
+  });
+  const onBrandSelect = (e) => {
+    Promise.all([
+      dispatch({type: BRAND_SELECT_FOR_SKU, data: e.target.value}),
+      dispatch(brandManagerFetch(e.target.value))
+    ]);
+  };
   return (
       <div className={styles.campaign_container}>
         <div className={styles.heading + ' ' + styles.wd_100}>CAMPAIGN DETAILS</div>
           <ul>
             <li>
-              <label>Brand Manager Email</label>
-              <input data-field-name="email" data-field-type="text" type="text" />
+              <label>Select Brand</label>
+              <select data-field-name="brand" data-field-type="string" onChange={onBrandSelect.bind(this)}>
+                <option>Select</option>
+                {brandsDropDownHtml}
+              </select>
+            </li>
+            <li>
+              <label>Select SKU</label>
+              <select data-field-name="sku_id" data-field-type="string">
+                <option>Select</option>
+                {skusDropdownHtml}
+              </select>
+            </li>
+            <li>
+              <label>Select Brand Manager</label>
+              <select data-field-name="brand_manager_id" data-field-type="string">
+                <option>Select</option>
+                {bmDropDownHtml}
+              </select>
             </li>
             <li>
               <label>Ad Title</label>

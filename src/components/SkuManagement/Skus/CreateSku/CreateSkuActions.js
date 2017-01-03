@@ -509,7 +509,7 @@ const onUpdate = () => {
 
     const updatePricing = ( pricings ) => {
       if ( pricings.length > 0 ) {
-        const updatePricingUrl = 'https://data.hipbar-stg.hasura-app.io/v1/query';
+        const updatePricingUrl = Endpoints.dataUrl + '/v1/query';
         const updateObjs = pricings.map( ( pricingId ) => {
           const localObj = {};
           localObj.type = 'update';

@@ -230,18 +230,26 @@ class UnlockBarAddSKU extends Component {
           <DisableInformation label = "Select SKU" val = "Select" options={ skuHtml } fieldName="sku_pricing_id" fieldType="int" currVal = { newSkuData.sku_pricing_id ? newSkuData.sku_pricing_id : 0} disable = { isEdit } />
           <div className = {styles.command_wrapper}>
             <div className = {styles.information_leftpanel}>
-              Bar Price
+              Base SKU  Price
             </div>
             <div className = {styles.information_rightpanel}>
-              <input type="text" data-field-name="menuPrice" data-field-type="int" value={ newSkuData.menuPrice }/>
+              <input type="text" data-field-name="base_sku_price" data-field-type="string" value={ newSkuData.bar_menu_price}/>
             </div>
           </div>
           <div className = {styles.command_wrapper}>
             <div className = {styles.information_leftpanel}>
-              Hipbar Price
+              Negotiated SKU Price
             </div>
             <div className = {styles.information_rightpanel}>
-              <input type="text" data-field-name="hipbarPrice" data-field-type="int" value={ newSkuData.hipbarPrice }/>
+              <input type="text" data-field-name="negotiated_sku_price" data-field-type="string" value={ newSkuData.negotiated_sku_price}/>
+            </div>
+          </div>
+          <div className = {styles.command_wrapper}>
+            <div className = {styles.information_leftpanel}>
+              Charges And Tax percentage at Bar
+            </div>
+            <div className = {styles.information_rightpanel}>
+              <input type="text" data-field-name="charges_and_tax_percentage" data-field-type="string" value={ newSkuData.charges_and_tax_percentage}/>
             </div>
           </div>
           <div className = {styles.command_wrapper}>
@@ -261,6 +269,24 @@ class UnlockBarAddSKU extends Component {
             </div>
           </div>
           <DisableInformation label = "Status" val = "Status" options={ statusHtml } fieldName = "is_active" fieldType = "boolean" currVal = { newSkuData.is_active ? 1 : 0 }/>
+          <div className = {styles.command_wrapper}>
+            <div className = {styles.information_leftpanel}>
+              Start Date
+            </div>
+            <div className = {styles.information_rightpanel}>
+              <input data-field-name="start_date" data-field-type="time" type="datetime-local" value={ newSkuData.start_date}/>
+            </div>
+          </div>
+          <div className = {styles.command_wrapper}>
+            <div className = {styles.information_leftpanel}>
+              End Date
+            </div>
+            <div className = {styles.information_rightpanel}>
+              <input data-field-name="end_date" data-field-type="time" type="datetime-local" value={ newSkuData.end_date}/>
+            </div>
+          </div>
+          <div className={ styles.warning_block + ' ' + ( !newSkuData.is_active && !newSkuData.status ? '' : 'hide' ) }>
+          </div>
           <div className={ styles.warning_block + ' ' + ( isEdit && !newSkuData.is_active && !newSkuData.status ? '' : 'hide' ) }>
             * Click on Disable button to cancel { newSkuData.sku_pricing_id in barSKUs ? barSKUs[newSkuData.sku_pricing_id].length : 0 } open reservations
             <button className={ styles.edit_sku_disable } onClick={ this.disableSku.bind(this) }>
@@ -271,7 +297,7 @@ class UnlockBarAddSKU extends Component {
             * Click on Update to Deactivate an SKU
           </div>
           { actionButton }
-          {/*
+          /*
           <div className = {styles.command_wrapper}>
             <div className = {styles.information_leftpanel}>
               From Date
@@ -288,7 +314,7 @@ class UnlockBarAddSKU extends Component {
               <input type="text" />
             </div>
           </div>
-          */}
+          */
         </div>
       </div>
     );

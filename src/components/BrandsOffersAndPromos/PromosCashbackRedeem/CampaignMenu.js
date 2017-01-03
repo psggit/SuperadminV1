@@ -1,13 +1,20 @@
 import React from 'react';
 
 const CampaignMenu = ({styles, brandManagerCampaignMap, brandManagerBrandMap, onBrandManagerChange,
-  onValueChange, brandManagerOptions, campaignName, budgetedAmount, brandEmail,
-  fundsCredited, activeFrom, activeTo, campaignStatus}) => (
+  onValueChange, brandManagerOptions, campaignName, budgetedAmount, brandEmail, companyOptions,
+  onCompanyChange, fundsCredited, activeFrom, activeTo, campaignStatus, company}) => (
   <div className={styles.compaign_details}>
     <div className={styles.heading + ' ' + styles.wd_100}>
       Campaign details
     </div>
     <ul>
+      <li>
+        <label>Company</label>
+        <select data-field-name="name" type="text" name="company_name"
+          value={company} onChange={onCompanyChange.bind(this)} >
+          {companyOptions}
+        </select>
+      </li>
       <li>
         <label>Brand Manager Email</label>
         <select data-field-name="name" type="text" name="brand_email"
