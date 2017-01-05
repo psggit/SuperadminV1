@@ -328,7 +328,7 @@ class KycUploadProfile extends Component {
           consumerWhere.$or.push({
             'id': file.id
           });
-        } else if (file.proof_type === 'IDPROOFFRONT' || file.proof_type === 'IDPROOFBACK' ) {
+        } else if (file.proof_type === 'IDPROOFFRONT' || file.proof_type === 'IDPROOFBACK') {
           updateIdProof = true;
           idWhere.$or.push({
             'id': file.id
