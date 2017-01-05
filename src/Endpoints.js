@@ -2,10 +2,11 @@
 <<<<<<< HEAD
 if (process.env.DEV = '')
 {
-  const dataUrl = 'https://data.hipbar-stg.hasura-app.io';
-  const authUrl = 'https://auth.hipbar-stg.hasura-app.io';
-  const fileUrl = 'https://api2.hipbar-stg.hasura-app.io';
-  const blogicUrl = 'https://api1.hipbar-stg.hasura-app.io';
+  appName='hipbar-stg';
+  const dataUrl = 'https://data.' + appName + '.hasura-app.io';
+  const authUrl = 'https://auth.' + appName + '.hasura-app.io';
+  const fileUrl = 'https://api2.' + appName + '.hasura-app.io';
+  const blogicUrl = 'https://api1.' + appName + '.hasura-app.io';
 } else {
   const scheme = window.location.href.split(':')[0];
   const baseHost = window.__env.baseDomain;
