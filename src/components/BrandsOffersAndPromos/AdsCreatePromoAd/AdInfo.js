@@ -59,6 +59,10 @@ const AdInfo = ({dispatch, campaigns, skl, bmi}) => {
               <input data-field-name="funds_credited" data-field-type="int" type="text"/>
             </li>
             <li>
+              <label>Target Views</label>
+              <input data-field-name="target_views" data-field-type="int" type="text"/>
+            </li>
+            <li>
               <label>Active From</label>
               <input data-field-name="active_from" data-field-type="time" type="datetime-local"/>
             </li>
