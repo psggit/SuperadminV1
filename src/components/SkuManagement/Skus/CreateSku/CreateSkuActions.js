@@ -145,22 +145,44 @@ const fetchState = () => {
           }
         ],
         'where': {
-          'retailers': {
-            'id': {
-              '$gt': 0
+          '$or': [
+            {
+              'retailers': {
+                'id': {
+                  '$gt': 0
+                }
+              }
+            },
+            {
+              'bars': {
+                'id': {
+                  '$gt': 0
+                }
+              }
             }
-          }
+          ]
         }
       }
     ];
     queryObj.order_by = '-state_name';
     queryObj.where = {
       'cities': {
-        'retailers': {
-          'id': {
-            '$gt': 0
+        '$or': [
+          {
+            'retailers': {
+              'id': {
+                '$gt': 0
+              }
+            }
+          },
+          {
+            'bars': {
+              'id': {
+                '$gt': 0
+              }
+            }
           }
-        }
+        ]
       }
     };
     const options = {
@@ -509,7 +531,7 @@ const onUpdate = () => {
 
     const updatePricing = ( pricings ) => {
       if ( pricings.length > 0 ) {
-        const updatePricingUrl = 'https://data.hipbar-stg.hasura-app.io/v1/query';
+        const updatePricingUrl = Endpoints.dataUrl + '/v1/query';
         const updateObjs = pricings.map( ( pricingId ) => {
           const localObj = {};
           localObj.type = 'update';

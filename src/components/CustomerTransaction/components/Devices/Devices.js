@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { getAllTransactionData, getTransactionData } from '../../../Common/Actions/Actions';
+import { getAllTransactionData, getTransactionData } from './DevicesAction';
 import SearchWrapper from './SearchWrapper';
 
 import PaginationWrapper from '../../../Common/PaginationWrapper.js';

@@ -1,8 +1,31 @@
 // const base = 'http://130.211.246.199';
-const dataUrl = 'https://data.hipbar-stg.hasura-app.io';
-const authUrl = 'https://auth.hipbar-stg.hasura-app.io';
-const fileUrl = 'https://api2.hipbar-stg.hasura-app.io';
-const blogicUrl = 'https://api1.hipbar-stg.hasura-app.io';
+//
+
+let dataUrl;
+let authUrl;
+let fileUrl;
+let blogicUrl;
+let downloadRepUrl;
+let scheme;
+let baseHost;
+
+if (process.env.DEV === 'development') {
+  const appName = 'hipbar-stg';
+  dataUrl = 'https://data.' + appName + '.hasura-app.io';
+  authUrl = 'https://auth.' + appName + '.hasura-app.io';
+  fileUrl = 'https://api2.' + appName + '.hasura-app.io';
+  blogicUrl = 'https://api1.' + appName + '.hasura-app.io';
+  downloadRepUrl = 'https://downloadrep' + appName + '.hasura-app.io';
+} else {
+  scheme = window.location.href.split(':')[0];
+  baseHost = window.__env.baseDomain;
+  dataUrl = scheme + '://data' + baseHost;
+  authUrl = scheme + '://auth' + baseHost;
+  fileUrl = scheme + '://api2' + baseHost;
+  blogicUrl = scheme + '://api1' + baseHost;
+  downloadRepUrl = scheme + '://downloadrep' + baseHost;
+}
+
 // const base = '';
 const Endpoints = {
   login: authUrl + '/login',
@@ -22,4 +45,4 @@ const Endpoints = {
 const globalCookiePolicy = 'include';
 
 export default Endpoints;
-export {globalCookiePolicy, dataUrl, authUrl, fileUrl};
+export {globalCookiePolicy, dataUrl, authUrl, fileUrl, downloadRepUrl};
