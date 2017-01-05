@@ -1,8 +1,11 @@
 // const base = 'http://130.211.246.199';
-const dataUrl = 'https://data.hipbar-stg.hasura-app.io';
-const authUrl = 'https://auth.hipbar-stg.hasura-app.io';
-const fileUrl = 'https://api2.hipbar-stg.hasura-app.io';
-const blogicUrl = 'https://api1.hipbar-stg.hasura-app.io';
+if (process.env.DEV = '')
+{
+  const dataUrl = 'https://data.hipbar-stg.hasura-app.io';
+  const authUrl = 'https://auth.hipbar-stg.hasura-app.io';
+  const fileUrl = 'https://api2.hipbar-stg.hasura-app.io';
+  const blogicUrl = 'https://api1.hipbar-stg.hasura-app.io';
+} else {}
 // const base = '';
 const Endpoints = {
   login: authUrl + '/login',
