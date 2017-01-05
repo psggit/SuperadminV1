@@ -80,7 +80,9 @@ const saveBar = () => {
       'city_id',
       'excise_licence_number',
       'name',
-      'address'
+      'address',
+      'discount_percent',
+      'service_charge_percent'
     ];
     let brCheckStatus = true;
 
@@ -268,7 +270,9 @@ const updateBar = () => {
       'service_charge_percent',
       'city_id',
       'excise_licence_number',
-      'name'
+      'name',
+      'discount_percent',
+      'service_charge_percent'
     ];
 
     let brCheckStatus = true;

@@ -19,6 +19,13 @@ import PaginationContainer from './Pagination';
 
 import commonDecorator from '../../Common/CommonDecorator';
 
+import {
+  TOGGLE_SEARCH,
+  RESET_FILTER
+} from '../../Common/SearchComponentGen/FilterState';
+
+import SearchComponent from '../../Common/SearchComponentGen/SearchComponent';
+
 class Organization extends Component {
   componentWillMount() {
     console.log('Will mount called');
@@ -50,6 +57,9 @@ class Organization extends Component {
   }
   componentWillUnmount() {
     console.log('Unmounted');
+    Promise.all([
+      this.props.dispatch({ type: RESET_FILTER })
+    ]);
   }
   onClickHandle(e) {
     // e.preventDefault();
@@ -66,6 +76,18 @@ class Organization extends Component {
       });
     }
   }
+  enableSearch() {
+    const page = 1;
+
+    Promise.all([
+      this.props.dispatch({ type: MAKE_REQUEST }),
+      this.props.dispatch({ type: TOGGLE_SEARCH }),
+      this.props.dispatch(getAllOrganizationData(page, 10))
+    ])
+    .then( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED });
+    });
+  }
   render() {
     const styles = require('./ViewOrganization.scss');
     const { ongoingRequest, lastError, lastSuccess, count} = this.props;
@@ -74,11 +96,35 @@ class Organization extends Component {
     const paginationUrl = '/hadmin/retailer_management/view_organizations';
 
     const page = (Object.keys(query).length > 0) ? parseInt(query.p, 10) : 1;
+
+    const fields = [ 'id', 'organisation_name', 'type_of_organisation', 'pan_number', 'tin_number', 'tan_number'];
+    // const operator = ['$eq'];
+    const fieldOperatorMap = {
+      'organisation_name': ['$eq', '$like', '$ilike'],
+      'type_of_organisation': ['$eq', '$like', '$ilike'],
+      'pan_number': ['$eq', '$like', '$ilike'],
+      'tin_number': ['$eq', '$like', '$ilike'],
+      'tan_number': ['$eq', '$like', '$ilike'],
+      'id': ['$eq', '$gt', '$lt']
+    };
+    const fieldTypeMap = {
+      'organisation_name': 'text',
+      'type_of_organisation': 'text',
+      'id': 'number',
+      'pan_number': 'text',
+      'tin_number': 'text',
+      'tan_number': 'text'
+    };
     console.log(lastError);
     console.log(ongoingRequest);
     return (
           <div className={styles.recharge_container}>
             <TableHeader title={'Retailer Management/ View Organizations'} />
+            <SearchComponent configuredFields={ fields } fieldOperatorMap={ fieldOperatorMap } fieldTypeMap={ fieldTypeMap }>
+              <button className={styles.common_btn} onClick={ this.enableSearch.bind(this) }>
+                Search
+              </button>
+            </SearchComponent>
             <OrganizationSearchWrapper data={lastSuccess}/>
             <PaginationContainer limit="10" onClickHandler={this.onClickHandle.bind(this)} currentPage={page} showMax="5" count={count} parentUrl={ paginationUrl } />
           </div>

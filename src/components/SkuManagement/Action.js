@@ -15,6 +15,8 @@ import { routeActions } from 'redux-simple-router';
 
 import requestAction from '../Common/Actions/requestAction';
 
+import beginFilter from '../Common/SearchComponentGen/GenerateFilter';
+
 /* Actions */
 
 const MAKE_REQUEST = 'CTSKU/MAKE_REQUEST';
@@ -94,13 +96,16 @@ const loadCredentials = () => {
   };
 };
 
-const getStateCount = () => {
+const getStateCount = ( filterObj, isSearched ) => {
   return (dispatch) => {
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
     const payload = {
       'columns': ['*']
     };
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
 
     const url = Endpoints.db + '/table/' + 'state' + '/count';
     const options = {
@@ -134,7 +139,7 @@ const getStateCount = () => {
   };
 };
 
-const getStateData = (page) => {
+const getStateData = ( page, filterObj, isSearched ) => {
   return (dispatch) => {
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -153,6 +158,10 @@ const getStateData = (page) => {
       offset: offset,
       order_by: '+id'
     };
+
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
 
     const url = Endpoints.db + '/table/' + 'state' + '/select';
     const options = {
@@ -315,12 +324,15 @@ const updateState = (updateObj, stateId) => {
 };
 
 const getAllStateData = (page) => {
-  return ( dispatch ) => {
+  return ( dispatch, getState ) => {
     const gotPage = page;
+
+    const filterData = getState().gen_filter_data;
+    const filterObj = { ...beginFilter(getState) };
     /* Dispatching first one */
     return Promise.all([
-      dispatch(getStateCount()),
-      dispatch(getStateData(gotPage))
+      dispatch(getStateCount( filterObj, filterData.isSearched )),
+      dispatch(getStateData(gotPage, filterObj, filterData.isSearched ))
     ]);
   };
   /*
@@ -338,7 +350,7 @@ const getAllStateData = (page) => {
 
 /* Genre Actions */
 
-const getGenreCount = () => {
+const getGenreCount = ( filterObj, isSearched ) => {
   return (dispatch) => {
     dispatch({ type: MAKE_REQUEST});
     //
@@ -346,6 +358,9 @@ const getGenreCount = () => {
     const payload = {
       'columns': ['*']
     };
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
 
     const url = Endpoints.db + '/table/' + 'genre' + '/count';
     const options = {
@@ -379,7 +394,7 @@ const getGenreCount = () => {
   };
 };
 
-const getGenreData = (page, limit) => {
+const getGenreData = (page, limit, filterObj, isSearched) => {
   return (dispatch) => {
     dispatch({ type: MAKE_REQUEST});
     //
@@ -399,6 +414,10 @@ const getGenreData = (page, limit) => {
       offset: offset,
       order_by: '+id'
     };
+
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
 
     const url = Endpoints.db + '/table/' + 'genre' + '/select';
     const options = {
@@ -583,10 +602,12 @@ const updateGenre = (updateObj, genreId) => {
 const getAllGenreData = (page, limit) => {
   const gotPage = page;
   /* Dispatching first one */
-  return (dispatch) => {
-    dispatch(getGenreCount())
+  return (dispatch, getState ) => {
+    const filterData = getState().gen_filter_data;
+    const filterObj = { ...beginFilter(getState) };
+    dispatch(getGenreCount( filterObj, filterData.isSearched ))
       .then(() => {
-        return dispatch(getGenreData(gotPage, limit));
+        return dispatch(getGenreData(gotPage, limit, filterObj, filterData.isSearched));
       })
       .then(() => {
         console.log('Recharge Data fetched');
@@ -599,7 +620,7 @@ const getAllGenreData = (page, limit) => {
 
 /* Category Actions */
 
-const getCategoryCount = () => {
+const getCategoryCount = ( filterObj, isSearched ) => {
   return (dispatch) => {
     dispatch({ type: MAKE_REQUEST});
     //
@@ -607,6 +628,10 @@ const getCategoryCount = () => {
     const payload = {
       'columns': ['*']
     };
+
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
 
     const url = Endpoints.db + '/table/' + 'category' + '/count';
     const options = {
@@ -640,7 +665,7 @@ const getCategoryCount = () => {
   };
 };
 
-const getCategoryData = (page, limit) => {
+const getCategoryData = (page, limit, filterObj, isSearched) => {
   return (dispatch) => {
     dispatch({ type: MAKE_REQUEST});
     //
@@ -660,6 +685,10 @@ const getCategoryData = (page, limit) => {
       offset: offset,
       order_by: '+id'
     };
+
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
 
     const url = Endpoints.db + '/table/' + 'category' + '/select';
     const options = {
@@ -851,10 +880,12 @@ const getAllCategoryData = (page, limit) => {
   const gotPage = page;
   const localLimit = limit;
   /* Dispatching first one */
-  return (dispatch) => {
-    dispatch(getCategoryCount())
+  return (dispatch, getState ) => {
+    const filterData = getState().gen_filter_data;
+    const filterObj = { ...beginFilter(getState) };
+    dispatch(getCategoryCount( filterObj, filterData.isSearched ))
       .then(() => {
-        return dispatch(getCategoryData(gotPage, localLimit));
+        return dispatch(getCategoryData(gotPage, localLimit, filterObj, filterData.isSearched ));
       })
       .then(() => {
         console.log('Recharge Data fetched');
@@ -866,7 +897,7 @@ const getAllCategoryData = (page, limit) => {
 /* End of it */
 
 /* Get Companies */
-const getCompanyCount = () => {
+const getCompanyCount = ( filterObj, isSearched ) => {
   return (dispatch) => {
     dispatch({ type: MAKE_REQUEST});
     //
@@ -874,6 +905,10 @@ const getCompanyCount = () => {
     const payload = {
       'columns': ['*']
     };
+
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
 
     const url = Endpoints.db + '/table/' + 'company' + '/count';
     const options = {
@@ -907,7 +942,7 @@ const getCompanyCount = () => {
   };
 };
 
-const getCompanyData = (page, limit) => {
+const getCompanyData = (page, limit, filterObj, isSearched ) => {
   return (dispatch) => {
     dispatch({ type: MAKE_REQUEST});
     //
@@ -927,6 +962,10 @@ const getCompanyData = (page, limit) => {
       offset: offset,
       order_by: '+id'
     };
+
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
 
     const url = Endpoints.db + '/table/' + 'company' + '/select';
     const options = {
@@ -964,10 +1003,12 @@ const getAllCompanyData = (page, limit) => {
   const gotPage = page;
   const localLimit = limit;
   /* Dispatching first one */
-  return (dispatch) => {
-    dispatch(getCompanyCount())
+  return (dispatch, getState ) => {
+    const filterData = getState().gen_filter_data;
+    const filterObj = { ...beginFilter(getState) };
+    dispatch(getCompanyCount( filterObj, filterData.isSearched ))
       .then(() => {
-        return dispatch(getCompanyData(gotPage, localLimit));
+        return dispatch(getCompanyData(gotPage, localLimit, filterObj, filterData.isSearched));
       })
       .then(() => {
         console.log('Company Data fetched');
