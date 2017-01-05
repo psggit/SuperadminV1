@@ -428,7 +428,7 @@ const updateKycs = (requestObjs, insertObjs, kycId, kycStatus, consumerId) => {
   let pinCode;
   console.log('>>> UpdateKycs-Action Received the Following :');
   console.log(JSON.stringify(requestObjs));
-  requestObjs.forEach(function(indiv) {
+  requestObjs.forEach((indiv) => {
     panId = indiv.values.hasOwnProperty('pan_number') ? indiv.values.pan_number : panId;
     pinCode = indiv.values.hasOwnProperty('pin_code') ? indiv.values.pin_code : pinCode;
     if (indiv.values.status === 'Verifed') {
@@ -437,7 +437,7 @@ const updateKycs = (requestObjs, insertObjs, kycId, kycStatus, consumerId) => {
   });
   listOfValidations.push(validation(panId, 'pan_number'));
   listOfValidations.push(validation(pinCode, 'pin_code'));
-  commentField.forEach(function(indiv) {
+  commentField.forEach( (indiv) => {
     listOfValidations.push(validation(indiv, 'non_empty_field'));
   });
   return (dispatch) => {

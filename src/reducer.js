@@ -57,6 +57,7 @@ import adsCreateBarReducer from './components/BrandsOffersAndPromos/AdsCreateBar
 import adsCreateUrlReducer from './components/BrandsOffersAndPromos/AdsCreateUrlAd/CreateAdUrlActions';
 
 import filterReducer from './components/Common/SearchComponent/FilterState';
+import filterGenReducer from './components/Common/SearchComponentGen/FilterState';
 
 import retailerDebitCreditRedicer from './components/RetailerManagement/DebitsCredits/Actions';
 import barDebitCreditRedicer from './components/RetailerManagement/BarDebitsCredits/Actions';
@@ -110,7 +111,8 @@ const reducer = combineReducers({
   filter_data: filterReducer,
   retailer_debit_credit: retailerDebitCreditRedicer,
   bar_debit_credit: barDebitCreditRedicer,
-  all_bar_skus: barAllSkuReducer
+  all_bar_skus: barAllSkuReducer,
+  gen_filter_data: filterGenReducer
 });
 
 export default reducer;
