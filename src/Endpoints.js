@@ -7,16 +7,18 @@ let fileUrl;
 let blogicUrl;
 let downloadRepUrl;
 let scheme;
-let baseHost;
+let baseHost = 'TEST';
 
-if (process.env.DEV === 'development') {
+if (window.location.href.split(':')[1] === '//localhost') {
   const appName = 'hipbar-stg';
   dataUrl = 'https://data.' + appName + '.hasura-app.io';
   authUrl = 'https://auth.' + appName + '.hasura-app.io';
   fileUrl = 'https://api2.' + appName + '.hasura-app.io';
   blogicUrl = 'https://api1.' + appName + '.hasura-app.io';
-  downloadRepUrl = 'https://downloadrep' + appName + '.hasura-app.io';
+  downloadRepUrl = 'https://downloadrep.' + appName + '.hasura-app.io';
 } else {
+  console.log('I am in Endpoints');
+  console.log(window.location.href);
   scheme = window.location.href.split(':')[0];
   baseHost = window.__env.baseDomain;
   dataUrl = scheme + '://data' + baseHost;
