@@ -2,9 +2,18 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import { RESET,
-  getAllConsumerData,
-  getConsumerData
+  getAllConsumerData
 } from './ViewConsumerAction';
+
+import {
+  TOGGLE_SEARCH,
+  RESET_FILTER
+} from '../../../Common/SearchComponentGen/FilterState';
+
+import {
+  MAKE_REQUEST,
+  REQUEST_COMPLETED
+} from '../../../Common/Actions/Actions';
 
 import PaginationWrapper from '../../../Common/PaginationWrapper.js';
 
@@ -46,23 +55,63 @@ class ViewConsumer extends Component {
     });
   }
   componentWillUnmount() {
-    this.props.dispatch( { type: RESET } );
+    console.log('Unmounted');
+    Promise.all([
+      this.props.dispatch( { type: RESET } ),
+      this.props.dispatch({ type: RESET_FILTER })
+    ]);
   }
   // Hook used by pagination wrapper to fetch the initial data
   fetchInitialData(page, limit) {
     this.props.dispatch(getAllConsumerData(page, limit));
   }
   triggerPageChange(clickedPage, limit) {
-    this.props.dispatch(getConsumerData(clickedPage, limit));
+    this.props.dispatch(getAllConsumerData(clickedPage, limit));
+  }
+  enableSearch() {
+    const page = 1;
+
+    Promise.all([
+      this.props.dispatch({ type: MAKE_REQUEST }),
+      this.props.dispatch({ type: TOGGLE_SEARCH }),
+      this.props.dispatch(getAllConsumerData(page, 10))
+    ])
+    .then( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED });
+    });
   }
   render() {
     const { lastSuccess } = this.props;
     const styles = require('./ViewConsumer.scss');
+
+    /* Search Parameters */
+
+    const fields = [ 'full_name', 'id', 'email', 'mobile_number', 'device.device_num', 'level_id' ];
+    // const operator = ['$eq'];
+    const fieldOperatorMap = {
+      'full_name': ['$eq', '$like', '$ilike'],
+      'mobile_number': ['$eq', '$like', '$ilike'],
+      'device.device_num': ['$eq', '$like', '$ilike'],
+      'level_id': ['$eq', '$gt', '$lt'],
+      'email': ['$eq', '$like', '$ilike'],
+      'id': ['$eq', '$gt', '$lt']
+    };
+    const fieldTypeMap = {
+      'full_name': 'text',
+      'email': 'text',
+      'id': 'number',
+      'level_id': 'number',
+      'mobile_number': 'text',
+      'device.device_num': 'text'
+    };
+
+    /* End of it */
+
     return (
           <div className={styles.container}>
             <BreadCrumb breadCrumbs={this.breadCrumbs} />
-            <SearchComponent>
-              <button className={styles.common_btn} >
+            <SearchComponent configuredFields={ fields } fieldOperatorMap={ fieldOperatorMap } fieldTypeMap={ fieldTypeMap }>
+              <button className={styles.common_btn} onClick={ this.enableSearch.bind(this) }>
                 Search
               </button>
             </SearchComponent>

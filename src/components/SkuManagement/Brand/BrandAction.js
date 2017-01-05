@@ -48,6 +48,8 @@ const IMAGE_UPLOAD_SUCCESS = '@category/IMAGE_UPLOAD_SUCCESS';
 const IMAGE_UPLOAD_ERROR = '@category/IMAGE_UPLOAD_ERROR';
 const CANCEL_IMAGE = '@category/CANCEL_IMAGE';
 
+import beginFilter from '../../Common/SearchComponentGen/GenerateFilter';
+
 /* End of it */
 
 /* ****** Action Creators ******** */
@@ -594,7 +596,7 @@ const updateRegion = () => {
 
 /* Action Creators for Brand Management Listing */
 
-const getBrandCount = () => {
+const getBrandCount = ( filterObj, isSearched ) => {
   return (dispatch) => {
     dispatch({ type: MAKE_REQUEST});
     //
@@ -602,6 +604,10 @@ const getBrandCount = () => {
     const payload = {
       'columns': ['*']
     };
+
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
 
     const url = Endpoints.db + '/table/' + 'brand' + '/count';
     const options = {
@@ -635,7 +641,7 @@ const getBrandCount = () => {
   };
 };
 
-const getBrandData = (page, limit) => {
+const getBrandData = (page, limit, filterObj, isSearched ) => {
   return (dispatch) => {
     dispatch({ type: MAKE_REQUEST});
     //
@@ -667,6 +673,10 @@ const getBrandData = (page, limit) => {
       offset: offset,
       order_by: '+id'
     };
+
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
 
     const url = Endpoints.db + '/table/' + 'brand' + '/select';
     const options = {
@@ -704,10 +714,12 @@ const getAllBrandData = (page, limit) => {
   const gotPage = page;
   const gotLimit = limit;
   /* Dispatching first one */
-  return (dispatch) => {
-    dispatch(getBrandCount())
+  return (dispatch, getState ) => {
+    const filterData = getState().gen_filter_data;
+    const filterObj = { ...beginFilter(getState) };
+    dispatch(getBrandCount( filterObj, filterData.isSearched ))
       .then(() => {
-        return dispatch(getBrandData(gotPage, gotLimit));
+        return dispatch(getBrandData(gotPage, gotLimit, filterObj, filterData.isSearched));
       })
       .then(() => {
         console.log('Brand Data fetched');

@@ -3,14 +3,9 @@ import React, { Component, PropTypes } from 'react';
 class SearchFields extends Component {
   render() {
     const styles = require('./SearchComponent.scss');
-    const { id, onTabOut, monitorChanges, isDisabled, values, selectedFilters, clearFilter } = this.props;
-    let fields = ['name', 'id', 'email'];
-    // const operator = ['$eq'];
-    const fieldOperatorMap = {
-      'name': ['$eq', '$like', '$ilike'],
-      'email': ['$eq', '$like', '$ilike'],
-      'id': ['$eq', '$gt', '$lt']
-    };
+    const { id, onTabOut, monitorChanges, isDisabled, values, selectedFilters, clearFilter, configuredFields, fieldTypeMap, fieldOperatorMap } = this.props;
+
+    let fields = [ ...configuredFields ];
     const operatorMap = {};
     operatorMap.$eq = 'Equal';
     operatorMap.$like = 'LIKE';
@@ -35,6 +30,13 @@ class SearchFields extends Component {
         <option key={ index } value={ op } > { operatorMap[op].toUpperCase() } </option>
       );
     }) : [];
+
+    const inputField = ( values.field ) ? (
+      	<input data-field-type={ fieldTypeMap[values.field] } type={ fieldTypeMap[values.field] } placeholder="Contains" data-field-name="value" onBlur={ onTabOut } disabled={ parseInt(isDisabled, 10) ? true : '' } value={ values ? values.value : '' } />
+      ) : (
+      	<input type="text" data-field-type="text" placeholder="Contains" data-field-name="value" onBlur={ onTabOut } disabled={ parseInt(isDisabled, 10) ? true : '' } value={ values ? values.value : '' } />
+      );
+
     return (
       <div className={styles.search_form + ' ' + styles.wd_100 } data-field-id={ id } onChange={ monitorChanges } >
         <select data-field-name="field" disabled={ parseInt(isDisabled, 10) ? true : '' } value={ values ? values.field : '' } >
@@ -45,7 +47,7 @@ class SearchFields extends Component {
           <option value=""> Select Operator </option>
           { operatorHtml }
         </select>
-      	<input type="text" placeholder="Contains" data-field-name="value" onBlur={ onTabOut } disabled={ parseInt(isDisabled, 10) ? true : '' } value={ values ? values.value : '' } />
+        { inputField }
         <div className={ styles.cross + ( !parseInt(isDisabled, 10 ) ? ' hide' : '') } data-field-id={ id } onClick={ clearFilter } >
           x
         </div>
@@ -61,7 +63,10 @@ SearchFields.propTypes = {
   clearFilter: PropTypes.func.isRequired,
   isDisabled: PropTypes.string.isRequired,
   values: PropTypes.object.isRequired,
-  selectedFilters: PropTypes.array.isRequired
+  selectedFilters: PropTypes.array.isRequired,
+  fieldOperatorMap: PropTypes.object.isRequired,
+  fieldTypeMap: PropTypes.object.isRequired,
+  configuredFields: PropTypes.array.isRequired
 };
 
 export default SearchFields;

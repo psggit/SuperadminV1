@@ -14,6 +14,18 @@ import PaginationWrapper from '../../Common/PaginationWrapper.js';
 import commonDecorator from '../../Common/CommonDecorator';
 import BreadCrumb from '../../Common/BreadCrumb';
 
+import {
+  TOGGLE_SEARCH,
+  RESET_FILTER
+} from '../../Common/SearchComponentGen/FilterState';
+
+import {
+  MAKE_REQUEST,
+  REQUEST_COMPLETED
+} from '../../Common/Actions/Actions';
+
+import SearchComponent from '../../Common/SearchComponentGen/SearchComponent';
+
 /*
  1. Required Components:
       a) Pagination
@@ -39,6 +51,12 @@ class BrandManagement extends React.Component { // eslint-disable-line no-unused
       link: '#'
     });
   }
+  componentWillUnmount() {
+    console.log('Unmounted');
+    Promise.all([
+      this.props.dispatch({ type: RESET_FILTER })
+    ]);
+  }
   // Hook used by pagination wrapper to fetch the initial data
   fetchInitialData(page, limit) {
     this.props.dispatch(getAllBrandData(page, limit));
@@ -49,9 +67,42 @@ class BrandManagement extends React.Component { // eslint-disable-line no-unused
   get myName() {
     return 'Karthik Venkateswaran';
   }
+  enableSearch() {
+    const page = 1;
+
+    Promise.all([
+      this.props.dispatch({ type: MAKE_REQUEST }),
+      this.props.dispatch({ type: TOGGLE_SEARCH }),
+      this.props.dispatch(getAllBrandData(page, 10))
+    ])
+    .then( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED });
+    });
+  }
   render() {
     const styles = require('./BrandManagement.scss');
     const { lastSuccess } = this.props;
+
+    /* Search Parameters */
+
+    const fields = [ 'id', 'brand_name', 'category.name', 'company.name', 'category.genre_short_name' ];
+    // const operator = ['$eq'];
+    const fieldOperatorMap = {
+      'brand_name': ['$eq', '$like', '$ilike'],
+      'category.name': ['$eq', '$like', '$ilike'],
+      'company.name': ['$eq', '$like', '$ilike'],
+      'category.genre_short_name': ['$eq', '$like', '$ilike'],
+      'id': ['$eq', '$gt', '$lt']
+    };
+    const fieldTypeMap = {
+      'brand_name': 'text',
+      'category.name': 'text',
+      'id': 'number',
+      'company.name': 'text',
+      'category.genre_short_name': 'text'
+    };
+
+    /* End of it */
 
     console.log('my name is ');
     console.log(this.myName);
@@ -59,17 +110,11 @@ class BrandManagement extends React.Component { // eslint-disable-line no-unused
     return (
         <div className={styles.container}>
           <BreadCrumb breadCrumbs={this.breadCrumbs} />
-
-         	<div className={styles.search_wrapper + ' ' + styles.wd_100}>
-         		<p>Search</p>
-         		<div className={styles.search_form + ' ' + styles.wd_100}>
-         			<input type="text" placeholder="Mobile Number" />
-         			<input type="text" placeholder="Contains" />
-         			<input type="number" />
-         			<button className={styles.common_btn}>Search</button>
-         		</div>
-         	</div>
-
+          <SearchComponent configuredFields={ fields } fieldOperatorMap={ fieldOperatorMap } fieldTypeMap={ fieldTypeMap }>
+            <button className={styles.common_btn} onClick={ this.enableSearch.bind(this) }>
+              Search
+            </button>
+          </SearchComponent>
           <div className={styles.create_layout + ' ' + styles.wd_100}>
             <Link to={'/hadmin/brand_management/create'}>
               <button className={styles.common_btn}>Create Brand</button>

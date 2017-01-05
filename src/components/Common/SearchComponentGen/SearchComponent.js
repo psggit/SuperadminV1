@@ -31,7 +31,8 @@ class SearchComponent extends Component {
     /* Monitors changes on the form fields */
     console.log('Tracked');
     const fieldN = e.target.getAttribute('data-field-name');
-    const val = e.target.value;
+    const fieldType = e.target.getAttribute('data-field-type');
+    const val = ( fieldType === 'number') ? parseInt(e.target.value, 10) : e.target.value;
     const fieldId = e.target.parentNode.getAttribute('data-field-id');
     this.props.dispatch({ type: INPUT_CHANGED, data: { id: fieldId, values: { [fieldN]: val }}});
   }
@@ -39,6 +40,8 @@ class SearchComponent extends Component {
     const styles = require('./SearchComponent.scss');
 
     const { currentFilter, selectedFields } = this.props.currFilter;
+
+    const { configuredFields, fieldTypeMap, fieldOperatorMap } = this.props;
 
     const filters = Object.keys(this.props.currFilter.filters);
 
@@ -48,7 +51,7 @@ class SearchComponent extends Component {
       filters.forEach( ( filter, index ) => {
         if ( this.props.currFilter.filters[filter].isValid ) {
           selectedFilters.push(
-            <SearchFields key={ index } id = { parseInt(filter, 10) } monitorChanges={ this.trackChanges.bind(this) } onTabOut={ this.onTabOut.bind(this) } isDisabled="1" values = { this.props.currFilter.filters[filter] } selectedFilters={ selectedFields } clearFilter={ this.onClose.bind(this) }/>
+            <SearchFields key={ index } id = { parseInt(filter, 10) } monitorChanges={ this.trackChanges.bind(this) } onTabOut={ this.onTabOut.bind(this) } isDisabled="1" values = { this.props.currFilter.filters[filter] } selectedFilters={ selectedFields } clearFilter={ this.onClose.bind(this) } configuredFields={ configuredFields } fieldOperatorMap={ fieldOperatorMap } fieldTypeMap={ fieldTypeMap }/>
           );
         }
       });
@@ -58,7 +61,7 @@ class SearchComponent extends Component {
       <div className={styles.search_wrapper + ' ' + styles.wd_100}>
       	<p>Search</p>
         { selectedFilters }
-        <SearchFields id = { currentFilter } monitorChanges={ this.trackChanges.bind(this) } onTabOut={ this.onTabOut.bind(this) } isDisabled="0" values={ this.props.currFilter.filters[currentFilter] ? this.props.currFilter.filters[currentFilter] : {} } selectedFilters={ selectedFields } clearFilter={ this.onClose.bind(this) } />
+        <SearchFields id = { currentFilter } monitorChanges={ this.trackChanges.bind(this) } onTabOut={ this.onTabOut.bind(this) } isDisabled="0" values={ this.props.currFilter.filters[currentFilter] ? this.props.currFilter.filters[currentFilter] : {} } selectedFilters={ selectedFields } clearFilter={ this.onClose.bind(this) } configuredFields={ configuredFields } fieldOperatorMap={ fieldOperatorMap } fieldTypeMap={ fieldTypeMap } />
         { this.props.children }
       </div>
     );
@@ -69,6 +72,9 @@ SearchComponent.propTypes = {
   dispatch: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
   currFilter: PropTypes.object.isRequired,
+  fieldOperatorMap: PropTypes.object.isRequired,
+  fieldTypeMap: PropTypes.object.isRequired,
+  configuredFields: PropTypes.array.isRequired
 };
 
 const mapStateToProps = ( state ) => {
