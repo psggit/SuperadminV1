@@ -145,22 +145,44 @@ const fetchState = () => {
           }
         ],
         'where': {
-          'retailers': {
-            'id': {
-              '$gt': 0
+          '$or': [
+            {
+              'retailers': {
+                'id': {
+                  '$gt': 0
+                }
+              }
+            },
+            {
+              'bars': {
+                'id': {
+                  '$gt': 0
+                }
+              }
             }
-          }
+          ]
         }
       }
     ];
     queryObj.order_by = '-state_name';
     queryObj.where = {
       'cities': {
-        'retailers': {
-          'id': {
-            '$gt': 0
+        '$or': [
+          {
+            'retailers': {
+              'id': {
+                '$gt': 0
+              }
+            }
+          },
+          {
+            'bars': {
+              'id': {
+                '$gt': 0
+              }
+            }
           }
-        }
+        ]
       }
     };
     const options = {
