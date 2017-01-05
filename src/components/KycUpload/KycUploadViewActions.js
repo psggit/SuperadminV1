@@ -12,6 +12,7 @@
 import { defaultKycState } from '../Common/Actions/DefaultState';
 import requestAction from '../Common/Actions/requestAction';
 import Endpoints, { globalCookiePolicy } from '../../Endpoints';
+import { validation } from '../Common/Actions/Validator';
 
 import { routeActions } from 'redux-simple-router';
 
@@ -351,6 +352,7 @@ const deleteFromServer = (id, imageIdentifier, userId) => {
   };
 };
 
+
 const updateExistingKycs = (requestObjs) => {
   return (dispatch) => {
     const url = Endpoints.db + '/table/kyc_files/update';
@@ -414,41 +416,66 @@ const updateExistingKycs = (requestObjs) => {
 };
 
 /* Function to update */
+// Validate all Mandatory Attributes
+// Send Action
 const updateKycs = (requestObjs, insertObjs, kycId, kycStatus, consumerId) => {
+  const currId = kycId;
+  const currStatus = kycStatus;
+  const currConsumerId = consumerId;
+  const listOfValidations = [];
+  const commentField = [];
+  let panId;
+  let pinCode;
+  console.log('>>> UpdateKycs-Action Received the Following :');
+  console.log(JSON.stringify(requestObjs));
+  requestObjs.forEach(function(indiv) {
+    panId = indiv.values.hasOwnProperty('pan_number') ? indiv.values.pan_number : panId;
+    pinCode = indiv.values.hasOwnProperty('pin_code') ? indiv.values.pin_code : pinCode;
+    if (indiv.values.status === 'Verifed') {
+      commentField.push(indiv.values.comment);
+    }
+  });
+  listOfValidations.push(validation(panId, 'pan_number'));
+  listOfValidations.push(validation(pinCode, 'pin_code'));
+  commentField.forEach(function(indiv) {
+    listOfValidations.push(validation(indiv, 'non_empty_field'));
+  });
   return (dispatch) => {
-    const currId = kycId;
-    const currStatus = kycStatus;
-    const currConsumerId = consumerId;
-
-    dispatch({ type: MAKE_REQUEST});
-    if (insertObjs.length > 0) {
+    Promise.all(listOfValidations
+    ).then(() => {
+      dispatch({ type: MAKE_REQUEST});
+      if (insertObjs.length > 0) {
+        return Promise.all([
+          dispatch(updateExistingKycs(requestObjs)),
+          dispatch(uploadKycsAndUpdate(insertObjs)),
+          dispatch(updateConsumerKyc(currId, currStatus, currConsumerId))
+        ])
+        .then( () => {
+          return Promise.all([
+            dispatch(getUserData(parseInt(currConsumerId, 10))),
+            dispatch({ type: REQUEST_COMPLETED})
+          ]);
+        })
+        .catch( () => {
+          console.log('Error Occured');
+        });
+      }
       return Promise.all([
         dispatch(updateExistingKycs(requestObjs)),
-        dispatch(uploadKycsAndUpdate(insertObjs)),
         dispatch(updateConsumerKyc(currId, currStatus, currConsumerId))
       ])
       .then( () => {
         return Promise.all([
-          dispatch(getUserData(parseInt(currConsumerId, 10))),
-          dispatch({ type: REQUEST_COMPLETED})
+          dispatch(routeActions.push('/hadmin/consumer/kycfunctions'))
         ]);
       })
       .catch( () => {
+        alert('Something went wrong');
         console.log('Error Occured');
       });
-    }
-    return Promise.all([
-      dispatch(updateExistingKycs(requestObjs)),
-      dispatch(updateConsumerKyc(currId, currStatus, currConsumerId))
-    ])
-    .then( () => {
-      return Promise.all([
-        dispatch(routeActions.push('/hadmin/consumer/kycfunctions'))
-      ]);
     })
     .catch( () => {
-      alert('Something went wrong');
-      console.log('Error Occured');
+      console.log('Validation Failed');
     });
   };
 };
@@ -580,7 +607,6 @@ const kycReducer = (state = defaultKycState, action) => {
 
 /* End of Reducer Definition */
 
-export default kycReducer;
 export {
   getUserData,
   loadCredentials,
@@ -601,3 +627,4 @@ export {
   updateKycs,
   RESET_KYC_DATA
 };
+export default kycReducer;

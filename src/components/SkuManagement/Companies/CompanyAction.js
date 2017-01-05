@@ -104,12 +104,10 @@ const insertCompany = () => {
     const url = Endpoints.db + '/table/company/insert';
     const insertObj = {};
     const currState = getState().company_data;
-
     if ( !currState.name || !currState.cityId || !currState.stateId || !currState.address || !currState.pinCode ) {
       alert('City, State, Address and Name of the company are important for company creation');
       return dispatch({type: REQUEST_COMPLETED});
     }
-
     const companyObj = {
       'city_id': parseInt(currState.cityId, 10),
       'state_id': parseInt(currState.stateId, 10),
@@ -119,10 +117,8 @@ const insertCompany = () => {
       'created_at': new Date().toISOString(),
       'updated_at': new Date().toISOString()
     };
-
     insertObj.objects = [companyObj];
     insertObj.returning = ['id'];
-
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
@@ -150,7 +146,10 @@ const updateCompany = () => {
     const url = Endpoints.db + '/table/company/update';
     const updateObj = {};
     const currState = getState().company_data;
-
+    if ( !currState.name || !currState.cityId || !currState.stateId || !currState.address || !currState.pinCode ) {
+      alert('City, State, Address and Name of the company are important for company creation');
+      return dispatch({type: REQUEST_COMPLETED});
+    }
     const companyObj = {
       'city_id': parseInt(currState.cityId, 10),
       'state_id': parseInt(currState.stateId, 10),

@@ -233,7 +233,7 @@ class UnlockBarAddSKU extends Component {
               Base SKU  Price
             </div>
             <div className = {styles.information_rightpanel}>
-              <input type="text" data-field-name="base_sku_price" data-field-type="string" value={ newSkuData.bar_menu_price}/>
+              <input type="text" data-field-name="base_sku_price" data-field-type="string" value={ newSkuData.base_sku_price}/>
             </div>
           </div>
           <div className = {styles.command_wrapper}>
@@ -297,24 +297,24 @@ class UnlockBarAddSKU extends Component {
             * Click on Update to Deactivate an SKU
           </div>
           { actionButton }
-          /*
-          <div className = {styles.command_wrapper}>
-            <div className = {styles.information_leftpanel}>
-              From Date
+          {/*
+            <div className = {styles.command_wrapper}>
+              <div className = {styles.information_leftpanel}>
+                From Date
+              </div>
+              <div className = {styles.information_rightpanel}>
+                <input type="text" />
+              </div>
             </div>
-            <div className = {styles.information_rightpanel}>
-              <input type="text" />
+            <div className = {styles.command_wrapper}>
+              <div className = {styles.information_leftpanel}>
+                To Date
+              </div>
+              <div className = {styles.information_rightpanel}>
+                <input type="text" />
+              </div>
             </div>
-          </div>
-          <div className = {styles.command_wrapper}>
-            <div className = {styles.information_leftpanel}>
-              To Date
-            </div>
-            <div className = {styles.information_rightpanel}>
-              <input type="text" />
-            </div>
-          </div>
-          */
+          */}
         </div>
       </div>
     );

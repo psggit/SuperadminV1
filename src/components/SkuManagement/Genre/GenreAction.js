@@ -131,7 +131,6 @@ const updateGenre = () => {
       });
   };
 };
-
 /* Reducer */
 
 const genreReducer = (state = defaultGenreState, action) => {

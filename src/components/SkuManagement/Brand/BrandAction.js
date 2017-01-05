@@ -3,6 +3,7 @@
  * */
 
 import { defaultBrandState } from '../../Common/Actions/DefaultState';
+import { validation } from '../../Common/Actions/Validator';
 import requestAction from '../../Common/Actions/requestAction';
 import Endpoints, { globalCookiePolicy } from '../../../Endpoints';
 import { MAKE_REQUEST,
@@ -220,273 +221,298 @@ const viewState = (stateId) => {
 };
 
 const insertBrand = () => {
+  const listOfValidation = [];
   return (dispatch, getState) => {
-    const url = Endpoints.db + '/table/brand/insert';
-    const insertObj = {};
-    const currState = getState().brand_data;
+    listOfValidation.push(validation(getState().brand_data.brandName, 'non_empty_text'));
+    listOfValidation.push(validation(getState().brand_data.companyId, 'non_empty_text'));
+    listOfValidation.push(validation(getState().brand_data.categoryId, 'non_empty_text'));
+    listOfValidation.push(validation(getState().brand_data.alcoholPer, 'non_empty_text'));
+    listOfValidation.push(validation(getState().brand_data.temperature, 'non_empty_text'));
+    Promise.all(listOfValidation
+    ).then(() => {
+      const url = Endpoints.db + '/table/brand/insert';
+      const insertObj = {};
+      const currState = getState().brand_data;
 
-    const brandObj = {};
-    brandObj.brand_name = currState.brandName;
-    brandObj.company_id = parseInt(currState.companyId, 10);
-    brandObj.category_id = parseInt(currState.categoryId, 10);
-    brandObj.image = currState.image;
-    brandObj.short_name = currState.brandName.replace(' ', '-').toLowerCase();
-    brandObj.is_active = true;
-    brandObj.alcohol_per = currState.alcoholPer;
-    brandObj.temperature = currState.temperature;
-    brandObj.cal_per = currState.caloriesPer;
-    brandObj.cal_total = currState.caloriesTotal;
-    brandObj.origin_name = currState.origin;
-    brandObj.description = currState.description;
-    brandObj.created_at = new Date().toISOString();
-    brandObj.updated_at = new Date().toISOString();
+      const brandObj = {};
+      brandObj.brand_name = currState.brandName;
+      brandObj.company_id = parseInt(currState.companyId, 10);
+      brandObj.category_id = parseInt(currState.categoryId, 10);
+      brandObj.image = currState.image;
+      brandObj.short_name = currState.brandName.replace(' ', '-').toLowerCase();
+      brandObj.is_active = true;
+      brandObj.alcohol_per = currState.alcoholPer;
+      brandObj.temperature = currState.temperature;
+      brandObj.cal_per = currState.caloriesPer;
+      brandObj.cal_total = currState.caloriesTotal;
+      brandObj.origin_name = currState.origin;
+      brandObj.description = currState.description;
+      brandObj.created_at = new Date().toISOString();
+      brandObj.updated_at = new Date().toISOString();
 
-    if ( Object.keys(brandObj).filter( ( element ) => { console.log(Object.keys(brandObj)); console.log(brandObj[element]); return !brandObj[element];}).length >= 1 ) {
-      alert('All the entries are important for brand creation');
-      return dispatch({ type: NOTHING_CHANGED });
-    }
+      if ( Object.keys(brandObj).filter( ( element ) => { console.log(Object.keys(brandObj)); console.log(brandObj[element]); return !brandObj[element];}).length >= 1 ) {
+        alert('All the entries are important for brand creation');
+        return dispatch({ type: NOTHING_CHANGED });
+      }
 
 
-    insertObj.objects = [brandObj];
-    insertObj.returning = ['id'];
+      insertObj.objects = [brandObj];
+      insertObj.returning = ['id'];
 
-    let options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(insertObj)
-    };
-    const regionNameIdMapping = {};
-    let brandId = 0;
+      let options = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+        credentials: globalCookiePolicy,
+        body: JSON.stringify(insertObj)
+      };
+      const regionNameIdMapping = {};
+      let brandId = 0;
 
-    dispatch({type: MAKE_REQUEST});
-    return dispatch(requestAction(url, options))
-      .then((resp) => {
-        if (resp.returning.length > 0) {
-          console.log(resp);
-          brandId = resp.returning[0].id;
-          const regionUrl = Endpoints.db + '/table/region/insert';
-          /* Make an entry into the store */
-          dispatch({ type: BRAND_CREATED, data: brandId});
-          /* Create region Objects */
+      dispatch({type: MAKE_REQUEST});
+      return dispatch(requestAction(url, options))
+        .then((resp) => {
+          if (resp.returning.length > 0) {
+            console.log(resp);
+            brandId = resp.returning[0].id;
+            const regionUrl = Endpoints.db + '/table/region/insert';
+            /* Make an entry into the store */
+            dispatch({ type: BRAND_CREATED, data: brandId});
+            /* Create region Objects */
 
-          let regionObj = {};
-          const regionObjs = {};
-          regionObjs.objects = [];
-          regionObjs.returning = ['id', 'region_name'];
-          /* Check for the existence of the region */
-          Object.keys(currState.region).forEach( ( reg ) => {
-            if ( reg > 10000000 ) {
-              regionNameIdMapping[currState.region[reg]] = reg;
-              regionObj = {};
-              regionObj.brand_id = brandId;
-              regionObj.region_name = currState.region[reg];
-              regionObj.status = true;
-              regionObj.created_at = new Date().toISOString();
-              regionObj.updated_at = new Date().toISOString();
-              regionObjs.objects.push(regionObj);
+            let regionObj = {};
+            const regionObjs = {};
+            regionObjs.objects = [];
+            regionObjs.returning = ['id', 'region_name'];
+            /* Check for the existence of the region */
+            Object.keys(currState.region).forEach( ( reg ) => {
+              if ( reg > 10000000 ) {
+                regionNameIdMapping[currState.region[reg]] = reg;
+                regionObj = {};
+                regionObj.brand_id = brandId;
+                regionObj.region_name = currState.region[reg];
+                regionObj.status = true;
+                regionObj.created_at = new Date().toISOString();
+                regionObj.updated_at = new Date().toISOString();
+                regionObjs.objects.push(regionObj);
+              }
+            });
+            options = {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+              credentials: globalCookiePolicy,
+              body: JSON.stringify(regionObjs)
+            };
+            if ( regionObjs.objects.length === 0) {
+              return { 'returnit': true };
+            }
+            return dispatch(requestAction(regionUrl, options));
+          }
+        })
+        .then( ( resp ) => {
+          if ( resp.returnit ) {
+            return {'success': true};
+          }
+          const regionTempToMainMapping = {};
+          resp.returning.forEach( ( item ) => {
+            regionTempToMainMapping[regionNameIdMapping[item.region_name]] = item.id;
+          });
+
+          let regionCityObj = {};
+          const regionCityObjs = {};
+          const regionCityUrl = Endpoints.db + '/table/region_city/insert';
+          regionCityObjs.objects = [];
+          regionCityObjs.returning = ['id'];
+
+          /* Handle error condition for empty dict mapping */
+
+          Object.keys(currState.regionCity).forEach( ( regionC ) => {
+            if ( regionC > 100000000 ) {
+              const cities = currState.regionCity[regionC];
+              Object.keys(cities).forEach( ( city ) => {
+                regionCityObj = {};
+                regionCityObj.region_id = regionTempToMainMapping[regionC];
+                regionCityObj.brand_id = brandId;
+                regionCityObj.city_id = parseInt(city, 10);
+                regionCityObjs.objects.push(regionCityObj);
+              });
             }
           });
+
           options = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
             credentials: globalCookiePolicy,
-            body: JSON.stringify(regionObjs)
+            body: JSON.stringify(regionCityObjs)
           };
-          if ( regionObjs.objects.length === 0) {
-            return { 'returnit': true };
-          }
-          return dispatch(requestAction(regionUrl, options));
-        }
-      })
-      .then( ( resp ) => {
-        if ( resp.returnit ) {
-          return {'success': true};
-        }
-        const regionTempToMainMapping = {};
-        resp.returning.forEach( ( item ) => {
-          regionTempToMainMapping[regionNameIdMapping[item.region_name]] = item.id;
+          return dispatch(requestAction(regionCityUrl, options));
+        })
+        .then( () => {
+          // if ( resp.success ) {
+          alert('brand Created Successfully');
+          return dispatch(routeActions.push('/hadmin/brand_management'));
+          // }
+          // if ( resp.returning.length > 0) {
+          //   alert('brand Created Successfully');
+          //   return dispatch(routeActions.push('/hadmin/brand_management'));
+          // }
+          // alert('something went wrong while creating brand');
+          // return dispatch({type: REQUEST_COMPLETED});
+        })
+        .catch((resp) => {
+          console.log(resp);
+          alert('Something wrong happened while creating a brand entry');
+          return dispatch({type: REQUEST_COMPLETED});
         });
-
-        let regionCityObj = {};
-        const regionCityObjs = {};
-        const regionCityUrl = Endpoints.db + '/table/region_city/insert';
-        regionCityObjs.objects = [];
-        regionCityObjs.returning = ['id'];
-
-        /* Handle error condition for empty dict mapping */
-
-        Object.keys(currState.regionCity).forEach( ( regionC ) => {
-          if ( regionC > 100000000 ) {
-            const cities = currState.regionCity[regionC];
-            Object.keys(cities).forEach( ( city ) => {
-              regionCityObj = {};
-              regionCityObj.region_id = regionTempToMainMapping[regionC];
-              regionCityObj.brand_id = brandId;
-              regionCityObj.city_id = parseInt(city, 10);
-              regionCityObjs.objects.push(regionCityObj);
-            });
-          }
-        });
-
-        options = {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
-          credentials: globalCookiePolicy,
-          body: JSON.stringify(regionCityObjs)
-        };
-        return dispatch(requestAction(regionCityUrl, options));
-      })
-      .then( () => {
-        // if ( resp.success ) {
-        alert('brand Created Successfully');
-        return dispatch(routeActions.push('/hadmin/brand_management'));
-        // }
-        // if ( resp.returning.length > 0) {
-        //   alert('brand Created Successfully');
-        //   return dispatch(routeActions.push('/hadmin/brand_management'));
-        // }
-        // alert('something went wrong while creating brand');
-        // return dispatch({type: REQUEST_COMPLETED});
-      })
-      .catch((resp) => {
-        console.log(resp);
-        alert('Something wrong happened while creating a brand entry');
-        return dispatch({type: REQUEST_COMPLETED});
-      });
+    })
+    .catch((error) => {
+      console.log(error);
+      console.log('Error Occured');
+    });
   };
 };
 
 const updateBrand = () => {
+  const listOfValidation = [];
   return (dispatch, getState) => {
-    const url = Endpoints.db + '/table/brand/update';
-    const updateObj = {};
-    const currState = getState().brand_data;
+    listOfValidation.push(validation(getState().brand_data.brandName, 'non_empty_text'));
+    listOfValidation.push(validation(getState().brand_data.companyId, 'non_empty_text'));
+    listOfValidation.push(validation(getState().brand_data.categoryId, 'non_empty_text'));
+    listOfValidation.push(validation(getState().brand_data.alcoholPer, 'non_empty_text'));
+    listOfValidation.push(validation(getState().brand_data.temperature, 'non_empty_text'));
+    Promise.all(listOfValidation
+    ).then(() => {
+      const url = Endpoints.db + '/table/brand/update';
+      const updateObj = {};
+      const currState = getState().brand_data;
 
-    const brandObj = {};
-    brandObj.brand_name = currState.brandName;
-    brandObj.company_id = parseInt(currState.companyId, 10);
-    brandObj.category_id = parseInt(currState.categoryId, 10);
-    brandObj.image = currState.image;
-    brandObj.short_name = currState.brandName.replace(' ', '-').toLowerCase();
-    brandObj.is_active = true;
-    brandObj.alcohol_per = currState.alcoholPer;
-    brandObj.temperature = currState.temperature;
-    brandObj.cal_per = currState.caloriesPer;
-    brandObj.cal_total = currState.caloriesTotal;
-    brandObj.origin_name = currState.origin;
-    brandObj.description = currState.description;
+      const brandObj = {};
+      brandObj.brand_name = currState.brandName;
+      brandObj.company_id = parseInt(currState.companyId, 10);
+      brandObj.category_id = parseInt(currState.categoryId, 10);
+      brandObj.image = currState.image;
+      brandObj.short_name = currState.brandName.replace(' ', '-').toLowerCase();
+      brandObj.is_active = true;
+      brandObj.alcohol_per = currState.alcoholPer;
+      brandObj.temperature = currState.temperature;
+      brandObj.cal_per = currState.caloriesPer;
+      brandObj.cal_total = currState.caloriesTotal;
+      brandObj.origin_name = currState.origin;
+      brandObj.description = currState.description;
 
-    updateObj.values = brandObj;
-    updateObj.where = {
-      'id': currState.brandId
-    };
-    updateObj.returning = ['id'];
+      updateObj.values = brandObj;
+      updateObj.where = {
+        'id': currState.brandId
+      };
+      updateObj.returning = ['id'];
 
-    let options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(updateObj)
-    };
-    const regionNameIdMapping = {};
-    let brandId = 0;
+      let options = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+        credentials: globalCookiePolicy,
+        body: JSON.stringify(updateObj)
+      };
+      const regionNameIdMapping = {};
+      let brandId = 0;
 
-    dispatch({type: MAKE_REQUEST});
-    return dispatch(requestAction(url, options))
-      .then((resp) => {
-        if (resp.returning.length > 0) {
-          console.log(resp);
-          brandId = currState.brandId;
-          const regionUrl = Endpoints.db + '/table/region/insert';
-          /* Make an entry into the store */
-          // dispatch({ type: BRAND_CREATED, data: brandId});
-          /* Create region Objects */
+      dispatch({type: MAKE_REQUEST});
+      return dispatch(requestAction(url, options))
+        .then((resp) => {
+          if (resp.returning.length > 0) {
+            console.log(resp);
+            brandId = currState.brandId;
+            const regionUrl = Endpoints.db + '/table/region/insert';
+            /* Make an entry into the store */
+            // dispatch({ type: BRAND_CREATED, data: brandId});
+            /* Create region Objects */
 
-          let regionObj = {};
-          const regionObjs = {};
-          regionObjs.objects = [];
-          regionObjs.returning = ['id', 'region_name'];
-          /* Check for the existence of the region */
-          Object.keys(currState.region).forEach( ( reg ) => {
-            if ( reg > 10000 ) {
-              regionNameIdMapping[currState.region[reg]] = reg;
-              regionObj = {};
-              regionObj.brand_id = brandId;
-              regionObj.region_name = currState.region[reg];
-              regionObj.status = true;
-              regionObj.created_at = new Date().toISOString();
-              regionObj.updated_at = new Date().toISOString();
-              regionObjs.objects.push(regionObj);
+            let regionObj = {};
+            const regionObjs = {};
+            regionObjs.objects = [];
+            regionObjs.returning = ['id', 'region_name'];
+            /* Check for the existence of the region */
+            Object.keys(currState.region).forEach( ( reg ) => {
+              if ( reg > 10000 ) {
+                regionNameIdMapping[currState.region[reg]] = reg;
+                regionObj = {};
+                regionObj.brand_id = brandId;
+                regionObj.region_name = currState.region[reg];
+                regionObj.status = true;
+                regionObj.created_at = new Date().toISOString();
+                regionObj.updated_at = new Date().toISOString();
+                regionObjs.objects.push(regionObj);
+              }
+            });
+            /* If regions are not updated then exit here */
+            if ( regionObjs.objects.length === 0) {
+              alert('Brand Successfully Updated');
+              return Promise.all([
+                Promise.reject( { 'intended': true } ),
+                dispatch(fetchBrand(brandId))
+              ]);
+            }
+            options = {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
+              credentials: globalCookiePolicy,
+              body: JSON.stringify(regionObjs)
+            };
+            return dispatch(requestAction(regionUrl, options));
+          }
+        })
+        .then( ( resp ) => {
+          const regionTempToMainMapping = {};
+          resp.returning.forEach( ( item ) => {
+            regionTempToMainMapping[regionNameIdMapping[item.region_name]] = item.id;
+          });
+
+          let regionCityObj = {};
+          const regionCityObjs = {};
+          const regionCityUrl = Endpoints.db + '/table/region_city/insert';
+          regionCityObjs.objects = [];
+          regionCityObjs.returning = ['id'];
+
+          /* Handle error condition for empty dict mapping */
+
+          Object.keys(currState.regionCity).forEach( ( regionC ) => {
+            if ( regionC > 100000000 ) {
+              const cities = currState.regionCity[regionC];
+              Object.keys(cities).forEach( ( city ) => {
+                regionCityObj = {};
+                regionCityObj.region_id = regionTempToMainMapping[regionC];
+                regionCityObj.brand_id = brandId;
+                regionCityObj.city_id = parseInt(city, 10);
+                regionCityObjs.objects.push(regionCityObj);
+              });
             }
           });
-          /* If regions are not updated then exit here */
-          if ( regionObjs.objects.length === 0) {
-            alert('Brand Successfully Updated');
-            return Promise.all([
-              Promise.reject( { 'intended': true } ),
-              dispatch(fetchBrand(brandId))
-            ]);
-          }
+
           options = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
             credentials: globalCookiePolicy,
-            body: JSON.stringify(regionObjs)
+            body: JSON.stringify(regionCityObjs)
           };
-          return dispatch(requestAction(regionUrl, options));
-        }
-      })
-      .then( ( resp ) => {
-        const regionTempToMainMapping = {};
-        resp.returning.forEach( ( item ) => {
-          regionTempToMainMapping[regionNameIdMapping[item.region_name]] = item.id;
-        });
-
-        let regionCityObj = {};
-        const regionCityObjs = {};
-        const regionCityUrl = Endpoints.db + '/table/region_city/insert';
-        regionCityObjs.objects = [];
-        regionCityObjs.returning = ['id'];
-
-        /* Handle error condition for empty dict mapping */
-
-        Object.keys(currState.regionCity).forEach( ( regionC ) => {
-          if ( regionC > 100000000 ) {
-            const cities = currState.regionCity[regionC];
-            Object.keys(cities).forEach( ( city ) => {
-              regionCityObj = {};
-              regionCityObj.region_id = regionTempToMainMapping[regionC];
-              regionCityObj.brand_id = brandId;
-              regionCityObj.city_id = parseInt(city, 10);
-              regionCityObjs.objects.push(regionCityObj);
-            });
+          return dispatch(requestAction(regionCityUrl, options));
+        })
+        .then( (resp) => {
+          if ( resp.returning.length > 0) {
+            alert('brand Created Successfully');
+            return dispatch(routeActions.push('/hadmin/brand_management'));
           }
+          alert('something went wrong while creating brand');
+          return dispatch({type: REQUEST_COMPLETED});
+        })
+        .catch((resp) => {
+          console.log(resp);
+          if ( !resp.intended ) {
+            alert('Something wrong happened while creating a brand entry');
+          }
+          return dispatch({type: REQUEST_COMPLETED});
         });
-
-        options = {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
-          credentials: globalCookiePolicy,
-          body: JSON.stringify(regionCityObjs)
-        };
-        return dispatch(requestAction(regionCityUrl, options));
-      })
-      .then( (resp) => {
-        if ( resp.returning.length > 0) {
-          alert('brand Created Successfully');
-          return dispatch(routeActions.push('/hadmin/brand_management'));
-        }
-        alert('something went wrong while creating brand');
-        return dispatch({type: REQUEST_COMPLETED});
-      })
-      .catch((resp) => {
-        console.log(resp);
-        if ( !resp.intended ) {
-          alert('Something wrong happened while creating a brand entry');
-        }
-        return dispatch({type: REQUEST_COMPLETED});
-      });
+    })
+    .catch((error) => {
+      alert(error);
+    });
   };
 };
 
@@ -494,6 +520,9 @@ const updateRegion = () => {
   return (dispatch, getState) => {
     /* Check if anything is updated or not */
     const currState = getState().brand_data;
+    console.log('----------------');
+    console.log(getState().brand_data);
+    console.log('----------------');
     let options = {};
 
     if ( !(currState.viewedRegionId in currState.updatedRegions )) {

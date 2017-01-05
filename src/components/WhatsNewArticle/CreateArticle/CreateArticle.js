@@ -77,6 +77,7 @@ class CreateImageAd extends Component { // eslint-disable-line no-unused-vars
     const title = document.getElementById('title').value;
     const description = document.getElementById('description').value;
     const content = document.getElementById('content_whatsnew').value;
+    alert('as');
     let isFeatured = null;
     if (document.querySelector('input[name="featured"]:checked') !== null) {
       isFeatured = document.querySelector('input[name="featured"]:checked').value;
