@@ -87,7 +87,7 @@ const getBar = ( barId ) => {
     }, {
       'name': 'addresses',
       'columns': ['*'],
-      'order_by': '-created_at',
+      'order_by': '+created_at',
       'limit': 1
     }, {
       'name': 'city',
@@ -150,7 +150,7 @@ const fetchInitials = (barId) => {
 
 const saveSku = ( barId ) => {
   return ( dispatch, getState ) => {
-    const invUrl = Endpoints.db + '/table/bars_inventory/insert';
+    const invUrl = Endpoints.blogicUrl + '/admin/bar/insert';
 
     const barState = getState().bar_sku_create_data;
     const barDataObj = {
@@ -179,23 +179,19 @@ const saveSku = ( barId ) => {
       brCheckStatus = brCheckStatus && ( barDataObj[i] ? true : false );
     });
 
-    // This is the G spot
-    barDataObj.menuPrice = barDataObj.base_sku_price + (barDataObj.base_sku_price * barDataObj.charges_and_tax_percentage / 100);
-    barDataObj.hipbarPrice = barDataObj.negotiated_sku_price + (barDataObj.negotiated_sku_price * barDataObj.charges_and_tax_percentage / 100);
+    // This is THE spot
+    // barDataObj.menuPrice = barDataObj.base_sku_price + (barDataObj.base_sku_price * barDataObj.charges_and_tax_percentage / 100);
+    // barDataObj.hipbarPrice = barDataObj.negotiated_sku_price + (barDataObj.negotiated_sku_price * barDataObj.charges_and_tax_percentage / 100);
 
 
     if ( !brCheckStatus ) {
       alert('All the fields for Bar are mandatory');
       return Promise.reject({ stage: 0 });
     }
-
-    const insertObj = {};
-    insertObj.objects = [ { ...barDataObj } ];
-    insertObj.returning = ['id'];
-
+    const postData = { ...barDataObj };
     const options = {
       ...genOptions,
-      body: JSON.stringify(insertObj)
+      body: JSON.stringify(postData)
     };
 
     return dispatch( requestAction( invUrl, options ) )
@@ -344,16 +340,13 @@ const barSkuDataReducer = ( state = defaultBarSkuState, action ) => {
   switch ( action.type ) {
     case BAR_INFO_FETCHED:
       const pricingIds = [];
-
       const inventoryItems = {};
 
       action.data[0].inventories.forEach( ( sku ) => {
         pricingIds.push(sku.sku_pricing_id);
-      });
-
-      action.data[0].inventories.forEach( ( sku ) => {
         inventoryItems[sku.sku_pricing_id] = sku;
       });
+
       return { ...state, barData: action.data, barCity: action.data[0].city_id, barCityInfo: action.data[0].city, addedInventory: [ ...pricingIds ], inventoryMap: { ...inventoryItems }};
     case SKU_FETCHED:
       return { ...state, skuData: action.data };
