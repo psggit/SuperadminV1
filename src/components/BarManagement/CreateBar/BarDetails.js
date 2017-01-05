@@ -93,6 +93,16 @@ const BarDetails = ( { currState, organisationData } ) => { // eslint-disable-li
             </select>
           </div>
         </li>
+        <li>
+          <div className={styles.wd_50}>
+            <label>Discount Percent</label>
+            <input type="text" data-field-name="discount_percent" data-field-type="int" value={ currState.discount_percent } />
+          </div>
+          <div className={styles.wd_50}>
+            <label>Service Charge Percent</label>
+            <input type="text" data-field-name="service_charge_percent" data-field-type="int" value={ currState.service_charge_percent } />
+          </div>
+        </li>
       </ul>
     </div>
   );
