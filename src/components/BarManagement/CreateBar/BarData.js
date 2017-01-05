@@ -75,7 +75,9 @@ const saveBar = () => {
       'city_id',
       'excise_licence_number',
       'name',
-      'address'
+      'address',
+      'discount_percent',
+      'service_charge_percent'
     ];
     let brCheckStatus = true;
 
@@ -261,7 +263,9 @@ const updateBar = () => {
       'bar_status',
       'city_id',
       'excise_licence_number',
-      'name'
+      'name',
+      'discount_percent',
+      'service_charge_percent'
     ];
 
     let brCheckStatus = true;
@@ -444,7 +448,9 @@ const barDataReducer = ( state = { organisationData: [], barDetail: {}, barConta
         'kyc_status',
         'bar_status',
         'excise_licence_number',
-        'name'
+        'name',
+        'discount_percent',
+        'service_charge_percent'
       ];
 
       const barContactKeys = ['branch_address', 'pincode', 'city_id', 'state_id', 'email', 'mobile_number', 'landline_number', 'bar_id', 'gps_cordinates'];
