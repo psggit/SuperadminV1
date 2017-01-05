@@ -17,6 +17,9 @@ const BAR_ACCOUNT_CHANGED = '@barDataReducer/BAR_ACCOUNT_CHANGED';
 const IMAGE_UPLOAD_SUCCESS = '@barDataReducer/IMAGE_UPLOAD_SUCCESS';
 const IMAGE_UPLOAD_ERROR = '@barDataReducer/IMAGE_UPLOAD_ERROR';
 const CANCEL_IMAGE = '@barDataReducer/CANCEL_IMAGE';
+const AD_IMAGE_UPLOAD_SUCCESS = '@barDataReducer/AD_IMAGE_UPLOAD_SUCCESS';
+const AD_IMAGE_UPLOAD_ERROR = '@barDataReducer/AD_IMAGE_UPLOAD_ERROR';
+const AD_CANCEL_IMAGE = '@barDataReducer/AD_CANCEL_IMAGE';
 
 const BAR_FETCHED = '@barDataReducer/BAR_FETCHED';
 
@@ -72,6 +75,8 @@ const saveBar = () => {
       'cst_number',
       'kyc_status',
       'bar_status',
+      'discount_percent',
+      'service_charge_percent',
       'city_id',
       'excise_licence_number',
       'name',
@@ -261,6 +266,8 @@ const updateBar = () => {
       'cst_number',
       'kyc_status',
       'bar_status',
+      'discount_percent',
+      'service_charge_percent',
       'city_id',
       'excise_licence_number',
       'name',
@@ -438,6 +445,12 @@ const barDataReducer = ( state = { organisationData: [], barDetail: {}, barConta
       return { ...state, barAccountRegistered: { ...state.barAccountRegistered, canceled_cheque_image: ''}};
     case CANCEL_IMAGE:
       return { ...state, barAccountRegistered: { ...state.barAccountRegistered, canceled_cheque_image: ''}};
+    case AD_IMAGE_UPLOAD_SUCCESS:
+      return { ...state, barDetail: { ...state.barDetail, adImage: action.data[0]}};
+    case AD_IMAGE_UPLOAD_ERROR:
+      return { ...state, barDetail: { ...state.barDetail, adImage: ''}};
+    case AD_CANCEL_IMAGE:
+      return { ...state, barDetail: { ...state.barDetail, adImage: ''}};
     case RESET_BAR:
       return { barDetail: {}, barContact: {}, barAccountRegistered: {}, organisationData: []};
     case BAR_FETCHED:
@@ -447,10 +460,11 @@ const barDataReducer = ( state = { organisationData: [], barDetail: {}, barConta
         'cst_number',
         'kyc_status',
         'bar_status',
-        'excise_licence_number',
-        'name',
         'discount_percent',
-        'service_charge_percent'
+        'service_charge_percent',
+        'excise_licence_number',
+        'adImage',
+        'name'
       ];
 
       const barContactKeys = ['branch_address', 'pincode', 'city_id', 'state_id', 'email', 'mobile_number', 'landline_number', 'bar_id', 'gps_cordinates'];

@@ -158,6 +158,10 @@ export CreateUrlAd from './BrandsOffersAndPromos/AdsCreateUrlAd/CreateUrlAd';
 export CreateBarAd from './BrandsOffersAndPromos/AdsCreateBarAd/CreateBarAd';
 /* */
 
+/* Reports */
+export Reports from './Reports/Reports/Report';
+/* */
+
 /* Retailer Transactions */
 
 export TransactionLanding from './RetailerManagement/Transactions/TransactionLanding/TransactionLanding';
@@ -167,6 +171,10 @@ export ViewDailyReports from './RetailerManagement/Transactions/ViewDailyReports
 export RetailerSettlements from './RetailerManagement/Transactions/Settlements/Settlements';
 export RetailerSettlementsStatus from './RetailerManagement/Transactions/SettlementsStatus/Settlements';
 export RetailerRedemptions from './RetailerManagement/Transactions/Redemptions/Redemptions';
+
+/* Invite a Friend */
+
+export InvitationLanding from './InvitationStats/InvitationLanding/TransactionLanding';
 
 /* Bar Transactions */
 
