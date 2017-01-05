@@ -224,6 +224,27 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
               </ul>
             </li>
           </ul>
+          <ul>
+            <li><input type="checkbox" id="cb9"/><label htmlFor="cb9">REPORTS</label>
+              <ul>
+              <li className={styles.sidebar_list}>
+                <label>
+                  <Link to={'/hadmin/reports'} className={ lastPathname === 'reports' ? styles.active : '' }>Reports</Link>
+                </label>
+              </li>
+              <li className={styles.sidebar_list}>
+                <label>
+                  <Link to={'/hadmin/reports/upload1'} className={ lastPathname === 'upload1' ? styles.active : '' }>Upload 1</Link>
+                </label>
+              </li>
+              <li className={styles.sidebar_list}>
+                <label>
+                  <Link to={'/hadmin/reports/upload2'} className={ lastPathname === 'upload2' ? styles.active : '' }>Upload 2</Link>
+                </label>
+              </li>
+              </ul>
+            </li>
+          </ul>
         </div>
         <div className={styles.main + ' col-md-9'}>
           <div className={styles.right_wrapper}>

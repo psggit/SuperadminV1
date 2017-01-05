@@ -88,6 +88,8 @@ import {Login, Home, PageContainer,
   RetailerSettlementsStatus,
   BarDailyReports,
   BarSettlements,
+  Reports,
+  InvitationLanding,
   RetailerRedemptions,
   ViewAllCredits,
   ConsumerDevice
@@ -184,6 +186,10 @@ const main = (
         /* Editing Profile */
 
         <Route path="consumer/profile/:Id/edit_account_details" component={EditAccountDetails} />
+
+        /* Reports */
+
+        <Route path="reports" component={Reports} />
 
         /* Creating and viewing notepads */
         <Route path="/hadmin/consumer/profile/:Id/create_notepad_entry" component={CreateNotepadEntry} />
@@ -304,6 +310,12 @@ const main = (
         <Route path="bar_management/bar_reports" component={BarDailyReports} />
 
         <Route path="bar_management/bar_settlement_reports" component={BarSettlements} />
+
+        {/* Invite A friend */}
+        <Route path="invitation_data" component={InvitationLanding} />
+        <Route path="invitation_data/current_stats" component={InvitationLanding} />
+        <Route path="invitation_data/approved_users" component={InvitationLanding} />
+        <Route path="invitation_data/elligible_users" component={InvitationLanding} />
 
         {/* End of it */}
 
