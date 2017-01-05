@@ -19,10 +19,14 @@ import PaginationContainer from './Pagination';
 
 import commonDecorator from '../../Common/CommonDecorator';
 
+import {
+  TOGGLE_SEARCH,
+  RESET_FILTER
+} from '../../Common/SearchComponentGen/FilterState';
+
+import SearchComponent from '../../Common/SearchComponentGen/SearchComponent';
+
 class Branch extends Component {
-  componentWillMount() {
-    console.log('Will mount called');
-  }
   componentDidMount() {
     const {query} = this.props.location;
     const page = (Object.keys(query).length > 0) ? parseInt(query.p, 10) : 1;
@@ -50,6 +54,9 @@ class Branch extends Component {
   }
   componentWillUnmount() {
     console.log('Unmounted');
+    Promise.all([
+      this.props.dispatch({ type: RESET_FILTER })
+    ]);
   }
   onClickHandle(e) {
     // e.preventDefault();
@@ -66,6 +73,18 @@ class Branch extends Component {
       });
     }
   }
+  enableSearch() {
+    const page = 1;
+
+    Promise.all([
+      this.props.dispatch({ type: MAKE_REQUEST }),
+      this.props.dispatch({ type: TOGGLE_SEARCH }),
+      this.props.dispatch(getAllBranchData(page, 10))
+    ])
+    .then( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED });
+    });
+  }
   render() {
     const styles = require('./ViewBranch.scss');
     const { ongoingRequest, lastError, lastSuccess, count} = this.props;
@@ -74,11 +93,27 @@ class Branch extends Component {
     const paginationUrl = '/hadmin/retailer_management/view_branches';
 
     const page = (Object.keys(query).length > 0) ? parseInt(query.p, 10) : 1;
+
+    const fields = [ 'id', 'org_name' ];
+    // const operator = ['$eq'];
+    const fieldOperatorMap = {
+      'org_name': ['$eq', '$like', '$ilike'],
+      'id': ['$eq', '$gt', '$lt']
+    };
+    const fieldTypeMap = {
+      'org_name': 'text',
+      'id': 'number'
+    };
     console.log(lastError);
     console.log(ongoingRequest);
     return (
           <div className={styles.recharge_container}>
             <TableHeader title={'Retailer Management/ View Branches'} />
+            <SearchComponent configuredFields={ fields } fieldOperatorMap={ fieldOperatorMap } fieldTypeMap={ fieldTypeMap }>
+              <button className={styles.common_btn} onClick={ this.enableSearch.bind(this) }>
+                Search
+              </button>
+            </SearchComponent>
             <BranchSearchWrapper data={lastSuccess}/>
             <PaginationContainer limit="10" onClickHandler={this.onClickHandle.bind(this)} currentPage={page} showMax="5" count={count} parentUrl={ paginationUrl } />
           </div>

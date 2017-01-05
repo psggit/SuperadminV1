@@ -10,9 +10,12 @@ import {
   REQUEST_ERROR,
 } from '../../Common/Actions/Actions';
 
+
+import beginFilter from '../../Common/SearchComponentGen/GenerateFilter';
+
 /* Fetch Cancel Products */
 
-const getOrganizationCount = ( ) => {
+const getOrganizationCount = ( filterObj, isSearched ) => {
   return (dispatch) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
@@ -20,6 +23,10 @@ const getOrganizationCount = ( ) => {
     const payload = {
       'columns': ['*']
     };
+
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
 
     const url = Endpoints.db + '/table/' + 'organisation' + '/count';
     const options = {
@@ -30,7 +37,7 @@ const getOrganizationCount = ( ) => {
   };
 };
 
-const getOrganizationData = ( page ) => {
+const getOrganizationData = ( page, filterObj, isSearched) => {
   return (dispatch) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
@@ -66,6 +73,10 @@ const getOrganizationData = ( page ) => {
       offset: offset
     };
 
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
+
     const url = Endpoints.db + '/table/' + 'organisation' + '/select';
     const options = {
       ...genOptions,
@@ -78,10 +89,13 @@ const getOrganizationData = ( page ) => {
 const getAllOrganizationData = (page ) => {
   const gotPage = page;
   /* Dispatching first one */
-  return (dispatch) => {
+  return (dispatch, getState ) => {
+    const filterData = getState().gen_filter_data;
+    const filterObj = { ...beginFilter(getState) };
+
     return Promise.all([
-      dispatch(getOrganizationCount( )),
-      dispatch(getOrganizationData(gotPage))
+      dispatch(getOrganizationCount( filterObj, filterData.isSearched )),
+      dispatch(getOrganizationData(gotPage, filterObj, filterData.isSearched))
     ]);
   };
 };
