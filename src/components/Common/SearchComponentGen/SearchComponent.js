@@ -32,7 +32,10 @@ class SearchComponent extends Component {
     console.log('Tracked');
     const fieldN = e.target.getAttribute('data-field-name');
     const fieldType = e.target.getAttribute('data-field-type');
-    const val = ( fieldType === 'number') ? parseInt(e.target.value, 10) : e.target.value;
+    const returnProperValue = ( typ, val ) => {
+      return ( typ === 'date' ) ? new Date(val).toISOString() : val;
+    };
+    const val = ( fieldType === 'number') ? parseInt(e.target.value, 10) : returnProperValue( fieldType, e.target.value );
     const fieldId = e.target.parentNode.getAttribute('data-field-id');
     this.props.dispatch({ type: INPUT_CHANGED, data: { id: fieldId, values: { [fieldN]: val }}});
   }

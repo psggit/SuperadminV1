@@ -92,7 +92,9 @@ import {Login, Home, PageContainer,
   InvitationLanding,
   RetailerRedemptions,
   ViewAllCredits,
-  ConsumerDevice
+  ConsumerDevice,
+  ViewCampaigns,
+  ViewConsumerTransactions
 } from './components'; // eslint-disable-line no-unused-vars
 
 // ^== next level of importing
@@ -196,6 +198,7 @@ const main = (
         <Route path="consumer/profile/:Id/view_notepads" component={Notepad} />
 
         /* Customer Transactions */
+        <Route path="consumer_transactions/history/:userId" component={ViewConsumerTransactions} />
         <Route path="consumer_transactions" component={CustomerTransaction} />
         <Route path="consumer_transactions/devices" component={ConsumerDevice} />
         <Route path="consumer_transactions/devices/:userId" component={ConsumerDevice} />
@@ -247,6 +250,8 @@ const main = (
         <Route path="brands_offers_and_promos/create_brand_manager" component={CreateBrandManager} />
 
         {/* Ads Routes*/}
+        <Route path="brands_offers_and_promos/campaigns" component={ViewCampaigns} />
+
         <Route path="brands_offers_and_promos/ads" component={AdsMain} />
         <Route path="brands_offers_and_promos/create_ad" component={CreateMain} />
         <Route path="brands_offers_and_promos/view_all_ads" component={AdsListing} />

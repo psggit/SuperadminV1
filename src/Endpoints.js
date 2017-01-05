@@ -1,11 +1,32 @@
 // const base = 'http://130.211.246.199';
-const scheme = window.location.href.split(':')[0];
-const baseHost = window.__env.baseDomain;
-const dataUrl = scheme + '://data' + baseHost;
-const authUrl = scheme + '://auth' + baseHost;
-const fileUrl = scheme + '://api2' + baseHost;
-const blogicUrl = scheme + '://api1' + baseHost;
-const downloadRepUrl = scheme + '://downloadrep' + baseHost;
+//
+
+let dataUrl;
+let authUrl;
+let fileUrl;
+let blogicUrl;
+let downloadRepUrl;
+let scheme;
+let baseHost = 'TEST';
+
+if (window.location.href.split(':')[1] === '//localhost') {
+  const appName = 'hipbar-stg';
+  dataUrl = 'https://data.' + appName + '.hasura-app.io';
+  authUrl = 'https://auth.' + appName + '.hasura-app.io';
+  fileUrl = 'https://api2.' + appName + '.hasura-app.io';
+  blogicUrl = 'https://api1.' + appName + '.hasura-app.io';
+  downloadRepUrl = 'https://downloadrep.' + appName + '.hasura-app.io';
+} else {
+  console.log('I am in Endpoints');
+  console.log(window.location.href);
+  scheme = window.location.href.split(':')[0];
+  baseHost = window.__env.baseDomain;
+  dataUrl = scheme + '://data' + baseHost;
+  authUrl = scheme + '://auth' + baseHost;
+  fileUrl = scheme + '://api2' + baseHost;
+  blogicUrl = scheme + '://api1' + baseHost;
+  downloadRepUrl = scheme + '://downloadrep' + baseHost;
+}
 
 // const base = '';
 const Endpoints = {

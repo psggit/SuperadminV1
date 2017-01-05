@@ -185,3 +185,13 @@ export BarDebitTransactions from './RetailerManagement/BarDebitsCredits/Transact
 export BarDailyReports from './BarManagement/Transactions/ViewDailyReports/ViewDailyReports';
 
 export BarSettlements from './BarManagement/Transactions/Settlements/Settlements';
+
+/* Campaigns */
+
+export ViewCampaigns from './BrandsOffersAndPromos/ViewCampaigns/ViewCampaigns';
+
+/* End of it */
+
+/* Consumer History */
+export ViewConsumerTransactions from './Consumer/components/ViewConsumerTransactions/ViewConsumerTransactions';
+/* */

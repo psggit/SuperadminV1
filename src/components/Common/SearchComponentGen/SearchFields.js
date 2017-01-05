@@ -31,8 +31,11 @@ class SearchFields extends Component {
       );
     }) : [];
 
+    const getProperValue = ( val ) => {
+      return ( fieldTypeMap[val.field] === 'date' ? val.value.slice(0, 10) : val.value );
+    };
     const inputField = ( values.field ) ? (
-      	<input data-field-type={ fieldTypeMap[values.field] } type={ fieldTypeMap[values.field] } placeholder="Contains" data-field-name="value" onBlur={ onTabOut } disabled={ parseInt(isDisabled, 10) ? true : '' } value={ values ? values.value : '' } />
+      	<input data-field-type={ fieldTypeMap[values.field] } type={ fieldTypeMap[values.field] } placeholder="Contains" data-field-name="value" onBlur={ onTabOut } disabled={ parseInt(isDisabled, 10) ? true : '' } value={ values ? getProperValue(values) : '' } />
       ) : (
       	<input type="text" data-field-type="text" placeholder="Contains" data-field-name="value" onBlur={ onTabOut } disabled={ parseInt(isDisabled, 10) ? true : '' } value={ values ? values.value : '' } />
       );
