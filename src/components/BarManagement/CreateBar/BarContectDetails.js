@@ -2,12 +2,8 @@ import React from 'react';
 
 import formValidator from '../../Common/CommonFormValidator';
 
-import AdImageUpload from './AdUpload';
 
 import {
-  AD_IMAGE_UPLOAD_SUCCESS,
-  AD_IMAGE_UPLOAD_ERROR,
-  AD_CANCEL_IMAGE,
   BAR_CONTACT_CHANGED
 } from './BarData';
 
@@ -83,11 +79,6 @@ const BarContectDetails = ( { stateData, currState } ) => { // eslint-disable-li
           <div className={styles.wd_50}>
             <label>Landline Number</label>
             <input type="text" data-field-name="landline_number" data-field-type="text" value={ currState.landline_number }/>
-          </div>
-        </li>
-        <li>
-          <div className={styles.wd_50}>
-            <AdImageUpload imageUrl={currState.adImage ? currState.adImage : ''} requestSuccess={AD_IMAGE_UPLOAD_SUCCESS} requestError={ AD_IMAGE_UPLOAD_ERROR } cancelImage={ AD_CANCEL_IMAGE }/>
           </div>
         </li>
       </ul>
