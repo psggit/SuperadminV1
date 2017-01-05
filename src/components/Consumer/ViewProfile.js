@@ -179,6 +179,14 @@ class ViewConsumerProfile extends Component {
           </div>
         );
 
+      const consumerHistory = (
+        <div className={styles.wd_60_link} >
+          <Link to={'/hadmin/consumer_transactions/history/' + profileInfo.id }>
+            { 'View' }
+          </Link>
+        </div>
+      );
+
       const redemptionHTML = ( redemptionCount ) ?
         (
           <div className={styles.wd_60_link} >
@@ -289,6 +297,14 @@ class ViewConsumerProfile extends Component {
             </div>
             <div className={ styles.wd_60 }>
               { notepadHTML }
+            </div>
+          </div>
+          <div className={styles.profile_information}>
+            <div className={styles.wd_40}>
+              Statement of Account:
+            </div>
+            <div className={ styles.wd_60 }>
+              { consumerHistory }
             </div>
           </div>
           <div className={styles.profile_information}>

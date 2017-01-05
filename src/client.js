@@ -93,7 +93,8 @@ import {Login, Home, PageContainer,
   RetailerRedemptions,
   ViewAllCredits,
   ConsumerDevice,
-  ViewCampaigns
+  ViewCampaigns,
+  ViewConsumerTransactions
 } from './components'; // eslint-disable-line no-unused-vars
 
 // ^== next level of importing
@@ -197,6 +198,7 @@ const main = (
         <Route path="consumer/profile/:Id/view_notepads" component={Notepad} />
 
         /* Customer Transactions */
+        <Route path="consumer_transactions/history/:userId" component={ViewConsumerTransactions} />
         <Route path="consumer_transactions" component={CustomerTransaction} />
         <Route path="consumer_transactions/devices" component={ConsumerDevice} />
         <Route path="consumer_transactions/devices/:userId" component={ConsumerDevice} />

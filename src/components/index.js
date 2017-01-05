@@ -191,3 +191,7 @@ export BarSettlements from './BarManagement/Transactions/Settlements/Settlements
 export ViewCampaigns from './BrandsOffersAndPromos/ViewCampaigns/ViewCampaigns';
 
 /* End of it */
+
+/* Consumer History */
+export ViewConsumerTransactions from './Consumer/components/ViewConsumerTransactions/ViewConsumerTransactions';
+/* */

@@ -30,7 +30,8 @@ import {
 
 import {
   MAKE_REQUEST,
-  REQUEST_COMPLETED
+  REQUEST_COMPLETED,
+  RESET
 } from '../../Common/Actions/Actions';
 
 import SearchComponent from '../../Common/SearchComponentGen/SearchComponent';
@@ -54,7 +55,8 @@ class ViewCampaigns extends React.Component { // eslint-disable-line no-unused-v
   componentWillUnmount() {
     console.log('Unmounted');
     Promise.all([
-      this.props.dispatch({ type: RESET_FILTER })
+      this.props.dispatch({ type: RESET_FILTER }),
+      this.props.dispatch({ type: RESET })
     ]);
   }
   // Hook used by pagination wrapper to fetch the initial data
