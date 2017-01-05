@@ -12,6 +12,18 @@ import BreadCrumb from '../../Common/BreadCrumb';
 
 import PaginationWrapper from '../../Common/PaginationWrapper.js';
 
+import {
+  TOGGLE_SEARCH,
+  RESET_FILTER
+} from '../../Common/SearchComponentGen/FilterState';
+
+import {
+  MAKE_REQUEST,
+  REQUEST_COMPLETED
+} from '../../Common/Actions/Actions';
+
+import SearchComponent from '../../Common/SearchComponentGen/SearchComponent';
+
 class CategoryManagement extends React.Component { // eslint-disable-line no-unused-vars
   constructor() {
     super();
@@ -28,6 +40,12 @@ class CategoryManagement extends React.Component { // eslint-disable-line no-unu
       link: '#'
     });
   }
+  componentWillUnmount() {
+    console.log('Unmounted');
+    Promise.all([
+      this.props.dispatch({ type: RESET_FILTER })
+    ]);
+  }
   // Hook used by pagination wrapper to fetch the initial data
   fetchInitialData(page, limit) {
     this.props.dispatch(getAllCategoryData(page, limit));
@@ -36,24 +54,51 @@ class CategoryManagement extends React.Component { // eslint-disable-line no-unu
     this.props.dispatch(getCategoryData(clickedPage, limit));
   }
 
+  enableSearch() {
+    const page = 1;
+
+    Promise.all([
+      this.props.dispatch({ type: MAKE_REQUEST }),
+      this.props.dispatch({ type: TOGGLE_SEARCH }),
+      this.props.dispatch(getAllCategoryData(page, 10))
+    ])
+    .then( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED });
+    });
+  }
+
   render() {
     const styles = require('./CategoryManagement.scss');
     const { lastSuccess } = this.props;
     // const {query} = this.props.location;
     // const page = (Object.keys(query).length > 0) ? parseInt(query.p, 10) : 1;
     // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
+    /* Search Parameters */
+
+    const fields = [ 'id', 'name', 'short_name', 'genre_short_name' ];
+    // const operator = ['$eq'];
+    const fieldOperatorMap = {
+      'name': ['$eq', '$like', '$ilike'],
+      'id': ['$eq', '$gt', '$lt'],
+      'short_name': ['$eq', '$like', '$ilike'],
+      'genre_short_name': ['$eq', '$like', '$ilike']
+    };
+    const fieldTypeMap = {
+      'name': 'text',
+      'genre_short_name': 'text',
+      'short_name': 'text',
+      'id': 'number'
+    };
+
+    /* End of it */
     return (
         <div className={styles.container}>
           <BreadCrumb breadCrumbs={this.breadCrumbs} />
-         	<div className={styles.search_wrapper + ' ' + styles.wd_100}>
-         		<p>Search</p>
-         		<div className={styles.search_form + ' ' + styles.wd_100}>
-         			<input type="text" placeholder="Mobile Number" />
-         			<input type="text" placeholder="Contains" />
-         			<input type="number" />
-         			<button className={styles.common_btn}>Search</button>
-         		</div>
-         	</div>
+          <SearchComponent configuredFields={ fields } fieldOperatorMap={ fieldOperatorMap } fieldTypeMap={ fieldTypeMap }>
+            <button className={styles.common_btn} onClick={ this.enableSearch.bind(this) }>
+              Search
+            </button>
+          </SearchComponent>
           <div className={styles.create_state_wrapper + ' ' + 'hide'}>
             <p>Create Category</p>
             <div className={styles.create_form}>
