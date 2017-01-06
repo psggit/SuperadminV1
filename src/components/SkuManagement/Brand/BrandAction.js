@@ -224,8 +224,8 @@ const insertBrand = () => {
   const listOfValidation = [];
   return (dispatch, getState) => {
     listOfValidation.push(validation(getState().brand_data.brandName, 'non_empty_text'));
-    listOfValidation.push(validation(getState().brand_data.companyId, 'non_empty_text'));
-    listOfValidation.push(validation(getState().brand_data.categoryId, 'non_empty_text'));
+    listOfValidation.push(validation(getState().brand_data.companyId, 'number'));
+    listOfValidation.push(validation(getState().brand_data.categoryId, 'number'));
     listOfValidation.push(validation(getState().brand_data.alcoholPer, 'non_empty_text'));
     listOfValidation.push(validation(getState().brand_data.temperature, 'non_empty_text'));
     Promise.all(listOfValidation
@@ -375,8 +375,8 @@ const updateBrand = () => {
   const listOfValidation = [];
   return (dispatch, getState) => {
     listOfValidation.push(validation(getState().brand_data.brandName, 'non_empty_text'));
-    listOfValidation.push(validation(getState().brand_data.companyId, 'non_empty_text'));
-    listOfValidation.push(validation(getState().brand_data.categoryId, 'non_empty_text'));
+    listOfValidation.push(validation(getState().brand_data.companyId, 'number'));
+    listOfValidation.push(validation(getState().brand_data.categoryId, 'number'));
     listOfValidation.push(validation(getState().brand_data.alcoholPer, 'non_empty_text'));
     listOfValidation.push(validation(getState().brand_data.temperature, 'non_empty_text'));
     Promise.all(listOfValidation
