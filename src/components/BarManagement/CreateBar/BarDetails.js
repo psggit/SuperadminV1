@@ -120,6 +120,10 @@ const BarDetails = ( { currState, organisationData } ) => { // eslint-disable-li
           <div className={styles.wd_50}>
             <AdImageUpload imageUrl={currState.adImage ? currState.adImage : ''} requestSuccess={AD_IMAGE_UPLOAD_SUCCESS} requestError={ AD_IMAGE_UPLOAD_ERROR } cancelImage={ AD_CANCEL_IMAGE }/>
           </div>
+          <div className={styles.wd_50}>
+            <label>House Rules</label>
+            <input type="text" data-field-name="house_rules" data-field-type="text" value={ currState.house_rules } />
+          </div>
         </li>
       </ul>
     </div>
