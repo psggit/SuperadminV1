@@ -99,6 +99,29 @@ const PromoDetails = ({styles, currentEditingPromo, promos, brands, fundsCredite
             </select>
           </div>
         </div>
+
+        <div className={styles.wd_100 + ' ' + styles.padding_top}>
+          <label className={styles.success_msg_lab}>
+            Service Charge
+          </label>
+          <div className={styles.custom_select}>
+            <input type="number" className={styles.input_cash} value={promo.serviceCharge ? promo.serviceCharge : 0}
+              onChange={onChangePromoInfo.bind(this, 'price', currentEditingPromo, {
+                type: promo.type ? promo.type : 'amount',
+                maxPrice: (promo.pricing ? promo.pricing.price : 0)
+              })}
+            />
+            <select name="service_type" value={promo.service_type ? promo.service_type : 'amount'}
+              onChange={onChangePromoInfo.bind(this, 'type', currentEditingPromo, {
+                price: promo.serviceCharge,
+                maxPrice: (promo.pricing ? promo.pricing.price : 0)
+              })}>
+              <option value={'amount'}>INR</option>
+              <option value={'percentage'}>%</option>
+            </select>
+          </div>
+        </div>
+
         <div className={styles.wd_100 + ' ' + styles.padding_top}>
           <label className={styles.success_msg_lab}>
             Promo name

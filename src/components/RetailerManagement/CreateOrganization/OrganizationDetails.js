@@ -81,9 +81,9 @@ const OrganizationDetails = ({ stateData } ) => {
       <OrganizationInput labelVal = "Organization Name" Val = "Ape's Ale" fieldName="organisation_name" fieldType="text" value={ stateData.organisation_name } />
       <OrganizationInput labelVal = "Date of Incorporation" Val = "34528752484" fieldName="date_of_incorporation" fieldType="date" value = { stateData.date_of_incorporation }/>
       <OrganizationInput labelVal = "PAN Number" Val = "F128ABC37" fieldName="pan_number" fieldType="text" value={ stateData.pan_number } />
-      <OrganizationInput labelVal = "TIN Number" Val = "102016" fieldName="tin_number" fieldType="text" value={ stateData.tin_number } />
-      <OrganizationInput labelVal = "Annual Turnover" Val = "74902834" fieldName="annual_turnover" fieldType="int" value={ stateData.annual_turnover }/>
-      <OrganizationInput labelVal = "TAN Number" Val = "102016"fieldName="tan_number" fieldType="text" value={ stateData.tan_number }/>
+      <OrganizationInput labelVal = "TIN Number" Val = "" fieldName="tin_number" fieldType="text" value={ stateData.tin_number } />
+      <OrganizationInput labelVal = "Annual Turnover" Val = "" fieldName="annual_turnover" fieldType="int" value={ stateData.annual_turnover }/>
+      <OrganizationInput labelVal = "TAN Number" Val = ""fieldName="tan_number" fieldType="text" value={ stateData.tan_number }/>
       <OrganizationSelect label = "KYC Verified" defaultValue="Select KYC Status" selectOptions={ kycSelectObj } fieldName="kyc_status" fieldType="text" value={ stateData.kyc_status }/>
       <OrganizationSelect label = "Status" defaultValue="Select Status" selectOptions={ statusSelectObj } fieldName="status" fieldType="text" value={ stateData.status }/>
     </div>

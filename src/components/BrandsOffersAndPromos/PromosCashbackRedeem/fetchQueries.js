@@ -159,7 +159,8 @@ const insertCampaignAndPromos = {
           objects: [{
             campaign_id: campaign_id,
             promoName: (promo.promoName),
-            serviceCharge: parseFloat(promo.serviceCharge),
+            service_charge_percentage: (promo.service_type === 'percentage' ? parseFloat(promo.serviceCharge) : null),
+            service_charge_flat: (promo.service_type === 'amount' ? parseFloat(promo.serviceCharge) : null),
             amount: (promo.type === 'amount' ? parseFloat(promo.price) : null),
             percentage: (promo.type === 'percentage' ? parseFloat(promo.price) : null)
           }]
