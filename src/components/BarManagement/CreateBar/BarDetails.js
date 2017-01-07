@@ -2,7 +2,12 @@ import React from 'react';
 
 import formValidator from '../../Common/CommonFormValidator';
 
+import AdImageUpload from './AdUpload';
+
 import {
+  AD_IMAGE_UPLOAD_SUCCESS,
+  AD_IMAGE_UPLOAD_ERROR,
+  AD_CANCEL_IMAGE,
   BAR_INPUT_CHANGED
 } from './BarData';
 
@@ -109,6 +114,15 @@ const BarDetails = ( { currState, organisationData } ) => { // eslint-disable-li
           <div className={styles.wd_50}>
             <label>Service Charge Percent</label>
             <input type="text" data-field-name="service_charge_percent" data-field-type="int" value={ currState.service_charge_percent } />
+          </div>
+        </li>
+        <li>
+          <div className={styles.wd_50}>
+            <AdImageUpload imageUrl={currState.adImage ? currState.adImage : ''} requestSuccess={AD_IMAGE_UPLOAD_SUCCESS} requestError={ AD_IMAGE_UPLOAD_ERROR } cancelImage={ AD_CANCEL_IMAGE }/>
+          </div>
+          <div className={styles.wd_50}>
+            <label>House Rules</label>
+            <input type="text" data-field-name="house_rules" data-field-type="text" value={ currState.house_rules } />
           </div>
         </li>
       </ul>
