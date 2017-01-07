@@ -296,9 +296,6 @@ const stateReducer = ( state = defaultStateManagementState, action) => {
         cityObj[hash].cityInput = state.cityInput;
         cityObj[hash].cityGPS = state.cityGPS;
         return { ...state, cities: Object.assign({}, state.cities, cityObj), hideCityComponent: true, cityInput: '' };
-      })
-      .catch(() => {
-        console.log('Error Occured');
       });
       /* falls through */
     case UPDATE_CITY_LOCAL:
