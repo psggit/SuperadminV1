@@ -54,6 +54,32 @@ const fetchDevice = ( id ) => {
   };
 };
 
+const activateDevice = ( devId, retailId, option ) => {
+  return ( dispatch) => {
+    const devUrl = Endpoints.db + '/table/retailer_pos/update';
+
+    const retailerDataObj = {
+      'is_active': option === 'true' ? true : false,
+    };
+
+    const updateObj = {};
+    updateObj.values = { ...retailerDataObj };
+    updateObj.returning = ['id'];
+    updateObj.where = {
+      'retailer_id': retailId,
+      'device_id': devId
+    };
+
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(updateObj)
+    };
+    return dispatch( requestAction( devUrl, options) ).then((resp) => {
+      alert(JSON.stringify(resp));
+    });
+  };
+};
+
 /* User methods */
 const activateUser = ( hasuraId ) => {
   return ( dispatch ) => {
@@ -201,6 +227,7 @@ const updateDevice = () => {
       if ( resp.returning.length > 0 ) {
         alert('Device Updated Successfully');
         return Promise.all([
+          dispatch( activateDevice(resp.returning[0].id, getState().branch_data.branchData.branchData.id, deviceData.is_active) ),
           dispatch( fetchDevice(getState().branch_data.branchData.branchData.id)),
           dispatch( { type: UNLOAD_DEVICE })
         ]);
@@ -216,11 +243,13 @@ const updateDevice = () => {
 const deleteDevice = ( id ) => {
   return ( dispatch, getState ) => {
     const devUrl = Endpoints.db + '/table/device/delete';
+    alert(id);
+    const delId = (id === undefined) ? getState().branch_data.deviceData.editDeviceId : id;
+    alert(delId);
 
     const deleteObj = {};
-    deleteObj.returning = ['id'];
     deleteObj.where = {
-      'id': id
+      'id': delId
     };
 
     const options = {
@@ -256,6 +285,7 @@ const createDevice = () => {
     const deviceData = getState().branch_data.deviceData;
     const deviceDataObj = {
       'device_num': deviceData.device_num,
+      'is_active': deviceData.is_active,
       'mobile_number': deviceData.mobile_number,
       'operator': deviceData.operator
     };
@@ -312,6 +342,7 @@ const createDeviceLocal = () => {
     const deviceData = getState().branch_data.deviceData;
     const deviceDataObj = {
       'device_num': deviceData.device_num,
+      'is_active': deviceData.is_active,
       'mobile_number': deviceData.mobile_number,
       'operator': deviceData.operator
     };
@@ -337,6 +368,7 @@ const updateDeviceLocal = () => {
     const deviceData = getState().branch_data.deviceData;
     const deviceDataObj = {
       'device_num': deviceData.device_num,
+      'is_active': deviceData.is_active,
       'mobile_number': deviceData.mobile_number,
       'operator': deviceData.operator
     };
@@ -364,7 +396,7 @@ const deleteDeviceLocal = () => {
   };
 };
 
-const defaultDevState = { 'device_num': '', 'mobile_number': '', 'operator': '', 'email': ''};
+const defaultDevState = {'is_active': '', 'device_num': '', 'mobile_number': '', 'operator': '', 'email': ''};
 
 /* End of it */
 
@@ -381,7 +413,7 @@ const deviceReducer = ( state = { ...addDeviceState, ...uiState }, action ) => {
     case HANDLE_ERROR:
       return { ...state };
     case TOGGLE_DEVICE_DETAIL:
-      return { ...state, showDetail: !state.showDetail, device_num: '', mobile_number: '', operator: '', email: '', isEditing: false, editDeviceId: 0};
+      return { ...state, showDetail: !state.showDetail, device_num: '', mobile_number: '', operator: '', email: '', is_active: '', isEditing: false, editDeviceId: 0};
     case LOCAL_CREATE_DEVICE:
       const localState = {};
       localState[action.data.devId] = action.data.devData;
@@ -407,6 +439,7 @@ const deviceReducer = ( state = { ...addDeviceState, ...uiState }, action ) => {
       });
       const {
         device_num,
+        is_active,
         mobile_number,
         operator,
       } = filteredDev[0].device;
@@ -415,7 +448,7 @@ const deviceReducer = ( state = { ...addDeviceState, ...uiState }, action ) => {
         email
       } = filteredDev[0];
 
-      const devData = { device_num, mobile_number, operator, email};
+      const devData = {is_active, device_num, mobile_number, operator, email};
 
       return { ...state, ...devData, editDeviceId: devId, showDetail: true, isEditing: true};
     case LOAD_LOCAL_DEVICE:
@@ -423,7 +456,7 @@ const deviceReducer = ( state = { ...addDeviceState, ...uiState }, action ) => {
 
       return { ...state, ...state.localDevs[localDevId], editDeviceId: localDevId, showDetail: true, isEditing: true };
     case UNLOAD_DEVICE:
-      const devD = { device_num: '', mobile_number: '', operator: '', email: ''};
+      const devD = {is_active: '', device_num: '', mobile_number: '', operator: '', email: ''};
 
       return { ...state, ...devD, isEditing: false, showDetail: false, editDeviceId: 0 };
     case RESET_DEVICE:

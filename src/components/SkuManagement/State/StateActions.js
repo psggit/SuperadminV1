@@ -288,34 +288,24 @@ const stateReducer = ( state = defaultStateManagementState, action) => {
     case STORE_CITY_LOCAL:
       listOfValidation.push(validation(state.cityInput, 'non_empty_text'));
       listOfValidation.push(validation(state.cityGPS, 'gps'));
-      Promise.all(listOfValidation
-      ).then(() => {
-        const cityObj = {};
-        hash = crypto.createHash('sha1').update(state.cityInput.toLowerCase()).digest('hex');
-        cityObj[hash] = {};
-        cityObj[hash].cityInput = state.cityInput;
-        cityObj[hash].cityGPS = state.cityGPS;
-        return { ...state, cities: Object.assign({}, state.cities, cityObj), hideCityComponent: true, cityInput: '' };
-      });
-      /* falls through */
+      const cityObj = {};
+      hash = crypto.createHash('sha1').update(state.cityInput.toLowerCase()).digest('hex');
+      cityObj[hash] = {};
+      cityObj[hash].cityInput = state.cityInput;
+      cityObj[hash].cityGPS = state.cityGPS;
+      return { ...state, cities: Object.assign({}, state.cities, cityObj), hideCityComponent: true, cityInput: '' };
     case UPDATE_CITY_LOCAL:
       listOfValidation.push(validation(state.cityInput, 'non_empty_text'));
       listOfValidation.push(validation(state.cityGPS, 'gps'));
-      Promise.all(listOfValidation
-      ).then(() => {
-        hash = crypto.createHash('sha1').update(state.cityInput.toLowerCase()).digest('hex');
-        const updateCityObj = {};
-        updateCityObj[hash] = {};
-        updateCityObj[hash].cityInput = state.cityInput;
-        updateCityObj[hash].cityGPS = state.cityGPS;
-        const prevCityObj = Object.assign({}, state.cities);
-        delete prevCityObj[state.cityId];
-        return { ...state, cities: Object.assign({}, prevCityObj, updateCityObj), isCityLocal: false, isCityEdit: false, cityId: '0', hideCityComponent: true};
-      })
-      .catch(() => {
-        console.log('Error Occured');
-      });
-      /* falls through */
+      hash = crypto.createHash('sha1').update(state.cityInput.toLowerCase()).digest('hex');
+      const updateCityObj = {};
+      updateCityObj[hash] = {};
+      updateCityObj[hash].cityInput = state.cityInput;
+      updateCityObj[hash].cityGPS = state.cityGPS;
+      const prevCityObj = Object.assign({}, state.cities);
+      console.log(prevCityObj);
+      delete prevCityObj[state.cityId];
+      return { ...state, cities: Object.assign({}, prevCityObj, updateCityObj), isCityLocal: false, isCityEdit: false, cityId: '0', hideCityComponent: true};
     case DELETE_CITY_LOCAL:
       const deleteObj = Object.assign({}, state.cities);
       delete deleteObj[state.cityId];

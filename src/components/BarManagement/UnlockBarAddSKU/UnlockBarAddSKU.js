@@ -274,7 +274,7 @@ class UnlockBarAddSKU extends Component {
               Start Date
             </div>
             <div className = {styles.information_rightpanel}>
-              <input data-field-name="start_date" data-field-type="time" type="datetime-local" value={ newSkuData.start_date}/>
+              <input data-field-name="start_date" data-field-type="time" type="datetime-local" value={ newSkuData.start_date === undefined ? newSkuData.start_date : newSkuData.start_date.slice(0, -6) }/>
             </div>
           </div>
           <div className = {styles.command_wrapper}>
@@ -282,7 +282,7 @@ class UnlockBarAddSKU extends Component {
               End Date
             </div>
             <div className = {styles.information_rightpanel}>
-              <input data-field-name="end_date" data-field-type="time" type="datetime-local" value={ newSkuData.end_date}/>
+              <input data-field-name="end_date" data-field-type="time" type="datetime-local" value={ newSkuData.end_date === undefined ? newSkuData.end_date : newSkuData.end_date.slice(0, -6) }/>
             </div>
           </div>
           <div className={ styles.warning_block + ' ' + ( !newSkuData.is_active && !newSkuData.status ? '' : 'hide' ) }>

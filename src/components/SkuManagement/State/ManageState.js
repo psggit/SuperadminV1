@@ -5,6 +5,8 @@ import {
   , resetState
 } from '../Action';
 
+import { validation } from '../../Common/Actions/Validator';
+
 import {
   TOGGLE_CITY_COMPONENT,
   CITY_INPUT_CHANGED,
@@ -83,7 +85,13 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
     this.props.dispatch({ type: STATE_INPUT_CHANGED, data: { 'key': inputVal, 'value': e.target.value } });
   }
   saveCityToLocal() {
-    this.props.dispatch({ type: STORE_CITY_LOCAL });
+    const listOfValidation = [];
+    listOfValidation.push(validation(this.props.cityInput, 'non_empty_text'));
+    listOfValidation.push(validation(this.props.cityGPS, 'gps'));
+    Promise.all(listOfValidation
+    ).then(() => {
+      this.props.dispatch({ type: STORE_CITY_LOCAL });
+    });
   }
   updateCityToLocal() {
     this.props.dispatch({ type: UPDATE_CITY_LOCAL});

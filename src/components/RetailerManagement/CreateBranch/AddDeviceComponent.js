@@ -12,10 +12,8 @@ const AddDeviceComponent = ( {
   createDevice,
   unloadDevice,
   updateDevice,
-  deleteDevice,
   createDeviceLocal,
   updateDeviceLocal,
-  deleteDeviceLocal,
   isBrEdit,
   isEditing
 } ) => { // eslint-disable-line no-unused-vars
@@ -42,13 +40,11 @@ const AddDeviceComponent = ( {
       (
         <div className = {styles.user_actions}>
           <button onClick={ unloadDevice }>Cancel</button>
-          <button onClick={ deleteDevice }>Delete</button>
           <button onClick={ updateDevice }>Update</button>
         </div>
       ) : (
         <div className = {styles.user_actions}>
           <button onClick={ unloadDevice }>Cancel</button>
-          <button onClick={ deleteDeviceLocal } >Delete</button>
           <button onClick={ updateDeviceLocal }>Update</button>
         </div>
       );
@@ -89,6 +85,15 @@ const AddDeviceComponent = ( {
             Mobile Operator
           </label>
           <input type="text" data-field-name="operator" data-field-type="text" value={ currState.operator } />
+        </div>
+        <div className={styles.wd_100 + ' ' + styles.margin_bottom}>
+          <label className={styles.success_msg_lab}>
+            Is Active
+          </label>
+          <select type="select" data-field-name="is_active" data-field-type="text" value={ currState.is_active } >
+            <option value="true">Active</option>
+            <option value="false">InActive</option>
+          </select>
         </div>
         { actionButtons }
       </div>
