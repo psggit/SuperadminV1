@@ -74,8 +74,8 @@ const activateDevice = ( devId, retailId, option ) => {
       ...genOptions,
       body: JSON.stringify(updateObj)
     };
-    return dispatch( requestAction( devUrl, options) ).then((resp) => {
-      alert(JSON.stringify(resp));
+    return dispatch( requestAction( devUrl, options) ).then(() => {
+      alert('Device Activated/Deactivated');
     });
   };
 };
@@ -225,7 +225,6 @@ const updateDevice = () => {
     return dispatch( requestAction( devUrl, options ) )
     .then( ( resp ) => {
       if ( resp.returning.length > 0 ) {
-        alert('Device Updated Successfully');
         return Promise.all([
           dispatch( activateDevice(resp.returning[0].id, getState().branch_data.branchData.branchData.id, deviceData.is_active) ),
           dispatch( fetchDevice(getState().branch_data.branchData.branchData.id)),
@@ -234,7 +233,7 @@ const updateDevice = () => {
       }
     })
     .catch( ( ) => {
-      alert('Couldn"t Update Device');
+      alert('Could not Update Device');
     });
     // return Promise.resolve();
   };
@@ -274,29 +273,27 @@ const deleteDevice = ( id ) => {
   };
 };
 
+// Sends device details in Server
 const createDevice = () => {
   return ( dispatch, getState ) => {
     if ( !getState().branch_data.branchData.branchData.id ) {
       alert('Create Organization to create device');
       return Promise.reject();
     }
-    const devUrl = Endpoints.db + '/table/device/insert';
 
+    const devUrl = Endpoints.db + '/table/device/insert';
     const deviceData = getState().branch_data.deviceData;
     const deviceDataObj = {
       'device_num': deviceData.device_num,
-      'is_active': deviceData.is_active,
       'mobile_number': deviceData.mobile_number,
       'operator': deviceData.operator
     };
 
     const deviceInsertCheck = ['device_num', 'mobile_number', 'operator'];
     let deviceCheck = true;
-
     deviceInsertCheck.forEach( ( i ) => {
       deviceCheck = deviceCheck && ( deviceDataObj[i] ? true : false );
     });
-
     if ( !deviceInsertCheck ) {
       alert('All the fields for organisation are mandatory');
       return Promise.reject();
@@ -305,7 +302,6 @@ const createDevice = () => {
     const insertObj = {};
     insertObj.objects = [ { ...deviceDataObj } ];
     insertObj.returning = ['id'];
-
     const options = {
       ...genOptions,
       body: JSON.stringify(insertObj)
@@ -314,17 +310,14 @@ const createDevice = () => {
     return dispatch( requestAction( devUrl, options ) )
     .then( ( resp ) => {
       if ( resp.returning.length > 0 ) {
-        // alert('Device Created Successfully');
+        console.log('Device Created : Moving on to creating User');
         return Promise.all([
-          dispatch( createUser(resp.returning[0].id) )
+          dispatch( createUser(resp.returning[0].id) ),
+          dispatch( activateDevice(resp.returning[0].id, getState().branch_data.branchData.branchData.id, deviceData.is_active) ),
+          dispatch( fetchDevice( getState().branch_data.branchData.branchData.id )),
+          dispatch( { type: UNLOAD_DEVICE })
         ]);
       }
-    })
-    .then( ( ) => {
-      return Promise.all([
-        dispatch( fetchDevice( getState().branch_data.branchData.branchData.id )),
-        dispatch( { type: UNLOAD_DEVICE })
-      ]);
     })
     .catch( ( resp ) => {
       if ( resp.id ) {
@@ -337,12 +330,12 @@ const createDevice = () => {
   };
 };
 
+// Stores device details in Local
 const createDeviceLocal = () => {
   return ( dispatch, getState ) => {
     const deviceData = getState().branch_data.deviceData;
     const deviceDataObj = {
       'device_num': deviceData.device_num,
-      'is_active': deviceData.is_active,
       'mobile_number': deviceData.mobile_number,
       'operator': deviceData.operator
     };
@@ -439,13 +432,13 @@ const deviceReducer = ( state = { ...addDeviceState, ...uiState }, action ) => {
       });
       const {
         device_num,
-        is_active,
         mobile_number,
         operator,
       } = filteredDev[0].device;
 
       const {
-        email
+        email,
+        is_active,
       } = filteredDev[0];
 
       const devData = {is_active, device_num, mobile_number, operator, email};

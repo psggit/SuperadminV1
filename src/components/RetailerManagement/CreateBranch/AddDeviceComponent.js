@@ -35,6 +35,23 @@ const AddDeviceComponent = ( {
     );
   };
 
+  const statusSelectObj = [
+    {
+      'label': 'Active',
+      'value': true
+    },
+    {
+      'label': 'InActive',
+      'value': false
+    }
+  ];
+
+  const deviceStatusHtml = statusSelectObj.map( ( statusSelect, index ) => {
+    return (
+      <option key={ index } value={ statusSelect.value }> { statusSelect.label } </option>
+    );
+  });
+
   const getEditButtonsNew = () => {
     return ( isBrEdit ) ?
       (
@@ -90,9 +107,8 @@ const AddDeviceComponent = ( {
           <label className={styles.success_msg_lab}>
             Is Active
           </label>
-          <select type="select" data-field-name="is_active" data-field-type="text" value={ currState.is_active } >
-            <option value="true">Active</option>
-            <option value="false">InActive</option>
+          <select type="select" data-field-name="is_active" data-field-type="text" value={ currState.is_active }>
+            { deviceStatusHtml }
           </select>
         </div>
         { actionButtons }
