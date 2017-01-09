@@ -313,10 +313,14 @@ const createDevice = () => {
         console.log('Device Created : Moving on to creating User');
         return Promise.all([
           dispatch( createUser(resp.returning[0].id) ),
-          dispatch( activateDevice(resp.returning[0].id, getState().branch_data.branchData.branchData.id, deviceData.is_active) ),
-          dispatch( fetchDevice( getState().branch_data.branchData.branchData.id )),
-          dispatch( { type: UNLOAD_DEVICE })
-        ]);
+        ])
+        .then( () => {
+          return Promise.all([
+            dispatch( activateDevice(resp.returning[0].id, getState().branch_data.branchData.branchData.id, deviceData.is_active) ),
+            dispatch( fetchDevice( getState().branch_data.branchData.branchData.id )),
+            dispatch( { type: UNLOAD_DEVICE })
+          ]);
+        });
       }
     })
     .catch( ( resp ) => {
@@ -406,7 +410,7 @@ const deviceReducer = ( state = { ...addDeviceState, ...uiState }, action ) => {
     case HANDLE_ERROR:
       return { ...state };
     case TOGGLE_DEVICE_DETAIL:
-      return { ...state, showDetail: !state.showDetail, device_num: '', mobile_number: '', operator: '', email: '', is_active: '', isEditing: false, editDeviceId: 0};
+      return { ...state, showDetail: !state.showDetail, device_num: '', mobile_number: '', operator: '', email: '', is_active: true, isEditing: false, editDeviceId: 0};
     case LOCAL_CREATE_DEVICE:
       const localState = {};
       localState[action.data.devId] = action.data.devData;
