@@ -1,10 +1,31 @@
 import React from 'react';
 
+import { Link } from 'react-router';
+
 const CityRetailer = ({ viewedCity, onRetailerCheck } ) => {
   const styles = require('./CreateSku.scss');
 
-  console.log('viewedCity');
-  console.log(viewedCity);
+  const getStatus = ( retailerInfo ) => {
+    return ( retailerInfo.is_selected && retailerInfo.is_fetched ? 'Active' : 'InActive' );
+  };
+
+  const getStatusInfo = ( retailerInfo ) => {
+    if ( retailerInfo ) {
+      return ('is_fetched' in retailerInfo ? ' ( ' + getStatus(retailerInfo) + ' ) ' : '' );
+    }
+    return '';
+  };
+
+  const getToggleInfo = ( retailerInfo, id ) => {
+    if ( retailerInfo ) {
+      return ('is_fetched' in retailerInfo ? (
+          <Link to={ '/hadmin/retailer_management/edit_branch/' + id }>
+            Toggle
+          </Link>
+        ) : '' );
+    }
+    return '';
+  };
 
   const retailerHtml = ( Object.keys(viewedCity).length > 0) ?
     () => {
@@ -19,9 +40,13 @@ const CityRetailer = ({ viewedCity, onRetailerCheck } ) => {
                   return (
                     <li key={index}>
                       <label>
-                        <input type="checkbox" data-retailer-id={ retailer.id } type="checkbox" checked = { viewedCity.selected_retailers[ retailer.id ] ? true : false } onChange = { onRetailerCheck }/>
+                        <input type="checkbox" disabled = { viewedCity.selected_retailers[ retailer.id ] ? ( 'is_fetched' in viewedCity.selected_retailers[ retailer.id ] ) : false } data-retailer-id={ retailer.id } type="checkbox" checked = { viewedCity.selected_retailers[ retailer.id ] ? true : false } onChange = { onRetailerCheck }/>
                         { retailer.org_name }
                       </label>
+                      <p >
+                        { getStatusInfo(viewedCity.selected_retailers[retailer.id]) }
+                        { getToggleInfo(viewedCity.selected_retailers[retailer.id], retailer.id ) }
+                      </p>
                     </li>
                   );
                 })

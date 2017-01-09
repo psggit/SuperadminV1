@@ -102,10 +102,7 @@ const hydrateStateObj = () => {
                     }
                   ]
                 },
-              ],
-              'where': {
-                'is_active': true
-              }
+              ]
             }
           ],
           'where': {
@@ -1070,7 +1067,8 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
             const cityId = inventory.retailer.city_id;
             const retailerId = inventory.retailer_id;
             localStateCityMapping[ sState.state_short_name ].selected_cities[cityId] = { ...state.cityRetailerMapping[cityId], is_selected: false};
-            localRetailerMapping[retailerId].is_selected = true;
+            // localRetailerMapping[retailerId].is_selected = true;
+            localRetailerMapping[retailerId].is_selected = inventory.is_active;
             localRetailerMapping[retailerId].is_fetched = true;
             // localRetailerMapping[retailerId].serverValues = { is_selected: true };
             localCityRetailerMapping[cityId].is_selected = true;
