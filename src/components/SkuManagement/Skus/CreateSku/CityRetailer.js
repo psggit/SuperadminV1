@@ -1,10 +1,34 @@
 import React from 'react';
 
-const CityRetailer = ({ viewedCity, onRetailerCheck } ) => {
+// import { Link } from 'react-router';
+
+const CityRetailer = ({ viewedCity, onRetailerCheck, toggleSkuStatus } ) => {
   const styles = require('./CreateSku.scss');
 
-  console.log('viewedCity');
-  console.log(viewedCity);
+  const getStatus = ( retailerInfo ) => {
+    return ( retailerInfo.is_selected && retailerInfo.is_fetched ? 'Active' : 'InActive' );
+  };
+
+  const getStatusInfo = ( retailerInfo ) => {
+    if ( retailerInfo ) {
+      return ('is_fetched' in retailerInfo ? ' ( ' + getStatus(retailerInfo) + ' ) ' : '' );
+    }
+    return '';
+  };
+
+  const getCurrStatus = ( retailerInfo ) => {
+    if ( retailerInfo ) {
+      return ('is_fetched' in retailerInfo ? retailerInfo.is_selected && retailerInfo.is_fetched : false );
+    }
+    return false;
+  };
+
+  const getToggleInfo = ( retailerInfo ) => {
+    if ( retailerInfo ) {
+      return ('is_fetched' in retailerInfo ? 'Click to toggle' : '' );
+    }
+    return '';
+  };
 
   const retailerHtml = ( Object.keys(viewedCity).length > 0) ?
     () => {
@@ -19,9 +43,13 @@ const CityRetailer = ({ viewedCity, onRetailerCheck } ) => {
                   return (
                     <li key={index}>
                       <label>
-                        <input type="checkbox" data-retailer-id={ retailer.id } type="checkbox" checked = { viewedCity.selected_retailers[ retailer.id ] ? true : false } onChange = { onRetailerCheck }/>
+                        <input type="checkbox" disabled = { viewedCity.selected_retailers[ retailer.id ] ? ( 'is_fetched' in viewedCity.selected_retailers[ retailer.id ] ) : false } data-retailer-id={ retailer.id } type="checkbox" checked = { viewedCity.selected_retailers[ retailer.id ] ? true : false } onChange = { onRetailerCheck }/>
                         { retailer.org_name }
                       </label>
+                      <p onClick={ () => { return toggleSkuStatus.call(null, retailer.id, ( getCurrStatus(viewedCity.selected_retailers[retailer.id]) )); } }>
+                        { getStatusInfo(viewedCity.selected_retailers[retailer.id]) }
+                        { getToggleInfo(viewedCity.selected_retailers[retailer.id]) }
+                      </p>
                     </li>
                   );
                 })

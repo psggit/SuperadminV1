@@ -79,7 +79,7 @@ const DeviceComponent = ( {
             { localDevs[device].operator }
           </div>
           <div className={styles.table_td + ' ' + 'col-md-4'}>
-            { localDevs[device].isActive ? 'Yes' : 'No' }
+            { localDevs[device].is_active ? 'Yes' : 'No' }
           </div>
         </div>
       </div>

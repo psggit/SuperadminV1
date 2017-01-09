@@ -43,7 +43,8 @@ const Endpoints = {
   integrations_dataUrl: 'http://localhost:5000',
   baseUrl: dataUrl,
   authUrl: authUrl,
-  blogicUrl: blogicUrl
+  blogicUrl: blogicUrl,
+  dataUrl: dataUrl
 };
 const globalCookiePolicy = 'include';
 
