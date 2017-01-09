@@ -75,13 +75,15 @@ class CreateBrandManager extends Component { // eslint-disable-line no-unused-va
     };
 
     const selectedBrandsHtml = selectedBrandsList.map((sb) => {
-      const count = getActiveRegionCount([...sb.regions]);
-      return (
-        <li>
-          <label>{sb.brand_name}</label>
-          <p className={styles.pointer_click} onClick={this.onClickExistingBrand.bind(this, sb.id)}>{count} {(count !== 1) ? 'Regions' : 'Region' }</p>
-        </li>
-      );
+      if (!sb.is_deleted) {
+        const count = getActiveRegionCount([...sb.regions]);
+        return (
+          <li>
+            <label>{sb.brand_name}</label>
+            <p className={styles.pointer_click} onClick={this.onClickExistingBrand.bind(this, sb.id)}>{count} {(count !== 1) ? 'Regions' : 'Region' }</p>
+          </li>
+        );
+      }
     });
 
     // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
