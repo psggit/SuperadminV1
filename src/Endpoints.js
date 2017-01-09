@@ -10,8 +10,8 @@ let scheme;
 let baseHost = 'TEST';
 
 if (window.location.href.split(':')[1] === '//localhost') {
-  // const appName = 'scarcity31';
-  const appName = 'hipbar-stg';
+  const appName = 'scarcity31';
+  // const appName = 'hipbar-stg';
   dataUrl = 'https://data.' + appName + '.hasura-app.io';
   authUrl = 'https://auth.' + appName + '.hasura-app.io';
   fileUrl = 'https://api2.' + appName + '.hasura-app.io';
