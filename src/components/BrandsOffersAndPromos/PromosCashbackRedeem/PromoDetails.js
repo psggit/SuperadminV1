@@ -133,11 +133,11 @@ const PromoDetails = ({styles, currentEditingPromo, promos, brands, fundsCredite
         </div>
         <div className={styles.wd_100 + ' ' + styles.padding_top}>
           <label className={styles.success_msg_lab}>
-            Service Charge
+            Promo Description
           </label>
           <div className={styles.text_input}>
-            <input type="number" value={promo.serviceCharge}
-              onChange={onChangePromoInfo.bind(this, 'serviceCharge', currentEditingPromo, {})} />
+            <input value={promo.promo_description}
+              onChange={onChangePromoInfo.bind(this, 'promo_description', currentEditingPromo, {})} />
           </div>
         </div>
         <div className={styles.select_container}>
