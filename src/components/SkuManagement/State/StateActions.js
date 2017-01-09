@@ -219,13 +219,16 @@ const updateStateSaveCity = () => {
           return [];
         })
         .then(() => {
+          alert('State Updated Succssfully');
           return Promise.all([
             dispatch(fetchState(currProps.fromDB[0].id)),
-            dispatch({ type: CLEAR_CITY})
+            dispatch({ type: CLEAR_CITY}),
+            dispatch(routeActions.push('/hadmin/state_management'))
           ]);
         })
         .catch((error) => {
           console.log('error');
+          alert('Error updating State');
           console.log(error);
         });
     })

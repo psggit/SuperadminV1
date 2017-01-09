@@ -22,6 +22,7 @@ import { fetchBrand
   , updateComponentState
   , getReservedItems
   , disableSku
+  , toggleSkuStatus
   , RESET
 } from './CreateSkuActions';
 
@@ -90,6 +91,18 @@ class SkuWrapper extends Component {
   onStateSelect(e) {
     const stateId = e.target.getAttribute('data-state-id');
     this.props.dispatch(( e.target.checked ) ? markStateSelected(stateId) : unMarkStateSelected(stateId));
+  }
+  onToggleSkuStatus(id, status ) {
+    Promise.all([
+      this.props.dispatch({ type: MAKE_REQUEST }),
+      this.props.dispatch( toggleSkuStatus(id, status) )
+    ])
+    .then( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED});
+    })
+    .catch( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED});
+    });
   }
   onStatePriceEntered(e) {
     const changedValue = e.target.getAttribute('data-field-name');
@@ -173,6 +186,7 @@ class SkuWrapper extends Component {
               page = { this.props.currentPage }
               onUpdate = { this.onUpdateClick.bind(this) }
               disableSKUs = { this.disableSKUs.bind(this) }
+              toggleSkuStatus = { this.onToggleSkuStatus.bind(this) }
             />
           </div>
         );
