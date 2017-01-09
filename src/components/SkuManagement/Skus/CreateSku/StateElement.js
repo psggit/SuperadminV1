@@ -6,10 +6,12 @@ import React from 'react';
 const StateElement = ({ stateInfo, stateCityMapping, onStateSelect, onStatePriceEntered}) => {
   const styles = require('./CreateSku.scss');
 
+  const serverFetched = ( 'serverValues' in stateCityMapping );
+
   const stateElement = ( Object.keys(stateInfo).length > 0) ? (
       <div className="state_wrapper">
         <label className={styles.check_box} data-state-id={stateInfo.short_name} >
-          <input data-state-id={stateInfo.short_name} type="checkbox" checked={ stateCityMapping.is_selected } onClick={onStateSelect} data-field-name="state_id" data-field-type="int" /> { stateInfo.state_name }
+          <input data-state-id={stateInfo.short_name} disabled = { serverFetched } type="checkbox" checked={ stateCityMapping.is_selected } onClick={onStateSelect} data-field-name="state_id" data-field-type="int" /> { stateInfo.state_name }
         </label>
         {
           (stateCityMapping.is_selected) ?

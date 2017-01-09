@@ -26,6 +26,7 @@ const CreateSku = ({ brandList
     , page
     , reservedItems
     , disableSKUs
+    , toggleSkuStatus
   }) => { // eslint-disable-line no-unused-vars
   const styles = require('./CreateSku.scss');
   const submitButton = ( page !== 'edit_page' ) ? (
@@ -68,7 +69,7 @@ const CreateSku = ({ brandList
       {
         /* Component to render retailers of a particular city */
       }
-      <CityRetailer viewedCity={ viewedCity } onRetailerCheck={ onRetailerCheck } page = { page } />
+      <CityRetailer viewedCity={ viewedCity } onRetailerCheck={ onRetailerCheck } page = { page } toggleSkuStatus = { toggleSkuStatus } />
 
       {
         /* Again some CSS Gotcha */
