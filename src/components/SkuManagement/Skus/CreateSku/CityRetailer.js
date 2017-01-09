@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Link } from 'react-router';
+// import { Link } from 'react-router';
 
-const CityRetailer = ({ viewedCity, onRetailerCheck } ) => {
+const CityRetailer = ({ viewedCity, onRetailerCheck, toggleSkuStatus } ) => {
   const styles = require('./CreateSku.scss');
 
   const getStatus = ( retailerInfo ) => {
@@ -16,13 +16,16 @@ const CityRetailer = ({ viewedCity, onRetailerCheck } ) => {
     return '';
   };
 
-  const getToggleInfo = ( retailerInfo, id ) => {
+  const getCurrStatus = ( retailerInfo ) => {
     if ( retailerInfo ) {
-      return ('is_fetched' in retailerInfo ? (
-          <Link to={ '/hadmin/retailer_management/edit_branch/' + id }>
-            Toggle
-          </Link>
-        ) : '' );
+      return ('is_fetched' in retailerInfo ? retailerInfo.is_selected && retailerInfo.is_fetched : false );
+    }
+    return false;
+  };
+
+  const getToggleInfo = ( retailerInfo ) => {
+    if ( retailerInfo ) {
+      return ('is_fetched' in retailerInfo ? 'Click to toggle' : '' );
     }
     return '';
   };
@@ -43,9 +46,9 @@ const CityRetailer = ({ viewedCity, onRetailerCheck } ) => {
                         <input type="checkbox" disabled = { viewedCity.selected_retailers[ retailer.id ] ? ( 'is_fetched' in viewedCity.selected_retailers[ retailer.id ] ) : false } data-retailer-id={ retailer.id } type="checkbox" checked = { viewedCity.selected_retailers[ retailer.id ] ? true : false } onChange = { onRetailerCheck }/>
                         { retailer.org_name }
                       </label>
-                      <p >
+                      <p onClick={ () => { return toggleSkuStatus.call(null, retailer.id, ( getCurrStatus(viewedCity.selected_retailers[retailer.id]) )); } }>
                         { getStatusInfo(viewedCity.selected_retailers[retailer.id]) }
-                        { getToggleInfo(viewedCity.selected_retailers[retailer.id], retailer.id ) }
+                        { getToggleInfo(viewedCity.selected_retailers[retailer.id]) }
                       </p>
                     </li>
                   );
