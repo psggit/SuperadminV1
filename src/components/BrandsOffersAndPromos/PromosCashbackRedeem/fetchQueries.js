@@ -72,7 +72,7 @@ const selectBrandManagers = {
             brand: {
               is_active: true
             }
-          }, {
+          } /* , {
             brand: {
               skus: {
                 pricings: {
@@ -86,7 +86,7 @@ const selectBrandManagers = {
                 }
               }
             }
-          }
+          }*/
         ]}
       }],
       // The below will ensure that account who's is_disabled is false.
