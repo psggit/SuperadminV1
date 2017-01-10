@@ -10,9 +10,11 @@ import {
   REQUEST_ERROR,
 } from '../../Common/Actions/Actions';
 
+import beginFilter from '../../Common/SearchComponentGen/GenerateFilter';
+
 /* Fetch Cancel Products */
 
-const getBranchCount = ( ) => {
+const getBranchCount = ( filterObj, isSearched ) => {
   return (dispatch) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
@@ -20,6 +22,9 @@ const getBranchCount = ( ) => {
     const payload = {
       'columns': ['*']
     };
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
 
     const url = Endpoints.db + '/table/' + 'retailer' + '/count';
     const options = {
@@ -30,7 +35,7 @@ const getBranchCount = ( ) => {
   };
 };
 
-const getBranchData = ( page ) => {
+const getBranchData = ( page, filterObj, isSearched) => {
   return (dispatch) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
@@ -55,6 +60,10 @@ const getBranchData = ( page ) => {
       offset: offset
     };
 
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
+
     const url = Endpoints.db + '/table/' + 'retailer' + '/select';
     const options = {
       ...genOptions,
@@ -67,10 +76,12 @@ const getBranchData = ( page ) => {
 const getAllBranchData = (page ) => {
   const gotPage = page;
   /* Dispatching first one */
-  return (dispatch) => {
+  return ( dispatch, getState ) => {
+    const filterData = getState().gen_filter_data;
+    const filterObj = { ...beginFilter(getState) };
     return Promise.all([
-      dispatch(getBranchCount( )),
-      dispatch(getBranchData(gotPage))
+      dispatch(getBranchCount( filterObj, filterData.isSearched )),
+      dispatch(getBranchData(gotPage, filterObj, filterData.isSearched))
     ]);
   };
 };

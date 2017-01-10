@@ -377,6 +377,37 @@
 			background: #FFF;
 		}
 	}
+	.text_input
+	{
+		display: inline-block;
+		float: left;
+		vertical-align: middle;
+		border: 1px solid #DDD;
+		border-radius: 3px;
+		background: #FFF;
+		input
+		{
+			width: 200px;
+			background: #FFF;
+			height: 25px;
+			padding: 0 10px;
+			border: 0;
+			border-right: 1px solid #DDD;
+			&:focus
+			{
+				outline: none;
+			}
+		}
+		select
+		{
+			height: 30px;
+			width: 70px;
+			color: rgba(0,0,0,0.54);
+			font-size: 13px;
+			border: 0;
+			background: #FFF;
+		}
+	}
 	.select_container
 	{
 		width: 100%;

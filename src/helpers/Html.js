@@ -32,6 +32,11 @@ export default class Html extends Component {
             {/*head.meta.toComponent()*/}
             {/*head.link.toComponent()*/}
             {/*head.script.toComponent()*/}
+            {/*
+            <script src="https://cdn.logrocket.com/LogRocket.min.js"></script>
+            
+            <script dangerouslySetInnerHTML={{ __html: 'window.LogRocket.init("mnm-studios/mambajamba", { shouldShowReportingButton: true, })' }} charSet="UTF-8" />
+            */}
 
             <link rel="shortcut icon" href="/favicon.ico" />
             <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -50,7 +55,12 @@ export default class Html extends Component {
             {/*FIXME: Use this for serializing SSR data
             <script dangerouslySetInnerHTML={{__html: `window.__data=${serialize(store.getState())};`}} charSet="UTF-8"/>*/}
             <link href='https://fonts.googleapis.com/css?family=Roboto:400,500' rel='stylesheet' type='text/css' />
-            </head>
+            <script dangerouslySetInnerHTML={{__html: `
+                window.__env = {
+                  baseDomain: '${process.env.BASE_DOMAIN}'
+                };
+              `}} />
+        </head>
         <body>
             <div className="content_wrapper" id="content" dangerouslySetInnerHTML={{__html: content}}/>
             <script src={assets.javascript.main} charSet="UTF-8"/>

@@ -75,6 +75,10 @@ const insertNotepad = (issueId, description, userId) => {
     const currentUserId = userId;
 
     const insertObj = {};
+    if ( description.length === 0 ) {
+      alert('Please enter the comment to submit');
+      return Promise.resolve();
+    }
     insertObj.objects = [
       {
         'issue_id': issueId,

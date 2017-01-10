@@ -2,6 +2,7 @@ import React from 'react';
 
 import formValidator from '../../Common/CommonFormValidator';
 
+
 import {
   BAR_CONTACT_CHANGED
 } from './BarData';

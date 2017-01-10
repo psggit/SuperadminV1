@@ -10,9 +10,11 @@ import {
   REQUEST_ERROR,
 } from '../../Common/Actions/Actions';
 
+import beginFilter from '../../Common/SearchComponentGen/GenerateFilter';
+
 /* Fetch Cancel Products */
 
-const getBarCount = ( ) => {
+const getBarCount = ( filterObj, isSearched ) => {
   return (dispatch) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
@@ -20,6 +22,10 @@ const getBarCount = ( ) => {
     const payload = {
       'columns': ['*']
     };
+
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
 
     const url = Endpoints.db + '/table/' + 'bars' + '/count';
     const options = {
@@ -30,7 +36,7 @@ const getBarCount = ( ) => {
   };
 };
 
-const getBarData = ( page ) => {
+const getBarData = ( page, filterObj, isSearched) => {
   return (dispatch) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
@@ -55,6 +61,10 @@ const getBarData = ( page ) => {
       offset: offset
     };
 
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
+
     const url = Endpoints.db + '/table/' + 'bars' + '/select';
     const options = {
       ...genOptions,
@@ -67,10 +77,13 @@ const getBarData = ( page ) => {
 const getAllBarData = (page ) => {
   const gotPage = page;
   /* Dispatching first one */
-  return (dispatch) => {
+  return (dispatch, getState ) => {
+    const filterData = getState().gen_filter_data;
+    const filterObj = { ...beginFilter(getState) };
+
     return Promise.all([
-      dispatch(getBarCount( )),
-      dispatch(getBarData(gotPage))
+      dispatch(getBarCount( filterObj, filterData.isSearched )),
+      dispatch(getBarData(gotPage, filterObj, filterData.isSearched))
     ]);
   };
 };

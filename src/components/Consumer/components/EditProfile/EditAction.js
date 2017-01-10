@@ -4,6 +4,7 @@
 
 import { defaultConsumerState } from '../../../Common/Actions/DefaultState';
 import requestAction from '../../../Common/Actions/requestAction';
+import { validation } from '../../../Common/Actions/Validator';
 import Endpoints, { globalCookiePolicy } from '../../../../Endpoints';
 import { MAKE_REQUEST,
   REQUEST_COMPLETED,
@@ -80,28 +81,41 @@ const updateDob = (data) => {
 };
 
 const updateUser = (userObj, userId) => {
+  console.log('>>> Entered UpdateUser-Action:');
+  // Configuring Validations
+  const listOfValidation = [];
+  let userName;
+  userName = userObj.values.full_name;
+  console.log(userName);
+  listOfValidation.push(validation(userName, 'non_empty_text'));
   return (dispatch) => {
-    const url = Endpoints.db + '/table/consumer/update';
+    Promise.all(listOfValidation
+    ).then(() => {
+      const url = Endpoints.db + '/table/consumer/update';
 
-    const options = {
-      ...genOptions,
-      body: JSON.stringify(userObj)
-    };
+      const options = {
+        ...genOptions,
+        body: JSON.stringify(userObj)
+      };
 
-    dispatch({type: MAKE_REQUEST});
-    return dispatch(requestAction(url, options))
-      .then((resp) => {
-        if (resp.returning.length > 0) {
+      dispatch({type: MAKE_REQUEST});
+      return dispatch(requestAction(url, options))
+        .then((resp) => {
+          if (resp.returning.length > 0) {
+            console.log(resp);
+            alert('User Entry Updated');
+            dispatch(routeActions.push('/hadmin/consumer/profile/' + userId));
+          }
+        })
+        .catch((resp) => {
           console.log(resp);
-          alert('User Entry Updated');
-          dispatch(routeActions.push('/hadmin/consumer/profile/' + userId));
-        }
-      })
-      .catch((resp) => {
-        console.log(resp);
-        alert('Something wrong happened while creating a notepad entry');
-        return dispatch({type: REQUEST_COMPLETED});
-      });
+          alert('Something wrong happened while creating a notepad entry');
+          return dispatch({type: REQUEST_COMPLETED});
+        });
+    })
+    .catch(() => {
+      console.log('Error Occured');
+    });
   };
 };
 

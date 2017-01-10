@@ -123,6 +123,20 @@ class ViewConsumerProfile extends Component {
           </div>
         );
 
+      const deviceHtml = ( profileInfo.old_devices.length ) ?
+        (
+          <div className={styles.wd_60_link} >
+            <Link to={'/hadmin/consumer_transactions/devices/' + profileInfo.id }>
+              { profileInfo.old_devices.length }
+            </Link>
+          </div>
+        ) :
+        (
+          <div >
+            { 0 }
+          </div>
+        );
+
       const rechargeHTML = ( rechargeCount ) ?
         (
           <div className={styles.wd_60_link} >
@@ -164,6 +178,14 @@ class ViewConsumerProfile extends Component {
             { cancellationCount }
           </div>
         );
+
+      const consumerHistory = (
+        <div className={styles.wd_60_link} >
+          <Link to={'/hadmin/consumer_transactions/history/' + profileInfo.id }>
+            { 'View' }
+          </Link>
+        </div>
+      );
 
       const redemptionHTML = ( redemptionCount ) ?
         (
@@ -255,6 +277,14 @@ class ViewConsumerProfile extends Component {
           </div>
           <div className={styles.profile_information}>
             <div className={styles.wd_40}>
+              Device History
+            </div>
+            <div className={styles.wd_60} >
+              { deviceHtml }
+            </div>
+          </div>
+          <div className={styles.profile_information}>
+            <div className={styles.wd_40}>
               Cart:
             </div>
             <div className={styles.wd_60} >
@@ -267,6 +297,14 @@ class ViewConsumerProfile extends Component {
             </div>
             <div className={ styles.wd_60 }>
               { notepadHTML }
+            </div>
+          </div>
+          <div className={styles.profile_information}>
+            <div className={styles.wd_40}>
+              Statement of Account:
+            </div>
+            <div className={ styles.wd_60 }>
+              { consumerHistory }
             </div>
           </div>
           <div className={styles.profile_information}>

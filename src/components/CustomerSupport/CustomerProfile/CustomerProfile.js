@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 
 import BreadCrumb from '../../Common/BreadCrumb';
 import SettlementInformation from '../../RetailerManagement/RedemptionHistory/SettlementInformation';
-import TransactionsInformation from '../../Sku/Transactions/TransactionsInformation';
+import TransactionsInformation from '../../RetailerManagement/DebitsCredits/TransactionsInformation';
 import AddBeneficiaryInput from '../../RetailerManagement/CreateOrganization/AddBeneficiaryInput';
 import AddBeneficiaryTextarea from '../../RetailerManagement/CreateOrganization/AddBeneficiaryTextarea';
 import HistoryInformation from './HistoryInformation';
@@ -12,7 +12,7 @@ import CreatedAt from './CreatedAt';
 
 import { connect } from 'react-redux';
 
-import {getIssueData} from './CustomerProfileActions';
+import { getIssueData } from './CustomerProfileActions';
 
 class CustomerProfile extends Component {
   constructor() {

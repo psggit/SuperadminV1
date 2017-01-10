@@ -38,6 +38,11 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
                     Customer Transactions
                 </Link>
               </label></li>
+              <li className={styles.sidebar_list}><label>
+                <Link to={'/hadmin/consumer_transactions/devices'} className={ lastPathname === 'devices' ? styles.active : '' }>
+                    Customer Devices
+                </Link>
+              </label></li>
               {/*
               <li className={styles.sidebar_list}><label>
                 <Link to={'/hadmin/customer_support'} className={ lastPathname === 'customer_support' ? styles.active : '' }>
@@ -145,6 +150,9 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
               <li className={styles.sidebar_list}><label>
                   <Link to={'/hadmin/retailer_management/profile_and_kyc'} > Profile & KYC </Link>
               </label></li>
+              <li className={styles.sidebar_list}><label>
+                  <Link to={'/hadmin/retailer_management/transactionlanding'} > Retailer Transactions </Link>
+              </label></li>
               {/*
               <li className={styles.sidebar_list}><label>
                   <Link to={'/hadmin/consumer/profiles'} className={ lastPathname === 'profiles' ? styles.active : '' }> Transactions </Link>
@@ -166,9 +174,17 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
                 </li>
                 <li className={styles.sidebar_list}>
                   <label>
-                    <Link to={'/hadmin/bar_management/bar_sku_landing'} > BAR SKU MANAGEMENT </Link>
+                    <Link to={'/hadmin/bar_management/bar_sku_landing'} > Add Bar SKUs</Link>
                   </label>
                 </li>
+                <li className={styles.sidebar_list}>
+                  <label>
+                    <Link to={'/hadmin/bar_management/all_bar_skus'} > Manage Bar Skus </Link>
+                  </label>
+                </li>
+                <li className={styles.sidebar_list}><label>
+                    <Link to={'/hadmin/bar_management/bartransactionlanding'} > Bar Transactions </Link>
+                </label></li>
               </ul>
             </li>
           </ul>
@@ -203,6 +219,27 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
               <li className={styles.sidebar_list}>
                 <label>
                   <Link to={'/hadmin/whats_new/create_article'} className={ lastPathname === 'create_article' ? styles.active : '' }>Create Article</Link>
+                </label>
+              </li>
+              </ul>
+            </li>
+          </ul>
+          <ul>
+            <li><input type="checkbox" id="cb9"/><label htmlFor="cb9">REPORTS</label>
+              <ul>
+              <li className={styles.sidebar_list}>
+                <label>
+                  <Link to={'/hadmin/reports'} className={ lastPathname === 'reports' ? styles.active : '' }>Reports</Link>
+                </label>
+              </li>
+              <li className={styles.sidebar_list}>
+                <label>
+                  <Link to={'/hadmin/reports/upload1'} className={ lastPathname === 'upload1' ? styles.active : '' }>Upload 1</Link>
+                </label>
+              </li>
+              <li className={styles.sidebar_list}>
+                <label>
+                  <Link to={'/hadmin/reports/upload2'} className={ lastPathname === 'upload2' ? styles.active : '' }>Upload 2</Link>
                 </label>
               </li>
               </ul>

@@ -15,7 +15,7 @@ import { SKU_INFORMATION_CHANGE } from './CreateSkuActions';
 const returnValue = (obj, key) => {
   return ( obj[key] ? obj[key] : '' );
 };
-const SkuInfo = ({ brandList, skuReqObj }) => {
+const SkuInfo = ({ brandList, skuReqObj, disableSKUs, reservedItems, page }) => {
   const styles = require('./CreateSku.scss');
   return (
         <div className={styles.create_sku_wrapper}>
@@ -28,15 +28,23 @@ const SkuInfo = ({ brandList, skuReqObj }) => {
             <label>Volume in ml</label>
             <input type="number" data-field-name="volume" data-field-type="int" value = {parseInt(returnValue(skuReqObj, 'volume'), 10) ? parseInt(returnValue(skuReqObj, 'volume'), 10) : '' } />
           </div>
-          {/*
           <div className={styles.indiv_element}>
             <label>Status</label>
-            <select data-field-name="status" data-field-type="boolean">
-              <option value="1">Active</option>
-              <option value="0">InActive</option>
-            </select>
+            <div className={ styles.status_div }>
+              <select data-field-name="is_active" data-field-type="boolean" value={ skuReqObj.is_active ? '1' : '0' } >
+                <option value="1">Active</option>
+                <option value="0">InActive</option>
+              </select>
+              <button className={ !skuReqObj.is_active && !skuReqObj.status && ( page === 'edit_page' ) ? '' : 'hide' } onClick={ disableSKUs }>Disable</button>
+            </div>
+            <div className={ styles.warning_block + ' ' + ( !skuReqObj.is_active && !skuReqObj.status && ( page === 'edit_page' ) ? '' : 'hide' ) }>
+              * Click on Disable button to cancel { reservedItems ? reservedItems.length : 0 } open reservations
+            </div>
+            <div className={ styles.warning_block + ' ' + ( !skuReqObj.is_active && skuReqObj.status && ( page === 'edit_page' ) ? '' : ' hide ' ) }>
+              * Click on Update to Deactivate an SKU
+            </div>
+
           </div>
-          */}
         </div>
       );
 };

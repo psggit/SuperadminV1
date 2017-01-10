@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+// import { Link } from 'react-router';
 import AdsList from './AdsList';
 import { getBrandManagerData, getAllBrandManagerData } from './AdsListActions';
 
@@ -65,11 +65,6 @@ class AdsListing extends Component { // eslint-disable-line no-unused-vars
                 <button className={styles.common_btn}>Search</button>
               </div>
           </div>
-          <div className={styles.create_layout + ' ' + styles.wd_100}>
-            <Link to={'/hadmin/brands_offers_and_promos/create_brand_manager'}>
-              <button className={styles.common_btn}>Create BM</button>
-            </Link>
-          </div>
           <AdsList data={lastSuccess}/>
         </div>
           <PaginationWrapper
@@ -78,7 +73,7 @@ class AdsListing extends Component { // eslint-disable-line no-unused-vars
             limit = "10"
             triggerPageChange={ this.triggerPageChange.bind(this) }
             showMax="5"
-            parentUrl="/hadmin/brands_offers_and_promos/brand_manager_profile"
+            parentUrl="/hadmin/brands_offers_and_promos/view_all_ads"
           />
       </div>);
   }

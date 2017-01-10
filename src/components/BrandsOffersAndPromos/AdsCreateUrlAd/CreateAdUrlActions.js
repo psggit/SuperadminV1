@@ -8,18 +8,67 @@ import Endpoints, { globalCookiePolicy } from '../../../Endpoints';
 import { MAKE_REQUEST,
   REQUEST_COMPLETED,
   REQUEST_ERROR} from '../../Common/Actions/Actions';
+import { routeActions } from 'redux-simple-router';
 
 // import commonReducer from '../Common/Actions/CommonReducer';
 
-const STATES_FETCH = 'AD_CREATE_IMAGE/STATES_FETCH';
-const AD_INFO = 'AD_CREATE_IMAGE/AD_INFO';
-const CITIES_VIEW = 'AD_CREATE_IMAGE/CITIES_VIEW';
-const IMAGE_UPLOAD_SUCCESS = 'AD_CREATE_IMAGE/IMAGE_UPLOAD_SUCCESS';
-const IMAGE_UPLOAD_ERROR = 'AD_CREATE_IMAGE/IMAGE_UPLOAD_SUCCESS';
-const IMAGE_CANCEL = 'AD_CREATE_IMAGE/IMAGE_CANCEL';
-const UPDATED_CITIES_SELECTION = 'AD_CREATE_IMAGE/UPDATED_CITIES_SELECTION';
+const STATES_FETCH = 'AD_CREATE_URL/STATES_FETCH';
+const BRANDS_FETCH = 'AD_CREATE_URL/BRANDS_FETCH';
+const BRAND_SELECT_FOR_SKU = 'AD_CREATE_URL/BRAND_SELECT_FOR_SKU';
+const BRAND_MANAGERS_FETCH = 'AD_CREATE_URL/BRAND_MANAGERS_FETCH';
+const AD_INFO = 'AD_CREATE_URL/AD_INFO';
+const CITIES_VIEW = 'AD_CREATE_URL/CITIES_VIEW';
+const IMAGE_UPLOAD_SUCCESS = 'AD_CREATE_URL/IMAGE_UPLOAD_SUCCESS';
+const IMAGE_UPLOAD_ERROR = 'AD_CREATE_URL/IMAGE_UPLOAD_ERROR';
+const IMAGE_CANCEL = 'AD_CREATE_URL/IMAGE_CANCEL';
+const UPDATED_CITIES_SELECTION = 'AD_CREATE_URL/UPDATED_CITIES_SELECTION';
+const RESET = 'AD_CREATE_URL/RESET';
 
 /* ****** Action Creators ******** */
+
+const brandManagerFetch = (brandId) => {
+  return (dispatch) => {
+    /* Url */
+    const url = Endpoints.db + '/table/brand_manager/select';
+    const queryObj = {};
+    queryObj.columns = ['*', {'name': 'brands', 'columns': ['*']}];
+    queryObj.where = {'brands': {'brand_id': parseInt(brandId, 10)}};
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(queryObj),
+    };
+    /* Make a MAKE_REQUEST action */
+    dispatch({type: MAKE_REQUEST});
+    return Promise.all([
+      dispatch(requestAction(url, options, BRAND_MANAGERS_FETCH, REQUEST_ERROR)),
+      dispatch({type: REQUEST_COMPLETED})
+    ]);
+  };
+};
+
+const fetchBrands = () => {
+  return (dispatch) => {
+    /* Url */
+    const url = Endpoints.db + '/table/brand/select';
+    const queryObj = {};
+    queryObj.columns = ['*', {'name': 'skus', 'columns': ['*']}];
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(queryObj),
+    };
+    /* Make a MAKE_REQUEST action */
+    dispatch({type: MAKE_REQUEST});
+    return Promise.all([
+      dispatch(requestAction(url, options, BRANDS_FETCH, REQUEST_ERROR)),
+      dispatch({type: REQUEST_COMPLETED})
+    ]);
+  };
+};
+
 
 const fetchStates = () => {
   return (dispatch) => {
@@ -52,7 +101,7 @@ const citiesViewHandler = (stateObj) => {
 
 const checkState = (stateObj) => {
   return (dispatch, state) => {
-    const lstate = state().createImageAd_data;
+    const lstate = state().createUrlAd_data;
     const lCities = {...lstate.selectedCities};
     stateObj.cities.forEach((c) => {
       lCities[c.id] = c;
@@ -65,7 +114,7 @@ const checkState = (stateObj) => {
 
 const unCheckState = (stateObj) => {
   return (dispatch, state) => {
-    const lstate = state().createImageAd_data;
+    const lstate = state().createUrlAd_data;
     const lCities = {...lstate.selectedCities};
     stateObj.cities.forEach((c) => {
       delete lCities[c.id];
@@ -78,7 +127,7 @@ const unCheckState = (stateObj) => {
 
 const checkCity = (cityObj) => {
   return (dispatch, state) => {
-    const lstate = state().createImageAd_data;
+    const lstate = state().createUrlAd_data;
     const lCities = {...lstate.selectedCities};
     lCities[cityObj.id] = cityObj;
     return Promise.all([
@@ -89,7 +138,7 @@ const checkCity = (cityObj) => {
 
 const unCheckCity = (cityObj) => {
   return (dispatch, state) => {
-    const lstate = state().createImageAd_data;
+    const lstate = state().createUrlAd_data;
     const lCities = {...lstate.selectedCities};
     delete lCities[cityObj.id];
     return Promise.all([
@@ -98,23 +147,12 @@ const unCheckCity = (cityObj) => {
   };
 };
 
-const validateEmail = (email) => {
-  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(email);
-};
-
-const validateUrl = (url) => {
-  const re1 = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
-  const re2 = /[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
-  return re1.test(url) || re2.test(url);
-};
-
-const validBMEmail = (email) => {
+const validBMId = (bmId) => {
   return (dispatch) => {
     const url = Endpoints.db + '/table/brand_manager/select';
     const queryObj = {};
-    queryObj.columns = ['id', 'email'];
-    queryObj.where = {'$and': [{'email': email}, {'is_disabled': false}]};
+    queryObj.columns = ['id'];
+    queryObj.where = {'$and': [{'id': parseInt(bmId, 10)}, {'is_disabled': false}]};
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
@@ -131,13 +169,20 @@ const validBMEmail = (email) => {
   };
 };
 
+
+const validateUrl = (url) => {
+  const re1 = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
+  const re2 = /[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
+  return re1.test(url) || re2.test(url);
+};
+
 const insertCityMap = (adId) => {
   return (dispatch, state) => {
     // I need cityId, adId
     // [ad_id, city_id, created_at, updated_at]
     // I will return a list of Id's for all the maps, if success
     // An Error message if anything else
-    const lstate = state().createImageAd_data;
+    const lstate = state().createUrlAd_data;
     const lCities = {...lstate.selectedCities};
     const adsData = [];
     // Make the insert data
@@ -178,9 +223,10 @@ const insertAdData = (bmId, imgUrl, adInfo) => {
     adInfo.created_at = new Date().toISOString();
     adInfo.updated_at = new Date().toISOString();
     adInfo.brand_manager_id = parseInt(bmId, 10);
+    adInfo.sku_id = parseInt(adInfo.sku_id, 10);
     adInfo.active_from = new Date(adInfo.active_from).toISOString();
     adInfo.active_to = new Date(adInfo.active_to).toISOString();
-    delete adInfo.email;
+    delete adInfo.brand;
     console.log(adInfo);
     const adData = {};
     adData.objects = [adInfo];
@@ -202,7 +248,7 @@ const insertAdData = (bmId, imgUrl, adInfo) => {
 
 const checkBmEmail = () => {
   return (dispatch, state) => {
-    const lstate = state().createImageAd_data;
+    const lstate = state().createUrlAd_data;
     const lCamDetails = {...lstate.campaignDetails};
     const imgUrl = lstate.imageUrl;
     const imgRe = /^.*?\:\/\/\/.*?\/\d+\/\w+\/.*$/;
@@ -211,30 +257,22 @@ const checkBmEmail = () => {
         alert('Please upload an image')
       ]);
     }
-    if (!validateEmail(lCamDetails.email)) {
-      return Promise.all([
-        alert('Invalid Email Address: ' + lCamDetails.email)
-      ]);
-    }
     if (!validateUrl(lCamDetails.url)) {
       return Promise.all([
         alert('Invalid URL: ' + lCamDetails.url)
       ]);
     }
     return Promise.all([
-      dispatch(validBMEmail(lCamDetails.email)).then((res) => {
+      dispatch(validBMId(lCamDetails.brand_manager_id)).then((res) => {
         if (res[0].length > 0) {
-          // BM Exists! Yippie!
-          // Assume that the result is always 1. Should always be 1.
-          // Time to insert data
           return Promise.all([
-            // insert Ad Data (including Image)
             dispatch(insertAdData(res[0][0].id, imgUrl, lCamDetails)).then((insertRes) => {
               console.log('This is AdData:');
               console.log(insertRes);
               return Promise.all([
                 dispatch(insertCityMap(insertRes.returning[0].id)).then(() => {
                   alert('Hurray!! Ad Created!');
+                  return dispatch(routeActions.push('/hadmin/brands_offers_and_promos/view_all_ads'));
                 }).catch((err) => {
                   alert(err);
                 })
@@ -255,7 +293,7 @@ const checkBmEmail = () => {
 
 const validateForm = () => {
   return (dispatch, state) => {
-    const lstate = state().createImageAd_data;
+    const lstate = state().createUrlAd_data;
     const lCamDetails = {...lstate.campaignDetails};
     return Promise.all([
       console.log(lCamDetails)
@@ -265,7 +303,7 @@ const validateForm = () => {
 
 const createAd = () => {
   return (dispatch, state) => {
-    const lstate = state().createImageAd_data;
+    const lstate = state().createUrlAd_data;
     const lCamDetails = {...lstate.campaignDetails};
     return Promise.all([
       console.log(lCamDetails)
@@ -287,6 +325,18 @@ const finalSave = () => {
 
 const adsCreateUrlReducer = (state = defaultcreateUrlAdData, action) => {
   switch (action.type) {
+    case BRAND_SELECT_FOR_SKU:
+      let sb = {};
+      state.brandsAll.forEach((brand) => {
+        if (brand.id === parseInt(action.data, 10)) {
+          sb = {...brand};
+        }
+      });
+      return {...state, selectedBrand: sb};
+    case BRANDS_FETCH:
+      return {...state, brandsAll: action.data};
+    case BRAND_MANAGERS_FETCH:
+      return {...state, brandManagers: action.data};
     case STATES_FETCH:
       return {...state, statesAll: action.data};
     case IMAGE_UPLOAD_SUCCESS:
@@ -303,6 +353,8 @@ const adsCreateUrlReducer = (state = defaultcreateUrlAdData, action) => {
       return { ...state, campaignDetails: { ...state.campaignDetails, ...camInfo}};
     case UPDATED_CITIES_SELECTION:
       return { ...state, selectedCities: {...action.data}};
+    case RESET:
+      return {...defaultcreateUrlAdData};
     default: return state;
   }
 };
@@ -311,6 +363,7 @@ const adsCreateUrlReducer = (state = defaultcreateUrlAdData, action) => {
 
 export {
   fetchStates,
+  fetchBrands,
   AD_INFO,
   citiesViewHandler,
   IMAGE_UPLOAD_SUCCESS,
@@ -320,7 +373,10 @@ export {
   unCheckState,
   checkCity,
   unCheckCity,
-  finalSave
+  finalSave,
+  brandManagerFetch,
+  BRAND_SELECT_FOR_SKU,
+  RESET
 };
 
 export default adsCreateUrlReducer;

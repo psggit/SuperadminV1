@@ -1,0 +1,36 @@
+.search_wrapper
+{
+	background: #FFF;
+	padding: 15px 45px 25px 45px;
+	color: rgba(0,0,0,0.54);
+	font-size: 15px;
+	letter-spacing: 0.3px;
+  width: 100%;
+  float: left;
+}
+
+.search_form
+{
+  padding-bottom: 20px;
+	input, select
+	{
+		display: inline-block;
+		width: 170px;
+		border: 1px solid #CCCCCC;
+		border-radius: 4px;
+		background: #FFF;
+		margin-right: 30px;
+		height: 30px;
+		padding: 0 10px;
+		color: #4c4c4c;
+		font-size: 12px;
+		font-weight: 400;
+		letter-spacing: 0.5px;
+		transition: all 0.2s linear;
+		&:focus
+		{
+			outline: none;
+			border: 1px solid #FF7400;
+		}
+	}
+}

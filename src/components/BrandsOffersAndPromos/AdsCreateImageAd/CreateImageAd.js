@@ -1,10 +1,11 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchStates, citiesViewHandler, IMAGE_UPLOAD_SUCCESS, IMAGE_UPLOAD_ERROR, IMAGE_CANCEL} from './CreateAdImageActions';
+import { fetchStates, fetchBrands, citiesViewHandler, IMAGE_UPLOAD_SUCCESS, IMAGE_UPLOAD_ERROR, IMAGE_CANCEL} from './CreateAdImageActions';
 import { checkState, unCheckState } from './CreateAdImageActions';
 import { checkCity, unCheckCity, finalSave } from './CreateAdImageActions';
 import uploadFile from '../../Common/Actions/upload';
 import Endpoints from '../../../Endpoints';
+import { RESET } from './CreateAdImageActions';
 /*
   Decorator which adds couple of use ful features like
   1. Clearing the state on component unmount
@@ -34,8 +35,12 @@ class CreateImageAd extends Component { // eslint-disable-line no-unused-vars
   }
   componentWillMount() {
     Promise.all([
+      this.props.dispatch(fetchBrands()),
       this.props.dispatch(fetchStates())
     ]);
+  }
+  componentWillUnmount() {
+    this.props.dispatch({ type: RESET });
   }
   onClickCitiesView(stateObj) {
     Promise.all([
@@ -122,7 +127,7 @@ class CreateImageAd extends Component { // eslint-disable-line no-unused-vars
       <div className={styles.container}>
         <BreadCrumb breadCrumbs={this.breadCrumbs} />
         <div className={styles.brand_wrapper}>
-          <AdInfo dispatch={this.props.dispatch}/>
+          <AdInfo dispatch={this.props.dispatch} brands={this.props.brandsAll} sb={this.props.selectedBrand} bms={this.props.brandManagers} />
 
           {/* Image Upload */}
           <div className={styles.profile_view_right}>
@@ -189,6 +194,9 @@ class CreateImageAd extends Component { // eslint-disable-line no-unused-vars
 CreateImageAd.propTypes = {
   imageUrl: PropTypes.string.isRequired,
   statesAll: PropTypes.array.isRequired,
+  brandsAll: PropTypes.array.isRequired,
+  brandManagers: PropTypes.array.isRequired,
+  selectedBrand: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
   hideCities: PropTypes.string.isRequired,
   citiesView: PropTypes.object.isRequired,

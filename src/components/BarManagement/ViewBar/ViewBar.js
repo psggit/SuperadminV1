@@ -19,6 +19,13 @@ import PaginationContainer from './Pagination';
 
 import commonDecorator from '../../Common/CommonDecorator';
 
+import {
+  TOGGLE_SEARCH,
+  RESET_FILTER
+} from '../../Common/SearchComponentGen/FilterState';
+
+import SearchComponent from '../../Common/SearchComponentGen/SearchComponent';
+
 class Bar extends Component {
   componentWillMount() {
     console.log('Will mount called');
@@ -50,6 +57,9 @@ class Bar extends Component {
   }
   componentWillUnmount() {
     console.log('Unmounted');
+    Promise.all([
+      this.props.dispatch({ type: RESET_FILTER })
+    ]);
   }
   onClickHandle(e) {
     // e.preventDefault();
@@ -66,19 +76,50 @@ class Bar extends Component {
       });
     }
   }
+  enableSearch() {
+    const page = 1;
+
+    Promise.all([
+      this.props.dispatch({ type: MAKE_REQUEST }),
+      this.props.dispatch({ type: TOGGLE_SEARCH }),
+      this.props.dispatch(getAllBarData(page, 10))
+    ])
+    .then( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED });
+    });
+  }
   render() {
     const styles = require('./ViewBar.scss');
     const { ongoingRequest, lastError, lastSuccess, count} = this.props;
     const {query} = this.props.location;
 
-    const paginationUrl = '/hadmin/retailer_management/view_branches';
+    const paginationUrl = '/hadmin/bar_management/view_bars';
 
     const page = (Object.keys(query).length > 0) ? parseInt(query.p, 10) : 1;
+    const fields = [ 'id', 'name', 'address', 'city.name' ];
+    // const operator = ['$eq'];
+    const fieldOperatorMap = {
+      'name': ['$eq', '$like', '$ilike'],
+      'address': ['$eq', '$like', '$ilike'],
+      'city.name': ['$eq', '$like', '$ilike'],
+      'id': ['$eq', '$gt', '$lt']
+    };
+    const fieldTypeMap = {
+      'name': 'text',
+      'address': 'text',
+      'city.name': 'text',
+      'id': 'number'
+    };
     console.log(lastError);
     console.log(ongoingRequest);
     return (
           <div className={styles.recharge_container}>
-            <TableHeader title={'Retailer Management/ View Bars'} />
+            <TableHeader title={'Bar Management/ View Bars'} />
+            <SearchComponent configuredFields={ fields } fieldOperatorMap={ fieldOperatorMap } fieldTypeMap={ fieldTypeMap }>
+              <button className={styles.common_btn} onClick={ this.enableSearch.bind(this) }>
+                Search
+              </button>
+            </SearchComponent>
             <BarSearchWrapper data={lastSuccess}/>
             <PaginationContainer limit="10" onClickHandler={this.onClickHandle.bind(this)} currentPage={page} showMax="5" count={count} parentUrl={ paginationUrl } />
           </div>

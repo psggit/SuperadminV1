@@ -1,5 +1,6 @@
+const dataUrl = 'https://data.hipbar-stg.hasura-app.io';
 const queries = [{
-  url: 'https://data.hipbar-stg.hasura-app.io/v1/query',
+  url: dataUrl + '/v1/query',
   method: 'POST',
   query: {
     'type': 'add_column',
@@ -13,7 +14,7 @@ const queries = [{
     }
   }
 }, {
-  url: 'https://data.hipbar-stg.hasura-app.io/v1/query',
+  url: dataUrl + '/v1/query',
   method: 'POST',
   query: {
     'type': 'add_column',
@@ -27,7 +28,7 @@ const queries = [{
     }
   }
 }, {
-  url: 'https://data.hipbar-stg.hasura-app.io/v1/query',
+  url: dataUrl + '/v1/query',
   method: 'POST',
   query: {
     'type': 'create_table',
@@ -41,7 +42,7 @@ const queries = [{
     }
   }
 }, {
-  url: 'https://data.hipbar-stg.hasura-app.io/api/1/table/campaign_status/insert',
+  url: dataUrl + '/api/1/table/campaign_status/insert',
   method: 'POST',
   query: {
     'objects': [{
@@ -50,7 +51,7 @@ const queries = [{
     'returning': []
   }
 }, {
-  url: 'https://data.hipbar-stg.hasura-app.io/api/1/table/campaign_status/insert',
+  url: dataUrl + '/api/1/table/campaign_status/insert',
   method: 'POST',
   query: {
     'objects': [{
@@ -59,7 +60,7 @@ const queries = [{
     'returning': []
   }
 }, {
-  url: 'https://data.hipbar-stg.hasura-app.io/v1/query',
+  url: dataUrl + '/v1/query',
   method: 'POST',
   query: {
     'type': 'create_foreign_key_constraint',
@@ -76,7 +77,7 @@ const queries = [{
     }
   }
 }, {
-  url: 'https://data.hipbar-stg.hasura-app.io/v1/query',
+  url: dataUrl + '/v1/query',
   method: 'POST',
   query: {
     'type': 'bulk',
@@ -107,7 +108,7 @@ const queries = [{
     }]
   }
 }, {
-  url: 'https://data.hipbar-stg.hasura-app.io/v1/query',
+  url: dataUrl + '/v1/query',
   method: 'POST',
   query: {
     'type': 'bulk',
@@ -138,7 +139,7 @@ const queries = [{
     }]
   }
 }, {
-  url: 'https://data.hipbar-stg.hasura-app.io/v1/query',
+  url: dataUrl + '/v1/query',
   method: 'POST',
   query: {
     'type': 'create_array_relationship',
@@ -152,7 +153,7 @@ const queries = [{
     }
   }
 }, {
-  url: 'https://data.hipbar-stg.hasura-app.io/v1/query',
+  url: dataUrl + '/v1/query',
   method: 'POST',
   query: {
     'type': 'create_unique_constraint',
@@ -176,7 +177,7 @@ const queries = [{
   // email is valid.
   query: 'ATLER TABLE brand_managers ADD CONSTRAINT proper_email CHECK (email ~* \'^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$\')'
 }, {
-  url: 'https://data.hipbar-stg.hasura-app.io/v1/query',
+  url: dataUrl + '/v1/query',
   method: 'POST',
   query: {
     'type': 'add_column',
@@ -190,7 +191,7 @@ const queries = [{
     }
   }
 }, {
-  url: 'https://data.hipbar-stg.hasura-app.io/v1/query',
+  url: dataUrl + '/v1/query',
   method: 'POST',
   query: {
     'type': 'bulk',

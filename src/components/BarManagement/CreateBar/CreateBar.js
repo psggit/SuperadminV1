@@ -39,7 +39,7 @@ class CreateBar extends Component { // eslint-disable-line no-unused-vars
     /* Data required for the bread component to render correctly */
     this.breadCrumbs = [];
     this.breadCrumbs.push({
-      title: 'Retailer Management',
+      title: 'Bar Management',
       sequence: 1,
       link: '#'
     });

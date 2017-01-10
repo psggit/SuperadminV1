@@ -76,7 +76,25 @@ import {Login, Home, PageContainer,
   CreateBarAd,
   CreateUrlAd,
   CreateSkuAd,
-  CreatePromoAd
+  CreatePromoAd,
+  ManageBarSkus,
+  TransactionLanding,
+  ViewDebitCredit,
+  BarTransactionLanding,
+  BarViewDebitCredit,
+  BarDebitTransactions,
+  ViewDailyReports,
+  RetailerSettlements,
+  RetailerSettlementsStatus,
+  BarDailyReports,
+  BarSettlements,
+  Reports,
+  InvitationLanding,
+  RetailerRedemptions,
+  ViewAllCredits,
+  ConsumerDevice,
+  ViewCampaigns,
+  ViewConsumerTransactions
 } from './components'; // eslint-disable-line no-unused-vars
 
 // ^== next level of importing
@@ -171,12 +189,20 @@ const main = (
 
         <Route path="consumer/profile/:Id/edit_account_details" component={EditAccountDetails} />
 
+        /* Reports */
+
+        <Route path="reports" component={Reports} />
+
         /* Creating and viewing notepads */
         <Route path="/hadmin/consumer/profile/:Id/create_notepad_entry" component={CreateNotepadEntry} />
         <Route path="consumer/profile/:Id/view_notepads" component={Notepad} />
 
         /* Customer Transactions */
+        <Route path="consumer_transactions/history/:userId" component={ViewConsumerTransactions} />
         <Route path="consumer_transactions" component={CustomerTransaction} />
+        <Route path="consumer_transactions/devices" component={ConsumerDevice} />
+        <Route path="consumer_transactions/devices/:userId" component={ConsumerDevice} />
+        <Route path="consumer_transactions/view_all_credits" component={ViewAllCredits} />
         <Route path="consumer_transactions/recharges" component={ConsumerRecharge} />
         <Route path="consumer_transactions/:userId/recharges" component={ConsumerRecharge} />
         <Route path="consumer_transactions/reservations" component={ConsumerReservation} />
@@ -224,6 +250,8 @@ const main = (
         <Route path="brands_offers_and_promos/create_brand_manager" component={CreateBrandManager} />
 
         {/* Ads Routes*/}
+        <Route path="brands_offers_and_promos/campaigns" component={ViewCampaigns} />
+
         <Route path="brands_offers_and_promos/ads" component={AdsMain} />
         <Route path="brands_offers_and_promos/create_ad" component={CreateMain} />
         <Route path="brands_offers_and_promos/view_all_ads" component={AdsListing} />
@@ -254,18 +282,48 @@ const main = (
         <Route path="bar_management/bar_sku_create_landing" component={BarSkuCreateLanding} />
         <Route path="bar_management/bar_sku_create/create_new" component={BarSkuCreate} />
         <Route path="bar_management/list_bars" component={BarList} />
+        <Route path="bar_management/all_bar_skus" component={ManageBarSkus} />
 
         <Route path="retailer_management/create_branch" component={RetailerManagementCreate} />
         <Route path="retailer_management/edit_branch/:brId" component={RetailerManagementCreate} />
         <Route path="retailer_management/settlement_details" component={RetailerManagementSettlementDetails} />
         <Route path="retailer_management/device_details" component={RetailerManagementDeviceDetail} />
         <Route path="retailer_management/disable_device" component={RetailerManagementDisableDevice} />
-        <Route path="retailer_management/transactions" component={RetailerManagementTransactions} />
+        <Route path="retailer_management/debit_credit_transactions" component={RetailerManagementTransactions} />
         <Route path="retailer_management/create_organization" component={RetailerManagementCreateOrganization} />
         <Route path="retailer_management/edit_organization/:orgId" component={RetailerManagementCreateOrganization} />
         <Route path="retailer_management/view_organizations" component={RetailerManagementViewOrganization} />
         <Route path="retailer_management/view_branches" component={RetailerManagementViewBranch} />
         <Route path="retailer_management/profile_and_kyc" component={ProfileKyc} />
+
+        {/* Retailer Transaction */}
+        <Route path="retailer_management/transactionlanding" component={TransactionLanding} />
+        <Route path="retailer_management/debits_credits_landing" component={ViewDebitCredit} />
+
+        <Route path="retailer_management/debit_credit_transactions/:Id" component={RetailerManagementTransactions} />
+        <Route path="retailer_management/retailer_reports" component={ViewDailyReports} />
+        <Route path="retailer_management/retailer_settlement_reports" component={RetailerSettlements} />
+        <Route path="retailer_management/retailer_settlement_status" component={RetailerSettlementsStatus} />
+        <Route path="retailer_management/redemptions" component={RetailerRedemptions} />
+
+        {/* Bar Transaction */}
+
+        <Route path="bar_management/bartransactionlanding" component={BarTransactionLanding} />
+        <Route path="bar_management/debits_credits_landing" component={BarViewDebitCredit} />
+        <Route path="bar_management/debit_credit_transactions" component={BarDebitTransactions} />
+        <Route path="bar_management/debit_credit_transactions/:Id" component={BarDebitTransactions} />
+        <Route path="bar_management/bar_reports" component={BarDailyReports} />
+
+        <Route path="bar_management/bar_settlement_reports" component={BarSettlements} />
+
+        {/* Invite A friend */}
+        <Route path="invitation_data" component={InvitationLanding} />
+        <Route path="invitation_data/current_stats" component={InvitationLanding} />
+        <Route path="invitation_data/approved_users" component={InvitationLanding} />
+        <Route path="invitation_data/elligible_users" component={InvitationLanding} />
+
+        {/* End of it */}
+
         <Route path="customer_support" component={CustomerSupportSupport} />
         <Route path="customer_support/customer_profile/:Id" component={CustomerSupportCustomerProfile} />
         <Route path="customer_support/freshdesk_ticket/:Id" component={CustomerSupportFreshdeskTicket} />

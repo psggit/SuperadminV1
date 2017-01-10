@@ -16,7 +16,8 @@ import {
   saveSku,
   VIEW_SKU,
   CANCEL_SKU,
-  updateSku
+  updateSku,
+  disableSku
 } from './BarSkuAction';
 
 import {
@@ -81,6 +82,9 @@ class UnlockBarAddSKU extends Component {
   cancelSku() {
     this.props.dispatch({ type: CANCEL_SKU });
   }
+  disableSku() {
+    this.props.dispatch(disableSku());
+  }
   updateSku() {
     const { barId } = this.props.params;
     Promise.all([
@@ -104,6 +108,7 @@ class UnlockBarAddSKU extends Component {
       barCityInfo,
       addedInventory,
       newSkuData,
+      barSKUs,
       isEdit
     } = this.props;
 
@@ -160,6 +165,9 @@ class UnlockBarAddSKU extends Component {
         <div className={styles.unlock_listing} key={ index }>
           <div className={styles.unlock_listing_name}>
             Name: { invent.sku_pricing.sku.brand.brand_name } - { invent.sku_pricing.sku.volume } ML
+          </div>
+          <div className={styles.unlock_listing_name}>
+            Menu Price: { invent.menuPrice}
           </div>
           <div className={styles.unlock_listing_name}>
             Hipbar Price: { invent.hipbarPrice }
@@ -225,18 +233,26 @@ class UnlockBarAddSKU extends Component {
           <DisableInformation label = "Select SKU" val = "Select" options={ skuHtml } fieldName="sku_pricing_id" fieldType="int" currVal = { newSkuData.sku_pricing_id ? newSkuData.sku_pricing_id : 0} disable = { isEdit } />
           <div className = {styles.command_wrapper}>
             <div className = {styles.information_leftpanel}>
-              Bar Price
+              Base SKU  Price
             </div>
             <div className = {styles.information_rightpanel}>
-              <input type="text" data-field-name="menuPrice" data-field-type="int" value={ newSkuData.menuPrice }/>
+              <input type="text" data-field-name="base_sku_price" data-field-type="string" value={ newSkuData.base_sku_price}/>
             </div>
           </div>
           <div className = {styles.command_wrapper}>
             <div className = {styles.information_leftpanel}>
-              Hipbar Price
+              Negotiated SKU Price
             </div>
             <div className = {styles.information_rightpanel}>
-              <input type="text" data-field-name="hipbarPrice" data-field-type="int" value={ newSkuData.hipbarPrice }/>
+              <input type="text" data-field-name="negotiated_sku_price" data-field-type="string" value={ newSkuData.negotiated_sku_price}/>
+            </div>
+          </div>
+          <div className = {styles.command_wrapper}>
+            <div className = {styles.information_leftpanel}>
+              Charges And Tax percentage at Bar
+            </div>
+            <div className = {styles.information_rightpanel}>
+              <input type="text" data-field-name="charges_and_tax_percentage" data-field-type="string" value={ newSkuData.charges_and_tax_percentage}/>
             </div>
           </div>
           <div className = {styles.command_wrapper}>
@@ -256,24 +272,51 @@ class UnlockBarAddSKU extends Component {
             </div>
           </div>
           <DisableInformation label = "Status" val = "Status" options={ statusHtml } fieldName = "is_active" fieldType = "boolean" currVal = { newSkuData.is_active ? 1 : 0 }/>
+          <div className = {styles.command_wrapper}>
+            <div className = {styles.information_leftpanel}>
+              Start Date
+            </div>
+            <div className = {styles.information_rightpanel}>
+              <input data-field-name="start_date" data-field-type="time" type="datetime-local" value={ newSkuData.start_date === undefined ? newSkuData.start_date : newSkuData.start_date.slice(0, -6) }/>
+            </div>
+          </div>
+          <div className = {styles.command_wrapper}>
+            <div className = {styles.information_leftpanel}>
+              End Date
+            </div>
+            <div className = {styles.information_rightpanel}>
+              <input data-field-name="end_date" data-field-type="time" type="datetime-local" value={ newSkuData.end_date === undefined ? newSkuData.end_date : newSkuData.end_date.slice(0, -6) }/>
+            </div>
+          </div>
+          <div className={ styles.warning_block + ' ' + ( !newSkuData.is_active && !newSkuData.status ? '' : 'hide' ) }>
+          </div>
+          <div className={ styles.warning_block + ' ' + ( isEdit && !newSkuData.is_active && !newSkuData.status ? '' : 'hide' ) }>
+            * Click on Disable button to cancel { newSkuData.sku_pricing_id in barSKUs ? barSKUs[newSkuData.sku_pricing_id].length : 0 } open reservations
+            <button className={ styles.edit_sku_disable } onClick={ this.disableSku.bind(this) }>
+              Disable
+            </button>
+          </div>
+          <div className={ styles.warning_block + ' ' + ( isEdit && !newSkuData.is_active && newSkuData.status ? '' : ' hide ' ) }>
+            * Click on Update to Deactivate an SKU
+          </div>
           { actionButton }
           {/*
-          <div className = {styles.command_wrapper}>
-            <div className = {styles.information_leftpanel}>
-              From Date
+            <div className = {styles.command_wrapper}>
+              <div className = {styles.information_leftpanel}>
+                From Date
+              </div>
+              <div className = {styles.information_rightpanel}>
+                <input type="text" />
+              </div>
             </div>
-            <div className = {styles.information_rightpanel}>
-              <input type="text" />
+            <div className = {styles.command_wrapper}>
+              <div className = {styles.information_leftpanel}>
+                To Date
+              </div>
+              <div className = {styles.information_rightpanel}>
+                <input type="text" />
+              </div>
             </div>
-          </div>
-          <div className = {styles.command_wrapper}>
-            <div className = {styles.information_leftpanel}>
-              To Date
-            </div>
-            <div className = {styles.information_rightpanel}>
-              <input type="text" />
-            </div>
-          </div>
           */}
         </div>
       </div>
@@ -290,6 +333,7 @@ UnlockBarAddSKU.propTypes = {
   barCityInfo: PropTypes.object.isRequired,
   showSku: PropTypes.bool.isRequired,
   newSkuData: PropTypes.object.isRequired,
+  barSKUs: PropTypes.object.isRequired,
   isEdit: PropTypes.bool.isRequired
 };
 

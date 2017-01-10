@@ -64,7 +64,7 @@ class EditAccountDetails extends Component { // eslint-disable-line no-unused-va
             </div>
             <div className={styles.indiv_form + ' ' + styles.wd_100}>
               <label>Date of Birth</label>
-              <input data-field-name="dob" type="text" value={ (userData) ? userData.dob : ''} onChange={ this.inputEditHandler.bind(this) } />
+              <input data-field-name="dob" type="date" value={ (userData) ? userData.dob : ''} onChange={ this.inputEditHandler.bind(this) } />
             </div>
             <div className={styles.indiv_form + ' ' + styles.wd_100}>
               <label>Gender</label>

@@ -19,6 +19,13 @@ import PaginationContainer from '../../CustomerTransaction/components/Recharge/P
 import commonDecorator from '../../Common/CommonDecorator';
 import BreadCrumb from '../../Common/BreadCrumb';
 
+import {
+  TOGGLE_SEARCH,
+  RESET_FILTER
+} from '../../Common/SearchComponentGen/FilterState';
+
+import SearchComponent from '../../Common/SearchComponentGen/SearchComponent';
+
 class StateManagement extends React.Component { // eslint-disable-line no-unused-vars
   constructor() {
     super();
@@ -48,12 +55,30 @@ class StateManagement extends React.Component { // eslint-disable-line no-unused
       this.props.dispatch( { type: REQUEST_COMPLETED });
     });
   }
+  componentWillUnmount() {
+    console.log('Unmounted');
+    Promise.all([
+      this.props.dispatch({ type: RESET_FILTER })
+    ]);
+  }
   onClickHandle(e) {
     // e.preventDefault();
     const currentPage = parseInt(e.target.href.split('?p=')[1], 10);
     if (currentPage) {
       this.props.dispatch(getStateData(currentPage));
     }
+  }
+  enableSearch() {
+    const page = 1;
+
+    Promise.all([
+      this.props.dispatch({ type: MAKE_REQUEST }),
+      this.props.dispatch({ type: TOGGLE_SEARCH }),
+      this.props.dispatch(getAllStateData(page, 10))
+    ])
+    .then( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED });
+    });
   }
   render() {
     const styles = require('./StateManagement.scss');
@@ -62,19 +87,33 @@ class StateManagement extends React.Component { // eslint-disable-line no-unused
     const page = (Object.keys(query).length > 0) ? parseInt(query.p, 10) : 1;
     console.log('ongoingRequest');
     console.log(ongoingRequest);
+
+    /* Search Parameters */
+
+    const fields = [ 'id', 'state_name', 'short_name' ];
+    // const operator = ['$eq'];
+    const fieldOperatorMap = {
+      'state_name': ['$eq', '$like', '$ilike'],
+      'id': ['$eq', '$gt', '$lt'],
+      'short_name': ['$eq', '$like', '$ilike']
+    };
+    const fieldTypeMap = {
+      'state_name': 'text',
+      'short_name': 'text',
+      'id': 'number'
+    };
+
+    /* End of it */
+
     // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
     return (
         <div className={styles.container}>
           <BreadCrumb breadCrumbs={this.breadCrumbs} />
-         	<div className={styles.search_wrapper + ' ' + styles.wd_100}>
-         		<p>Search</p>
-         		<div className={styles.search_form + ' ' + styles.wd_100}>
-         			<input type="text" placeholder="Mobile Number" />
-         			<input type="text" placeholder="Contains" />
-         			<input type="number" />
-         			<button className={styles.common_btn}>Search</button>
-         		</div>
-         	</div>
+          <SearchComponent configuredFields={ fields } fieldOperatorMap={ fieldOperatorMap } fieldTypeMap={ fieldTypeMap }>
+            <button className={styles.common_btn} onClick={ this.enableSearch.bind(this) }>
+              Search
+            </button>
+          </SearchComponent>
           <div className={styles.create_state_wrapper + ' ' + 'hide'}>
             <p>Create State</p>
             <div className={styles.create_form}>

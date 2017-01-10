@@ -67,14 +67,15 @@ const saveBranch = () => {
       'is_open',
       'organisation_id',
       'application_number',
-      'cst_number',
       'kyc_status',
       'branch_status',
       'is_active',
       'city_id',
       'excise_licence_number',
       'org_name',
-      'kyc_outlet'
+      'kyc_outlet',
+      'service_charge_percent',
+      'discount_percent'
     ];
     let brCheckStatus = true;
 
@@ -298,7 +299,8 @@ const saveBranchDetail = () => {
         return Promise.reject();
       }
       alert('Branch inserted with errors, please edit it to correct the information');
-      return dispatch( routeActions.push('/hadmin/retailer_management/view_organizations'));
+      // return dispatch( routeActions.push('/hadmin/retailer_management/view_organizations'));
+      return dispatch( routeActions.push('/hadmin/retailer_management/view_branches'));
     });
   };
 };
@@ -362,12 +364,13 @@ const updateBranch = () => {
       'gps_cordinates',
       'organisation_id',
       'application_number',
-      'cst_number',
       'kyc_status',
       'branch_status',
       'city_id',
       'excise_licence_number',
-      'org_name'
+      'org_name',
+      'service_charge_percent',
+      'discount_percent'
     ];
 
     let brCheckStatus = true;
@@ -506,7 +509,8 @@ const updateBranchDetail = () => {
         return Promise.reject();
       }
       alert('Branch inserted with errors, please edit it to correct the information');
-      return dispatch( routeActions.push('/hadmin/retailer_management/view_organizations'));
+      // return dispatch( routeActions.push('/hadmin/retailer_management/view_organizations'));
+      return dispatch( routeActions.push('/hadmin/retailer_management/view_branches'));
     });
   };
 };
@@ -550,7 +554,9 @@ const branchDataReducer = ( state = { organisationData: [], branchDetail: {}, br
         'kyc_status',
         'branch_status',
         'excise_licence_number',
-        'org_name'
+        'org_name',
+        'service_charge_percent',
+        'discount_percent'
       ];
 
       const branchContactKeys = ['branch_address', 'pincode', 'city_id', 'state_id', 'email', 'mobile_number', 'landline_number', 'retailer_id', 'gps_cordinates'];

@@ -15,6 +15,9 @@ const styles = require('./PromosCashbackRedeem.scss');
 export default class PromosCashbackRedeem extends Component {
 
   static propTypes = {
+    companies: PropTypes.array,
+    company: PropTypes.string,
+
     brandManagers: PropTypes.array,
     campaigns: PropTypes.array,
     brands: PropTypes.array,
@@ -41,6 +44,7 @@ export default class PromosCashbackRedeem extends Component {
 
     campaignStatus: PropTypes.string.isRequired,
 
+    onCompanyChange: PropTypes.func.isRequired,
     onValueChange: PropTypes.func.isRequired,
     onBrandManagerChange: PropTypes.func.isRequired,
 
@@ -60,32 +64,32 @@ export default class PromosCashbackRedeem extends Component {
   // Fix this onces the pageContainer and components are figured out.
   // NOTE: So, if the component is unmount then the new initial values are fetched.
   componentDidMount() {
-    fetchData(this.props, this.props.dispatch);
+    this.props.dispatch(fetchData);
   }
 
   render() {
     // state variables.
     const {brandManagers, brandEmail, campaignName, budgetedAmount, fundsCredited,
       currentEditingPromo, isPromoSectionShown, onRemovePromo, promos, activeFrom, activeTo,
-      brands, campaignStatus, brandManagerCampaignMap, brandManagerBrandMap,
+      brands, campaignStatus, brandManagerCampaignMap, brandManagerBrandMap, companies,
       brandManagerIdMap} = this.props;
 
     // controllers.
     const {onValueChange, onBrandManagerChange, onAddPromo, onEditPromo, onSubmitData,
-      onChangePromoObjInfo, onChangePromoInfo} = this.props;
+      onCompanyChange, onChangePromoObjInfo, onChangePromoInfo} = this.props;
 
     const brandManagerOptions = brandManagers.map((brandManager, index) => {
-      if (brandManager.company) {
-        return (
-          <option key={index} value={brandManager.email}>
-            {brandManager.email + ' <' + brandManager.name + ' of ' + brandManager.company.name + '>'}
-          </option>
-        );
-      }
-      // If the brandManager doesn't have a company
       return (
         <option key={index} value={brandManager.email}>
           {brandManager.email + ' <' + brandManager.name + '>'}
+        </option>
+      );
+    });
+
+    const companyOptions = companies.map((company, index) => {
+      return (
+        <option key={index} value={company.name}>
+          {company.name}
         </option>
       );
     });
@@ -139,6 +143,10 @@ export default class PromosCashbackRedeem extends Component {
             styles={styles}
             onBrandManagerChange={onBrandManagerChange}
             onValueChange={onValueChange}
+
+            companyOptions={companyOptions}
+            onCompanyChange={onCompanyChange}
+
             brandManagerOptions={brandManagerOptions}
             campaignName={campaignName}
             budgetedAmount={budgetedAmount}
@@ -171,9 +179,7 @@ export default class PromosCashbackRedeem extends Component {
               isPromoSectionShown={isPromoSectionShown}
               onChangePromoInfo={onChangePromoInfo}
               onChangePromoObjInfo={onChangePromoObjInfo}
-
               fundsCredited={fundsCredited}
-
               activeFrom={activeFrom}
               activeTo={activeTo}
             />
@@ -187,9 +193,7 @@ export default class PromosCashbackRedeem extends Component {
                 activeFrom: activeFrom,
                 activeTo: activeTo,
                 campaignStatus: campaignStatus,
-
                 promos: promos,
-
                 brandManagerIdMap: brandManagerIdMap,
                 brandManagerBrandMap: brandManagerBrandMap,
               })}>Save Promo</button>

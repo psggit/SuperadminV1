@@ -26,7 +26,7 @@ const SearchWrapper = ( {data} ) => {
                 { dat.brand.brand_name}
             </td>
             <td>
-              Active
+              { dat.is_active ? 'Active' : 'InActive' }
             </td>
             <td>
                 { (dat.volume) ? dat.volume : 'N/A'}

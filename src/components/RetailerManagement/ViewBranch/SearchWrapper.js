@@ -26,9 +26,9 @@ const SearchWrapper = ( {data} ) => {
               { dat.id }
             </td>
             <td> { dat.org_name } </td>
-            <td> { dat.org_address } </td>
+            <td> { dat.addresses.length > 0 ? dat.addresses[0].branch_address : ''} </td>
             <td> { dat.type } </td>
-            <td> { dat.kyc_status ? dat.kyc_status : 'N/A' } </td>
+            <td> { dat.kyc_status === 'true' ? 'Verified' : 'Not Verified' } </td>
             <td> { dat.branch_status ? dat.branch_status : 'N/A'} </td>
             <td> { createdAt } </td>
             <td> { updatedAt} </td>

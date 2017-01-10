@@ -5,7 +5,9 @@ import { MAKE_REQUEST,
   COUNT_FETCHED,
   REQUEST_ERROR, RESET } from '../../../Common/Actions/Actions';
 
-const getConsumerCount = () => {
+import beginFilter from '../../../Common/SearchComponentGen/GenerateFilter';
+
+const getConsumerCount = ( filterObj, isSearched ) => {
   return (dispatch) => {
     dispatch({ type: MAKE_REQUEST});
     //
@@ -13,6 +15,10 @@ const getConsumerCount = () => {
     const payload = {
       'columns': ['*']
     };
+
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
 
     const url = Endpoints.db + '/table/' + 'consumer' + '/count';
     const options = {
@@ -46,7 +52,7 @@ const getConsumerCount = () => {
   };
 };
 
-const getConsumerData = (page, limit) => {
+const getConsumerData = ( page, limit, filterObj, isSearched ) => {
   return (dispatch) => {
     dispatch({ type: MAKE_REQUEST});
     //
@@ -69,6 +75,10 @@ const getConsumerData = (page, limit) => {
       offset: offset,
       order_by: '+id'
     };
+
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
 
     const url = Endpoints.db + '/table/' + 'consumer' + '/select';
     const options = {
@@ -106,10 +116,14 @@ const getAllConsumerData = (page, limit) => {
   const gotPage = page;
   const gotLimit = limit;
   /* Dispatching first one */
-  return (dispatch) => {
-    dispatch(getConsumerCount())
+  return ( dispatch, getState ) => {
+    const filterData = getState().gen_filter_data;
+    const filterObj = { ...beginFilter(getState) };
+    console.log('filterData');
+    console.log(filterData);
+    dispatch(getConsumerCount( filterObj, filterData.isSearched ))
       .then(() => {
-        return dispatch(getConsumerData(gotPage, gotLimit));
+        return dispatch(getConsumerData(gotPage, gotLimit, filterObj, filterData.isSearched));
       })
       .then(() => {
         console.log('Consumer Data fetched');

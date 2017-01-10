@@ -11,6 +11,18 @@ import BreadCrumb from '../../Common/BreadCrumb';
 
 import PaginationWrapper from '../../Common/PaginationWrapper.js';
 
+import {
+  TOGGLE_SEARCH,
+  RESET_FILTER
+} from '../../Common/SearchComponentGen/FilterState';
+
+import {
+  MAKE_REQUEST,
+  REQUEST_COMPLETED
+} from '../../Common/Actions/Actions';
+
+import SearchComponent from '../../Common/SearchComponentGen/SearchComponent';
+
 class CompaniesManagement extends React.Component { // eslint-disable-line no-unused-vars
   constructor() {
     super();
@@ -27,12 +39,30 @@ class CompaniesManagement extends React.Component { // eslint-disable-line no-un
       link: '#'
     });
   }
+  componentWillUnmount() {
+    console.log('Unmounted');
+    Promise.all([
+      this.props.dispatch({ type: RESET_FILTER })
+    ]);
+  }
   // Hook used by pagination wrapper to fetch the initial data
   fetchInitialData(page, limit) {
     this.props.dispatch(getAllCompanyData(page, limit));
   }
   triggerPageChange(clickedPage, limit) {
     this.props.dispatch(getCompanyData(clickedPage, limit));
+  }
+  enableSearch() {
+    const page = 1;
+
+    Promise.all([
+      this.props.dispatch({ type: MAKE_REQUEST }),
+      this.props.dispatch({ type: TOGGLE_SEARCH }),
+      this.props.dispatch(getAllCompanyData(page, 10))
+    ])
+    .then( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED });
+    });
   }
   render() {
     const styles = require('./CompaniesManagement.scss');
@@ -41,20 +71,35 @@ class CompaniesManagement extends React.Component { // eslint-disable-line no-un
     console.log(ongoingRequest);
     console.log(lastSuccess);
 
+    /* Search Parameters */
+
+    const fields = [ 'id', 'name', 'pin_code', 'address' ];
+    // const operator = ['$eq'];
+    const fieldOperatorMap = {
+      'name': ['$eq', '$like', '$ilike'],
+      'id': ['$eq', '$gt', '$lt'],
+      'pin_code': ['$eq', '$gt', '$lt'],
+      'address': ['$eq', '$like', '$ilike']
+    };
+    const fieldTypeMap = {
+      'name': 'text',
+      'address': 'text',
+      'id': 'number',
+      'pin_code': 'number'
+    };
+
+    /* End of it */
+
     return (
       <div className={styles.container}>
 
         <BreadCrumb breadCrumbs={this.breadCrumbs} />
         <div className={styles.companies_wrapper}>
-          <div className={styles.search_wrapper + ' ' + styles.wd_100}>
-              <p>Search</p>
-              <div className={styles.search_form + ' ' + styles.wd_100}>
-                <input type="text" placeholder="Mobile Number" />
-                <input type="text" placeholder="Contains" />
-                <input type="number" />
-                <button className={styles.common_btn}>Search</button>
-              </div>
-          </div>
+          <SearchComponent configuredFields={ fields } fieldOperatorMap={ fieldOperatorMap } fieldTypeMap={ fieldTypeMap }>
+            <button className={styles.common_btn} onClick={ this.enableSearch.bind(this) }>
+              Search
+            </button>
+          </SearchComponent>
           <div className={styles.create_layout + ' ' + styles.wd_100}>
             <Link to={'/hadmin/companies_management/create'}>
               <button className={styles.common_btn}>Create Company</button>

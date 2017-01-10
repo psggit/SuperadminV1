@@ -12,6 +12,8 @@ class ImageUpload extends Component {
     const fileComponent = document.getElementById('checkImage');
     const formData = new FormData();
     formData.append('file', fileComponent.files[0]);
+    console.log('aaa');
+    console.log(formData);
     this.props.dispatch(uploadFile(formData, this.props.requestSuccess, this.props.requestError));
   }
   onCancelClick() {
@@ -38,7 +40,7 @@ class ImageUpload extends Component {
                     </div>
                     )
                     :
-                    ( <input type="file" className={styles.input_upload} id="checkImage"/> )
+                    ( <input type="file" accept="image/*" className={styles.input_upload} id="checkImage"/> )
                 }
               {
                 (imageUrl.length === 0) ?

@@ -18,9 +18,6 @@ const PromoDetails = ({styles, currentEditingPromo, promos, brands, fundsCredite
       );
     }) : null;
 
-    // I am writing everything as functions. So A function can't mutate
-    // it data. But give a new data. So, I need a filter to reduce the set
-    // of values found.
     const skus = promo.brandName ? brands.filter((brand) => {
       return (brand && brand.brand && brand.brand.brand_name &&
         brand.brand.brand_name === promo.brandName);
@@ -100,6 +97,47 @@ const PromoDetails = ({styles, currentEditingPromo, promos, brands, fundsCredite
               <option value={'amount'}>INR</option>
               <option value={'percentage'}>%</option>
             </select>
+          </div>
+        </div>
+
+        <div className={styles.wd_100 + ' ' + styles.padding_top}>
+          <label className={styles.success_msg_lab}>
+            Service Charge
+          </label>
+          <div className={styles.custom_select}>
+            <input type="number" className={styles.input_cash} value={promo.serviceCharge ? promo.serviceCharge : 0}
+              onChange={onChangePromoInfo.bind(this, 'price', currentEditingPromo, {
+                type: promo.type ? promo.type : 'amount',
+                maxPrice: (promo.pricing ? promo.pricing.price : 0)
+              })}
+            />
+            <select name="service_type" value={promo.service_type ? promo.service_type : 'amount'}
+              onChange={onChangePromoInfo.bind(this, 'type', currentEditingPromo, {
+                price: promo.serviceCharge,
+                maxPrice: (promo.pricing ? promo.pricing.price : 0)
+              })}>
+              <option value={'amount'}>INR</option>
+              <option value={'percentage'}>%</option>
+            </select>
+          </div>
+        </div>
+
+        <div className={styles.wd_100 + ' ' + styles.padding_top}>
+          <label className={styles.success_msg_lab}>
+            Promo name
+          </label>
+          <div className={styles.text_input}>
+            <input type="text" value={promo.promoName}
+              onChange={onChangePromoInfo.bind(this, 'promoName', currentEditingPromo, {})} />
+          </div>
+        </div>
+        <div className={styles.wd_100 + ' ' + styles.padding_top}>
+          <label className={styles.success_msg_lab}>
+            Promo Description
+          </label>
+          <div className={styles.text_input}>
+            <input value={promo.promo_description}
+              onChange={onChangePromoInfo.bind(this, 'promo_description', currentEditingPromo, {})} />
           </div>
         </div>
         <div className={styles.select_container}>

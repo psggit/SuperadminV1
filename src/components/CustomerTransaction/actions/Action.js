@@ -117,7 +117,7 @@ const loadCredentials = () => {
 
 /* Fetch Cancel Products */
 
-const getCancellationCount = ( consumerId ) => {
+const getCancellationCount = ( consumerId, filterObj, isSearched ) => {
   return (dispatch) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
@@ -126,15 +126,19 @@ const getCancellationCount = ( consumerId ) => {
       'columns': ['*']
     };
 
+    payload.where = {};
+
     if ( consumerId.length > 0 ) {
       payload.where = {
         'consumer_id': parseInt(consumerId, 10)
       };
     }
 
-    payload.where = {};
-
     payload.where.type = 'cancellation';
+
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
 
     const url = Endpoints.db + '/table/' + 'transaction_history' + '/count';
     const options = {
@@ -145,7 +149,102 @@ const getCancellationCount = ( consumerId ) => {
   };
 };
 
-const getCancellationData = ( page, consumerId ) => {
+const downloadCancellationCSV = ( consumerId = '') => {
+  return ( dispatch, getState ) => {
+    const converter = 'convertCancellation';
+    const fields = ['consumer_id', 'order_id'];
+    const url = Endpoints.dataUrl + '/api/1/table/transaction_history/select';
+
+    /* Computation */
+    const filterData = getState().filter_data;
+
+    const filterObjs = [];
+    Object.keys(filterData).forEach( ( key ) => {
+      if ( key !== 'isSearched') {
+        filterObjs.push(filterData[key]);
+      }
+    });
+
+    const filterObj = {
+      '$and': [ ...filterObjs ]
+    };
+
+    const queryObj = {
+      'columns': [ '*'],
+      'where': {}
+    };
+
+    if ( consumerId ) {
+      queryObj.where = { ...queryObj.where, 'consumer_id': parseInt(consumerId, 10) };
+    }
+
+    if ( filterObj.$and.length > 0 ) {
+      queryObj.where = { ...queryObj.where, ...filterObj };
+    }
+
+    queryObj.where.type = 'cancellation';
+
+    /* End of it */
+    const requestObj = {
+      converter: converter,
+      fields: fields,
+      url: url,
+      queryObj: queryObj
+    };
+
+    const genUrl = Endpoints.downloadRepUrl + '/generate_csv';
+
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(requestObj)
+    };
+
+    return fetch(genUrl, options)
+           .then(
+             (response) => {
+               if (response.ok) { // 2xx status
+                 return window.open(genUrl);
+               }
+             },
+             (error) => {
+               console.log(error);
+               return dispatch(requestFailed(error.text));
+             });
+
+    /*
+    const decoder = new TextDecoder();
+
+    return fetch(genUrl, options)
+           .then(
+             (response) => {
+               if (response.ok) { // 2xx status
+                 // return window.open(genUrl);
+                 const reader = response.body.getReader();
+                 let bytesReceived = 0;
+                 let returnString = '';
+                 reader.read().then(function processResult(result) {
+                   if (result.done) {
+                     console.log('Fetch complete');
+                     console.log('bytesReceived');
+                     console.log(bytesReceived);
+                     return window.open('data:text/csv;charset=utf-8,' + returnString);
+                   }
+                   bytesReceived += result.value.length;
+                   returnString += decoder.decode(result.value, {stream: true});
+                   console.log('Received', bytesReceived, 'bytes of data so far');
+                   reader.read().then(processResult);
+                 });
+               }
+             },
+             (error) => {
+               console.log(error);
+               return dispatch(requestFailed(error.text));
+             });
+    */
+  };
+};
+
+const getCancellationData = ( page, consumerId, filterObj, isSearched ) => {
   return (dispatch) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
@@ -175,6 +274,10 @@ const getCancellationData = ( page, consumerId ) => {
 
     payload.where.type = 'cancellation';
 
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
+
     const url = Endpoints.db + '/table/' + 'transaction_history' + '/select';
     const options = {
       ...genOptions,
@@ -187,17 +290,29 @@ const getCancellationData = ( page, consumerId ) => {
 const getAllCancellationData = (page, consumerId = '' ) => {
   const gotPage = page;
   /* Dispatching first one */
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const filterData = getState().filter_data;
+
+    const filterObjs = [];
+    Object.keys(filterData).forEach( ( key ) => {
+      if ( key !== 'isSearched') {
+        filterObjs.push(filterData[key]);
+      }
+    });
+
+    const filterObj = {
+      '$and': [ ...filterObjs ]
+    };
     return Promise.all([
-      dispatch(getCancellationCount( consumerId )),
-      dispatch(getCancellationData(gotPage, consumerId))
+      dispatch(getCancellationCount( consumerId, filterObj, filterData.isSearched )),
+      dispatch(getCancellationData(gotPage, consumerId, filterObj, filterData.isSearched ))
     ]);
   };
 };
 
 /* */
 
-const getRechargeCount = ( consumerId ) => {
+const getRechargeCount = ( consumerId, filterObj, isSearched) => {
   return (dispatch) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
@@ -212,6 +327,10 @@ const getRechargeCount = ( consumerId ) => {
       };
     }
 
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
+
     const url = Endpoints.db + '/table/' + 'recharge_wallet' + '/count';
     const options = {
       ...genOptions,
@@ -221,7 +340,7 @@ const getRechargeCount = ( consumerId ) => {
   };
 };
 
-const getRechargeData = ( page, consumerId ) => {
+const getRechargeData = ( page, consumerId, filterObj, isSearched ) => {
   return (dispatch) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
@@ -251,6 +370,10 @@ const getRechargeData = ( page, consumerId ) => {
       };
     }
 
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
+
     const url = Endpoints.db + '/table/' + 'recharge_wallet' + '/select';
     const options = {
       ...genOptions,
@@ -260,18 +383,119 @@ const getRechargeData = ( page, consumerId ) => {
   };
 };
 
+const downloadRechargeCSV = ( consumerId = '') => {
+  return ( dispatch, getState ) => {
+    const converter = 'convertRecharge';
+    const fields = ['id', 'consumer_id', 'transaction_id', 'payu_txn_id', 'bank_ref_num', 'amount', 'status', 'mode'];
+    const url = Endpoints.dataUrl + '/api/1/table/recharge_wallet/select';
+
+    /* Computation */
+    const filterData = getState().filter_data;
+
+    const filterObjs = [];
+    Object.keys(filterData).forEach( ( key ) => {
+      if ( key !== 'isSearched') {
+        filterObjs.push(filterData[key]);
+      }
+    });
+
+    const filterObj = {
+      '$and': [ ...filterObjs ]
+    };
+    const queryObj = {'columns': [{'name': 'payment_detail', 'columns': ['*']}, '*']};
+
+    if ( consumerId ) {
+      queryObj.where = { ...queryObj.where, 'consumer_id': parseInt(consumerId, 10) };
+    }
+
+    if ( filterObj.$and.length > 0 ) {
+      queryObj.where = { ...queryObj.where, ...filterObj };
+    }
+
+    /* End of it */
+    const requestObj = {
+      converter: converter,
+      fields: fields,
+      url: url,
+      queryObj: queryObj
+    };
+
+    const genUrl = Endpoints.downloadRepUrl + '/generate_csv';
+
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(requestObj)
+    };
+
+    return fetch(genUrl, options)
+           .then(
+             (response) => {
+               if (response.ok) { // 2xx status
+                 return window.open(genUrl);
+               }
+             },
+             (error) => {
+               console.log(error);
+               return dispatch(requestFailed(error.text));
+             });
+
+    /*
+    const decoder = new TextDecoder();
+
+    return fetch(genUrl, options)
+           .then(
+             (response) => {
+               if (response.ok) { // 2xx status
+                 // return window.open(genUrl);
+                 const reader = response.body.getReader();
+                 let bytesReceived = 0;
+                 let returnString = '';
+                 reader.read().then(function processResult(result) {
+                   if (result.done) {
+                     console.log('Fetch complete');
+                     console.log('bytesReceived');
+                     console.log(bytesReceived);
+                     return window.open('data:text/csv;charset=utf-8,' + returnString);
+                   }
+                   bytesReceived += result.value.length;
+                   returnString += decoder.decode(result.value, {stream: true});
+                   console.log('Received', bytesReceived, 'bytes of data so far');
+                   reader.read().then(processResult);
+                 });
+               }
+             },
+             (error) => {
+               console.log(error);
+               return dispatch(requestFailed(error.text));
+             });
+    */
+  };
+};
+
 const getAllRechargeData = (page, consumerId = '' ) => {
   const gotPage = page;
   /* Dispatching first one */
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const filterData = getState().filter_data;
+
+    const filterObjs = [];
+    Object.keys(filterData).forEach( ( key ) => {
+      if ( key !== 'isSearched') {
+        filterObjs.push(filterData[key]);
+      }
+    });
+
+    const filterObj = {
+      '$and': [ ...filterObjs ]
+    };
     return Promise.all([
-      dispatch(getRechargeCount( consumerId )),
-      dispatch(getRechargeData(gotPage, consumerId))
+      dispatch(getRechargeCount( consumerId, filterObj, filterData.isSearched )),
+      dispatch(getRechargeData(gotPage, consumerId, filterObj, filterData.isSearched ))
     ]);
   };
 };
 
-const getReservationCount = ( consumerId ) => {
+const getReservationCount = ( consumerId, filterObj, isSearched ) => {
   return (dispatch) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
@@ -286,6 +510,10 @@ const getReservationCount = ( consumerId ) => {
       };
     }
 
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
+
     const url = Endpoints.db + '/table/' + 'reservation' + '/count';
     const options = {
       ...genOptions,
@@ -295,7 +523,118 @@ const getReservationCount = ( consumerId ) => {
   };
 };
 
-const getReservationData = ( page, consumerId ) => {
+const downloadReservationCSV = ( consumerId = '') => {
+  return ( dispatch, getState ) => {
+    const converter = 'convertReservation';
+    const fields = ['id', 'consumer_id', 'amount'];
+    const url = Endpoints.dataUrl + '/api/1/table/reservation/select';
+
+    /* Computation */
+    const filterData = getState().filter_data;
+
+    const filterObjs = [];
+    Object.keys(filterData).forEach( ( key ) => {
+      if ( key !== 'isSearched') {
+        filterObjs.push(filterData[key]);
+      }
+    });
+
+    const filterObj = {
+      '$and': [ ...filterObjs ]
+    };
+    const queryObj = {
+      'columns': [ '*', {
+        'name': 'cart', 'columns': ['*', {
+          'name': 'normal_items',
+          'columns': ['*', {
+            'name': 'product',
+            'columns': ['*', {
+              'name': 'sku',
+              'columns': ['*', {
+                'name': 'brand',
+                'columns': ['*']
+              }]
+            }]
+          }]
+        }, {
+          'name': 'bar_items',
+          'columns': ['*']
+        }, {
+          'name': 'cashback_items',
+          'columns': ['*']
+        }]
+      }]
+    };
+
+    if ( consumerId ) {
+      queryObj.where = { ...queryObj.where, 'consumer_id': parseInt(consumerId, 10) };
+    }
+
+    if ( filterObj.$and.length > 0 ) {
+      queryObj.where = { ...queryObj.where, ...filterObj };
+    }
+
+    /* End of it */
+    const requestObj = {
+      converter: converter,
+      fields: fields,
+      url: url,
+      queryObj: queryObj
+    };
+
+    const genUrl = Endpoints.downloadRepUrl + '/generate_csv';
+
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(requestObj)
+    };
+
+    return fetch(genUrl, options)
+           .then(
+             (response) => {
+               if (response.ok) { // 2xx status
+                 return window.open(genUrl);
+               }
+             },
+             (error) => {
+               console.log(error);
+               return dispatch(requestFailed(error.text));
+             });
+
+    /*
+    const decoder = new TextDecoder();
+
+    return fetch(genUrl, options)
+           .then(
+             (response) => {
+               if (response.ok) { // 2xx status
+                 // return window.open(genUrl);
+                 const reader = response.body.getReader();
+                 let bytesReceived = 0;
+                 let returnString = '';
+                 reader.read().then(function processResult(result) {
+                   if (result.done) {
+                     console.log('Fetch complete');
+                     console.log('bytesReceived');
+                     console.log(bytesReceived);
+                     return window.open('data:text/csv;charset=utf-8,' + returnString);
+                   }
+                   bytesReceived += result.value.length;
+                   returnString += decoder.decode(result.value, {stream: true});
+                   console.log('Received', bytesReceived, 'bytes of data so far');
+                   reader.read().then(processResult);
+                 });
+               }
+             },
+             (error) => {
+               console.log(error);
+               return dispatch(requestFailed(error.text));
+             });
+    */
+  };
+};
+
+const getReservationData = ( page, consumerId, filterObj, isSearched ) => {
   return (dispatch) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
@@ -339,6 +678,10 @@ const getReservationData = ( page, consumerId ) => {
       payload.where = {
         'consumer_id': parseInt(consumerId, 10)
       };
+    }
+
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
     }
 
     const url = Endpoints.db + '/table/' + 'reservation' + '/select';
@@ -490,6 +833,10 @@ const checkValidity = (emailIds, data) => {
                if (response.ok) { // 2xx status
                  response.json().then(
                    (d) => {
+                     if ( d.length === 0 ) {
+                       alert('Sorry! no customer found');
+                       return Promise.resolve();
+                     }
                      d.forEach((email, i) => {
                        currentData.data[currentData[email.email]].is_valid = true;
                        currentData.data[currentData[email.email]].full_name = email.full_name;
@@ -532,6 +879,23 @@ const setCreditState = (data, emailIds) => {
 };
 */
 
+const sendEMAILSMS = ( objs ) => {
+  return ( dispatch ) => {
+    const url = Endpoints.blogicUrl + '/admin/transaction/consumer/trigger';
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(objs)
+    };
+    return dispatch(requestAction(url, options))
+    .then( ( message ) => {
+      console.log('message ' + message);
+    })
+    .catch( () => {
+      console.log('Email Error');
+    });
+  };
+};
+
 const insertCredits = (creditObjs, batchNumber) => {
   return (dispatch) => {
     dispatch({ type: MAKE_REQUEST});
@@ -560,6 +924,7 @@ const insertCredits = (creditObjs, batchNumber) => {
                      alert('Credits Successfully Inserted');
                      return Promise.all([
                        dispatch({type: REQUEST_SUCCESS, data: d.returning}),
+                       dispatch(sendEMAILSMS(d.returning)),
                        dispatch(routeActions.push('/hadmin/consumer_transactions/view_credits/' + currentBatchNumber))
                      ]);
                    },
@@ -720,7 +1085,7 @@ const updatePageData = (page, data) => {
 };
 
 /* Redemption items */
-const getRedemptionCount = ( consumerId ) => {
+const getRedemptionCount = ( consumerId, filterObj, isSearched ) => {
   return (dispatch) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
@@ -736,6 +1101,10 @@ const getRedemptionCount = ( consumerId ) => {
 
     payload.where.status = 'closed';
 
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
+
     const url = Endpoints.db + '/table/' + 'order' + '/count';
     const options = {
       ...genOptions,
@@ -745,7 +1114,109 @@ const getRedemptionCount = ( consumerId ) => {
   };
 };
 
-const getRedemptionData = ( page, consumerId ) => {
+const downloadRedemptionCSV = ( consumerId = '') => {
+  return ( dispatch, getState ) => {
+    const converter = 'convertRedemption';
+    const fields = ['id', 'consumer_id', 'amount', 'rating', 'itemtype', 'feedback', 'status'];
+    const url = Endpoints.dataUrl + '/api/1/table/order/select';
+
+    /* Computation */
+    const filterData = getState().filter_data;
+
+    const filterObjs = [];
+    Object.keys(filterData).forEach( ( key ) => {
+      if ( key !== 'isSearched') {
+        filterObjs.push(filterData[key]);
+      }
+    });
+
+    const filterObj = {
+      '$and': [ ...filterObjs ]
+    };
+    const queryObj = {
+      'columns': [ '*', {
+        'name': 'normal_redemptions',
+        'columns': ['*']
+      }, {
+        'name': 'cashback_redemptions',
+        'columns': ['*']
+      }, {
+        'name': 'bar_redemptions',
+        'columns': ['*']
+      }]
+    };
+
+    if ( consumerId ) {
+      queryObj.where = { ...queryObj.where, 'consumer_id': parseInt(consumerId, 10) };
+    }
+
+    if ( filterObj.$and.length > 0 ) {
+      queryObj.where = { ...queryObj.where, ...filterObj };
+    }
+
+    queryObj.where.status = 'closed';
+
+    /* End of it */
+    const requestObj = {
+      converter: converter,
+      fields: fields,
+      url: url,
+      queryObj: queryObj
+    };
+
+    const genUrl = Endpoints.downloadRepUrl + '/generate_csv';
+
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(requestObj)
+    };
+
+    return fetch(genUrl, options)
+           .then(
+             (response) => {
+               if (response.ok) { // 2xx status
+                 return window.open(genUrl);
+               }
+             },
+             (error) => {
+               console.log(error);
+               return dispatch(requestFailed(error.text));
+             });
+
+    /*
+    const decoder = new TextDecoder();
+
+    return fetch(genUrl, options)
+           .then(
+             (response) => {
+               if (response.ok) { // 2xx status
+                 // return window.open(genUrl);
+                 const reader = response.body.getReader();
+                 let bytesReceived = 0;
+                 let returnString = '';
+                 reader.read().then(function processResult(result) {
+                   if (result.done) {
+                     console.log('Fetch complete');
+                     console.log('bytesReceived');
+                     console.log(bytesReceived);
+                     return window.open('data:text/csv;charset=utf-8,' + returnString);
+                   }
+                   bytesReceived += result.value.length;
+                   returnString += decoder.decode(result.value, {stream: true});
+                   console.log('Received', bytesReceived, 'bytes of data so far');
+                   reader.read().then(processResult);
+                 });
+               }
+             },
+             (error) => {
+               console.log(error);
+               return dispatch(requestFailed(error.text));
+             });
+    */
+  };
+};
+
+const getRedemptionData = ( page, consumerId, filterObj, isSearched ) => {
   return (dispatch) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
@@ -770,6 +1241,21 @@ const getRedemptionData = ( page, consumerId ) => {
       }, {
         'name': 'bar_redemptions',
         'columns': ['*']
+      }, {
+        'name': 'retailer_pos',
+        'columns': [{
+          'name': 'retailer',
+          'columns': [
+            'org_name',
+            'id'
+          ]
+        }, {
+          'name': 'bar',
+          'columns': [
+            'name',
+            'id'
+          ]}
+        ]
       }],
       'limit': limit,
       'offset': offset
@@ -781,6 +1267,10 @@ const getRedemptionData = ( page, consumerId ) => {
     }
 
     payload.where.status = 'closed';
+
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
 
     const url = Endpoints.db + '/table/' + 'order' + '/select';
     const options = {
@@ -909,24 +1399,48 @@ const getRedeemedItems = ( orderId ) => {
   };
 };
 
-const getAllRedemptionData = (page, consumerId = '') => {
+const getAllRedemptionData = (page, consumerId = '' ) => {
   const gotPage = page;
   /* Dispatching first one */
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const filterData = getState().filter_data;
+
+    const filterObjs = [];
+    Object.keys(filterData).forEach( ( key ) => {
+      if ( key !== 'isSearched') {
+        filterObjs.push(filterData[key]);
+      }
+    });
+
+    const filterObj = {
+      '$and': [ ...filterObjs ]
+    };
     return Promise.all([
-      dispatch(getRedemptionCount( consumerId )),
-      dispatch(getRedemptionData(gotPage, consumerId ))
+      dispatch(getRedemptionCount( consumerId, filterObj, filterData.isSearched )),
+      dispatch(getRedemptionData(gotPage, consumerId, filterObj, filterData.isSearched ))
     ]);
   };
 };
 
-const getAllReservationData = (page, consumerId = '') => {
+const getAllReservationData = (page, consumerId = '' ) => {
   const gotPage = page;
   /* Dispatching first one */
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const filterData = getState().filter_data;
+
+    const filterObjs = [];
+    Object.keys(filterData).forEach( ( key ) => {
+      if ( key !== 'isSearched') {
+        filterObjs.push(filterData[key]);
+      }
+    });
+
+    const filterObj = {
+      '$and': [ ...filterObjs ]
+    };
     return Promise.all([
-      dispatch(getReservationCount( consumerId )),
-      dispatch(getReservationData(gotPage, consumerId ))
+      dispatch(getReservationCount( consumerId, filterObj, filterData.isSearched )),
+      dispatch(getReservationData(gotPage, consumerId, filterObj, filterData.isSearched ))
     ]);
   };
 };
@@ -954,5 +1468,9 @@ export {requestSuccess,
   getReservedItems,
   getAllCancellationData,
   getRedeemedItems,
-  getAllRedemptionData
+  getAllRedemptionData,
+  downloadRechargeCSV,
+  downloadReservationCSV,
+  downloadRedemptionCSV,
+  downloadCancellationCSV
 };

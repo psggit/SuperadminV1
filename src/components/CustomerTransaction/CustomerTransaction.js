@@ -57,6 +57,15 @@ const CustomerTransaction = ({dispatch}) => { // eslint-disable-line no-unused-v
                         </div>
                     </div>
                 </div>
+                <div className = {styles.box_wrapper}>
+                    <div className={styles.squarecontent}>
+                        <div>
+                            <span>
+                                <Link to={'/hadmin/consumer_transactions/view_all_credits'}>View All Credits</Link>
+                            </span>
+                        </div>
+                    </div>
+                </div>
                 <div className ="clearfix"></div>
             </div>
         </div>

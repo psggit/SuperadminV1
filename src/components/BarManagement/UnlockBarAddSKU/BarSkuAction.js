@@ -10,6 +10,7 @@ import Endpoints from '../../../Endpoints';
 const RESET_BAR_SKU = '@barSkuDataReducer/RESET_BAR_SKU';
 // const INITIAL_DATA_FETCHED = '@barSkuDataReducer/INITIAL_DATA_FETCHED';
 const BAR_INFO_FETCHED = '@barSkuDataReducer/BAR_INFO_FETCHED';
+const BAR_SKU_FETCHED = '@barSkuDataReducer/BAR_SKU_FETCHED';
 const SKU_FETCHED = '@barSkuDataReducer/SKU_FETCHED';
 
 const TOGGLE_SKU_DIV = '@barSkuDataReducer/TOGGLE_SKU_DIV';
@@ -46,7 +47,10 @@ const getSkus = ( cityId ) => {
           'id': parseInt(cityId, 10)
         }
       },
-      'is_active': true
+      'is_active': true,
+      'sku': {
+        'is_active': true
+      }
     };
 
     const options = {
@@ -83,7 +87,7 @@ const getBar = ( barId ) => {
     }, {
       'name': 'addresses',
       'columns': ['*'],
-      'order_by': '-created_at',
+      'order_by': '+created_at',
       'limit': 1
     }, {
       'name': 'city',
@@ -104,16 +108,40 @@ const getBar = ( barId ) => {
       dispatch(getSkus( resp[0].city_id ));
     })
     .catch( () => {
-      alert('Error While fetching organisation');
+      alert('Error While fetching Bar');
       return Promise.reject();
     });
     // return Promise.resolve();
   };
 };
 
+const fetchBarReservations = (barId) => {
+  return ( dispatch ) => {
+    const barUrl = Endpoints.db + '/table/bar_reserved_items/select';
+    const filterObj = {
+      'columns': ['*'],
+      'where': {
+        'bar_id': parseInt(barId, 10)
+      }
+    };
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(filterObj)
+    };
+    return dispatch( requestAction( barUrl, options, BAR_SKU_FETCHED ) )
+    .catch( () => {
+      alert('Error While fetching BAR SKU');
+      return Promise.reject();
+    });
+  };
+};
+
 const fetchInitials = (barId) => {
   return ( dispatch ) => {
-    return dispatch(getBar(barId));
+    return Promise.all([
+      dispatch(getBar(barId)),
+      dispatch(fetchBarReservations(barId))
+    ]);
     // return Promise.resolve();
   };
 };
@@ -122,20 +150,28 @@ const fetchInitials = (barId) => {
 
 const saveSku = ( barId ) => {
   return ( dispatch, getState ) => {
-    const invUrl = Endpoints.db + '/table/bars_inventory/insert';
+    const invUrl = Endpoints.blogicUrl + '/admin/bar/insert';
 
     const barState = getState().bar_sku_create_data;
     const barDataObj = {
       ...barState.newSkuData,
-      bar_id: parseInt(barId, 10)
+      bar_id: parseInt(barId, 10),
+      base_sku_price: parseFloat(barState.newSkuData.base_sku_price),
+      negotiated_sku_price: parseFloat(barState.newSkuData.negotiated_sku_price),
+      charges_and_tax_percentage: parseFloat(barState.newSkuData.charges_and_tax_percentage),
+      start_date: new Date(barState.newSkuData.start_date).toISOString(),
+      end_date: new Date(barState.newSkuData.end_date).toISOString()
     };
 
     const brInsertCheck = [
       'listingOrder',
       'sku_pricing_id',
       'quantity',
-      'hipbarPrice',
-      'menuPrice'
+      'base_sku_price',
+      'negotiated_sku_price',
+      'charges_and_tax_percentage',
+      'start_date',
+      'end_date'
     ];
     let brCheckStatus = true;
 
@@ -143,18 +179,19 @@ const saveSku = ( barId ) => {
       brCheckStatus = brCheckStatus && ( barDataObj[i] ? true : false );
     });
 
+    // This is THE spot
+    // barDataObj.menuPrice = barDataObj.base_sku_price + (barDataObj.base_sku_price * barDataObj.charges_and_tax_percentage / 100);
+    // barDataObj.hipbarPrice = barDataObj.negotiated_sku_price + (barDataObj.negotiated_sku_price * barDataObj.charges_and_tax_percentage / 100);
+
+
     if ( !brCheckStatus ) {
       alert('All the fields for Bar are mandatory');
       return Promise.reject({ stage: 0 });
     }
-
-    const insertObj = {};
-    insertObj.objects = [ { ...barDataObj } ];
-    insertObj.returning = ['id'];
-
+    const postData = { ...barDataObj };
     const options = {
       ...genOptions,
-      body: JSON.stringify(insertObj)
+      body: JSON.stringify(postData)
     };
 
     return dispatch( requestAction( invUrl, options ) )
@@ -178,12 +215,19 @@ const updateSku = ( barId ) => {
       bar_id: parseInt(barId, 10)
     };
 
+    /* Removing the arbitrary object */
+    delete barDataObj.status;
+    /* */
+
     const brInsertCheck = [
       'listingOrder',
       'sku_pricing_id',
       'quantity',
-      'hipbarPrice',
-      'menuPrice'
+      'base_sku_price',
+      'negotiated_sku_price',
+      'charges_and_tax_percentage',
+      'start_date',
+      'end_date'
     ];
     let brCheckStatus = true;
 
@@ -230,6 +274,40 @@ const updateSku = ( barId ) => {
   };
 };
 
+const disableSku = ( ) => {
+  return ( dispatch, getState ) => {
+    const currState = getState().bar_sku_create_data;
+    const isEdit = currState.isEdit;
+    if ( !isEdit ) {
+      // Silently Die
+      return Promise.resolve();
+    }
+    const skuId = currState.newSkuData.sku_pricing_id;
+    const cancelReservations = ( skuId in currState.barSKUs ) ? currState.barSKUs[skuId] : [];
+    if ( cancelReservations.length ) {
+      const reservationObjs = {};
+      const cancelUrl = Endpoints.blogicUrl + '/admin/cancel/bar';
+      reservationObjs.itemId = cancelReservations;
+      const options = {
+        ...genOptions,
+        body: JSON.stringify(reservationObjs),
+        method: 'PUT'
+      };
+      return dispatch(requestAction(cancelUrl, options ))
+      .then( ( resp ) => {
+        console.log(resp);
+        alert('Reservations Cancelled Successfully');
+        return dispatch({ type: CANCEL_SKU });
+      })
+      .catch( ( ) => {
+        alert('Something went wrong while cancelling reservations');
+      });
+    }
+    alert('Nothing to cancel');
+    return Promise.resolve();
+  };
+};
+
 /* End of it */
 
 /* Default State */
@@ -250,7 +328,8 @@ const defaultBarSkuState = {
   addedInventory: [],
   inventoryMap: {},
   inventoryId: 0,
-  isEdit: false
+  isEdit: false,
+  barSKUs: {}
 };
 
 /* End of it */
@@ -261,21 +340,18 @@ const barSkuDataReducer = ( state = defaultBarSkuState, action ) => {
   switch ( action.type ) {
     case BAR_INFO_FETCHED:
       const pricingIds = [];
-
       const inventoryItems = {};
 
       action.data[0].inventories.forEach( ( sku ) => {
         pricingIds.push(sku.sku_pricing_id);
-      });
-
-      action.data[0].inventories.forEach( ( sku ) => {
         inventoryItems[sku.sku_pricing_id] = sku;
       });
+
       return { ...state, barData: action.data, barCity: action.data[0].city_id, barCityInfo: action.data[0].city, addedInventory: [ ...pricingIds ], inventoryMap: { ...inventoryItems }};
     case SKU_FETCHED:
       return { ...state, skuData: action.data };
     case VIEW_SKU:
-      return { ...state, newSkuData: { ...state.inventoryMap[action.data] }, isEdit: true, inventoryId: state.inventoryMap[action.data].id, showSku: true };
+      return { ...state, newSkuData: { ...state.inventoryMap[action.data], status: state.inventoryMap[action.data].is_active }, isEdit: true, inventoryId: state.inventoryMap[action.data].id, showSku: true };
     case TOGGLE_SKU_DIV:
       return { ...state, showSku: !state.showSku };
     case INPUT_VALUE_CHANGED:
@@ -288,6 +364,17 @@ const barSkuDataReducer = ( state = defaultBarSkuState, action ) => {
       return { ...state, newSkuData: {}, showSku: false, inventoryId: 0, isEdit: false };
     case RESET_BAR_SKU:
       return { ...defaultBarSkuState };
+    case BAR_SKU_FETCHED:
+      const barSKUs = {};
+      action.data.forEach( ( data ) => {
+        if ( data.sku_pricing_id in barSKUs ) {
+          barSKUs[data.sku_pricing_id].push(data.item_id);
+        } else {
+          barSKUs[data.sku_pricing_id] = [];
+          barSKUs[data.sku_pricing_id].push(data.item_id);
+        }
+      });
+      return { ...state, barSKUs: { ...barSKUs }};
     default:
       return { ...state };
   }
@@ -303,5 +390,6 @@ export {
   saveSku,
   updateSku,
   VIEW_SKU,
-  CANCEL_SKU
+  CANCEL_SKU,
+  disableSku
 };

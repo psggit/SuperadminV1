@@ -12,6 +12,10 @@
 import { defaultKycState } from '../Common/Actions/DefaultState';
 import requestAction from '../Common/Actions/requestAction';
 import Endpoints, { globalCookiePolicy } from '../../Endpoints';
+import { validation } from '../Common/Actions/Validator';
+
+import { routeActions } from 'redux-simple-router';
+
 import { MAKE_REQUEST,
   REQUEST_SUCCESS,
   REQUEST_COMPLETED,
@@ -30,6 +34,7 @@ const UPDATE_ADDRESS_PROOF_PIC = 'KYCREDUCER/UPDATE_ADDRESS_PROOF_PIC';
 const UPDATE_ID_PROOF_PIC = 'KYCREDUCER/UPDATE_ID_PROOF_PIC';
 const UPDATE_CONSUMER_PIC = 'KYCREDUCER/UPDATE_CONSUMER_PIC';
 const RETRIEVE_INITIAL_STATUSES = 'KYCREDUCER/RETRIEVE_INITIAL_STATUSES';
+const RESET_KYC_DATA = 'KYCREDUCER/RESET_KYC_DATA';
 
 const UPDATE_STATUSES = 'KYCREDUCER/UPDATE_STATUSES';
 const CLEAR_LOCAL_FILES = 'KYCREDUCER/CLEAR_LOCAL_FILES';
@@ -106,7 +111,6 @@ const uploadAndSave = (formData, proofType) => {
   return (dispatch) => {
     const fileUploadUrl = Endpoints.file_upload;
 
-    dispatch({ type: MAKE_REQUEST});
     // const currentUser = consumerId;
     const pType = proofType;
     // const fetchedObj = {};
@@ -117,9 +121,9 @@ const uploadAndSave = (formData, proofType) => {
     };
 
     const proofActionMap = {};
-    proofActionMap.CONSUMERPIC = ADD_CONSUMER_PIC;
-    proofActionMap.IDPROOF = ADD_ID_PROOF;
-    proofActionMap.ADDRESSPROOF = ADD_ADDRESS_PROOF;
+    proofActionMap.USERPHOTO = ADD_CONSUMER_PIC;
+    proofActionMap.IDPROOFFRONT = ADD_ID_PROOF;
+    proofActionMap.ADDRESSPROOFFRONT = ADD_ADDRESS_PROOF;
 
     /* Fetch the Consumer KYC ID */
     /*
@@ -183,8 +187,7 @@ const uploadAndSave = (formData, proofType) => {
     */
 
     return Promise.all([
-      dispatch(requestAction(fileUploadUrl, options, proofActionMap[pType], REQUEST_ERROR)),
-      dispatch({ type: REQUEST_COMPLETED})
+      dispatch(requestAction(fileUploadUrl, options, proofActionMap[pType], REQUEST_ERROR))
     ]);
     /*
       .then(saveFileUrl)
@@ -201,6 +204,7 @@ const updateConsumerKyc = ( id, status ) => {
     const url = Endpoints.db + '/table/kyc_request/update';
     userUpdate.values = {
       'is_sa_validated': ( status === 'Verified' ) ? true : false,
+      'is_open': ( status === 'Verified' ) ? true : false
     };
     userUpdate.returning = ['id'];
     userUpdate.where = {
@@ -348,6 +352,7 @@ const deleteFromServer = (id, imageIdentifier, userId) => {
   };
 };
 
+
 const updateExistingKycs = (requestObjs) => {
   return (dispatch) => {
     const url = Endpoints.db + '/table/kyc_files/update';
@@ -411,41 +416,66 @@ const updateExistingKycs = (requestObjs) => {
 };
 
 /* Function to update */
+// Validate all Mandatory Attributes
+// Send Action
 const updateKycs = (requestObjs, insertObjs, kycId, kycStatus, consumerId) => {
+  const currId = kycId;
+  const currStatus = kycStatus;
+  const currConsumerId = consumerId;
+  const listOfValidations = [];
+  const commentField = [];
+  let panId;
+  let pinCode;
+  console.log('>>> UpdateKycs-Action Received the Following :');
+  console.log(JSON.stringify(requestObjs));
+  requestObjs.forEach((indiv) => {
+    panId = indiv.values.hasOwnProperty('pan_number') ? indiv.values.pan_number : panId;
+    pinCode = indiv.values.hasOwnProperty('pin_code') ? indiv.values.pin_code : pinCode;
+    if (indiv.values.status === 'Verifed') {
+      commentField.push(indiv.values.comment);
+    }
+  });
+  listOfValidations.push(validation(panId, 'pan_number'));
+  listOfValidations.push(validation(pinCode, 'pin_code'));
+  commentField.forEach( (indiv) => {
+    listOfValidations.push(validation(indiv, 'non_empty_field'));
+  });
   return (dispatch) => {
-    const currId = kycId;
-    const currStatus = kycStatus;
-    const currConsumerId = consumerId;
-
-    dispatch({ type: MAKE_REQUEST});
-    if (insertObjs.length > 0) {
+    Promise.all(listOfValidations
+    ).then(() => {
+      dispatch({ type: MAKE_REQUEST});
+      if (insertObjs.length > 0) {
+        return Promise.all([
+          dispatch(updateExistingKycs(requestObjs)),
+          dispatch(uploadKycsAndUpdate(insertObjs)),
+          dispatch(updateConsumerKyc(currId, currStatus, currConsumerId))
+        ])
+        .then( () => {
+          return Promise.all([
+            dispatch(getUserData(parseInt(currConsumerId, 10))),
+            dispatch({ type: REQUEST_COMPLETED})
+          ]);
+        })
+        .catch( () => {
+          console.log('Error Occured');
+        });
+      }
       return Promise.all([
         dispatch(updateExistingKycs(requestObjs)),
-        dispatch(uploadKycsAndUpdate(insertObjs)),
         dispatch(updateConsumerKyc(currId, currStatus, currConsumerId))
       ])
       .then( () => {
         return Promise.all([
-          dispatch(getUserData(parseInt(currConsumerId, 10))),
-          dispatch({ type: REQUEST_COMPLETED})
+          dispatch(routeActions.push('/hadmin/consumer/kycfunctions'))
         ]);
       })
       .catch( () => {
+        alert('Something went wrong');
         console.log('Error Occured');
       });
-    }
-    return Promise.all([
-      dispatch(updateExistingKycs(requestObjs)),
-      dispatch(updateConsumerKyc(currId, currStatus, currConsumerId))
-    ])
-    .then( () => {
-      return Promise.all([
-        dispatch(getUserData(parseInt(currConsumerId, 10))),
-        dispatch({ type: REQUEST_COMPLETED})
-      ]);
     })
     .catch( () => {
-      console.log('Error Occured');
+      console.log('Validation Failed');
     });
   };
 };
@@ -569,13 +599,14 @@ const kycReducer = (state = defaultKycState, action) => {
       return {...state, addressProof: [...expr], isAddressProofUploaded: flag, ...consumerPICInfo, ...idProofInfo, ...addressProofInfo};
     case UPDATE_STATUSES:
       return {...state, ...action.data};
+    case RESET_KYC_DATA:
+      return { ...defaultKycState };
     default: return state;
   }
 };
 
 /* End of Reducer Definition */
 
-export default kycReducer;
 export {
   getUserData,
   loadCredentials,
@@ -593,5 +624,7 @@ export {
   UPDATE_CONSUMER_COMMENT_DATA,
   UPDATE_ID_COMMENT_DATA,
   updateExistingKycs,
-  updateKycs
+  updateKycs,
+  RESET_KYC_DATA
 };
+export default kycReducer;

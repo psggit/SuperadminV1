@@ -117,7 +117,8 @@ const defaultCreateSkuState = {
   sku_id: '',
   sku_state_id: {},
   currentPage: '',
-  skuPricingStateMap: {}
+  skuPricingStateMap: {},
+  reservedItems: []
   /* For each state in this mapping we need to create an entry in sku_pricing */
   // stateMrpObj: {}
 };
@@ -312,10 +313,13 @@ const defaultcreateSkuAdData = {
 const defaultcreateImageAdData = {
   type: 'create',
   campaignDetails: {},
+  brandsAll: [{}],
+  brandManagers: [{}],
   statesAll: [{
     state_name: '',
     cities: [{}]
   }],
+  selectedBrand: {skus: []},
   selectedCities: {},
   hideCities: 'hide',
   citiesView: {
@@ -359,11 +363,14 @@ const defaultViewImageAdData = {
 
 const defaultcreateUrlAdData = {
   type: 'create',
+  brandsAll: [{}],
+  brandManagers: [{}],
   campaignDetails: {},
   statesAll: [{
     state_name: '',
     cities: [{}]
   }],
+  selectedBrand: {skus: []},
   selectedCities: {},
   hideCities: 'hide',
   citiesView: {

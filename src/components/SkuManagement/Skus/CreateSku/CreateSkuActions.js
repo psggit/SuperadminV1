@@ -37,6 +37,7 @@ const SKU_INFORMATION_CHANGE = 'SKU/SKU_INFORMATION_CHANGE';
 const STATE_MRP_INFORMATION = 'SKU/STATE_MRP_INFORMATION';
 
 const UPDATE_COMPONENT_STATE = 'SKU/UPDATE_COMPONENT_STATE';
+const FETCHED_RESERVED_ITEMS = 'SKU/FETCHED_RESERVED_ITEMS';
 const POPULATE_SKU_DATA = 'SKU/POPULATE_SKU_DATA';
 
 /* Variable */
@@ -101,10 +102,7 @@ const hydrateStateObj = () => {
                     }
                   ]
                 },
-              ],
-              'where': {
-                'is_active': true
-              }
+              ]
             }
           ],
           'where': {
@@ -122,6 +120,46 @@ const hydrateStateObj = () => {
       body: JSON.stringify(skuReqObj)
     };
     return dispatch(requestAction(skuUrl, options, POPULATE_SKU_DATA, REQUEST_ERROR));
+  };
+};
+
+const toggleSkuStatus = ( id, status ) => {
+  return ( dispatch, getState ) => {
+    const devUrl = Endpoints.db + '/table/inventory/update';
+
+    const skuState = getState().create_sku_data;
+
+    const brId = id;
+
+    const insertObj = {};
+
+    if ( !skuState.sku_id ) {
+      alert('Valid SKU is required');
+      return Promise.reject();
+    }
+
+    insertObj.where = {
+      'retailer_id': parseInt(brId, 10),
+      'sku_pricing': {
+        'sku_id': {
+          '$eq': parseInt(skuState.sku_id, 10)
+        }
+      }
+    };
+
+    insertObj.values = { is_active: !status };
+    insertObj.returning = ['id'];
+
+    const options = {
+      ...genOptions,
+      body: JSON.stringify( insertObj )
+    };
+
+    return dispatch( requestAction( devUrl, options ) )
+    .then( () => {
+      alert('Sku Toggled');
+      return dispatch( hydrateStateObj() );
+    });
   };
 };
 
@@ -144,22 +182,44 @@ const fetchState = () => {
           }
         ],
         'where': {
-          'retailers': {
-            'id': {
-              '$gt': 0
+          '$or': [
+            {
+              'retailers': {
+                'id': {
+                  '$gt': 0
+                }
+              }
+            },
+            {
+              'bars': {
+                'id': {
+                  '$gt': 0
+                }
+              }
             }
-          }
+          ]
         }
       }
     ];
     queryObj.order_by = '-state_name';
     queryObj.where = {
       'cities': {
-        'retailers': {
-          'id': {
-            '$gt': 0
+        '$or': [
+          {
+            'retailers': {
+              'id': {
+                '$gt': 0
+              }
+            }
+          },
+          {
+            'bars': {
+              'id': {
+                '$gt': 0
+              }
+            }
           }
-        }
+        ]
       }
     };
     const options = {
@@ -176,6 +236,95 @@ const fetchState = () => {
         if ( getState().create_sku_data.currentPage === 'edit_page') {
           return dispatch( hydrateStateObj() );
         }
+      });
+  };
+};
+
+const disableSku = () => {
+  return ( dispatch, getState ) => {
+    console.log(dispatch);
+    console.log('Disabling SKU');
+    const skuState = getState().create_sku_data.reservedItems;
+
+    const normalUrl = Endpoints.blogicUrl + '/admin/cancel/normal';
+    const cashbackUrl = Endpoints.blogicUrl + '/admin/cancel/cashback';
+
+    if ( skuState.length === 0 ) {
+      alert('Nothing to cancel');
+      return Promise.resolve();
+    }
+
+    const cashbackItems = [];
+    const normalItems = [];
+
+    skuState.forEach( ( sku ) => {
+      if ( sku.reservation_type === 'cashback' ) {
+        cashbackItems.push(sku.id);
+      } else {
+        normalItems.push(sku.id);
+      }
+    });
+    console.log('normal');
+    console.log(normalItems);
+    console.log('cachbac');
+    console.log(cashbackItems);
+
+    const normalCancel = () => {
+      if ( normalItems.length > 0 ) {
+        const optionsNormal = {
+          ...genOptions,
+          body: JSON.stringify({ 'itemId': normalItems }),
+          method: 'PUT'
+        };
+        return dispatch(requestAction(normalUrl, optionsNormal));
+      }
+      return Promise.resolve();
+    };
+    const cashbackCancel = () => {
+      if ( cashbackItems.length > 0 ) {
+        const optionsCashback = {
+          ...genOptions,
+          body: JSON.stringify({ 'itemId': cashbackItems }),
+          method: 'PUT'
+        };
+        return dispatch(requestAction(cashbackUrl, optionsCashback));
+      }
+      return Promise.resolve();
+    };
+    return Promise.all([
+      normalCancel(),
+      cashbackCancel()
+    ])
+    .then( () => {
+      console.log('request queued');
+      return dispatch(routeActions.push('/hadmin/skus/list_sku'));
+    })
+    .catch( () => {
+      console.log('request error');
+      // return dispatch(routeActions.push('/hadmin/skus/list_sku'));
+    });
+  };
+};
+
+const getReservedItems = ( Id ) => {
+  return (dispatch) => {
+    /* Url */
+    const url = Endpoints.db + '/table/reserved_items/select';
+    const queryObj = {};
+    queryObj.columns = ['*'];
+    queryObj.where = {
+      'sku_id': parseInt(Id, 10)
+    };
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(queryObj)
+    };
+    /* Make a MAKE_REQUEST action */
+    // dispatch({type: MAKE_REQUEST});
+    // return Promise.all([
+    return dispatch(requestAction(url, options))
+      .then( ( data ) => {
+        dispatch({ type: FETCHED_RESERVED_ITEMS, data: data });
       });
   };
 };
@@ -419,7 +568,7 @@ const onUpdate = () => {
 
     const updatePricing = ( pricings ) => {
       if ( pricings.length > 0 ) {
-        const updatePricingUrl = 'https://data.hipbar-stg.hasura-app.io/v1/query';
+        const updatePricingUrl = Endpoints.dataUrl + '/v1/query';
         const updateObjs = pricings.map( ( pricingId ) => {
           const localObj = {};
           localObj.type = 'update';
@@ -941,6 +1090,8 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
       const localRetailerMapping = { ...state.retailerMapping };
       const skuStatePricingMap = {};
       delete localSkuInfo.pricings;
+      console.log('selectedStates');
+      console.log(selectedStates);
       selectedStates.forEach( ( sState ) => {
         /* Check if the retailer exists in the state */
         /* To avoid error data */
@@ -956,7 +1107,8 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
             const cityId = inventory.retailer.city_id;
             const retailerId = inventory.retailer_id;
             localStateCityMapping[ sState.state_short_name ].selected_cities[cityId] = { ...state.cityRetailerMapping[cityId], is_selected: false};
-            localRetailerMapping[retailerId].is_selected = true;
+            // localRetailerMapping[retailerId].is_selected = true;
+            localRetailerMapping[retailerId].is_selected = inventory.is_active;
             localRetailerMapping[retailerId].is_fetched = true;
             // localRetailerMapping[retailerId].serverValues = { is_selected: true };
             localCityRetailerMapping[cityId].is_selected = true;
@@ -971,7 +1123,9 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
       });
       /* for each state price loop and get the selected states */
       /* for each retailer get the selected city */
-      return { ...state, skuReqObj: { ...localSkuInfo, 'brand_id': state.brandIdMap[localSkuInfo.brand_id] }, stateCityMapping: { ...localStateCityMapping }, cityRetailerMapping: { ...localCityRetailerMapping }, retailerMapping: { ...localRetailerMapping }, skuImageUrl: (localSkuInfo.image ? localSkuInfo.image : ''), skuStatePricingMap: { ...skuStatePricingMap }};
+      return { ...state, skuReqObj: { ...localSkuInfo, 'brand_id': state.brandIdMap[localSkuInfo.brand_id], status: localSkuInfo.is_active }, stateCityMapping: { ...localStateCityMapping }, cityRetailerMapping: { ...localCityRetailerMapping }, retailerMapping: { ...localRetailerMapping }, skuImageUrl: (localSkuInfo.image ? localSkuInfo.image : ''), skuStatePricingMap: { ...skuStatePricingMap }};
+    case FETCHED_RESERVED_ITEMS:
+      return { ...state, reservedItems: action.data };
     default: return state;
   }
 };
@@ -997,7 +1151,10 @@ export {
   STATE_MRP_INFORMATION,
   onSave,
   onUpdate,
-  updateComponentState
+  updateComponentState,
+  getReservedItems,
+  disableSku,
+  toggleSkuStatus
 };
 
 export default createSKUReducer;

@@ -23,6 +23,18 @@ import BreadCrumb from '../../../Common/BreadCrumb';
       e) Listing Component
 */
 
+import {
+  TOGGLE_SEARCH,
+  RESET_FILTER
+} from '../../../Common/SearchComponentGen/FilterState';
+
+import {
+  MAKE_REQUEST,
+  REQUEST_COMPLETED
+} from '../../../Common/Actions/Actions';
+
+import SearchComponent from '../../../Common/SearchComponentGen/SearchComponent';
+
 class ListSku extends React.Component { // eslint-disable-line no-unused-vars
   constructor() {
     super();
@@ -39,12 +51,30 @@ class ListSku extends React.Component { // eslint-disable-line no-unused-vars
       link: '#'
     });
   }
+  componentWillUnmount() {
+    console.log('Unmounted');
+    Promise.all([
+      this.props.dispatch({ type: RESET_FILTER })
+    ]);
+  }
   // Hook used by pagination wrapper to fetch the initial data
   fetchInitialData(page, limit) {
     this.props.dispatch(getAllSkuData(page, limit));
   }
   triggerPageChange(clickedPage, limit) {
     this.props.dispatch(getSkuData(clickedPage, limit));
+  }
+  enableSearch() {
+    const page = 1;
+
+    Promise.all([
+      this.props.dispatch({ type: MAKE_REQUEST }),
+      this.props.dispatch({ type: TOGGLE_SEARCH }),
+      this.props.dispatch(getAllSkuData(page, 10))
+    ])
+    .then( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED });
+    });
   }
   get myName() {
     return 'Karthik Venkateswaran';
@@ -55,20 +85,34 @@ class ListSku extends React.Component { // eslint-disable-line no-unused-vars
 
     console.log('my name is ');
     console.log(this.myName);
+    const fields = [ 'id', 'volume', 'brand.brand_name', 'brand.category.name', 'brand.category.genre_short_name', 'brand.company.name' ];
+    // const operator = ['$eq'];
+    const fieldOperatorMap = {
+      'brand.brand_name': ['$eq', '$like', '$ilike'],
+      'brand.category.name': ['$eq', '$like', '$ilike'],
+      'brand.category.genre_short_name': ['$eq', '$like', '$ilike'],
+      'brand.company.name': ['$eq', '$like', '$ilike'],
+      'id': ['$eq', '$gt', '$lt'],
+      'volume': ['$eq', '$gt', '$lt']
+    };
+    const fieldTypeMap = {
+      'brand.brand_name': 'text',
+      'brand.category.name': 'text',
+      'brand.category.genre_short_name': 'text',
+      'brand.company.name': 'text',
+      'id': 'number',
+      'volume': 'number'
+    };
     // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
     return (
         <div className={styles.container}>
           <BreadCrumb breadCrumbs={this.breadCrumbs} />
 
-         	<div className={styles.search_wrapper + ' ' + styles.wd_100}>
-         		<p>Search</p>
-         		<div className={styles.search_form + ' ' + styles.wd_100}>
-         			<input type="text" placeholder="Mobile Number" />
-         			<input type="text" placeholder="Contains" />
-         			<input type="number" />
-         			<button className={styles.common_btn}>Search</button>
-         		</div>
-         	</div>
+          <SearchComponent configuredFields={ fields } fieldOperatorMap={ fieldOperatorMap } fieldTypeMap={ fieldTypeMap }>
+            <button className={styles.common_btn} onClick={ this.enableSearch.bind(this) }>
+              Search
+            </button>
+          </SearchComponent>
 
           <div className={styles.create_layout + ' ' + styles.wd_100}>
             <Link to={'/hadmin/skus/create_sku'}>

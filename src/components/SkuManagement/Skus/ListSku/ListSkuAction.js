@@ -18,9 +18,11 @@ const genOptions = {
   credentials: globalCookiePolicy
 };
 
+import beginFilter from '../../../Common/SearchComponentGen/GenerateFilter';
+
 /* Action Creators for ListSku Management Listing */
 
-const getSkuCount = () => {
+const getSkuCount = ( filterObj, isSearched ) => {
   return (dispatch) => {
     dispatch({ type: MAKE_REQUEST});
     //
@@ -28,6 +30,10 @@ const getSkuCount = () => {
     const payload = {
       'columns': ['*']
     };
+
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
 
     const url = Endpoints.db + '/table/' + 'sku' + '/count';
     const options = {
@@ -59,7 +65,7 @@ const getSkuCount = () => {
   };
 };
 
-const getSkuData = (page, limit) => {
+const getSkuData = (page, limit, filterObj, isSearched ) => {
   return (dispatch) => {
     dispatch({ type: MAKE_REQUEST});
     //
@@ -87,6 +93,10 @@ const getSkuData = (page, limit) => {
       offset: offset,
       order_by: '+id'
     };
+
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
 
     const url = Endpoints.db + '/table/' + 'sku' + '/select';
     const options = {
@@ -122,10 +132,12 @@ const getAllSkuData = (page, limit) => {
   const gotPage = page;
   const gotLimit = limit;
   /* Dispatching first one */
-  return (dispatch) => {
-    dispatch(getSkuCount())
+  return (dispatch, getState ) => {
+    const filterData = getState().gen_filter_data;
+    const filterObj = { ...beginFilter(getState) };
+    dispatch(getSkuCount( filterObj, filterData.isSearched ))
       .then(() => {
-        return dispatch(getSkuData(gotPage, gotLimit));
+        return dispatch(getSkuData(gotPage, gotLimit, filterObj, filterData.isSearched ));
       })
       .then(() => {
         console.log('ListSku Data fetched');

@@ -11,6 +11,7 @@ const uiState = {
   'showDetail': false,
   'isEditing': false,
   'isBrEdit': false,
+  'is_active': true,
   'editDeviceId': 0,
   'localDevId': 1000,
   'localDevs': {},

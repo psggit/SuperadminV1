@@ -12,6 +12,7 @@ const commonFormValidator = ( Component, fieldName, fieldType, changeEmitter) =>
       super();
       this.eventHandlers = {};
       this.eventHandlers.handleInputChange = this.handleInputChange.bind(this);
+      this.eventHandlers.handleClicks = this.handleClicks.bind(this);
       this.eventHandlers.lookFor = fieldName;
     }
     componentWillMount() {
@@ -19,6 +20,10 @@ const commonFormValidator = ( Component, fieldName, fieldType, changeEmitter) =>
     }
     componentWillUnmount() {
       console.log('Form Validator is being unmounted');
+    }
+    handleClicks(e) {
+      console.log(e.target);
+      console.log('clicked');
     }
     handleInputChange(e) {
       /* Get the attribute name which was given when initialized */
@@ -41,23 +46,31 @@ const commonFormValidator = ( Component, fieldName, fieldType, changeEmitter) =>
         if ( fieldT === 'boolean') {
           return Boolean(parseInt(e.target.value, 10));
         } else if (fieldT === 'float') {
-          return parseFloat(e.target.value);
+          return parseFloat(e.target.value ? e.target.value : 0);
         }
         return e.target.value;
       };
 
-      const makeIntValue = (value) => {
-        const intVal = parseInt(value, 10);
+      const makeIntValue = (value, isNegative ) => {
+        let intVal = parseInt(value, 10);
+        if ( isNegative ) {
+          intVal = () => {
+            if ( !Boolean(parseInt(isNegative, 10)) ) {
+              return Math.abs(intVal);
+            }
+            return intVal;
+          }();
+        }
         return ( intVal ) ? intVal : 0;
       };
 
-      data.value = (e.target.getAttribute(fieldType) === 'int') ? makeIntValue(e.target.value) : fetchVal();
+      data.value = (e.target.getAttribute(fieldType) === 'int') ? makeIntValue(e.target.value, e.target.getAttribute('data-is-negative')) : fetchVal();
       this.props.dispatch({ type: changeEmitter, data: data});
     }
     render() {
       return (
-          <div className="attacher" onChange={ this.eventHandlers.handleInputChange }>
-            <Component { ...this.props } />
+          <div className="attacher" onChange={ this.eventHandlers.handleInputChange } >
+            <Component { ...this.props } onClick={ this.eventHandlers.handleClicks }/>
           </div>
         );
     }

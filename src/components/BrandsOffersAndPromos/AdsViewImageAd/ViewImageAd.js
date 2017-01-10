@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchAd} from './ViewAdImageActions';
 import Endpoints from '../../../Endpoints';
+
 /*
   Decorator which adds couple of use ful features like
   1. Clearing the state on component unmount
