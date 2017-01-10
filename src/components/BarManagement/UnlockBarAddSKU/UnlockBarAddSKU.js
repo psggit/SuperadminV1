@@ -167,6 +167,9 @@ class UnlockBarAddSKU extends Component {
             Name: { invent.sku_pricing.sku.brand.brand_name } - { invent.sku_pricing.sku.volume } ML
           </div>
           <div className={styles.unlock_listing_name}>
+            Menu Price: { invent.menuPrice}
+          </div>
+          <div className={styles.unlock_listing_name}>
             Hipbar Price: { invent.hipbarPrice }
           </div>
           <div className={styles.unlock_active_container}>
