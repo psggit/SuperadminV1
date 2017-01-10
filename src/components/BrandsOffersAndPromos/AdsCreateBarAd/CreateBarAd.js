@@ -5,6 +5,7 @@ import { checkState, unCheckState } from './CreateAdBarActions';
 import { finalSave } from './CreateAdBarActions';
 import uploadFile from '../../Common/Actions/upload';
 import Endpoints from '../../../Endpoints';
+import { RESET } from './CreateAdBarActions';
 /*
   Decorator which adds couple of use ful features like
   1. Clearing the state on component unmount
@@ -36,6 +37,9 @@ class CreateBarAd extends Component { // eslint-disable-line no-unused-vars
     Promise.all([
       this.props.dispatch(fetchCities())
     ]);
+  }
+  componentWillUnmount() {
+    this.props.dispatch({ type: RESET });
   }
   onClickCitiesView(stateObj) {
     Promise.all([

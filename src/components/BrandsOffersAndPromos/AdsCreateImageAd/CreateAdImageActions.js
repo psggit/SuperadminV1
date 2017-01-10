@@ -8,6 +8,7 @@ import Endpoints, { globalCookiePolicy } from '../../../Endpoints';
 import { MAKE_REQUEST,
   REQUEST_COMPLETED,
   REQUEST_ERROR} from '../../Common/Actions/Actions';
+import { routeActions } from 'redux-simple-router';
 
 // import commonReducer from '../Common/Actions/CommonReducer';
 
@@ -21,6 +22,7 @@ const IMAGE_UPLOAD_SUCCESS = 'AD_CREATE_IMAGE/IMAGE_UPLOAD_SUCCESS';
 const IMAGE_UPLOAD_ERROR = 'AD_CREATE_IMAGE/IMAGE_UPLOAD_ERROR';
 const IMAGE_CANCEL = 'AD_CREATE_IMAGE/IMAGE_CANCEL';
 const UPDATED_CITIES_SELECTION = 'AD_CREATE_IMAGE/UPDATED_CITIES_SELECTION';
+const RESET = 'AD_CREATE_IMAGE/RESET';
 
 /* ****** Action Creators ******** */
 
@@ -259,6 +261,7 @@ const checkBmEmail = () => {
               return Promise.all([
                 dispatch(insertCityMap(insertRes.returning[0].id)).then(() => {
                   alert('Hurray!! Ad Created!');
+                  return dispatch(routeActions.push('/hadmin/brands_offers_and_promos/view_all_ads'));
                 }).catch((err) => {
                   alert(err);
                 })
@@ -277,34 +280,10 @@ const checkBmEmail = () => {
 };
 
 
-const validateForm = () => {
-  return (dispatch, state) => {
-    const lstate = state().createImageAd_data;
-    const lCamDetails = {...lstate.campaignDetails};
-    return Promise.all([
-      console.log(lCamDetails)
-    ]);
-  };
-};
-
-const createAd = () => {
-  return (dispatch, state) => {
-    const lstate = state().createImageAd_data;
-    const lCamDetails = {...lstate.campaignDetails};
-    return Promise.all([
-      console.log(lCamDetails)
-    ]);
-  };
-};
-
 const finalSave = () => {
   return (dispatch) => {
     return Promise.all([
-      dispatch(checkBmEmail()).then(
-        dispatch(validateForm()).then(
-          dispatch(createAd())
-        )
-      )
+      dispatch(checkBmEmail())
     ]);
   };
 };
@@ -338,6 +317,8 @@ const adsCreateImageReducer = (state = defaultcreateImageAdData, action) => {
       const camInfo = {};
       camInfo[action.data.key] = action.data.value;
       return { ...state, campaignDetails: { ...state.campaignDetails, ...camInfo}};
+    case RESET:
+      return {...defaultcreateImageAdData};
     case UPDATED_CITIES_SELECTION:
       return { ...state, selectedCities: {...action.data}};
     default: return state;
@@ -360,7 +341,8 @@ export {
   unCheckCity,
   finalSave,
   brandManagerFetch,
-  BRAND_SELECT_FOR_SKU
+  BRAND_SELECT_FOR_SKU,
+  RESET
 };
 
 export default adsCreateImageReducer;

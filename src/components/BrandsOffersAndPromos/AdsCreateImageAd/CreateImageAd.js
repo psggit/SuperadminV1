@@ -5,6 +5,7 @@ import { checkState, unCheckState } from './CreateAdImageActions';
 import { checkCity, unCheckCity, finalSave } from './CreateAdImageActions';
 import uploadFile from '../../Common/Actions/upload';
 import Endpoints from '../../../Endpoints';
+import { RESET } from './CreateAdImageActions';
 /*
   Decorator which adds couple of use ful features like
   1. Clearing the state on component unmount
@@ -37,6 +38,9 @@ class CreateImageAd extends Component { // eslint-disable-line no-unused-vars
       this.props.dispatch(fetchBrands()),
       this.props.dispatch(fetchStates())
     ]);
+  }
+  componentWillUnmount() {
+    this.props.dispatch({ type: RESET });
   }
   onClickCitiesView(stateObj) {
     Promise.all([

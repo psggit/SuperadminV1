@@ -8,6 +8,7 @@ import Endpoints, { globalCookiePolicy } from '../../../Endpoints';
 import { MAKE_REQUEST,
   REQUEST_COMPLETED,
   REQUEST_ERROR} from '../../Common/Actions/Actions';
+import { routeActions } from 'redux-simple-router';
 
 // import commonReducer from '../Common/Actions/CommonReducer';
 
@@ -20,6 +21,7 @@ const IMAGE_UPLOAD_SUCCESS = 'AD_CREATE_PROMO/IMAGE_UPLOAD_SUCCESS';
 const IMAGE_UPLOAD_ERROR = 'AD_CREATE_PROMO/IMAGE_UPLOAD_SUCCESS';
 const IMAGE_CANCEL = 'AD_CREATE_PROMO/IMAGE_CANCEL';
 const UPDATED_CITIES_SELECTION = 'AD_CREATE_PROMO/UPDATED_CITIES_SELECTION';
+const RESET = 'AD_CREATE_PROMO/RESET';
 
 /* ****** Action Creators ******** */
 
@@ -222,6 +224,7 @@ const checkBmId = () => {
         return Promise.all([
           dispatch(insertCityMap(insertRes.returning[0].id)).then(() => {
             alert('Hurray!! Ad Created!');
+            return dispatch(routeActions.push('/hadmin/brands_offers_and_promos/view_all_ads'));
           }).catch((err) => {
             alert(err);
           })
@@ -280,6 +283,8 @@ const adsCreatePromoReducer = (state = defaultcreatePromoAdData, action) => {
       return { ...state, campaignDetails: { ...state.campaignDetails, ...camInfo}};
     case UPDATED_CITIES_SELECTION:
       return { ...state, selectedCities: {...action.data}};
+    case RESET:
+      return {...defaultcreatePromoAdData};
     default: return state;
   }
 };
@@ -299,7 +304,8 @@ export {
   checkCity,
   unCheckCity,
   finalSave,
-  CAMPAIGN_SELECT_FOR_PROMO
+  CAMPAIGN_SELECT_FOR_PROMO,
+  RESET
 };
 
 export default adsCreatePromoReducer;

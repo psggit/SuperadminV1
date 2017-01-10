@@ -8,6 +8,7 @@ import Endpoints, { globalCookiePolicy } from '../../../Endpoints';
 import { MAKE_REQUEST,
   REQUEST_COMPLETED,
   REQUEST_ERROR} from '../../Common/Actions/Actions';
+import { routeActions } from 'redux-simple-router';
 
 // import commonReducer from '../Common/Actions/CommonReducer';
 
@@ -19,6 +20,7 @@ const IMAGE_UPLOAD_SUCCESS = 'AD_CREATE_BAR/IMAGE_UPLOAD_SUCCESS';
 const IMAGE_UPLOAD_ERROR = 'AD_CREATE_BAR/IMAGE_UPLOAD_SUCCESS';
 const IMAGE_CANCEL = 'AD_CREATE_BAR/IMAGE_CANCEL';
 const UPDATED_CITIES_SELECTION = 'AD_CREATE_BAR/UPDATED_CITIES_SELECTION';
+const RESET = 'AD_CREATE_BAR/RESET';
 
 /* ****** Action Creators ******** */
 
@@ -178,6 +180,7 @@ const checkBarValid = () => {
               console.log('This is AdData:');
               console.log(insertRes);
               alert('Hurray!! Ad Created!');
+              return dispatch(routeActions.push('/hadmin/brands_offers_and_promos/view_all_ads'));
             }).catch((err) => {
               alert(err);
             })
@@ -215,7 +218,10 @@ const adsCreateBarReducer = (state = defaultcreateBarAdData, action) => {
       const camInfo = {};
       camInfo[action.data.key] = action.data.value;
       return { ...state, campaignDetails: { ...state.campaignDetails, ...camInfo}};
-    default: return state;
+    case RESET:
+      return {...defaultcreateBarAdData};
+    default:
+      return state;
   }
 };
 
@@ -233,7 +239,8 @@ export {
   checkCity,
   unCheckCity,
   CITY_SELECT,
-  finalSave
+  finalSave,
+  RESET
 };
 
 export default adsCreateBarReducer;
