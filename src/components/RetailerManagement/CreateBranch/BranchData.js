@@ -299,7 +299,8 @@ const saveBranchDetail = () => {
         return Promise.reject();
       }
       alert('Branch inserted with errors, please edit it to correct the information');
-      return dispatch( routeActions.push('/hadmin/retailer_management/view_organizations'));
+      // return dispatch( routeActions.push('/hadmin/retailer_management/view_organizations'));
+      return dispatch( routeActions.push('/hadmin/retailer_management/view_branches'));
     });
   };
 };
