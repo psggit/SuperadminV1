@@ -62,6 +62,8 @@ const saveBranch = () => {
       kyc_outlet: true
     };
 
+    console.log('hello');
+
     const brInsertCheck = [
       'gps_cordinates',
       'is_open',
