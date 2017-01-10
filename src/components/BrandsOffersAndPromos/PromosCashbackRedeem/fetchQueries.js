@@ -93,20 +93,6 @@ const selectBrandManagers = (companyName) => {
               brand: {
                 is_active: true
               }
-            }, {
-              brand: {
-                skus: {
-                  pricings: {
-                    cash_back_offers: {
-                      offer: {
-                        campaign: {
-                          status: 'active'
-                        }
-                      }
-                    }
-                  }
-                }
-              }
             }
           ]}
         }],
