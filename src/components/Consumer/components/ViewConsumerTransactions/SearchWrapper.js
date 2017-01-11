@@ -20,6 +20,8 @@ const ConsumerSearchWrapper = ( {data} ) => {
             <td> { (dat.amount ) ? dat.amount : 'N/A' } </td>
             <td> { (dat.type ) ? dat.type : 'N/A' } </td>
             <td> { (dat.order_id ) ? dat.order_id : 'N/A' } </td>
+            <td> Rs. { (dat.opening_balance) ? dat.opening_balance : 0 } </td>
+            <td> Rs. { (dat.closing_balance ) ? dat.closing_balance : 0 } </td>
             <td> { createdAt } </td>
           </tr>
         );
@@ -43,6 +45,8 @@ const ConsumerSearchWrapper = ( {data} ) => {
                   <th> Amount </th>
                   <th> Type </th>
                   <th> Order Id </th>
+                  <th> Opening Balance </th>
+                  <th> Closing Balance </th>
                   <th> CreatedAt </th>
                 </tr>
               </thead>
