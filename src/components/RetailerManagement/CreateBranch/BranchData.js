@@ -88,6 +88,10 @@ const saveBranch = () => {
       return Promise.reject({ stage: 0 });
     }
 
+    /* Adding address for retailer */
+    branchDataObj.org_address = branchState.branchContact.branch_address;
+    /* End of it */
+
     const insertObj = {};
     insertObj.objects = [ { ...branchDataObj } ];
     insertObj.returning = ['id'];
@@ -383,6 +387,10 @@ const updateBranch = () => {
       alert('All the fields for Branch are mandatory');
       return Promise.reject({ stage: 0 });
     }
+
+    /* Adding address for retailer */
+    branchDataObj.org_address = branchState.branchContact.branch_address;
+    /* End of it */
 
     const insertObj = {};
 

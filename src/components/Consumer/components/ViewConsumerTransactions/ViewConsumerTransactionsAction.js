@@ -23,7 +23,7 @@ const getConsumerTransactionsCount = ( consumerId, filterObj, isSearched ) => {
       payload.where = { ...payload.where, ...filterObj };
     }
 
-    const url = Endpoints.db + '/table/' + 'transaction_history' + '/count';
+    const url = Endpoints.db + '/table/' + 'transaction_history_balance' + '/count';
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
@@ -81,7 +81,7 @@ const getConsumerTransactionsData = ( page, limit, consumerId, filterObj, isSear
       payload.where = { ...payload.where, ...filterObj };
     }
 
-    const url = Endpoints.db + '/table/' + 'transaction_history' + '/select';
+    const url = Endpoints.db + '/table/' + 'transaction_history_balance' + '/select';
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
