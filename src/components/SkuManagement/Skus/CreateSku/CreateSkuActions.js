@@ -329,6 +329,25 @@ const getReservedItems = ( Id ) => {
   };
 };
 
+const indexSku = ( dispatch, brandIds ) => {
+  const skuIndexUrl = Endpoints.blogicUrl + '/admin/update_index/index/brand';
+
+  if ( brandIds.length === 0 ) {
+    return Promise.reject('Brand cannot be empty to index');
+  }
+
+  const skuIndexObj = {
+    'ids': [ brandIds ]
+  };
+
+  const options = {
+    ...genOptions,
+    body: JSON.stringify(skuIndexObj)
+  };
+
+  return dispatch(requestAction(skuIndexUrl, options));
+};
+
 /* Function to Create sku */
 const onSave = () => {
   return (dispatch, getState) => {
@@ -517,6 +536,9 @@ const onSave = () => {
         return dispatch(requestAction(brandListingUrl, options));
       })
       .then(() => {
+        return indexSku(dispatch, skuReqObj.brand_id);
+      })
+      .then( () => {
         alert('SKU Updated Successfully');
         /* Add an entry to brand listing table too */
         return dispatch(routeActions.push('/hadmin/skus/list_sku'));
@@ -787,6 +809,9 @@ const onUpdate = () => {
         return Promise.resolve();
       })
       .then( ( ) => {
+        return indexSku(dispatch, skuReqObj.brand_id);
+      })
+      .then( () => {
         alert('SKU Updated Successfully');
         return dispatch(routeActions.push('/hadmin/skus/list_sku'));
       })
