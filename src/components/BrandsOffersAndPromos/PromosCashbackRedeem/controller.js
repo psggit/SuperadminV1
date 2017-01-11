@@ -418,18 +418,20 @@ const mapDispatchToProps = (dispatch) => {
       // e.preventDefault();
       const newValueObj = {};
       newValueObj[fieldName] = e.target.value;
-      if (validators(promoValidatorDict, fieldName, newValueObj[fieldName], otherValues)) {
-        dispatch({type: PROMO_CHANGE, data: newValueObj, index: index});
-      }
+      // NOTE: The below line is commented to prevent validation on change
+      // if (validators(promoValidatorDict, fieldName, newValueObj[fieldName], otherValues)) {
+      dispatch({type: PROMO_CHANGE, data: newValueObj, index: index});
+      // }
     },
 
-    onChangePromoObjInfo: (fieldName, index, obj, otherValues) => {
+    onChangePromoObjInfo: (fieldName, index, obj) => { // otherValues
       // e.preventDefault();
       const newValueObj = {};
       newValueObj[fieldName] = obj;
-      if (validators(promoValidatorDict, fieldName, newValueObj[fieldName], otherValues)) {
-        dispatch({type: PROMO_CHANGE, data: newValueObj, index: index});
-      }
+      // NOTE: The below line is commented to prevent validation on change
+      // if (validators(promoValidatorDict, fieldName, newValueObj[fieldName], otherValues)) {
+      dispatch({type: PROMO_CHANGE, data: newValueObj, index: index});
+      // }
     },
 
     onCompanyChange: (e) => {
