@@ -328,7 +328,7 @@ const createDevice = () => {
         alert('User Creation failed device creation rolling back');
         return dispatch( deleteDevice( resp.id ) );
       }
-      alert('Couldn"t create deveficiciary');
+      alert('Couldn"t create devic Beneficiary');
     });
     // return Promise.resolve();
   };

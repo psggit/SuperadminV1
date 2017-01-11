@@ -10,21 +10,18 @@ import { REQUEST_SUCCESS,
 const sendRequest = (e) => {
   // Json Creator
   e.preventDefault();
-  const url = Endpoints.db + '/asdf';
+  let url = Endpoints.reportUrl + '/reports/admin_reports/';
   const option = document.getElementById('option');
   const data = option.options[option.selectedIndex].value;
+  url += data;
   const startInput = document.getElementById('start_date').value;
   const endInput = document.getElementById('end_date').value;
-  const queryObj = {
-    'option': data,
-    'startInput': startInput,
-    'endInput': endInput
-  };
+  const queryObj = {'data': {'start_date': startInput, 'end_date': endInput}};
   let insertObj = {};
   insertObj = {
     method: 'POST',
     body: JSON.stringify(queryObj),
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin'},
     credentials: globalCookiePolicy
   };
   requestAction(url, insertObj, REQUEST_SUCCESS, REQUEST_ERROR);
@@ -40,10 +37,8 @@ const Report = ({stateData}) => { // eslint-disable-line no-unused-vars
             <div className={styles.customer_transaction_links}>
                 <label> Select Type of Report</label>
                 <select id = "option">
-                    <option value = "Type1">Type1</option>
-                    <option value = "Type2">Type2</option>
-                    <option value = "Type3">Type3</option>
-                    <option value = "Type4">Type4</option>
+                    <option value = "bar_settlement_report">Bar Settlement Report</option>
+                    <option value = "retailer_settlement_report">Retailer Settlement Report</option>
                 </select>
                 <input id = "start_date" type="date"></input>
                 <input id = "end_date" type="date"></input>

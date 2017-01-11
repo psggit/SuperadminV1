@@ -174,7 +174,7 @@ export RetailerRedemptions from './RetailerManagement/Transactions/Redemptions/R
 
 /* Invite a Friend */
 
-export InvitationLanding from './InvitationStats/InvitationLanding/TransactionLanding';
+export InvitationLanding from './Invites/approvedUserComponent/approvedUserComponent';
 
 /* Bar Transactions */
 

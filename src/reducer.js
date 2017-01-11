@@ -64,6 +64,9 @@ import barDebitCreditRedicer from './components/RetailerManagement/BarDebitsCred
 
 import barAllSkuReducer from './components/BarManagement/ManageBarSku/Actions';
 
+// Invite
+import invitationReducer from './components/Invites/reducer';
+
 const reducer = combineReducers({
   // The promos Side-menu states
   promosCashbackRedeemState: PromosCashbackRedeem,
@@ -112,7 +115,9 @@ const reducer = combineReducers({
   retailer_debit_credit: retailerDebitCreditRedicer,
   bar_debit_credit: barDebitCreditRedicer,
   all_bar_skus: barAllSkuReducer,
+  invite_data: invitationReducer,
   gen_filter_data: filterGenReducer
+
 });
 
 export default reducer;

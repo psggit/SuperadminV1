@@ -4,6 +4,7 @@
 let dataUrl;
 let authUrl;
 let fileUrl;
+let reportUrl;
 let blogicUrl;
 let downloadRepUrl;
 let scheme;
@@ -14,6 +15,7 @@ if (window.location.href.split(':')[1] === '//localhost') {
   // const appName = 'hipbar-stg';
   dataUrl = 'https://data.' + appName + '.hasura-app.io';
   authUrl = 'https://auth.' + appName + '.hasura-app.io';
+  reportUrl = 'https://report.' + appName + '.hasura-app.io';
   fileUrl = 'https://api2.' + appName + '.hasura-app.io';
   blogicUrl = 'https://api1.' + appName + '.hasura-app.io';
   downloadRepUrl = 'https://downloadrep.' + appName + '.hasura-app.io';
@@ -23,6 +25,7 @@ if (window.location.href.split(':')[1] === '//localhost') {
   scheme = window.location.href.split(':')[0];
   baseHost = window.__env.baseDomain;
   dataUrl = scheme + '://data' + baseHost;
+  reportUrl = scheme + '://report' + baseHost;
   authUrl = scheme + '://auth' + baseHost;
   fileUrl = scheme + '://api2' + baseHost;
   blogicUrl = scheme + '://api1' + baseHost;
@@ -42,6 +45,7 @@ const Endpoints = {
   file_get: fileUrl + '/get?fs_url=',
   integrations_dataUrl: 'http://localhost:5000',
   baseUrl: dataUrl,
+  reportUrl: reportUrl,
   authUrl: authUrl,
   blogicUrl: blogicUrl,
   dataUrl: dataUrl
@@ -49,4 +53,4 @@ const Endpoints = {
 const globalCookiePolicy = 'include';
 
 export default Endpoints;
-export {globalCookiePolicy, dataUrl, authUrl, fileUrl, downloadRepUrl};
+export {globalCookiePolicy, dataUrl, reportUrl, authUrl, fileUrl, downloadRepUrl};
