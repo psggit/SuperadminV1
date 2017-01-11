@@ -69,8 +69,8 @@ class ConfirmCredits extends Component {
         currentObj.consumer_id = parseInt(dat.actual_id, 10);
         currentObj.amount = parseFloat(dat.amount, 10);
         currentObj.reason = dat.comment;
-        currentObj.updated_at = new Date().toISOString();
-        currentObj.created_at = new Date().toISOString();
+        // currentObj.updated_at = new Date().toISOString();
+        // currentObj.created_at = new Date().toISOString();
         currentObj.transaction_code_id = parseInt(dat.transaction_id, 10);
         currentObj.batch_number = dat.batch_number;
         currentObj.transaction_id = 'RANDOM TRANSACTION ID';
