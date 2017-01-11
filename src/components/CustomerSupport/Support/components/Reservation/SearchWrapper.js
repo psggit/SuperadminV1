@@ -11,8 +11,8 @@ const SearchWrapper = ( {data} ) => {
     let updatedAt = dat.updated_at;
     const isGift = (dat.is_gift) ? 'Yes' : 'No';
 
-    createdAt = new Date(new Date(createdAt).getTime()).toLocaleString();
-    updatedAt = new Date(new Date(updatedAt).getTime()).toLocaleString();
+    createdAt = new Date(new Date(createdAt).getTime()).toLocaleString('en-GB');
+    updatedAt = new Date(new Date(updatedAt).getTime()).toLocaleString('en-GB');
     return (
           <tr key={index}>
             <td> { dat.id } </td>

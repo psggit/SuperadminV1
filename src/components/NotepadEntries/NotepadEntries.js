@@ -9,8 +9,8 @@ const NotepadEntries = ({data, userId}) => { // eslint-disable-line no-unused-va
     let createdAt = dat.created_at;
     let updatedAt = dat.updated_at;
 
-    createdAt = new Date(new Date(createdAt).getTime()).toLocaleString();
-    updatedAt = new Date(new Date(updatedAt).getTime()).toLocaleString();
+    createdAt = new Date(new Date(createdAt).getTime()).toLocaleString('en-GB');
+    updatedAt = new Date(new Date(updatedAt).getTime()).toLocaleString('en-GB');
     return (
           <div key={index} className={styles.indiv_item + ' ' + styles.wd_100}>
             <div className={styles.header + ' ' + styles.wd_100}>

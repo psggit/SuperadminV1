@@ -10,8 +10,8 @@ const SearchWrapper = ( {data, state, genre, handleDelete} ) => {
     let createdAt = dat.created_at;
     let updatedAt = dat.updated_at;
 
-    createdAt = new Date(new Date(createdAt).getTime()).toLocaleString();
-    updatedAt = new Date(new Date(updatedAt).getTime()).toLocaleString();
+    createdAt = new Date(new Date(createdAt).getTime()).toLocaleString('en-GB');
+    updatedAt = new Date(new Date(updatedAt).getTime()).toLocaleString('en-GB');
     const brandUrl = '/hadmin/brand_management/edit/' + dat.sku.brand.id;
 
     return (

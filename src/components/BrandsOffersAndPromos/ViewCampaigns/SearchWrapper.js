@@ -10,8 +10,8 @@ const SearchWrapper = ( {data} ) => {
     let from = dat.active_from;
     let to = dat.active_to;
 
-    from = new Date(new Date(from).getTime()).toLocaleString();
-    to = new Date(new Date(to).getTime()).toLocaleString();
+    from = new Date(new Date(from).getTime()).toLocaleString('en-GB');
+    to = new Date(new Date(to).getTime()).toLocaleString('en-GB');
     return (
           <tr key={index}>
             <td>

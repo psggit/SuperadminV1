@@ -10,8 +10,8 @@ const SearchWrapper = ( {data} ) => {
     let createdAt = dat ? dat.created_at : new Date().toISOString();
     let updatedAt = dat ? dat.updated_at : new Date().toISOString();
 
-    createdAt = new Date(new Date(createdAt).getTime()).toLocaleString();
-    updatedAt = new Date(new Date(updatedAt).getTime()).toLocaleString();
+    createdAt = new Date(new Date(createdAt).getTime()).toLocaleString('en-GB');
+    updatedAt = new Date(new Date(updatedAt).getTime()).toLocaleString('en-GB');
     return (
           <tr key={index}>
             <td>

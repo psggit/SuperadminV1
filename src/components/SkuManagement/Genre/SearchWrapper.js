@@ -12,8 +12,8 @@ const SearchWrapper = ( {data} ) => {
 
     const imageUrl = dat.image ? ( <a target="_blank" href={ dat.image }> <img src={ dat.image } width="40px" height="40px" /> </a> ) : 'N/A';
 
-    createdAt = new Date(new Date(createdAt).getTime()).toLocaleString();
-    updatedAt = new Date(new Date(updatedAt).getTime()).toLocaleString();
+    createdAt = new Date(new Date(createdAt).getTime()).toLocaleString('en-GB');
+    updatedAt = new Date(new Date(updatedAt).getTime()).toLocaleString('en-GB');
     return (
           <tr key={index}>
             <td>

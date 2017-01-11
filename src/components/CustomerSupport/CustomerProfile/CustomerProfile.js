@@ -38,7 +38,7 @@ class CustomerProfile extends Component {
   render() {
     const styles = require('./CustomerProfile.scss');
     const toLocalDate = (dateString) => {
-      return (new Date(new Date(dateString).getTime() + 19800000).toLocaleString());
+      return (new Date(new Date(dateString).getTime() + 19800000).toLocaleString('en-GB'));
     };
     return (
       <div className={styles.container}>

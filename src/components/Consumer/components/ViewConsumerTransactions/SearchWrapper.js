@@ -9,7 +9,7 @@ const ConsumerSearchWrapper = ( {data} ) => {
   tableBody = data.map((dat, index) => {
     let createdAt = dat.created_at;
 
-    createdAt = new Date(new Date(createdAt).getTime()).toLocaleString();
+    createdAt = new Date(new Date(createdAt).getTime()).toLocaleString('en-GB');
     return (
           <tr key={index}>
             <td>
