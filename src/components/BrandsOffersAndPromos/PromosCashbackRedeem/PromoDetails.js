@@ -106,7 +106,7 @@ const PromoDetails = ({styles, currentEditingPromo, promos, brands, fundsCredite
           </label>
           <div className={styles.custom_select}>
             <input type="number" className={styles.input_cash} value={promo.serviceCharge ? promo.serviceCharge : 0}
-              onChange={onChangePromoInfo.bind(this, 'price', currentEditingPromo, {
+              onChange={onChangePromoInfo.bind(this, 'serviceCharge', currentEditingPromo, {
                 type: promo.type ? promo.type : 'amount',
                 maxPrice: (promo.pricing ? promo.pricing.price : 0)
               })}
