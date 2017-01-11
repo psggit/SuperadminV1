@@ -152,9 +152,11 @@ const indexSku = ( barIds ) => {
   return ( dispatch ) => {
     const barSkuIndexUrl = Endpoints.blogicUrl + '/admin/update_index/index/bar';
 
+    /*
     if ( barIds.length === 0 ) {
       return Promise.reject('Bar cannot be empty to index');
     }
+    */
 
     const skuIndexObj = {
       'ids': [ barIds ]

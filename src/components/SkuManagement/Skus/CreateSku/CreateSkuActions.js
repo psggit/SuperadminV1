@@ -332,9 +332,11 @@ const getReservedItems = ( Id ) => {
 const indexSku = ( dispatch, brandIds ) => {
   const skuIndexUrl = Endpoints.blogicUrl + '/admin/update_index/index/brand';
 
+  /*
   if ( brandIds.length === 0 ) {
     return Promise.reject('Brand cannot be empty to index');
   }
+  */
 
   const skuIndexObj = {
     'ids': [ brandIds ]
