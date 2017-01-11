@@ -18,6 +18,7 @@ import requestAction from '../Common/Actions/requestAction';
 const REQUEST_SUCCESS = 'ViewProfile/REQUEST_SUCCESS';
 const REQUEST_ERROR = 'ViewProfile/REQUEST_ERROR';
 const SECONDARY_VIEW = 'ViewProfile/SECONDARY_VIEW';
+const FETCHED_USER_STATUS = 'ViewProfile/FETCHED_USER_STATUS';
 const RESET = 'ViewProfile/RESET';
 
 // HTML Component defines what state it needs
@@ -28,7 +29,7 @@ const RESET = 'ViewProfile/RESET';
 
 
 // Reducer
-const defaultState = {ongoingRequest: false, lastError: {}, lastSuccess: [], credentials: null, secondaryData: null, balance: {}};
+const defaultState = {ongoingRequest: false, lastError: {}, lastSuccess: [], credentials: null, secondaryData: null, balance: {}, userProfile: {}};
 const profileReducer = (state = defaultState, action) => {
   switch (action.type) {
     case REQUEST_SUCCESS:
@@ -37,6 +38,8 @@ const profileReducer = (state = defaultState, action) => {
       return {...state, ongoingRequest: false, lastError: {'error': action.data}, lastSuccess: [], secondaryData: {}};
     case SECONDARY_VIEW:
       return {...state, ongoingRequest: false, lastSuccess: [], secondaryData: action.data};
+    case FETCHED_USER_STATUS:
+      return { ...state, userProfile: { ...action.data }};
     case RESET:
       return {...defaultState};
     default: return state;
@@ -130,6 +133,17 @@ const getUserData = ( f ) => {
       body: JSON.stringify(bulkQueryObj)
     };
     return dispatch( requestAction( url, options, REQUEST_SUCCESS, REQUEST_ERROR ) );
+  };
+};
+
+const getUserStatus = ( f ) => {
+  return ( dispatch ) => {
+    const authUrl = Endpoints.authUrl + '/admin/user/' + f;
+    const options = {
+      ...genOptions,
+      method: 'GET'
+    };
+    return dispatch( requestAction( authUrl, options, FETCHED_USER_STATUS, REQUEST_ERROR ) );
   };
 };
 
@@ -336,4 +350,4 @@ const resetPassword = (email, dob) => {
 
 
 export default profileReducer;
-export {getUserData, requestSuccess, requestFailed, RESET, getSecondaryData, resetPin, resetPassword, getCartData, getDeviceData, getRechargeData};
+export {getUserData, requestSuccess, requestFailed, RESET, getSecondaryData, resetPin, resetPassword, getCartData, getDeviceData, getRechargeData, getUserStatus};
