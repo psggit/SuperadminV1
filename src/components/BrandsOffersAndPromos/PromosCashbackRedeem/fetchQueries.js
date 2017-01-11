@@ -1,4 +1,4 @@
-import { dataUrl } from '../../../Endpoints';
+import { dataUrl, blogicUrl } from '../../../Endpoints';
 
 const selectCompanies = {
   url: dataUrl + '/v1/query',
@@ -51,7 +51,7 @@ const selectBrandManagers = (companyName) => {
           ]
         }, {
           name: 'brands',
-          columns: ['id', 'created_at', 'updated_at', {
+          columns: ['id', 'created_at', 'updated_at', 'brand_id', {
             name: 'brand',
             columns: ['id', 'brand_name', 'short_name', 'is_active', 'description', {
               name: 'skus',
@@ -183,6 +183,16 @@ const insertCampaignAndPromos = {
       query: {
         type: 'bulk',
         args: bulkInsert
+      }
+    };
+  },
+  updateElasticSearch: (brandId) => {
+    const ids = [];
+    ids.push(brandId);
+    return {
+      url: blogicUrl + '/admin/update_index/index/brand',
+      query: {
+        ids: ids
       }
     };
   }
