@@ -290,33 +290,27 @@ const updateSku = ( barId ) => {
       return Promise.reject();
     }
 
-    barDataObj.start_date = new Date(barDataObj.start_date).toISOString();
-    barDataObj.end_date = new Date(barDataObj.end_date).toISOString();
-
-    const insertObj = {};
-    insertObj.values = { ...barDataObj };
-
-    /* removing excess info */
-    delete insertObj.values.sku_pricing_id;
-    delete insertObj.values.bar_id;
-    delete insertObj.values.id;
-    delete insertObj.values.sku_pricing;
-
-    insertObj.values.id = parseInt( barState.inventoryId, 10 );
-
-    insertObj.returning = ['id'];
-    insertObj.where = {
-      'id': parseInt(barState.inventoryId, 10)
+    const updatedBarDataObj = {
+      ...barDataObj,
+      bar_id: parseInt(barId, 10),
+      base_sku_price: parseFloat(barState.newSkuData.base_sku_price),
+      negotiated_sku_price: parseFloat(barState.newSkuData.negotiated_sku_price),
+      charges_and_tax_percentage: parseFloat(barState.newSkuData.charges_and_tax_percentage),
+      id: parseInt( barState.inventoryId, 10 )
     };
+
+    updatedBarDataObj.start_date = new Date(barDataObj.start_date).toISOString();
+    updatedBarDataObj.end_date = new Date(barDataObj.end_date).toISOString();
 
     const options = {
       ...genOptions,
-      body: JSON.stringify(insertObj)
+      method: 'PUT',
+      body: JSON.stringify(updatedBarDataObj)
     };
 
     return dispatch( requestAction( invUrl, options ) )
     .then( ( resp ) => {
-      if ( resp.returning.length > 0 ) {
+      if ( resp ) {
         alert('Updated');
         return Promise.all([
           dispatch( indexSku(parseInt(barId, 10) ) ),
