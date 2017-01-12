@@ -152,9 +152,11 @@ const indexSku = ( barIds ) => {
   return ( dispatch ) => {
     const barSkuIndexUrl = Endpoints.blogicUrl + '/admin/update_index/index/bar';
 
+    /*
     if ( barIds.length === 0 ) {
       return Promise.reject('Bar cannot be empty to index');
     }
+    */
 
     const skuIndexObj = {
       'ids': [ barIds ]
@@ -245,7 +247,7 @@ const saveSku = ( barId ) => {
 };
 const updateSku = ( barId ) => {
   return ( dispatch, getState ) => {
-    const invUrl = Endpoints.db + '/table/bars_inventory/update';
+    const invUrl = Endpoints.blogicUrl + '/admin/bar/insert';
 
     const barState = getState().bar_sku_create_data;
     const barDataObj = {
@@ -288,31 +290,27 @@ const updateSku = ( barId ) => {
       return Promise.reject();
     }
 
-    barDataObj.start_date = new Date(barDataObj.start_date).toISOString();
-    barDataObj.end_date = new Date(barDataObj.end_date).toISOString();
-
-    const insertObj = {};
-    insertObj.values = { ...barDataObj };
-
-    /* removing excess info */
-    delete insertObj.values.sku_pricing_id;
-    delete insertObj.values.bar_id;
-    delete insertObj.values.id;
-    delete insertObj.values.sku_pricing;
-
-    insertObj.returning = ['id'];
-    insertObj.where = {
-      'id': parseInt(barState.inventoryId, 10)
+    const updatedBarDataObj = {
+      ...barDataObj,
+      bar_id: parseInt(barId, 10),
+      base_sku_price: parseFloat(barState.newSkuData.base_sku_price),
+      negotiated_sku_price: parseFloat(barState.newSkuData.negotiated_sku_price),
+      charges_and_tax_percentage: parseFloat(barState.newSkuData.charges_and_tax_percentage),
+      id: parseInt( barState.inventoryId, 10 )
     };
+
+    updatedBarDataObj.start_date = new Date(barDataObj.start_date).toISOString();
+    updatedBarDataObj.end_date = new Date(barDataObj.end_date).toISOString();
 
     const options = {
       ...genOptions,
-      body: JSON.stringify(insertObj)
+      method: 'PUT',
+      body: JSON.stringify(updatedBarDataObj)
     };
 
     return dispatch( requestAction( invUrl, options ) )
     .then( ( resp ) => {
-      if ( resp.returning.length > 0 ) {
+      if ( resp ) {
         alert('Updated');
         return Promise.all([
           dispatch( indexSku(parseInt(barId, 10) ) ),

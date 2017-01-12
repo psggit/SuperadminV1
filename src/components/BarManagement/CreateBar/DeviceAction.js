@@ -86,7 +86,7 @@ const assignUserRole = ( hasuraId ) => {
       body: JSON.stringify(updateObj)
     };
 
-    return dispatch( requestAction( activateUrl, options ));
+    return dispatch(requestAction( activateUrl, options ));
   };
 };
 
@@ -155,8 +155,7 @@ const createUser = ( deviceId ) => {
       body: JSON.stringify(createObj)
     };
 
-    return dispatch( requestAction( createUrl, options ))
-    .then( ( resp ) => {
+    return dispatch( requestAction( createUrl, options )).then(( resp ) => {
       return Promise.all([
         dispatch(activateUser(resp.hasura_id)),
         dispatch(assignUserRole(resp.hasura_id)),
