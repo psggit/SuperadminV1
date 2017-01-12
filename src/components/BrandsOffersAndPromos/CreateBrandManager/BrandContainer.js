@@ -5,10 +5,16 @@ import {setRegionCities, setViewCities, updateRegionSelection, updateSelectedBra
 TODO: Cancel, 0Bug, Create Brand Manager
 */
 
-const brandHtml = (selectedBrandsList) => {
+const brandHtml = (companyBrands, selectedBrandsList) => {
   const finalBrands = [];
-  selectedBrandsList.forEach((cb) => {
-    if (cb.is_deleted === undefined || cb.is_deleted === false) {
+  const sbIds = [];
+  selectedBrandsList.forEach((sbl) => {
+    sbIds.push(sbl.id);
+  });
+  console.log('goat fucker');
+  console.log(sbIds);
+  companyBrands.forEach((cb) => {
+    if (!(cb.id in sbIds)) {
       finalBrands.push(cb);
     }
   });
@@ -27,7 +33,6 @@ const onRegionCheck = (dispatch, sb, e) => {
 };
 
 const regionsHtml = (styles, selectedBrand, dispatch) => {
-  console.log('received');
   console.log(selectedBrand);
   return (selectedBrand.regions === undefined ) ? (<li></li>) : selectedBrand.regions.map((region) => (
     <li>
@@ -105,7 +110,7 @@ const brandOptions = (isExistingBrand, selectedBrand, companyBrands, selectedBra
   return (!isExistingBrand) ? (
   <select name="selected_brand_id" data-field-name="selected_brand_id" onChange={onChangeBrand.bind(this, companyBrands, dispatch)}>
     <option disabled selected value > -- Select Brand -- </option>
-    { brandHtml(selectedBrandsList) }
+    { brandHtml(companyBrands, selectedBrandsList) }
   </select>) : (
   <select name="selected_brand_id" data-field-name="selected_brand_id" onChange={onChangeBrand.bind(this, companyBrands, dispatch)}>
     <option value={selectedBrand.id}>{selectedBrand.brand_name}</option>
