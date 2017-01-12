@@ -11,7 +11,7 @@
 
 // Get all the actions which can be dispatched.
 import {VALUE_CHANGE, INIT_BRAND_MANAGERS, INIT_COMPANY,
-  ADD_PROMO, REMOVE_PROMO, EDIT_PROMO, PROMO_CHANGE,
+  ADD_PROMO, REMOVE_PROMO, EDIT_PROMO, PROMO_CHANGE, RESET_DATA,
   DO_NOTHING, ON_FAILED, ON_LOADING} from './actions';
 // Request maker
 import {makeRequest, createFetchOption} from '../../../utils/fetch';
@@ -69,7 +69,7 @@ const mapStateToProps = (state) => {
  * @param  {Array} promos  promos array
  * @return {Number}        The amount
  */
-const bugetAmountCalc = (promos) => {
+const budgetAmountCalc = (promos) => {
   return promos.map((promo) => {
     const price = parseFloat(promo.price);
     const quantity = parseInt(promo.quantity, 10);
@@ -129,13 +129,20 @@ const campaignValidatorsDict = {
     };
   },
   activeFrom: (value, otherValues) => {
-    return new Date(value) <= new Date(otherValues.activeTo) &&
-      new Date(value) >= new Date() ? () => {
+    if (new Date(value) <= new Date(otherValues.activeTo)) {
+      return () => {
         return true;
-      } : () => {
-        alert('Active-From date should be lesser-than or equal to Active-To date');
+      };
+    } else if (new Date(value) >= new Date()) {
+      return () => {
+        alert('Active-From date should be greater than ' + (new Date()));
         return false;
       };
+    }
+    return () => {
+      alert('Active-From date should be lesser-than or equal to Active-To date');
+      return false;
+    };
   },
   activeTo: (value, otherValues) => {
     return new Date(value) >= new Date(otherValues.activeFrom) ? () => {
@@ -262,7 +269,7 @@ const promoValidatorDict = {
       /*
       const fundsCreditedFloat = parseFloat(otherValues.fundsCredited);
       */
-      let budgetAmount = bugetAmountCalc(otherValues.promos);
+      let budgetAmount = budgetAmountCalc(otherValues.promos);
       const promo = otherValues.promos[otherValues.currentEditingPromo];
 
       const prevQuantityInt = parseInt(promo.quantity, 10);
@@ -386,6 +393,7 @@ const mapDispatchToProps = (dispatch) => {
               const updateElasticSearchQuery = insertCampaignAndPromos.updateElasticSearch(brandID);
               dispatch(makeRequest(updateElasticSearchQuery.url, createFetchOption(updateElasticSearchQuery.query), DO_NOTHING, ON_FAILED, ON_LOADING)).then((elasticResponse) =>{
                 alert('Successful inserted campaign and corresponding skus. Indices will be updated soon....');
+                dispatch({type: RESET_DATA});
                 console.log(elasticResponse);
                 console.log(cashbackOffersSKU);
               }, () => {
@@ -488,7 +496,7 @@ const mapDispatchToProps = (dispatch) => {
 export {
   fetchBrandManager,
   promoDefaultDict,
-  bugetAmountCalc,
+  budgetAmountCalc,
   fetchData,
   mapStateToProps,
   mapDispatchToProps
