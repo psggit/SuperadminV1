@@ -207,7 +207,7 @@ const saveSku = ( barId ) => {
 };
 const updateSku = ( barId ) => {
   return ( dispatch, getState ) => {
-    const invUrl = Endpoints.db + '/table/bars_inventory/update';
+    const invUrl = Endpoints.blogicUrl + '/admin/bar/insert';
 
     const barState = getState().bar_sku_create_data;
     const barDataObj = {
@@ -248,6 +248,8 @@ const updateSku = ( barId ) => {
     delete insertObj.values.bar_id;
     delete insertObj.values.id;
     delete insertObj.values.sku_pricing;
+
+    insertObj.values.id = parseInt( barState.inventoryId, 10 );
 
     insertObj.returning = ['id'];
     insertObj.where = {
