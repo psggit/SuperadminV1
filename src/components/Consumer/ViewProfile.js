@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import { Link } from 'react-router';
 
 import {connect} from 'react-redux';
-import {RESET, getUserData, resetPin, resetPassword} from './ProfileActions';
+import {RESET, getUserStatus, getUserData, resetPin, resetPassword} from './ProfileActions';
 
 /* Common Decorator for taking care of loading and shit */
 // import commonDecorator from '../../Common/CommonDecorator';
@@ -38,7 +38,8 @@ class ViewConsumerProfile extends Component {
     Promise.all([
       this.props.dispatch( { type: RESET }),
       this.props.dispatch( { type: MAKE_REQUEST }),
-      this.props.dispatch(getUserData(parseInt(this.props.params.Id, 10)))
+      this.props.dispatch(getUserData(parseInt(this.props.params.Id, 10))),
+      this.props.dispatch(getUserStatus(parseInt(this.props.params.Id, 10)))
     ])
     .then( () => {
       this.props.dispatch( { type: REQUEST_COMPLETED });
@@ -60,7 +61,7 @@ class ViewConsumerProfile extends Component {
   }
   render() {
     const styles = require('./Table.scss');
-    const { ongoingRequest, lastError, lastSuccess } = this.props;
+    const { ongoingRequest, lastError, lastSuccess, userProfile } = this.props;
     const { Id: userId } = this.props.params;
     let getHtml;
     let getButtons;
@@ -217,6 +218,14 @@ class ViewConsumerProfile extends Component {
             </div>
             <div className={styles.wd_60} >
               { profileInfo.full_name }
+            </div>
+          </div>
+          <div className={styles.profile_information}>
+            <div className={styles.wd_40}>
+              User Status:
+            </div>
+            <div className={styles.wd_60} >
+              { userProfile.is_active ? 'Active' : 'InActive' }
             </div>
           </div>
           <div className={styles.profile_information}>
@@ -409,7 +418,8 @@ ViewConsumerProfile.propTypes = {
   ongoingRequest: PropTypes.bool.isRequired,
   lastError: PropTypes.object.isRequired,
   lastSuccess: PropTypes.array.isRequired,
-  balance: PropTypes.object.isRequired
+  balance: PropTypes.object.isRequired,
+  userProfile: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) => {

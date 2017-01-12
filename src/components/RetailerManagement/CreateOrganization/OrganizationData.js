@@ -24,7 +24,7 @@ const saveOrganization = () => {
     const orgState = getState().organization_data.organizationData;
     const organizationDataObj = { ...orgState.orgDetail };
 
-    const orgInsertCheck = ['annual_turnover', 'date_of_incorporation', 'organisation_name', 'pan_number', 'tan_number', 'tin_number', 'type_of_organisation', 'kyc_status', 'status'];
+    const orgInsertCheck = ['date_of_incorporation', 'organisation_name', 'pan_number', 'type_of_organisation', 'kyc_status', 'status'];
     let orgCheckStatus = true;
 
     orgInsertCheck.forEach( ( i ) => {
@@ -221,7 +221,7 @@ const updateOrganization = () => {
     const orgState = getState().organization_data.organizationData;
     const organizationDataObj = { ...orgState.orgDetail };
 
-    const orgInsertCheck = ['annual_turnover', 'date_of_incorporation', 'organisation_name', 'pan_number', 'tan_number', 'tin_number', 'type_of_organisation', 'kyc_status', 'status'];
+    const orgInsertCheck = ['date_of_incorporation', 'organisation_name', 'pan_number', 'type_of_organisation', 'kyc_status', 'status'];
     let orgCheckStatus = true;
 
     orgInsertCheck.forEach( ( i ) => {

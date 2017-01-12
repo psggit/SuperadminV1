@@ -28,9 +28,16 @@ const validation = (value, type) => {
         alert('Field Empty: Please Enter atleast 1 character.');
         reject();
       }
+    } else if (type === 'number') {
+      if (value === parseInt(value, 10)) {
+        resolve();
+      } else {
+        alert('Field Empty: Please Enter atleast 1 character.');
+        reject();
+      }
     } else if (type === 'gps') {
       // TODO : Change to Regex
-      const gps = /^(-?\d{1,2}\.\d{6}),(-?\d{1,2}\.\d{6})$/;
+      const gps = /^(-?\d{1,2}\.\d{3,15}),(-?\d{1,2}\.\d{3,15})$/;
       if (value.match(gps)) {
         resolve();
       } else {

@@ -382,8 +382,16 @@ const mapDispatchToProps = (dispatch) => {
               offers: cashbackOffers
             });
             dispatch(makeRequest(insertPromosSKUsQuery.url, createFetchOption(insertPromosSKUsQuery.query), DO_NOTHING, ON_FAILED, ON_LOADING)).then((cashbackOffersSKU) => {
-              alert('Successful inserted campaign and corresponding skus');
-              console.log(cashbackOffersSKU);
+              const brandID = values.brandManagerBrandMap[values.brandEmail][0].brand_id;
+              const updateElasticSearchQuery = insertCampaignAndPromos.updateElasticSearch(brandID);
+              dispatch(makeRequest(updateElasticSearchQuery.url, createFetchOption(updateElasticSearchQuery.query), DO_NOTHING, ON_FAILED, ON_LOADING)).then((elasticResponse) =>{
+                alert('Successful inserted campaign and corresponding skus. Indices will be updated soon....');
+                console.log(elasticResponse);
+                console.log(cashbackOffersSKU);
+              }, () => {
+                alert('Successful inserted campaign and corresponding skus. The re-index endpoint gave back an error. ' +
+                 'Please update them manually.');
+              });
             }, (error) => {
               console.error('<<----- This is a transaction error (Cashback Offer SKU Insert operation)------>>');
               console.error(error);
@@ -418,18 +426,20 @@ const mapDispatchToProps = (dispatch) => {
       // e.preventDefault();
       const newValueObj = {};
       newValueObj[fieldName] = e.target.value;
-      if (validators(promoValidatorDict, fieldName, newValueObj[fieldName], otherValues)) {
-        dispatch({type: PROMO_CHANGE, data: newValueObj, index: index});
-      }
+      // NOTE: The below line is commented to prevent validation on change
+      // if (validators(promoValidatorDict, fieldName, newValueObj[fieldName], otherValues)) {
+      dispatch({type: PROMO_CHANGE, data: newValueObj, index: index});
+      // }
     },
 
-    onChangePromoObjInfo: (fieldName, index, obj, otherValues) => {
+    onChangePromoObjInfo: (fieldName, index, obj) => { // otherValues
       // e.preventDefault();
       const newValueObj = {};
       newValueObj[fieldName] = obj;
-      if (validators(promoValidatorDict, fieldName, newValueObj[fieldName], otherValues)) {
-        dispatch({type: PROMO_CHANGE, data: newValueObj, index: index});
-      }
+      // NOTE: The below line is commented to prevent validation on change
+      // if (validators(promoValidatorDict, fieldName, newValueObj[fieldName], otherValues)) {
+      dispatch({type: PROMO_CHANGE, data: newValueObj, index: index});
+      // }
     },
 
     onCompanyChange: (e) => {

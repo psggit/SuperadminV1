@@ -102,10 +102,7 @@ const hydrateStateObj = () => {
                     }
                   ]
                 },
-              ],
-              'where': {
-                'is_active': true
-              }
+              ]
             }
           ],
           'where': {
@@ -123,6 +120,46 @@ const hydrateStateObj = () => {
       body: JSON.stringify(skuReqObj)
     };
     return dispatch(requestAction(skuUrl, options, POPULATE_SKU_DATA, REQUEST_ERROR));
+  };
+};
+
+const toggleSkuStatus = ( id, status ) => {
+  return ( dispatch, getState ) => {
+    const devUrl = Endpoints.db + '/table/inventory/update';
+
+    const skuState = getState().create_sku_data;
+
+    const brId = id;
+
+    const insertObj = {};
+
+    if ( !skuState.sku_id ) {
+      alert('Valid SKU is required');
+      return Promise.reject();
+    }
+
+    insertObj.where = {
+      'retailer_id': parseInt(brId, 10),
+      'sku_pricing': {
+        'sku_id': {
+          '$eq': parseInt(skuState.sku_id, 10)
+        }
+      }
+    };
+
+    insertObj.values = { is_active: !status };
+    insertObj.returning = ['id'];
+
+    const options = {
+      ...genOptions,
+      body: JSON.stringify( insertObj )
+    };
+
+    return dispatch( requestAction( devUrl, options ) )
+    .then( () => {
+      alert('Sku Toggled');
+      return dispatch( hydrateStateObj() );
+    });
   };
 };
 
@@ -290,6 +327,27 @@ const getReservedItems = ( Id ) => {
         dispatch({ type: FETCHED_RESERVED_ITEMS, data: data });
       });
   };
+};
+
+const indexSku = ( dispatch, brandIds ) => {
+  const skuIndexUrl = Endpoints.blogicUrl + '/admin/update_index/index/brand';
+
+  /*
+  if ( brandIds.length === 0 ) {
+    return Promise.reject('Brand cannot be empty to index');
+  }
+  */
+
+  const skuIndexObj = {
+    'ids': [ brandIds ]
+  };
+
+  const options = {
+    ...genOptions,
+    body: JSON.stringify(skuIndexObj)
+  };
+
+  return dispatch(requestAction(skuIndexUrl, options));
 };
 
 /* Function to Create sku */
@@ -480,6 +538,9 @@ const onSave = () => {
         return dispatch(requestAction(brandListingUrl, options));
       })
       .then(() => {
+        return indexSku(dispatch, skuReqObj.brand_id);
+      })
+      .then( () => {
         alert('SKU Updated Successfully');
         /* Add an entry to brand listing table too */
         return dispatch(routeActions.push('/hadmin/skus/list_sku'));
@@ -750,6 +811,9 @@ const onUpdate = () => {
         return Promise.resolve();
       })
       .then( ( ) => {
+        return indexSku(dispatch, skuReqObj.brand_id);
+      })
+      .then( () => {
         alert('SKU Updated Successfully');
         return dispatch(routeActions.push('/hadmin/skus/list_sku'));
       })
@@ -1070,7 +1134,8 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
             const cityId = inventory.retailer.city_id;
             const retailerId = inventory.retailer_id;
             localStateCityMapping[ sState.state_short_name ].selected_cities[cityId] = { ...state.cityRetailerMapping[cityId], is_selected: false};
-            localRetailerMapping[retailerId].is_selected = true;
+            // localRetailerMapping[retailerId].is_selected = true;
+            localRetailerMapping[retailerId].is_selected = inventory.is_active;
             localRetailerMapping[retailerId].is_fetched = true;
             // localRetailerMapping[retailerId].serverValues = { is_selected: true };
             localCityRetailerMapping[cityId].is_selected = true;
@@ -1115,7 +1180,8 @@ export {
   onUpdate,
   updateComponentState,
   getReservedItems,
-  disableSku
+  disableSku,
+  toggleSkuStatus
 };
 
 export default createSKUReducer;

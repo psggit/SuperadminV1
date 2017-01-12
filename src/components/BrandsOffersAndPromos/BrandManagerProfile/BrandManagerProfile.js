@@ -51,8 +51,6 @@ class BrandManagerProfile extends Component { // eslint-disable-line no-unused-v
   // Here goes all the data fetching stuff
   render() {
     const styles = require('./BrandManagerProfile.scss');
-    console.log('Amazing Horse Shit!');
-    console.log(this.props.lastSuccess);
     const { lastSuccess } = this.props;
     return (
       <div className={styles.container}>

@@ -67,7 +67,6 @@ const saveBranch = () => {
       'is_open',
       'organisation_id',
       'application_number',
-      'cst_number',
       'kyc_status',
       'branch_status',
       'is_active',
@@ -88,6 +87,10 @@ const saveBranch = () => {
       alert('All the fields for Branch are mandatory');
       return Promise.reject({ stage: 0 });
     }
+
+    /* Adding address for retailer */
+    branchDataObj.org_address = branchState.branchContact.branch_address;
+    /* End of it */
 
     const insertObj = {};
     insertObj.objects = [ { ...branchDataObj } ];
@@ -300,7 +303,8 @@ const saveBranchDetail = () => {
         return Promise.reject();
       }
       alert('Branch inserted with errors, please edit it to correct the information');
-      return dispatch( routeActions.push('/hadmin/retailer_management/view_organizations'));
+      // return dispatch( routeActions.push('/hadmin/retailer_management/view_organizations'));
+      return dispatch( routeActions.push('/hadmin/retailer_management/view_branches'));
     });
   };
 };
@@ -364,7 +368,6 @@ const updateBranch = () => {
       'gps_cordinates',
       'organisation_id',
       'application_number',
-      'cst_number',
       'kyc_status',
       'branch_status',
       'city_id',
@@ -384,6 +387,10 @@ const updateBranch = () => {
       alert('All the fields for Branch are mandatory');
       return Promise.reject({ stage: 0 });
     }
+
+    /* Adding address for retailer */
+    branchDataObj.org_address = branchState.branchContact.branch_address;
+    /* End of it */
 
     const insertObj = {};
 
@@ -510,7 +517,8 @@ const updateBranchDetail = () => {
         return Promise.reject();
       }
       alert('Branch inserted with errors, please edit it to correct the information');
-      return dispatch( routeActions.push('/hadmin/retailer_management/view_organizations'));
+      // return dispatch( routeActions.push('/hadmin/retailer_management/view_organizations'));
+      return dispatch( routeActions.push('/hadmin/retailer_management/view_branches'));
     });
   };
 };

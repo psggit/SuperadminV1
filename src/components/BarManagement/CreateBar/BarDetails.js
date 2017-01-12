@@ -2,7 +2,12 @@ import React from 'react';
 
 import formValidator from '../../Common/CommonFormValidator';
 
+import AdImageUpload from './AdUpload';
+
 import {
+  AD_IMAGE_UPLOAD_SUCCESS,
+  AD_IMAGE_UPLOAD_ERROR,
+  AD_CANCEL_IMAGE,
   BAR_INPUT_CHANGED
 } from './BarData';
 
@@ -78,14 +83,6 @@ const BarDetails = ( { currState, organisationData } ) => { // eslint-disable-li
           <input type="text" data-field-name="cst_number" data-field-type="text" value={ currState.cst_number } />
         </li>
         <li>
-          <label>Discount Percent</label>
-          <input type="number" data-field-name="discount_percent" data-field-type="int" value={ currState.discount_percent } />
-        </li>
-        <li>
-          <label>Service Charge Percent</label>
-          <input type="number" data-field-name="service_charge_percent" data-field-type="float" value={ currState.service_charge_percent } />
-        </li>
-        <li>
           <div className={styles.wd_50}>
             <label>KYC Verified</label>
             <select data-field-name="kyc_status" data-field-type="text" value={ currState.kyc_status }>
@@ -109,6 +106,15 @@ const BarDetails = ( { currState, organisationData } ) => { // eslint-disable-li
           <div className={styles.wd_50}>
             <label>Service Charge Percent</label>
             <input type="text" data-field-name="service_charge_percent" data-field-type="int" value={ currState.service_charge_percent } />
+          </div>
+        </li>
+        <li>
+          <div className={styles.wd_50}>
+            <AdImageUpload imageUrl={currState.adImage ? currState.adImage : ''} requestSuccess={AD_IMAGE_UPLOAD_SUCCESS} requestError={ AD_IMAGE_UPLOAD_ERROR } cancelImage={ AD_CANCEL_IMAGE }/>
+          </div>
+          <div className={styles.wd_50}>
+            <label>House Rules</label>
+            <input type="text" data-field-name="house_rules" data-field-type="text" value={ currState.house_rules } />
           </div>
         </li>
       </ul>

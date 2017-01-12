@@ -167,6 +167,9 @@ class UnlockBarAddSKU extends Component {
             Name: { invent.sku_pricing.sku.brand.brand_name } - { invent.sku_pricing.sku.volume } ML
           </div>
           <div className={styles.unlock_listing_name}>
+            Menu Price: { invent.menuPrice}
+          </div>
+          <div className={styles.unlock_listing_name}>
             Hipbar Price: { invent.hipbarPrice }
           </div>
           <div className={styles.unlock_active_container}>
@@ -199,6 +202,10 @@ class UnlockBarAddSKU extends Component {
         </button>
       </div>
     );
+
+    const getValidDate = ( dat ) => {
+      return ( new Date( dat ).toString() !== 'Invalid Date' ? new Date(dat).toISOString().slice(0, 16) : '' );
+    };
 
     return (
       <div className={styles.container}>
@@ -233,7 +240,7 @@ class UnlockBarAddSKU extends Component {
               Base SKU  Price
             </div>
             <div className = {styles.information_rightpanel}>
-              <input type="text" data-field-name="base_sku_price" data-field-type="string" value={ newSkuData.base_sku_price}/>
+              <input type="int" data-field-name="base_sku_price" data-field-type="int" value={ newSkuData.base_sku_price}/>
             </div>
           </div>
           <div className = {styles.command_wrapper}>
@@ -241,7 +248,7 @@ class UnlockBarAddSKU extends Component {
               Negotiated SKU Price
             </div>
             <div className = {styles.information_rightpanel}>
-              <input type="text" data-field-name="negotiated_sku_price" data-field-type="string" value={ newSkuData.negotiated_sku_price}/>
+              <input type="int" data-field-name="negotiated_sku_price" data-field-type="int" value={ newSkuData.negotiated_sku_price}/>
             </div>
           </div>
           <div className = {styles.command_wrapper}>
@@ -249,7 +256,7 @@ class UnlockBarAddSKU extends Component {
               Charges And Tax percentage at Bar
             </div>
             <div className = {styles.information_rightpanel}>
-              <input type="text" data-field-name="charges_and_tax_percentage" data-field-type="string" value={ newSkuData.charges_and_tax_percentage}/>
+              <input type="int" data-field-name="charges_and_tax_percentage" data-field-type="float" value={ newSkuData.charges_and_tax_percentage}/>
             </div>
           </div>
           <div className = {styles.command_wrapper}>
@@ -274,7 +281,7 @@ class UnlockBarAddSKU extends Component {
               Start Date
             </div>
             <div className = {styles.information_rightpanel}>
-              <input data-field-name="start_date" data-field-type="time" type="datetime-local" value={ newSkuData.start_date}/>
+              <input data-field-name="start_date" data-field-type="text" type="datetime-local" value={ isEdit ? getValidDate(newSkuData.start_date) : newSkuData.start_date }/>
             </div>
           </div>
           <div className = {styles.command_wrapper}>
@@ -282,7 +289,7 @@ class UnlockBarAddSKU extends Component {
               End Date
             </div>
             <div className = {styles.information_rightpanel}>
-              <input data-field-name="end_date" data-field-type="time" type="datetime-local" value={ newSkuData.end_date}/>
+              <input data-field-name="end_date" data-field-type="text" type="datetime-local" value={ isEdit ? getValidDate(newSkuData.end_date) : newSkuData.end_date }/>
             </div>
           </div>
           <div className={ styles.warning_block + ' ' + ( !newSkuData.is_active && !newSkuData.status ? '' : 'hide' ) }>

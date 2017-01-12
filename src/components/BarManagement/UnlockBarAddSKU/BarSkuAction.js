@@ -146,6 +146,33 @@ const fetchInitials = (barId) => {
   };
 };
 
+/* Reindexing SKUs for bars */
+
+const indexSku = ( barIds ) => {
+  return ( dispatch ) => {
+    const barSkuIndexUrl = Endpoints.blogicUrl + '/admin/update_index/index/bar';
+
+    /*
+    if ( barIds.length === 0 ) {
+      return Promise.reject('Bar cannot be empty to index');
+    }
+    */
+
+    const skuIndexObj = {
+      'ids': [ barIds ]
+    };
+
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(skuIndexObj)
+    };
+
+    return dispatch(requestAction(barSkuIndexUrl, options));
+  };
+};
+
+/* End of it */
+
 /* Saving */
 
 const saveSku = ( barId ) => {
@@ -153,6 +180,17 @@ const saveSku = ( barId ) => {
     const invUrl = Endpoints.blogicUrl + '/admin/bar/insert';
 
     const barState = getState().bar_sku_create_data;
+
+    if ( new Date(barState.newSkuData.start_date).toString() === 'Invalid Date' ) {
+      alert('Invalid Start Date');
+      return Promise.reject();
+    }
+
+    if ( new Date(barState.newSkuData.end_date).toString() === 'Invalid Date' ) {
+      alert('Invalid End Date');
+      return Promise.reject();
+    }
+
     const barDataObj = {
       ...barState.newSkuData,
       bar_id: parseInt(barId, 10),
@@ -188,6 +226,7 @@ const saveSku = ( barId ) => {
       alert('All the fields for Bar are mandatory');
       return Promise.reject({ stage: 0 });
     }
+
     const postData = { ...barDataObj };
     const options = {
       ...genOptions,
@@ -197,6 +236,7 @@ const saveSku = ( barId ) => {
     return dispatch( requestAction( invUrl, options ) )
     .then( ( ) => {
       return Promise.all([
+        dispatch( indexSku(parseInt(barId, 10) ) ),
         dispatch({ type: CLEAR_SKU }),
         dispatch({ type: TOGGLE_SKU_DIV }),
         dispatch(getBar( barId ))
@@ -240,6 +280,19 @@ const updateSku = ( barId ) => {
       return Promise.reject({ stage: 0 });
     }
 
+    if ( new Date(barState.newSkuData.start_date).toString() === 'Invalid Date' ) {
+      alert('Invalid Start Date');
+      return Promise.reject();
+    }
+
+    if ( new Date(barState.newSkuData.end_date).toString() === 'Invalid Date' ) {
+      alert('Invalid End Date');
+      return Promise.reject();
+    }
+
+    barDataObj.start_date = new Date(barDataObj.start_date).toISOString();
+    barDataObj.end_date = new Date(barDataObj.end_date).toISOString();
+
     const insertObj = {};
     insertObj.values = { ...barDataObj };
 
@@ -266,6 +319,7 @@ const updateSku = ( barId ) => {
       if ( resp.returning.length > 0 ) {
         alert('Updated');
         return Promise.all([
+          dispatch( indexSku(parseInt(barId, 10) ) ),
           dispatch({ type: CANCEL_SKU}),
           dispatch(getBar( barId ))
         ]);

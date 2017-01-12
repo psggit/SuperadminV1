@@ -15,6 +15,8 @@ import { routeActions } from 'redux-simple-router';
 const defaultState = {
   retailers: [],
   transactionCode: [],
+  retailerMap: {},
+  codeMap: {},
   retailer_id: 0,
   retailer_credits_and_debit_codes_id: 0,
   amount: 0,
@@ -70,7 +72,10 @@ const getInitData = ( Id ) => {
     const debitCodesUrl = Endpoints.db + '/table/retailer_credits_and_debit_codes/select';
 
     const branchSelectObj = {};
-    branchSelectObj.columns = [ 'id', 'org_name' ];
+    branchSelectObj.columns = [ 'id', 'org_name', {
+      'name': 'addresses',
+      'columns': [ 'email']
+    }];
     const codeSelectObj = {};
     codeSelectObj.columns = [ '*' ];
 
@@ -119,6 +124,24 @@ const saveTransaction = () => {
     insertTransaction.objects = [ insertObj ];
     insertTransaction.returning = ['id'];
 
+    const currDate = new Date().toISOString().slice(0, 10);
+    const emailerObj = {};
+    const emailerUrl = Endpoints.blogicUrl + '/admin/trigger/email';
+    emailerObj.to = [ currState.retailerMap[insertObj.retailer_id].email ];
+    emailerObj.template_name = currState.codeMap[insertObj.retailer_credits_and_debit_codes_id] === 'debit' ? 'manual-debit-retailer' : 'manual-credit-retailer';
+    emailerObj.content = {
+      'retailer': {
+        'name': currState.retailerMap[insertObj.retailer_id].org_name,
+        'created_at': currDate,
+        'value': insertObj.amount
+      }
+    };
+
+    if ( emailerObj.to[0].length === 0 ) {
+      alert('Email not present to add the credit');
+      return Promise.reject();
+    }
+
     const options = {
       ...genOptions,
       body: JSON.stringify(insertTransaction)
@@ -128,7 +151,21 @@ const saveTransaction = () => {
     .then( ( resp ) => {
       if ( resp.returning.length > 0 ) {
         alert('Added');
-        return dispatch( routeActions.push('/hadmin/retailer_management/debits_credits_landing'));
+        const emailerOptions = {
+          ...genOptions,
+          body: JSON.stringify(emailerObj)
+        };
+
+        if ( emailerObj.to[0].length === 0 ) {
+          alert('Email not present to update the user');
+          return Promise.all([
+            dispatch( routeActions.push('/hadmin/retailer_management/debits_credits_landing'))
+          ]);
+        }
+        return Promise.all([
+          dispatch( requestAction( emailerUrl, emailerOptions)),
+          dispatch( routeActions.push('/hadmin/retailer_management/debits_credits_landing'))
+        ]);
       }
     })
     .catch( ( resp ) => {
@@ -190,11 +227,20 @@ const updateTransaction = ( Id ) => {
 /* Reducer */
 
 const retailerDebitCreditReducer = ( state = defaultState, action ) => {
+  let map = {};
   switch ( action.type ) {
     case RETAILER_FETCHED:
-      return { ...state, retailers: action.data };
+      map = {};
+      action.data.forEach( ( ret ) => {
+        map[ ret.id ] = { 'org_name': ret.org_name, 'email': ( ret.addresses ).length > 0 ? ret.addresses[0].email : '' };
+      });
+      return { ...state, retailers: action.data, retailerMap: { ...map } };
     case CODE_FETCHED:
-      return { ...state, transactionCode: action.data };
+      map = {};
+      action.data.forEach( ( code ) => {
+        map[ code.id ] = code.code_type;
+      });
+      return { ...state, transactionCode: action.data, codeMap: { ...map }};
     case INPUT_CHANGED:
       const transactionDetail = {};
       transactionDetail[action.data.key] = action.data.value;

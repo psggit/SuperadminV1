@@ -12,6 +12,8 @@ class ImageUpload extends Component {
     const fileComponent = document.getElementById('checkImage');
     const formData = new FormData();
     formData.append('file', fileComponent.files[0]);
+    console.log('aaa');
+    console.log(formData);
     this.props.dispatch(uploadFile(formData, this.props.requestSuccess, this.props.requestError));
   }
   onCancelClick() {

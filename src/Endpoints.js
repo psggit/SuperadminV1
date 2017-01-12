@@ -10,7 +10,8 @@ let scheme;
 let baseHost = 'TEST';
 
 if (window.location.href.split(':')[1] === '//localhost') {
-  const appName = 'hipbar-stg';
+  const appName = 'scarcity31';
+  // const appName = 'hipbar-stg';
   dataUrl = 'https://data.' + appName + '.hasura-app.io';
   authUrl = 'https://auth.' + appName + '.hasura-app.io';
   fileUrl = 'https://api2.' + appName + '.hasura-app.io';
@@ -42,9 +43,10 @@ const Endpoints = {
   integrations_dataUrl: 'http://localhost:5000',
   baseUrl: dataUrl,
   authUrl: authUrl,
-  blogicUrl: blogicUrl
+  blogicUrl: blogicUrl,
+  dataUrl: dataUrl
 };
 const globalCookiePolicy = 'include';
 
 export default Endpoints;
-export {globalCookiePolicy, dataUrl, authUrl, fileUrl, downloadRepUrl};
+export {globalCookiePolicy, dataUrl, authUrl, blogicUrl, fileUrl, downloadRepUrl};
