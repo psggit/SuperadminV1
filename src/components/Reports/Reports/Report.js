@@ -14,9 +14,9 @@ const sendRequest = (e) => {
   const option = document.getElementById('option');
   const data = option.options[option.selectedIndex].value;
   url += data;
-  const startInput = document.getElementById('start_date').value;
-  const endInput = document.getElementById('end_date').value;
-  const queryObj = {'data': {'start_date': startInput, 'end_date': endInput}};
+  const sIn = new Date(document.getElementById('start_date').value).getTime();
+  const eIn = new Date(document.getElementById('end_date').value).getTime();
+  const queryObj = {'start_date': sIn, 'end_date': eIn};
   let insertObj = {};
   insertObj = {
     method: 'POST',
@@ -24,6 +24,7 @@ const sendRequest = (e) => {
     headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin'},
     credentials: globalCookiePolicy
   };
+  alert('Sending Request');
   requestAction(url, insertObj, REQUEST_SUCCESS, REQUEST_ERROR);
 };
 

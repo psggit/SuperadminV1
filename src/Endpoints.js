@@ -15,7 +15,7 @@ if (window.location.href.split(':')[1] === '//localhost') {
   // const appName = 'hipbar-stg';
   dataUrl = 'https://data.' + appName + '.hasura-app.io';
   authUrl = 'https://auth.' + appName + '.hasura-app.io';
-  reportUrl = 'https://report.' + appName + '.hasura-app.io';
+  reportUrl = 'https://reports.' + appName + '.hasura-app.io';
   fileUrl = 'https://api2.' + appName + '.hasura-app.io';
   blogicUrl = 'https://api1.' + appName + '.hasura-app.io';
   downloadRepUrl = 'https://downloadrep.' + appName + '.hasura-app.io';
@@ -25,7 +25,7 @@ if (window.location.href.split(':')[1] === '//localhost') {
   scheme = window.location.href.split(':')[0];
   baseHost = window.__env.baseDomain;
   dataUrl = scheme + '://data' + baseHost;
-  reportUrl = scheme + '://report' + baseHost;
+  reportUrl = scheme + '://reports' + baseHost;
   authUrl = scheme + '://auth' + baseHost;
   fileUrl = scheme + '://api2' + baseHost;
   blogicUrl = scheme + '://api1' + baseHost;
