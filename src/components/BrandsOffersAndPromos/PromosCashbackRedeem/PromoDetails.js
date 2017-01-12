@@ -112,7 +112,7 @@ const PromoDetails = ({styles, currentEditingPromo, promos, brands, fundsCredite
               })}
             />
             <select name="service_type" value={promo.service_type ? promo.service_type : 'amount'}
-              onChange={onChangePromoInfo.bind(this, 'type', currentEditingPromo, {
+              onChange={onChangePromoInfo.bind(this, 'service_type', currentEditingPromo, {
                 price: promo.serviceCharge,
                 maxPrice: (promo.pricing ? promo.pricing.price : 0)
               })}>
