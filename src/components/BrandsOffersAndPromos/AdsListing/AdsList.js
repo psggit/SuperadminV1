@@ -5,14 +5,20 @@ const AdsList = ( {data} ) => {
   const styles = require('./AdsList.scss');
   let tableBody;
   let objHtml;
+  let activeTag;
 
   tableBody = data.map((dat, index) => {
+    if (dat.status !== 'Active') {
+      activeTag = 'Enable';
+    } else {
+      activeTag = 'Disable';
+    }
     return (
           <tr key={index}>
             <td>
               <Link to={'#'}>
                 <button className={styles.edit_btn} data-state-id={dat.id}>
-                  View
+                  { activeTag }
                 </button>
               </Link>
             </td>
