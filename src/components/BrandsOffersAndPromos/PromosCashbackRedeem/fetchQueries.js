@@ -1,4 +1,4 @@
-import { dataUrl } from '../../../Endpoints';
+import { dataUrl, blogicUrl } from '../../../Endpoints';
 
 const selectCompanies = {
   url: dataUrl + '/v1/query',
@@ -51,7 +51,7 @@ const selectBrandManagers = (companyName) => {
           ]
         }, {
           name: 'brands',
-          columns: ['id', 'created_at', 'updated_at', {
+          columns: ['id', 'created_at', 'updated_at', 'brand_id', {
             name: 'brand',
             columns: ['id', 'brand_name', 'short_name', 'is_active', 'description', {
               name: 'skus',
@@ -92,20 +92,6 @@ const selectBrandManagers = (companyName) => {
             $and: [{
               brand: {
                 is_active: true
-              }
-            }, {
-              brand: {
-                skus: {
-                  pricings: {
-                    cash_back_offers: {
-                      offer: {
-                        campaign: {
-                          status: 'active'
-                        }
-                      }
-                    }
-                  }
-                }
               }
             }
           ]}
@@ -159,6 +145,7 @@ const insertCampaignAndPromos = {
           objects: [{
             campaign_id: campaign_id,
             promoName: (promo.promoName),
+            promo_description: (promo.promo_description),
             service_charge_percentage: (promo.service_type === 'percentage' ? parseFloat(promo.serviceCharge) : null),
             service_charge_flat: (promo.service_type === 'amount' ? parseFloat(promo.serviceCharge) : null),
             amount: (promo.type === 'amount' ? parseFloat(promo.price) : null),
@@ -197,6 +184,16 @@ const insertCampaignAndPromos = {
       query: {
         type: 'bulk',
         args: bulkInsert
+      }
+    };
+  },
+  updateElasticSearch: (brandId) => {
+    const ids = [];
+    ids.push(brandId);
+    return {
+      url: blogicUrl + '/admin/update_index/index/brand',
+      query: {
+        ids: ids
       }
     };
   }

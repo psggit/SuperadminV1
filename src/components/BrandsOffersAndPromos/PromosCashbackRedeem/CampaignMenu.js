@@ -29,12 +29,12 @@ const CampaignMenu = ({styles, brandManagerCampaignMap, brandManagerBrandMap, on
       </li>
       <li>
         <label>Budgeted Amount</label>
-        <input type="number" name="budgeted_amount"
-          value={budgetedAmount} readOnly />
+        <input type="text" name="budgeted_amount"
+          value={budgetedAmount} onChange={onValueChange.bind(this, 'budgetedAmount')} />
       </li>
       <li>
         <label>Funds Credited</label>
-        <input type="number" name="funds_credited"
+        <input type="text" name="funds_credited"
           value={fundsCredited} onChange={onValueChange.bind(this, 'fundsCredited')} />
       </li>
       <li>

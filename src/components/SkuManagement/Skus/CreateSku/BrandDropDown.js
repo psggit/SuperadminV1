@@ -12,6 +12,7 @@ const BrandDropDown = ( { brandData, value} ) => {
   };
   return (
         <select data-field-name="brand_id" data-field-type="text" value = { value ? value : '' }>
+          <option> select </option>
           { brandOptions }
         </select>
       );

@@ -363,18 +363,25 @@ const updateSelectedBrandsList = (selectedBrand, selectedBrandsList, isDelete = 
   return (dispatch) => {
     // push or update the selectedBrandsList object
     const updatedBrandsList = [];
+    let isPushed = false;
     if (selectedBrandsList.length === 0) {
       updatedBrandsList.push({...selectedBrand});
     } else {
       selectedBrandsList.map((brand) => {
         if (brand.id === selectedBrand.id) {
-          if (!isDelete) {
+          isPushed = true;
+          if (isDelete) {
+            updatedBrandsList.push({...selectedBrand, is_deleted: true});
+          } else {
             updatedBrandsList.push({...selectedBrand});
           }
         } else {
           updatedBrandsList.push({...brand});
         }
       });
+      if (!isPushed) {
+        updatedBrandsList.push({...selectedBrand});
+      }
     }
     return Promise.all([
       dispatch({type: UPDATE_SELECTED_BRANDS_LIST, data: updatedBrandsList}),

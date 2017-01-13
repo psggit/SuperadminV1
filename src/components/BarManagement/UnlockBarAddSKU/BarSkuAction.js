@@ -146,6 +146,33 @@ const fetchInitials = (barId) => {
   };
 };
 
+/* Reindexing SKUs for bars */
+
+const indexSku = ( barIds ) => {
+  return ( dispatch ) => {
+    const barSkuIndexUrl = Endpoints.blogicUrl + '/admin/update_index/index/bar';
+
+    /*
+    if ( barIds.length === 0 ) {
+      return Promise.reject('Bar cannot be empty to index');
+    }
+    */
+
+    const skuIndexObj = {
+      'ids': [ barIds ]
+    };
+
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(skuIndexObj)
+    };
+
+    return dispatch(requestAction(barSkuIndexUrl, options));
+  };
+};
+
+/* End of it */
+
 /* Saving */
 
 const saveSku = ( barId ) => {
@@ -153,6 +180,17 @@ const saveSku = ( barId ) => {
     const invUrl = Endpoints.blogicUrl + '/admin/bar/insert';
 
     const barState = getState().bar_sku_create_data;
+
+    if ( new Date(barState.newSkuData.start_date).toString() === 'Invalid Date' ) {
+      alert('Invalid Start Date');
+      return Promise.reject();
+    }
+
+    if ( new Date(barState.newSkuData.end_date).toString() === 'Invalid Date' ) {
+      alert('Invalid End Date');
+      return Promise.reject();
+    }
+
     const barDataObj = {
       ...barState.newSkuData,
       bar_id: parseInt(barId, 10),
@@ -188,6 +226,7 @@ const saveSku = ( barId ) => {
       alert('All the fields for Bar are mandatory');
       return Promise.reject({ stage: 0 });
     }
+
     const postData = { ...barDataObj };
     const options = {
       ...genOptions,
@@ -197,6 +236,7 @@ const saveSku = ( barId ) => {
     return dispatch( requestAction( invUrl, options ) )
     .then( ( ) => {
       return Promise.all([
+        dispatch( indexSku(parseInt(barId, 10) ) ),
         dispatch({ type: CLEAR_SKU }),
         dispatch({ type: TOGGLE_SKU_DIV }),
         dispatch(getBar( barId ))
@@ -207,7 +247,7 @@ const saveSku = ( barId ) => {
 };
 const updateSku = ( barId ) => {
   return ( dispatch, getState ) => {
-    const invUrl = Endpoints.db + '/table/bars_inventory/update';
+    const invUrl = Endpoints.blogicUrl + '/admin/bar/insert';
 
     const barState = getState().bar_sku_create_data;
     const barDataObj = {
@@ -240,30 +280,40 @@ const updateSku = ( barId ) => {
       return Promise.reject({ stage: 0 });
     }
 
-    const insertObj = {};
-    insertObj.values = { ...barDataObj };
+    if ( new Date(barState.newSkuData.start_date).toString() === 'Invalid Date' ) {
+      alert('Invalid Start Date');
+      return Promise.reject();
+    }
 
-    /* removing excess info */
-    delete insertObj.values.sku_pricing_id;
-    delete insertObj.values.bar_id;
-    delete insertObj.values.id;
-    delete insertObj.values.sku_pricing;
+    if ( new Date(barState.newSkuData.end_date).toString() === 'Invalid Date' ) {
+      alert('Invalid End Date');
+      return Promise.reject();
+    }
 
-    insertObj.returning = ['id'];
-    insertObj.where = {
-      'id': parseInt(barState.inventoryId, 10)
+    const updatedBarDataObj = {
+      ...barDataObj,
+      bar_id: parseInt(barId, 10),
+      base_sku_price: parseFloat(barState.newSkuData.base_sku_price),
+      negotiated_sku_price: parseFloat(barState.newSkuData.negotiated_sku_price),
+      charges_and_tax_percentage: parseFloat(barState.newSkuData.charges_and_tax_percentage),
+      id: parseInt( barState.inventoryId, 10 )
     };
+
+    updatedBarDataObj.start_date = new Date(barDataObj.start_date).toISOString();
+    updatedBarDataObj.end_date = new Date(barDataObj.end_date).toISOString();
 
     const options = {
       ...genOptions,
-      body: JSON.stringify(insertObj)
+      method: 'PUT',
+      body: JSON.stringify(updatedBarDataObj)
     };
 
     return dispatch( requestAction( invUrl, options ) )
     .then( ( resp ) => {
-      if ( resp.returning.length > 0 ) {
+      if ( resp ) {
         alert('Updated');
         return Promise.all([
+          dispatch( indexSku(parseInt(barId, 10) ) ),
           dispatch({ type: CANCEL_SKU}),
           dispatch(getBar( barId ))
         ]);

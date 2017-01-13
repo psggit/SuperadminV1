@@ -5,8 +5,21 @@ import {setRegionCities, setViewCities, updateRegionSelection, updateSelectedBra
 TODO: Cancel, 0Bug, Create Brand Manager
 */
 
-const brandHtml = (companyBrands) => {
-  return companyBrands.map((brand, index) => (
+const brandHtml = (companyBrands, selectedBrandsList) => {
+  const finalBrands = [];
+  const sbIds = [];
+  selectedBrandsList.forEach((sbl) => {
+    sbIds.push(sbl.id);
+  });
+  console.log('goat fucker');
+  console.log(sbIds);
+  companyBrands.forEach((cb) => {
+    if (!(cb.id in sbIds)) {
+      finalBrands.push(cb);
+    }
+  });
+  console.log(finalBrands);
+  return finalBrands.map((brand, index) => (
     <option key={index} value={brand.id}>{brand.brand_name}</option>
   ));
 };
@@ -20,7 +33,6 @@ const onRegionCheck = (dispatch, sb, e) => {
 };
 
 const regionsHtml = (styles, selectedBrand, dispatch) => {
-  console.log('received');
   console.log(selectedBrand);
   return (selectedBrand.regions === undefined ) ? (<li></li>) : selectedBrand.regions.map((region) => (
     <li>
@@ -94,11 +106,11 @@ const actionHtml = (isExistingBrand, styles, selectedBrand, selectedBrandsList, 
       );
 };
 
-const brandOptions = (isExistingBrand, selectedBrand, companyBrands, dispatch) => {
+const brandOptions = (isExistingBrand, selectedBrand, companyBrands, selectedBrandsList, dispatch) => {
   return (!isExistingBrand) ? (
   <select name="selected_brand_id" data-field-name="selected_brand_id" onChange={onChangeBrand.bind(this, companyBrands, dispatch)}>
     <option disabled selected value > -- Select Brand -- </option>
-    { brandHtml(companyBrands) }
+    { brandHtml(companyBrands, selectedBrandsList) }
   </select>) : (
   <select name="selected_brand_id" data-field-name="selected_brand_id" onChange={onChangeBrand.bind(this, companyBrands, dispatch)}>
     <option value={selectedBrand.id}>{selectedBrand.brand_name}</option>
@@ -121,7 +133,7 @@ const BrandContainer = ({props}) => {
       <div className={styles.heading}>Select Brand</div>
       <div className={styles.wd_100}>
         <label className={styles.region_lab}>Brand name</label>
-        {brandOptions(isExistingBrand, selectedBrand, companyBrands, dispatch)}
+        {brandOptions(isExistingBrand, selectedBrand, companyBrands, selectedBrandsList, dispatch)}
       </div>
       <div className={styles.wd_100 + ' ' + styles.select_city}>
         <label className={styles.cites_lab}>

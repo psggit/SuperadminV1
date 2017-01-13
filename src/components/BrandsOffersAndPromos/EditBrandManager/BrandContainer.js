@@ -5,6 +5,7 @@ import {setRegionCities, setViewCities, updateRegionSelection, updateSelectedBra
 TODO: Cancel, 0Bug, Create Brand Manager
 */
 
+
 const brandHtml = (companyBrands, selectedBrandsList) => {
   const finalBrands = [];
   if (selectedBrandsList.length < 1) {
@@ -30,8 +31,7 @@ const brandHtml = (companyBrands, selectedBrandsList) => {
       }
     });
   }
-  console.log(finalBrands);
-  return finalBrands.map((brand, index) => (
+  return companyBrands.map((brand, index) => (
     <option key={index} value={brand.id}>{brand.brand_name}</option>
   ));
 };

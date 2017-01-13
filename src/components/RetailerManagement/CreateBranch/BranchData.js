@@ -88,6 +88,10 @@ const saveBranch = () => {
       return Promise.reject({ stage: 0 });
     }
 
+    /* Adding address for retailer */
+    branchDataObj.org_address = branchState.branchContact.branch_address;
+    /* End of it */
+
     const insertObj = {};
     insertObj.objects = [ { ...branchDataObj } ];
     insertObj.returning = ['id'];
@@ -299,7 +303,8 @@ const saveBranchDetail = () => {
         return Promise.reject();
       }
       alert('Branch inserted with errors, please edit it to correct the information');
-      return dispatch( routeActions.push('/hadmin/retailer_management/view_organizations'));
+      // return dispatch( routeActions.push('/hadmin/retailer_management/view_organizations'));
+      return dispatch( routeActions.push('/hadmin/retailer_management/view_branches'));
     });
   };
 };
@@ -382,6 +387,10 @@ const updateBranch = () => {
       alert('All the fields for Branch are mandatory');
       return Promise.reject({ stage: 0 });
     }
+
+    /* Adding address for retailer */
+    branchDataObj.org_address = branchState.branchContact.branch_address;
+    /* End of it */
 
     const insertObj = {};
 
@@ -508,7 +517,8 @@ const updateBranchDetail = () => {
         return Promise.reject();
       }
       alert('Branch inserted with errors, please edit it to correct the information');
-      return dispatch( routeActions.push('/hadmin/retailer_management/view_organizations'));
+      // return dispatch( routeActions.push('/hadmin/retailer_management/view_organizations'));
+      return dispatch( routeActions.push('/hadmin/retailer_management/view_branches'));
     });
   };
 };

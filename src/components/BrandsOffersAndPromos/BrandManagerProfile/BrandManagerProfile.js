@@ -51,8 +51,6 @@ class BrandManagerProfile extends Component { // eslint-disable-line no-unused-v
   // Here goes all the data fetching stuff
   render() {
     const styles = require('./BrandManagerProfile.scss');
-    console.log('Amazing Horse Shit!');
-    console.log(this.props.lastSuccess);
     const { lastSuccess } = this.props;
     return (
       <div className={styles.container}>
@@ -80,7 +78,7 @@ class BrandManagerProfile extends Component { // eslint-disable-line no-unused-v
             limit = "10"
             triggerPageChange={ this.triggerPageChange.bind(this) }
             showMax="5"
-            parentUrl="/hadmin/brands_offers_and_promos/brand_manager_profile"
+            parentUrl="/hadmin/brands_offers_and_promos/brand_managers_list"
           />
       </div>);
   }
