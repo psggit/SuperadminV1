@@ -220,6 +220,34 @@ const viewState = (stateId) => {
   return { type: VIEW_STATE, data: stateId };
 };
 
+/* Indexing Brand */
+
+const indexSku = ( brandIds ) => {
+  return ( dispatch ) => {
+    const brandSkuIndex = Endpoints.blogicUrl + '/admin/update_index/index/brand';
+
+    /* This will never happen */
+    // if ( brandIds.length === 0 ) {
+    //   return Promise.reject('Brand cannot be empty to index');
+    // }
+
+    const skuIndexObj = {
+      'ids': [ brandIds ]
+    };
+
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(skuIndexObj)
+    };
+
+    return dispatch(requestAction(brandSkuIndex, options));
+  };
+};
+
+/* */
+
 const insertBrand = () => {
   const listOfValidation = [];
   return (dispatch, getState) => {
@@ -347,9 +375,11 @@ const insertBrand = () => {
           return dispatch(requestAction(regionCityUrl, options));
         })
         .then( () => {
-          // if ( resp.success ) {
           alert('brand Created Successfully');
-          return dispatch(routeActions.push('/hadmin/brand_management'));
+          return Promise.all([
+            dispatch(routeActions.push('/hadmin/brand_management')),
+            dispatch(indexSku(brandId))
+          ]);
           // }
           // if ( resp.returning.length > 0) {
           //   alert('brand Created Successfully');
@@ -447,6 +477,7 @@ const updateBrand = () => {
               alert('Brand Successfully Updated');
               return Promise.all([
                 Promise.reject( { 'intended': true } ),
+                dispatch(indexSku(brandId)),
                 dispatch(fetchBrand(brandId))
               ]);
             }
@@ -497,7 +528,10 @@ const updateBrand = () => {
         .then( (resp) => {
           if ( resp.returning.length > 0) {
             alert('brand Created Successfully');
-            return dispatch(routeActions.push('/hadmin/brand_management'));
+            return Promise.all([
+              dispatch(indexSku(brandId)),
+              dispatch(routeActions.push('/hadmin/brand_management'))
+            ]);
           }
           alert('something went wrong while creating brand');
           return dispatch({type: REQUEST_COMPLETED});

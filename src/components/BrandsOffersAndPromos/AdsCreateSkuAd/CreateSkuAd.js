@@ -4,6 +4,7 @@ import { fetchStates, fetchBrands, citiesViewHandler, IMAGE_UPLOAD_SUCCESS, IMAG
 import { checkState, unCheckState } from './CreateAdSkuActions';
 import { checkCity, unCheckCity, finalSave } from './CreateAdSkuActions';
 import uploadFile from '../../Common/Actions/upload';
+import { RESET } from './CreateAdSkuActions';
 import Endpoints from '../../../Endpoints';
 /*
   Decorator which adds couple of use ful features like
@@ -37,6 +38,9 @@ class CreateSkuAd extends Component { // eslint-disable-line no-unused-vars
       this.props.dispatch(fetchBrands()),
       this.props.dispatch(fetchStates())
     ]);
+  }
+  componentWillUnmount() {
+    this.props.dispatch({ type: RESET });
   }
   onClickCitiesView(stateObj) {
     Promise.all([

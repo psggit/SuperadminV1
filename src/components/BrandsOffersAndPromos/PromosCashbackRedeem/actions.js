@@ -4,10 +4,12 @@ import { convertListToDictUsingKV,
   findDuplicatesIndices,
   removeElementsFromArray } from '../../../utils/data';
 
-import {bugetAmountCalc} from './controller';
+// import {budgetAmountCalc} from './controller';
 
 const ON_FAILED = '@PromosInstantCashback/ON_FAILED';
 const ON_LOADING = '@PromosInstantCashback/ON_LOADING';
+const ON_SUCCESS = '@PromosInstantCashback/ON_SUCCESS';
+
 const DO_NOTHING = '@PromosInstantCashback/DO_NOTHING';
 
 const VALUE_CHANGE = '@PromosInstantCashback/VALUE_CHANGE';
@@ -17,6 +19,7 @@ const REMOVE_PROMO = '@PromosInstantCashback/REMOVE_PROMO';
 const EDIT_PROMO = '@PromosInstantCashback/EDIT_PROMO';
 
 const PROMO_CHANGE = '@PromosInstantCashback/PROMO_CHANGE';
+const RESET_DATA = '@PromosInstantCashback/RESET_DATA';
 
 const INIT_COMPANY = '@PromosInstantCashback/INIT_COMPANY';
 const INIT_BRAND_MANAGERS = '@PromosInstantCashback/INIT_BRAND_MANAGERS';
@@ -29,6 +32,8 @@ const INIT_BRAND_MANAGERS = '@PromosInstantCashback/INIT_BRAND_MANAGERS';
  */
 const reducer = (state = defaultState, action) => {
   switch (action.type) {
+    case RESET_DATA:
+      return { ...defaultState};
     case VALUE_CHANGE:
       return { ...state, ...action.data};
 
@@ -57,11 +62,11 @@ const reducer = (state = defaultState, action) => {
         newPromosList = removeElementsFromArray(newPromosList, listOfDupicates);
         currentEditingPromo = 0;
       }
-      let budgetedAmount = bugetAmountCalc(newPromosList);
+      // let budgetedAmount = budgetAmountCalc(newPromosList);
 
       return {
         ...state,
-        budgetedAmount: budgetedAmount,
+        // budgetedAmount: budgetedAmount,
         currentEditingPromo: currentEditingPromo,
         promos: newPromosList
       };
@@ -75,7 +80,9 @@ const reducer = (state = defaultState, action) => {
         price: 0,
         quantity: 0,
         itemPrice: 0,
-        type: 'amount'
+        type: 'amount',
+        serviceCharge: 0,
+        service_type: 'amount'
       });
       return { ...state, promos: newPromosList,
         currentEditingPromo: (newPromosList.length - 1),
@@ -86,12 +93,12 @@ const reducer = (state = defaultState, action) => {
       // action data is the index which should be removed.
       newPromosList = state.promos.slice(0, action.data).concat(state.promos.slice(action.data + 1));
 
-      budgetedAmount = newPromosList.length > 0 ? bugetAmountCalc(newPromosList) : 0;
+      // budgetedAmount = newPromosList.length > 0 ? budgetAmountCalc(newPromosList) : 0;
 
       return { ...state,
         promos: newPromosList,
         currentEditingPromo: 0,
-        budgetedAmount: budgetedAmount,
+        // budgetedAmount: budgetedAmount,
         isPromoSectionShown: (newPromosList.length > 0)
       };
 
@@ -134,6 +141,10 @@ const reducer = (state = defaultState, action) => {
         console.error(e);
       }
       return { ...state };
+    case ON_LOADING:
+      return { ...state, isLoading: true};
+    case ON_SUCCESS:
+      return { ...state, isLoading: false};
     default:
       return state;
   }
@@ -141,6 +152,7 @@ const reducer = (state = defaultState, action) => {
 
 export {
   reducer,
+  RESET_DATA,
   VALUE_CHANGE,
   INIT_COMPANY,
   INIT_BRAND_MANAGERS,
@@ -150,7 +162,8 @@ export {
   PROMO_CHANGE,
   ON_FAILED,
   DO_NOTHING,
-  ON_LOADING
+  ON_LOADING,
+  ON_SUCCESS
 };
 
 export default reducer;

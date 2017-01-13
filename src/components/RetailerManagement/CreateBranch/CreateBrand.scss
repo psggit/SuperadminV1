@@ -224,7 +224,7 @@
 		letter-spacing: 0.3px;
 		text-transform: uppercase;
 	}
-	input[type="text"], select
+	input[type="text"], select, input[type="password"]
 	{
 		border: 1px solid #CCC;
 		border-radius: 3px;
@@ -875,7 +875,7 @@
 	{
 		margin-bottom: 10px;
 	}
-	input[type="text"]
+	input[type="text"], input[type="password"]
 	{
 		border: 1px solid #CCC;
 		border-radius: 3px;

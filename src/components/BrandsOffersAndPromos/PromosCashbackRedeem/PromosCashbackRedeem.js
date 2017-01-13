@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
 
+import { RESET_DATA } from './actions';
 import { fetchData, mapStateToProps, mapDispatchToProps} from './controller';
 import CampaignMenu from './CampaignMenu';
 import PromoSelectionMenu from './PromoSelectionMenu';
@@ -33,7 +34,10 @@ export default class PromosCashbackRedeem extends Component {
 
     brandEmail: PropTypes.string,
     campaignName: PropTypes.string,
-    budgetedAmount: PropTypes.number.isRequired,
+    budgetedAmount: PropTypes.oneOfType([
+      PropTypes.number.isRequired,
+      PropTypes.string.isRequired
+    ]),
     fundsCredited: PropTypes.oneOfType([
       PropTypes.number.isRequired,
       PropTypes.string.isRequired
@@ -64,6 +68,7 @@ export default class PromosCashbackRedeem extends Component {
   // Fix this onces the pageContainer and components are figured out.
   // NOTE: So, if the component is unmount then the new initial values are fetched.
   componentDidMount() {
+    this.props.dispatch({type: RESET_DATA});
     this.props.dispatch(fetchData);
   }
 
