@@ -89,6 +89,8 @@ import {Login, Home, PageContainer,
   BarDailyReports,
   BarSettlements,
   Reports,
+  BarReportUpload,
+  RetailerReportUpload,
   InvitationLanding,
   RetailerRedemptions,
   ViewAllCredits,
@@ -192,6 +194,8 @@ const main = (
         /* Reports */
 
         <Route path="reports" component={Reports} />
+        <Route path="bar_report_upload" component={BarReportUpload} />
+        <Route path="retailer_report_upload" component={RetailerReportUpload} />
 
         /* Creating and viewing notepads */
         <Route path="/hadmin/consumer/profile/:Id/create_notepad_entry" component={CreateNotepadEntry} />

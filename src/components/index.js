@@ -160,6 +160,8 @@ export CreateBarAd from './BrandsOffersAndPromos/AdsCreateBarAd/CreateBarAd';
 
 /* Reports */
 export Reports from './Reports/Reports/Report';
+export BarReportUpload from './Reports/Reports/UploadBar';
+export RetailerReportUpload from './Reports/Reports/UploadRetailer';
 /* */
 
 /* Retailer Transactions */
