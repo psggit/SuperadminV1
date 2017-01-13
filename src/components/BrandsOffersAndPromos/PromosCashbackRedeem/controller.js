@@ -191,6 +191,21 @@ const promoValidatorDict = {
         return false;
       };
   },
+  service_type: (value, otherValues) => {
+    const priceFloat = parseFloat(otherValues.serviceCharge);
+
+    return (value && (value.toLowerCase() === 'amount' ||
+        value.toLowerCase() === 'percentage') && (
+          (priceFloat < 100 && value.toLowerCase() === 'percentage') ||
+          (value.toLowerCase() === 'amount')
+        )) ?
+      () => {
+        return true;
+      } : () => {
+        alert('Service type should be percentage \'or\' amount.');
+        return false;
+      };
+  },
   brandName: () => {
     return () => {
       return true;
@@ -346,6 +361,8 @@ const mapDispatchToProps = (dispatch) => {
             maxPrice: (promo.pricing ? promo.pricing.price : 0)})
           || !validators(promoValidatorDict, 'promoName', promo.promoName)
           || !validators(promoValidatorDict, 'serviceCharge', promo.serviceCharge)
+          || !validators(promoValidatorDict, 'service_type', promo.service_type, {
+            maxPrice: promo.pricing.price, serviceCharge: promo.serviceCharge})
           || !validators(promoValidatorDict, 'brandName', promo.brandName, values)
           || !validators(promoValidatorDict, 'price', promo.price, {...values,
             price: promo.price,
@@ -394,6 +411,7 @@ const mapDispatchToProps = (dispatch) => {
               dispatch(makeRequest(updateElasticSearchQuery.url, createFetchOption(updateElasticSearchQuery.query), DO_NOTHING, ON_FAILED, ON_LOADING)).then((elasticResponse) =>{
                 alert('Successful inserted campaign and corresponding skus. Indices will be updated soon....');
                 dispatch({type: RESET_DATA});
+                dispatch(fetchData);
                 console.log(elasticResponse);
                 console.log(cashbackOffersSKU);
               }, () => {

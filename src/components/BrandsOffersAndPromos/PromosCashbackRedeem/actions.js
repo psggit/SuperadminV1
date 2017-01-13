@@ -8,6 +8,8 @@ import { convertListToDictUsingKV,
 
 const ON_FAILED = '@PromosInstantCashback/ON_FAILED';
 const ON_LOADING = '@PromosInstantCashback/ON_LOADING';
+const ON_SUCCESS = '@PromosInstantCashback/ON_SUCCESS';
+
 const DO_NOTHING = '@PromosInstantCashback/DO_NOTHING';
 
 const VALUE_CHANGE = '@PromosInstantCashback/VALUE_CHANGE';
@@ -78,7 +80,9 @@ const reducer = (state = defaultState, action) => {
         price: 0,
         quantity: 0,
         itemPrice: 0,
-        type: 'amount'
+        type: 'amount',
+        serviceCharge: 0,
+        service_type: 'amount'
       });
       return { ...state, promos: newPromosList,
         currentEditingPromo: (newPromosList.length - 1),
@@ -137,6 +141,10 @@ const reducer = (state = defaultState, action) => {
         console.error(e);
       }
       return { ...state };
+    case ON_LOADING:
+      return { ...state, isLoading: true};
+    case ON_SUCCESS:
+      return { ...state, isLoading: false};
     default:
       return state;
   }
@@ -154,7 +162,8 @@ export {
   PROMO_CHANGE,
   ON_FAILED,
   DO_NOTHING,
-  ON_LOADING
+  ON_LOADING,
+  ON_SUCCESS
 };
 
 export default reducer;
