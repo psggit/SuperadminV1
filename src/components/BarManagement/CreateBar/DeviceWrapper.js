@@ -35,7 +35,9 @@ class DeviceWrapper extends Component { // eslint-disable-line no-unused-vars
       createDeviceLocal,
       updateDeviceLocal,
       deleteDeviceLocal,
-      barData
+      barData,
+      emailSmsDeviceCreation,
+      emailSmsCredsCreation
     } = this.props;
 
     const { showDetail, devices, localDevs, isEditing } = deviceData;
@@ -50,6 +52,8 @@ class DeviceWrapper extends Component { // eslint-disable-line no-unused-vars
       localDevs = { localDevs }
       loadDevice ={ this.loadDevice.bind(this) }
       loadLocalDevice = { this.loadLocalDevice.bind(this) }
+      emailSmsDeviceCreation = { emailSmsDeviceCreation }
+      emailSmsCredsCreation = { emailSmsCredsCreation }
         />
             <AddDeviceComponent
       dispatch = { dispatch }
@@ -83,7 +87,9 @@ DeviceWrapper.propTypes = {
   deleteDevice: PropTypes.func.isRequired,
   createDeviceLocal: PropTypes.func.isRequired,
   updateDeviceLocal: PropTypes.func.isRequired,
-  deleteDeviceLocal: PropTypes.func.isRequired
+  deleteDeviceLocal: PropTypes.func.isRequired,
+  emailSmsDeviceCreation: PropTypes.func.isRequired,
+  emailSmsCredsCreation: PropTypes.func.isRequired
 };
 
 export default DeviceWrapper;

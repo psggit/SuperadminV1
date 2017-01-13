@@ -239,6 +239,8 @@ const updateDevice = () => {
   };
 };
 
+/* Device Email/SMS */
+
 const getEmailDeviceCreationObj = ( getState, id, templateName ) => {
   const deviceData = getState().branch_data.deviceData;
   const branchData = getState().branch_data.branchData;
@@ -274,7 +276,7 @@ const getEmailDeviceCreationObj = ( getState, id, templateName ) => {
   retailerInfo.device.mobile = currDevice[0].device.mobile_number;
 
   emailerObj.content.retailer = { ...retailerInfo };
-  return emailerObj;
+  return Promise.resolve(emailerObj);
 };
 
 const getSmsDeviceCreationObj = ( getState, id, templateName ) => {
@@ -308,7 +310,7 @@ const getSmsDeviceCreationObj = ( getState, id, templateName ) => {
   retailerInfo.name = branchData.branchDetail.org_name;
 
   emailerObj.content.retailer = { ...retailerInfo };
-  return emailerObj;
+  return Promise.resolve(emailerObj);
 };
 
 const getEmailCredsCreationObj = ( getState, id, templateName ) => {
@@ -344,7 +346,7 @@ const getEmailCredsCreationObj = ( getState, id, templateName ) => {
   retailerInfo.password = '*****';
 
   emailerObj.content.retailer = { ...retailerInfo };
-  return emailerObj;
+  return Promise.resolve(emailerObj);
 };
 
 const getSmsCredsCreationObj = ( getState, id, templateName ) => {
@@ -378,7 +380,7 @@ const getSmsCredsCreationObj = ( getState, id, templateName ) => {
   retailerInfo.name = branchData.branchDetail.org_name;
 
   emailerObj.content.retailer = { ...retailerInfo };
-  return emailerObj;
+  return Promise.resolve(emailerObj);
 };
 
 const sendEmail = ( emailerObj ) => {
@@ -420,8 +422,8 @@ const sendSMS = ( emailerObj ) => {
 const emailSmsDeviceCreation = (id, templateName ) => {
   return ( dispatch, getState ) => {
     return Promise.all([
-      dispatch(sendEmail(getEmailDeviceCreationObj(getState, id, templateName ))),
-      dispatch(sendSMS(getSmsDeviceCreationObj(getState, id, templateName)))
+      getEmailDeviceCreationObj(getState, id, templateName ).then( ( resp ) => { return dispatch(sendEmail(resp)); }),
+      getSmsDeviceCreationObj(getState, id, templateName).then( ( resp ) => { return dispatch(sendSMS(resp )); })
     ]);
   };
 };
@@ -429,8 +431,8 @@ const emailSmsDeviceCreation = (id, templateName ) => {
 const emailSmsCredsCreation = (id, templateName ) => {
   return ( dispatch, getState ) => {
     return Promise.all([
-      dispatch(sendEmail(getEmailCredsCreationObj(getState, id, templateName ))),
-      dispatch(sendSMS(getSmsCredsCreationObj(getState, id, templateName)))
+      getEmailCredsCreationObj(getState, id, templateName ).then( ( resp ) => { return dispatch(sendEmail(resp)); }),
+      getSmsCredsCreationObj(getState, id, templateName).then( ( resp ) => { return dispatch(sendSMS(resp )); })
     ]);
   };
 };

@@ -213,6 +213,212 @@ const updateDevice = () => {
   };
 };
 
+/* Device Email/SMS */
+
+const getEmailDeviceCreationObj = ( getState, id, templateName ) => {
+  const deviceData = getState().bar_data.deviceData;
+  const barData = getState().bar_data.barData;
+
+  const currDevice = ( deviceData.devices ).filter( ( f ) => {
+    return ( f.device_id === parseInt(id, 10) );
+  });
+
+  if ( currDevice.length === 0 ) {
+    alert('Device doesn\'t exist');
+    return Promise.reject();
+  }
+
+  if ( !barData.barContact.email ) {
+    alert('Store manager email not available');
+    return Promise.reject();
+  }
+
+  if ( !currDevice[0].is_active ) {
+    alert('Device is not active yet');
+    return Promise.reject();
+  }
+
+  const emailerObj = {};
+  emailerObj.to = [ barData.barContact.email ];
+  emailerObj.template_name = templateName;
+  emailerObj.content = {};
+  const retailerInfo = {};
+  retailerInfo.name = barData.barDetail.name;
+  retailerInfo.device = {};
+  retailerInfo.device.email = barData.barContact.email;
+  retailerInfo.device.imei = currDevice[0].device.device_num;
+  retailerInfo.device.mobile = currDevice[0].device.mobile_number;
+
+  emailerObj.content.retailer = { ...retailerInfo };
+  return Promise.resolve(emailerObj);
+};
+
+const getSmsDeviceCreationObj = ( getState, id, templateName ) => {
+  const deviceData = getState().bar_data.deviceData;
+  const barData = getState().bar_data.barData;
+
+  const currDevice = ( deviceData.devices ).filter( ( f ) => {
+    return ( f.device_id === parseInt(id, 10) );
+  });
+
+  if ( currDevice.length === 0 ) {
+    alert('Device doesn\'t exist');
+    return Promise.reject();
+  }
+
+  if ( !barData.barContact.mobile_number ) {
+    alert('Store manager email not available');
+    return Promise.reject();
+  }
+
+  if ( !currDevice[0].is_active ) {
+    alert('Device is not active yet');
+    return Promise.reject();
+  }
+
+  const emailerObj = {};
+  emailerObj.to = [ barData.barContact.mobile_number ];
+  emailerObj.template_name = templateName;
+  emailerObj.content = {};
+  const retailerInfo = {};
+  retailerInfo.name = barData.barDetail.name;
+
+  emailerObj.content.retailer = { ...retailerInfo };
+  return Promise.resolve(emailerObj);
+};
+
+const getEmailCredsCreationObj = ( getState, id, templateName ) => {
+  const deviceData = getState().bar_data.deviceData;
+  const barData = getState().bar_data.barData;
+
+  const currDevice = ( deviceData.devices ).filter( ( f ) => {
+    return ( f.device_id === parseInt(id, 10) );
+  });
+
+  if ( currDevice.length === 0 ) {
+    alert('Device doesn\'t exist');
+    return Promise.reject();
+  }
+
+  if ( !barData.barContact.email ) {
+    alert('Store manager email not available');
+    return Promise.reject();
+  }
+
+  if ( !currDevice[0].is_active ) {
+    alert('Device is not active yet');
+    return Promise.reject();
+  }
+
+  const emailerObj = {};
+  emailerObj.to = [ barData.barContact.email ];
+  emailerObj.template_name = templateName;
+  emailerObj.content = {};
+  const retailerInfo = {};
+  retailerInfo.name = barData.barDetail.name;
+  retailerInfo.username = barData.barContact.email;
+  retailerInfo.password = '*****';
+
+  emailerObj.content.retailer = { ...retailerInfo };
+  return Promise.resolve(emailerObj);
+};
+
+const getSmsCredsCreationObj = ( getState, id, templateName ) => {
+  const deviceData = getState().bar_data.deviceData;
+  const barData = getState().bar_data.barData;
+
+  const currDevice = ( deviceData.devices ).filter( ( f ) => {
+    return ( f.device_id === parseInt(id, 10) );
+  });
+
+  if ( currDevice.length === 0 ) {
+    alert('Device doesn\'t exist');
+    return Promise.reject();
+  }
+
+  if ( !barData.barContact.mobile_number ) {
+    alert('Store manager email not available');
+    return Promise.reject();
+  }
+
+  if ( !currDevice[0].is_active ) {
+    alert('Device is not active yet');
+    return Promise.reject();
+  }
+
+  const emailerObj = {};
+  emailerObj.to = [ barData.barContact.mobile_number ];
+  emailerObj.template_name = templateName;
+  emailerObj.content = {};
+  const retailerInfo = {};
+  retailerInfo.name = barData.barDetail.name;
+
+  emailerObj.content.retailer = { ...retailerInfo };
+  return Promise.resolve(emailerObj);
+};
+
+const sendEmail = ( emailerObj ) => {
+  return ( dispatch ) => {
+    const emailUrl = Endpoints.blogicUrl + '/admin/trigger/email';
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(emailerObj)
+    };
+
+    return dispatch( requestAction(emailUrl, options) )
+    .then( () => {
+      alert('Emailer Sent');
+    })
+    .catch( () => {
+      alert('Something went wrong while sending an email');
+    });
+  };
+};
+
+const sendSMS = ( emailerObj ) => {
+  return ( dispatch ) => {
+    const smsUrl = Endpoints.blogicUrl + '/admin/trigger/sms';
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(emailerObj)
+    };
+
+    return dispatch( requestAction(smsUrl, options) )
+    .then( () => {
+      alert('SMS Sent');
+    })
+    .catch( () => {
+      alert('Something went wrong while sending an  SMS ');
+    });
+  };
+};
+
+const emailSmsDeviceCreation = (id, templateName ) => {
+  return ( dispatch, getState ) => {
+    return Promise.all([
+      getEmailDeviceCreationObj(getState, id, templateName ).then( ( resp ) => { return dispatch(sendEmail(resp)); }),
+      getSmsDeviceCreationObj(getState, id, templateName).then( ( resp ) => { return dispatch(sendSMS(resp )); })
+    ])
+    .catch( ( resp ) => {
+      alert(resp);
+    });
+  };
+};
+
+const emailSmsCredsCreation = (id, templateName ) => {
+  return ( dispatch, getState ) => {
+    return Promise.all([
+      getEmailCredsCreationObj(getState, id, templateName ).then( ( resp ) => { return dispatch(sendEmail(resp)); }),
+      getSmsCredsCreationObj(getState, id, templateName).then( ( resp ) => { return dispatch(sendSMS(resp )); })
+    ])
+    .catch( ( resp ) => {
+      alert(resp);
+    });
+  };
+};
+
+/* End of it */
+
 const deleteDevice = ( id ) => {
   return ( dispatch, getState ) => {
     const devUrl = Endpoints.db + '/table/device/delete';
@@ -448,7 +654,9 @@ export {
   updateDeviceLocal,
   deleteDeviceLocal,
   UNLOAD_DEVICE,
-  RESET_DEVICE
+  RESET_DEVICE,
+  emailSmsDeviceCreation,
+  emailSmsCredsCreation
 };
 
 export default deviceReducer;
