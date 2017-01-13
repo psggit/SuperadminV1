@@ -1,7 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router';
 
-const AdsList = ( {data} ) => {
+const AdsList = ( {data, activation} ) => {
   const styles = require('./AdsList.scss');
   let tableBody;
   let objHtml;
@@ -16,11 +15,9 @@ const AdsList = ( {data} ) => {
     return (
           <tr key={index}>
             <td>
-              <Link to={'#'}>
-                <button className={styles.edit_btn} data-state-id={dat.id}>
-                  { activeTag }
-                </button>
-              </Link>
+              <button onClick={activation} data-state-active={dat.status} className={styles.edit_btn} data-state-type={dat.type} data-state-id={dat.id}>
+                { activeTag }
+              </button>
             </td>
             <td> { dat.id } </td>
             <td>

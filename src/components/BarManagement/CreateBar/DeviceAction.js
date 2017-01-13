@@ -66,7 +66,7 @@ const activateDevice = ( devId, retailId, option ) => {
     updateObj.values = { ...retailerDataObj };
     updateObj.returning = ['id'];
     updateObj.where = {
-      'retailer_id': retailId,
+      'bar_id': retailId,
       'device_id': devId
     };
 
