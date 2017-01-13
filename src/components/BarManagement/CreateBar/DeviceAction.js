@@ -407,7 +407,7 @@ const deviceReducer = ( state = { ...addDeviceState, ...uiState }, action ) => {
     case HANDLE_ERROR:
       return { ...state };
     case TOGGLE_DEVICE_DETAIL:
-      return { ...state, showDetail: !state.showDetail, device_num: '', mobile_number: '', operator: '', email: '', is_active: true,isEditing: false, editDeviceId: 0, 'password': ''};
+      return { ...state, showDetail: !state.showDetail, device_num: '', mobile_number: '', operator: '', email: '', is_active: true, isEditing: false, editDeviceId: 0, 'password': ''};
     case LOCAL_CREATE_DEVICE:
       const localState = {};
       localState[action.data.devId] = action.data.devData;
