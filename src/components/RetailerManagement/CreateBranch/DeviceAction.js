@@ -239,6 +239,204 @@ const updateDevice = () => {
   };
 };
 
+const getEmailDeviceCreationObj = ( getState, id, templateName ) => {
+  const deviceData = getState().branch_data.deviceData;
+  const branchData = getState().branch_data.branchData;
+
+  const currDevice = ( deviceData.devices ).filter( ( f ) => {
+    return ( f.device_id === parseInt(id, 10) );
+  });
+
+  if ( currDevice.length === 0 ) {
+    alert('Device doesn\'t exist');
+    return Promise.reject();
+  }
+
+  if ( !branchData.branchContact.email ) {
+    alert('Store manager email not available');
+    return Promise.reject();
+  }
+
+  if ( !currDevice[0].is_active ) {
+    alert('Device is not active yet');
+    return Promise.reject();
+  }
+
+  const emailerObj = {};
+  emailerObj.to = [ branchData.branchContact.email ];
+  emailerObj.template_name = templateName;
+  emailerObj.content = {};
+  const retailerInfo = {};
+  retailerInfo.name = branchData.branchDetail.org_name;
+  retailerInfo.device = {};
+  retailerInfo.device.email = branchData.branchContact.email;
+  retailerInfo.device.imei = currDevice[0].device.device_num;
+  retailerInfo.device.mobile = currDevice[0].device.mobile_number;
+
+  emailerObj.content.retailer = { ...retailerInfo };
+  return emailerObj;
+};
+
+const getSmsDeviceCreationObj = ( getState, id, templateName ) => {
+  const deviceData = getState().branch_data.deviceData;
+  const branchData = getState().branch_data.branchData;
+
+  const currDevice = ( deviceData.devices ).filter( ( f ) => {
+    return ( f.device_id === parseInt(id, 10) );
+  });
+
+  if ( currDevice.length === 0 ) {
+    alert('Device doesn\'t exist');
+    return Promise.reject();
+  }
+
+  if ( !branchData.branchContact.mobile_number ) {
+    alert('Store manager email not available');
+    return Promise.reject();
+  }
+
+  if ( !currDevice[0].is_active ) {
+    alert('Device is not active yet');
+    return Promise.reject();
+  }
+
+  const emailerObj = {};
+  emailerObj.to = [ branchData.branchContact.mobile_number ];
+  emailerObj.template_name = templateName;
+  emailerObj.content = {};
+  const retailerInfo = {};
+  retailerInfo.name = branchData.branchDetail.org_name;
+
+  emailerObj.content.retailer = { ...retailerInfo };
+  return emailerObj;
+};
+
+const getEmailCredsCreationObj = ( getState, id, templateName ) => {
+  const deviceData = getState().branch_data.deviceData;
+  const branchData = getState().branch_data.branchData;
+
+  const currDevice = ( deviceData.devices ).filter( ( f ) => {
+    return ( f.device_id === parseInt(id, 10) );
+  });
+
+  if ( currDevice.length === 0 ) {
+    alert('Device doesn\'t exist');
+    return Promise.reject();
+  }
+
+  if ( !branchData.branchContact.email ) {
+    alert('Store manager email not available');
+    return Promise.reject();
+  }
+
+  if ( !currDevice[0].is_active ) {
+    alert('Device is not active yet');
+    return Promise.reject();
+  }
+
+  const emailerObj = {};
+  emailerObj.to = [ branchData.branchContact.email ];
+  emailerObj.template_name = templateName;
+  emailerObj.content = {};
+  const retailerInfo = {};
+  retailerInfo.name = branchData.branchDetail.org_name;
+  retailerInfo.username = branchData.branchContact.email;
+  retailerInfo.password = '*****';
+
+  emailerObj.content.retailer = { ...retailerInfo };
+  return emailerObj;
+};
+
+const getSmsCredsCreationObj = ( getState, id, templateName ) => {
+  const deviceData = getState().branch_data.deviceData;
+  const branchData = getState().branch_data.branchData;
+
+  const currDevice = ( deviceData.devices ).filter( ( f ) => {
+    return ( f.device_id === parseInt(id, 10) );
+  });
+
+  if ( currDevice.length === 0 ) {
+    alert('Device doesn\'t exist');
+    return Promise.reject();
+  }
+
+  if ( !branchData.branchContact.mobile_number ) {
+    alert('Store manager email not available');
+    return Promise.reject();
+  }
+
+  if ( !currDevice[0].is_active ) {
+    alert('Device is not active yet');
+    return Promise.reject();
+  }
+
+  const emailerObj = {};
+  emailerObj.to = [ branchData.branchContact.mobile_number ];
+  emailerObj.template_name = templateName;
+  emailerObj.content = {};
+  const retailerInfo = {};
+  retailerInfo.name = branchData.branchDetail.org_name;
+
+  emailerObj.content.retailer = { ...retailerInfo };
+  return emailerObj;
+};
+
+const sendEmail = ( emailerObj ) => {
+  return ( dispatch ) => {
+    const emailUrl = Endpoints.blogicUrl + '/admin/trigger/email';
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(emailerObj)
+    };
+
+    return dispatch( requestAction(emailUrl, options) )
+    .then( () => {
+      alert('Emailer Sent');
+    })
+    .catch( () => {
+      alert('Something went wrong while sending an email');
+    });
+  };
+};
+
+const sendSMS = ( emailerObj ) => {
+  return ( dispatch ) => {
+    const smsUrl = Endpoints.blogicUrl + '/admin/trigger/sms';
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(emailerObj)
+    };
+
+    return dispatch( requestAction(smsUrl, options) )
+    .then( () => {
+      alert('SMS Sent');
+    })
+    .catch( () => {
+      alert('Something went wrong while sending an  SMS ');
+    });
+  };
+};
+
+const emailSmsDeviceCreation = (id, templateName ) => {
+  return ( dispatch, getState ) => {
+    return Promise.all([
+      dispatch(sendEmail(getEmailDeviceCreationObj(getState, id, templateName ))),
+      dispatch(sendSMS(getSmsDeviceCreationObj(getState, id, templateName)))
+    ]);
+  };
+};
+
+const emailSmsCredsCreation = (id, templateName ) => {
+  return ( dispatch, getState ) => {
+    return Promise.all([
+      dispatch(sendEmail(getEmailCredsCreationObj(getState, id, templateName ))),
+      dispatch(sendSMS(getSmsCredsCreationObj(getState, id, templateName)))
+    ]);
+  };
+};
+
+/* End of it */
+
 const deleteDevice = ( id ) => {
   return ( dispatch, getState ) => {
     const devUrl = Endpoints.db + '/table/device/delete';
@@ -478,7 +676,11 @@ export {
   updateDeviceLocal,
   deleteDeviceLocal,
   UNLOAD_DEVICE,
-  RESET_DEVICE
+  RESET_DEVICE,
+  sendEmail,
+  sendSMS,
+  emailSmsDeviceCreation,
+  emailSmsCredsCreation
 };
 
 export default deviceReducer;
