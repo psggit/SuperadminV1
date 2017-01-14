@@ -15,58 +15,6 @@ import { MAKE_REQUEST,
 
 /* ****** Action Creators ******** */
 
-export const toggleActivation = (id, type, status) => {
-  return (dispatch) => {
-    let activeTag;
-    dispatch({ type: MAKE_REQUEST});
-    if (status === 'Active') {
-      activeTag = 'Inactive';
-    } else {
-      activeTag = 'Active';
-    }
-    const payLoad = {
-      status: activeTag
-    };
-    const updateObj = {};
-    updateObj.values = { ...payLoad };
-    updateObj.returning = ['id'];
-    updateObj.where = {
-      'id': parseInt(id, 10),
-      'type': type
-    };
-    const url = Endpoints.db + '/table/' + 'common_ads_listing_sa' + '/update';
-    const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(updateObj),
-    };
-    // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
-
-    return fetch(url, options)
-           .then(
-             (response) => {
-               if (response.ok) { // 2xx status
-                 response.json().then(
-                   (d) => {
-                     console.log(d);
-                     return dispatch({type: REQUEST_SUCCESS, data: d});
-                   },
-                   () => {
-                     return dispatch({type: REQUEST_ERROR, data: 'Error.Try again'});
-                   }
-                 );
-               } else {
-                 return dispatch({type: REQUEST_ERROR, data: 'Error.Try again'});
-               }
-             },
-             (error) => {
-               console.log(error);
-               return dispatch({type: REQUEST_ERROR, data: 'Error.Try again'});
-             });
-  };
-};
-
 const getBrandManagerData = (page, limit) => {
   return (dispatch) => {
     dispatch({ type: MAKE_REQUEST});
@@ -174,6 +122,60 @@ const getAllBrandManagerData = (page, limit) => {
       });
   };
 };
+
+// CAUTION : Taking ad type from view field which is of format 'type_ad' and requesting to table 'ad_type'
+export const toggleActivation = (id, type, status) => {
+  return (dispatch) => {
+    let activeTag;
+    dispatch({ type: MAKE_REQUEST});
+    if (status === 'Active') {
+      activeTag = 'Inactive';
+    } else {
+      activeTag = 'Active';
+    }
+    const payLoad = {
+      status: activeTag
+    };
+    let table = type.slice(0, -3);
+    table = 'ad_' + table;
+    const updateObj = {};
+    updateObj.values = { ...payLoad };
+    updateObj.returning = ['id'];
+    updateObj.where = {
+      'id': parseInt(id, 10),
+    };
+    const url = Endpoints.db + '/table/' + table + '/update';
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(updateObj),
+    };
+    // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
+
+    return fetch(url, options)
+           .then(
+             (response) => {
+               if (response.ok) { // 2xx status
+                 response.json().then(
+                   () => {
+                     return dispatch(getBrandManagerData(1, 10));
+                   },
+                   () => {
+                     return dispatch({type: REQUEST_ERROR, data: 'Error.Try again'});
+                   }
+                 );
+               } else {
+                 return dispatch({type: REQUEST_ERROR, data: 'Error.Try again'});
+               }
+             },
+             (error) => {
+               console.log(error);
+               return dispatch({type: REQUEST_ERROR, data: 'Error.Try again'});
+             });
+  };
+};
+
 
 /* Figureout this part */
 

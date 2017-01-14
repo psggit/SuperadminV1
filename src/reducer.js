@@ -50,7 +50,9 @@ import whatsNewReducer from './components/WhatsNewArticle/CreateArticle/CreateAr
 // Ads
 import adsListReducer from './components/BrandsOffersAndPromos/AdsListing/AdsListActions';
 import adsCreateImageReducer from './components/BrandsOffersAndPromos/AdsCreateImageAd/CreateAdImageActions';
+import adsViewImageReducer from './components/BrandsOffersAndPromos/AdsViewImageAd/CreateAdImageActions';
 import adsCreateSkuReducer from './components/BrandsOffersAndPromos/AdsCreateSkuAd/CreateAdSkuActions';
+import adsViewSkuReducer from './components/BrandsOffersAndPromos/AdsViewSkuAd/CreateAdImageActions';
 import adsCreatePromoReducer from './components/BrandsOffersAndPromos/AdsCreatePromoAd/CreateAdPromoActions';
 import adsCreateBarReducer from './components/BrandsOffersAndPromos/AdsCreateBarAd/CreateAdBarActions';
 // import adsViewImageReducer from './components/BrandsOffersAndPromos/AdsViewImageAd/ViewAdImageActions';
@@ -106,6 +108,8 @@ const reducer = combineReducers({
   bar_sku_create_data: barSkuDataReducer,
   adslist_data: adsListReducer,
   createImageAd_data: adsCreateImageReducer,
+  viewSkuAd_data: adsViewSkuReducer,
+  viewImageAd_data: adsViewImageReducer,
   createSkuAd_data: adsCreateSkuReducer,
   createPromoAd_data: adsCreatePromoReducer,
   whats_new_data: whatsNewReducer,

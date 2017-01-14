@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router';
 
 const AdsList = ( {data, activation} ) => {
   const styles = require('./AdsList.scss');
@@ -18,6 +19,11 @@ const AdsList = ( {data, activation} ) => {
               <button onClick={activation} data-state-active={dat.status} className={styles.edit_btn} data-state-type={dat.type} data-state-id={dat.id}>
                 { activeTag }
               </button>
+            </td>
+            <td>
+              <Link to={'/hadmin/brands_offers_and_promos/view_' + dat.type + '/' + dat.id} target="_blank">
+                  View
+              </Link>
             </td>
             <td> { dat.id } </td>
             <td>
@@ -62,6 +68,7 @@ const AdsList = ( {data, activation} ) => {
             <table className={'table table-striped'}>
               <thead>
                 <tr>
+                  <th> </th>
                   <th> </th>
                   <th> ID </th>
                   <th> Type </th>
