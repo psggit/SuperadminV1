@@ -74,7 +74,7 @@ const getInitData = ( Id ) => {
     const branchSelectObj = {};
     branchSelectObj.columns = [ 'id', 'org_name', {
       'name': 'addresses',
-      'columns': [ 'email']
+      'columns': [ 'email', 'mobile_number' ]
     }];
     const codeSelectObj = {};
     codeSelectObj.columns = [ '*' ];
@@ -98,6 +98,86 @@ const getInitData = ( Id ) => {
     });
   };
 };
+
+/* Emailer */
+
+/* Nicked it */
+const getDateInDDMMYY = ( dat ) => {
+  let today = dat;
+  let dd = today.getDate();
+  let mm = today.getMonth() + 1;
+
+  const yyyy = today.getFullYear();
+  if (dd < 10) {
+    dd = '0' + dd;
+  }
+  if (mm < 10) {
+    mm = '0' + mm;
+  }
+  today = dd + '/' + mm + '/' + yyyy;
+  return today;
+};
+
+const sendEmail = ( getState, insertObj ) => {
+  const currDate = new Date();
+
+  const currState = getState().retailer_debit_credit;
+  const emailerObj = {};
+  const emailerUrl = Endpoints.blogicUrl + '/admin/trigger/email';
+  emailerObj.to = [ currState.retailerMap[insertObj.retailer_id].email ];
+  emailerObj.template_name = currState.codeMap[insertObj.retailer_credits_and_debit_codes_id] === 'debit' ? 'manual-debit-retailer' : 'manual-credit-retailer';
+  emailerObj.content = {
+    'retailer': {
+      'name': currState.retailerMap[insertObj.retailer_id].org_name,
+      'created_at': getDateInDDMMYY(currDate),
+      'value': insertObj.amount
+    }
+  };
+
+  if ( emailerObj.to[0].length === 0 ) {
+    alert('Email not present to add the credit');
+    return Promise.reject();
+  }
+
+  const emailerOptions = {
+    ...genOptions,
+    body: JSON.stringify(emailerObj)
+  };
+
+  return Promise.resolve(requestAction( emailerUrl, emailerOptions));
+};
+
+const sendSMS = ( getState, insertObj ) => {
+  const currDate = new Date();
+
+  const currState = getState().retailer_debit_credit;
+  const smsObj = {};
+  const smsUrl = Endpoints.blogicUrl + '/admin/trigger/sms';
+  smsObj.to = [ currState.retailerMap[insertObj.retailer_id].mobile_number ];
+  smsObj.template_name = currState.codeMap[insertObj.retailer_credits_and_debit_codes_id] === 'debit' ? 'manual-debit-retailer' : 'manual-credit-retailer';
+
+  smsObj.content = {
+    'retailer': {
+      'name': currState.retailerMap[insertObj.retailer_id].org_name,
+      'created_at': getDateInDDMMYY(currDate),
+      'value': insertObj.amount
+    }
+  };
+
+  if ( smsObj.to[0].length === 0 ) {
+    alert('Mobile Number not present to add the credit');
+    return Promise.reject();
+  }
+
+  const smsOptions = {
+    ...genOptions,
+    body: JSON.stringify(smsObj)
+  };
+
+  return Promise.resolve(requestAction( smsUrl, smsOptions));
+};
+
+/* End of it */
 
 const saveTransaction = () => {
   return ( dispatch, getState ) => {
@@ -124,24 +204,6 @@ const saveTransaction = () => {
     insertTransaction.objects = [ insertObj ];
     insertTransaction.returning = ['id'];
 
-    const currDate = new Date().toISOString().slice(0, 10);
-    const emailerObj = {};
-    const emailerUrl = Endpoints.blogicUrl + '/admin/trigger/email';
-    emailerObj.to = [ currState.retailerMap[insertObj.retailer_id].email ];
-    emailerObj.template_name = currState.codeMap[insertObj.retailer_credits_and_debit_codes_id] === 'debit' ? 'manual-debit-retailer' : 'manual-credit-retailer';
-    emailerObj.content = {
-      'retailer': {
-        'name': currState.retailerMap[insertObj.retailer_id].org_name,
-        'created_at': currDate,
-        'value': insertObj.amount
-      }
-    };
-
-    if ( emailerObj.to[0].length === 0 ) {
-      alert('Email not present to add the credit');
-      return Promise.reject();
-    }
-
     const options = {
       ...genOptions,
       body: JSON.stringify(insertTransaction)
@@ -151,19 +213,10 @@ const saveTransaction = () => {
     .then( ( resp ) => {
       if ( resp.returning.length > 0 ) {
         alert('Added');
-        const emailerOptions = {
-          ...genOptions,
-          body: JSON.stringify(emailerObj)
-        };
 
-        if ( emailerObj.to[0].length === 0 ) {
-          alert('Email not present to update the user');
-          return Promise.all([
-            dispatch( routeActions.push('/hadmin/retailer_management/debits_credits_landing'))
-          ]);
-        }
         return Promise.all([
-          dispatch( requestAction( emailerUrl, emailerOptions)),
+          sendEmail(getState, insertObj).then( ( asyncAction ) => { return dispatch( asyncAction ); }),
+          sendSMS(getState, insertObj).then( ( asyncAction ) => { return dispatch( asyncAction ); }),
           dispatch( routeActions.push('/hadmin/retailer_management/debits_credits_landing'))
         ]);
       }
@@ -232,7 +285,7 @@ const retailerDebitCreditReducer = ( state = defaultState, action ) => {
     case RETAILER_FETCHED:
       map = {};
       action.data.forEach( ( ret ) => {
-        map[ ret.id ] = { 'org_name': ret.org_name, 'email': ( ret.addresses ).length > 0 ? ret.addresses[0].email : '' };
+        map[ ret.id ] = { 'org_name': ret.org_name, 'email': ( ret.addresses ).length > 0 ? ret.addresses[0].email : '', 'mobile_number': ( ret.addresses ).length > 0 ? ret.addresses[0].mobile_number : ''};
       });
       return { ...state, retailers: action.data, retailerMap: { ...map } };
     case CODE_FETCHED:
