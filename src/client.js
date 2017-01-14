@@ -269,7 +269,6 @@ const main = (
         <Route path="brands_offers_and_promos/view_ad/:Id" component={CreateMain} />
         <Route path="brands_offers_and_promos/view_image_ad/:Id" component={ViewImageAd} />
         <Route path="brands_offers_and_promos/view_sku_ad/:Id" component={ViewSkuAd} />
-        <Route path="brands_offers_and_promos/view_sku_ad/:Id" component={CreateSkuAd} />
         <Route path="brands_offers_and_promos/view_promo_ad/:Id" component={CreatePromoAd} />
         <Route path="brands_offers_and_promos/view_url_ad/:Id" component={CreateUrlAd} />
         <Route path="brands_offers_and_promos/view_bar_ad/:Id" component={CreateBarAd} />

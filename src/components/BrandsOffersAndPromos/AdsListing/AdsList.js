@@ -21,9 +21,11 @@ const AdsList = ( {data, activation} ) => {
               </button>
             </td>
             <td>
-              <Link to={'/hadmin/brands_offers_and_promos/view_' + dat.type + '/' + dat.id} target="_blank">
-                  View
-              </Link>
+              <button className={styles.edit_btn}>
+                <Link to={'/hadmin/brands_offers_and_promos/view_' + dat.type + '/' + dat.id} target="_blank">
+                    View
+                </Link>
+              </button>
             </td>
             <td> { dat.id } </td>
             <td>

@@ -29,7 +29,7 @@ const getTransactionCount = () => {
       'columns': ['*']
     };
 
-    const url = Endpoints.db + '/table/' + 'retailer_redemptions_view' + '/count';
+    const url = Endpoints.db + '/table/' + 'retailer_redemptions_sa' + '/count';
     const options = {
       ...genOptions,
       body: JSON.stringify(payload)
@@ -75,10 +75,10 @@ const getTransactionData = (page, limit) => {
       columns: ['*'],
       limit: limit,
       offset: offset,
-      order_by: '+id'
+      order_by: 'created_at'
     };
 
-    const url = Endpoints.db + '/table/' + 'retailer_redemptions_view' + '/select';
+    const url = Endpoints.db + '/table/' + 'retailer_redemptions_sa' + '/select';
     const options = {
       ...genOptions,
       body: JSON.stringify(payload)
