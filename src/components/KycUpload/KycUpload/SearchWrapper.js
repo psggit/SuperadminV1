@@ -7,34 +7,34 @@ const SearchWrapper = ( {data} ) => {
   let objHtml;
 
   tableBody = data.map((dat, index) => {
-    let createdAt = dat ? dat.created_at : new Date().toISOString();
-    let updatedAt = dat ? dat.updated_at : new Date().toISOString();
+    let createdAt = dat.consumer ? dat.consumer.created_at : new Date().toISOString();
+    let updatedAt = dat.consumer ? dat.consumer.updated_at : new Date().toISOString();
 
     createdAt = new Date(new Date(createdAt).getTime()).toLocaleString('en-GB');
     updatedAt = new Date(new Date(updatedAt).getTime()).toLocaleString('en-GB');
     return (
           <tr key={index}>
             <td>
-              <Link to={'/hadmin/consumer/kycfunctions/upload_kyc/upload_kyc_profile/' + dat.id } >
+              <Link to={'/hadmin/consumer/kycfunctions/upload_kyc/upload_kyc_profile/' + dat.consumer.id } >
                 <button className={styles.edit_btn} data-state-id={dat.id}>
                   View
                 </button>
               </Link>
             </td>
             <td>
-              { dat ? dat.id : 'N/A'}
+              { dat.consumer ? dat.consumer.id : 'N/A'}
             </td>
             <td>
-                { dat ? dat.full_name : 'N/A'}
+                { dat.consumer ? dat.consumer.full_name : 'N/A'}
             </td>
             <td>
-                { dat ? dat.email : 'N/A'}
+                { dat.consumer ? dat.consumer.email : 'N/A'}
             </td>
             <td>
-                { dat ? dat.mobile_number : 'N/A'}
+                { dat.consumer ? dat.consumer.mobile_number : 'N/A'}
             </td>
             <td>
-                { dat ? dat.level_id : 'N/A'}
+                { dat.consumer ? dat.consumer.level_id : 'N/A'}
             </td>
             <td> { createdAt } </td>
             <td> { updatedAt } </td>

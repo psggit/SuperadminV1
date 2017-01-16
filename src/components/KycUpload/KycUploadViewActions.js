@@ -198,8 +198,50 @@ const uploadAndSave = (formData, proofType) => {
   };
 };
 
+const sendEmail = ( getState ) => {
+  const emailerObj = {};
+  const emailerUrl = Endpoints.blogicUrl + '/admin/trigger/email';
+  const userState = getState().page_data.lastSuccess;
+
+  emailerObj.to = [ userState[0].email ];
+  emailerObj.template_name = 'consumer-kyc-verification';
+  emailerObj.content = {
+    'consumer': {
+      'name': userState[0].full_name
+    }
+  };
+
+  const emailerOptions = {
+    ...genOptions,
+    body: JSON.stringify(emailerObj)
+  };
+
+  return Promise.resolve(requestAction( emailerUrl, emailerOptions));
+};
+
+const sendSMS = ( getState ) => {
+  const emailerObj = {};
+  const emailerUrl = Endpoints.blogicUrl + '/admin/trigger/sms';
+  const userState = getState().page_data.lastSuccess;
+
+  emailerObj.to = [ userState[0].mobile_number];
+  emailerObj.template_name = 'consumer-kyc-verification';
+  emailerObj.content = {
+    'consumer': {
+      'name': userState[0].full_name
+    }
+  };
+
+  const emailerOptions = {
+    ...genOptions,
+    body: JSON.stringify(emailerObj)
+  };
+
+  return Promise.resolve(requestAction( emailerUrl, emailerOptions));
+};
+
 const updateConsumerKyc = ( id, status ) => {
-  return (dispatch) => {
+  return ( dispatch, getState ) => {
     const userUpdate = {};
     const url = Endpoints.db + '/table/kyc_request/update';
     userUpdate.values = {
@@ -218,6 +260,15 @@ const updateConsumerKyc = ( id, status ) => {
       .then((resp) => {
         /* If the KYC Status Update is successfull then update consumer level_id also */
         console.log(resp);
+        if ( userUpdate.values.is_sa_validated ) {
+          return Promise.all([
+            sendEmail(getState).then( ( asyncAction ) => { return dispatch( asyncAction ); }),
+            sendSMS(getState).then( ( asyncAction ) => { return dispatch( asyncAction ); })
+          ]);
+        }
+        return Promise.resolve();
+      })
+      .then( () => {
         alert('Consumer Updated Successfully');
         /*
         if (resp.returning.length > 0) {
