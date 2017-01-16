@@ -73,6 +73,8 @@ import {Login, Home, PageContainer,
   AdsMain,
   CreateMain,
   CreateImageAd,
+  ViewImageAd,
+  ViewSkuAd,
   CreateBarAd,
   CreateUrlAd,
   CreateSkuAd,
@@ -257,13 +259,19 @@ const main = (
         <Route path="brands_offers_and_promos/campaigns" component={ViewCampaigns} />
 
         <Route path="brands_offers_and_promos/ads" component={AdsMain} />
-        <Route path="brands_offers_and_promos/create_ad" component={CreateMain} />
         <Route path="brands_offers_and_promos/view_all_ads" component={AdsListing} />
+        <Route path="brands_offers_and_promos/create_ad" component={CreateMain} />
         <Route path="brands_offers_and_promos/create_image_ad" component={CreateImageAd} />
         <Route path="brands_offers_and_promos/create_sku_ad" component={CreateSkuAd} />
         <Route path="brands_offers_and_promos/create_promo_ad" component={CreatePromoAd} />
         <Route path="brands_offers_and_promos/create_url_ad" component={CreateUrlAd} />
         <Route path="brands_offers_and_promos/create_bar_ad" component={CreateBarAd} />
+        <Route path="brands_offers_and_promos/view_ad/:Id" component={CreateMain} />
+        <Route path="brands_offers_and_promos/view_image_ad/:Id" component={ViewImageAd} />
+        <Route path="brands_offers_and_promos/view_sku_ad/:Id" component={ViewSkuAd} />
+        <Route path="brands_offers_and_promos/view_promo_ad/:Id" component={CreatePromoAd} />
+        <Route path="brands_offers_and_promos/view_url_ad/:Id" component={CreateUrlAd} />
+        <Route path="brands_offers_and_promos/view_bar_ad/:Id" component={CreateBarAd} />
 
         {/* Promo content */}
         <Route path="brands_offers_and_promos/promos" component={BrandPromos} />

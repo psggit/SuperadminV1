@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 // import { Link } from 'react-router';
 import AdsList from './AdsList';
-import { getBrandManagerData, getAllBrandManagerData } from './AdsListActions';
+import { getBrandManagerData, getAllBrandManagerData, toggleActivation } from './AdsListActions';
 
 // import SearchWrapper from './SearchWrapper';
 import PaginationWrapper from '../../Common/PaginationWrapper.js';
@@ -44,9 +44,18 @@ class AdsListing extends Component { // eslint-disable-line no-unused-vars
   fetchInitialData(page, limit) {
     this.props.dispatch(getAllBrandManagerData(page, limit));
   }
+  activation(e) {
+    const type = e.target.getAttribute('data-state-type');
+    const id = e.target.getAttribute('data-state-id');
+    const status = e.target.getAttribute('data-state-active');
+    console.log('asdf');
+    this.props.dispatch(toggleActivation(id, type, status));
+  }
+
   triggerPageChange(clickedPage, limit) {
     this.props.dispatch(getBrandManagerData(clickedPage, limit));
   }
+
   // Here goes all the data fetching stuff
   render() {
     const styles = require('./AdsListing.scss');
@@ -65,7 +74,7 @@ class AdsListing extends Component { // eslint-disable-line no-unused-vars
                 <button className={styles.common_btn}>Search</button>
               </div>
           </div>
-          <AdsList data={lastSuccess}/>
+          <AdsList activation = {this.activation.bind(this)} data={lastSuccess}/>
         </div>
           <PaginationWrapper
             {...this.props}

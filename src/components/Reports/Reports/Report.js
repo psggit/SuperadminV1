@@ -45,6 +45,9 @@ const convertEndDate = () => {
 
 const Report = ({stateData}) => { // eslint-disable-line no-unused-vars
   const styles = require('./Reports.scss');
+  let url = Endpoints.reportUrl + '/reports/admin_reports/';
+  const data = 'bar_settlement_report';
+  url += data;
   // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
   return (
         <div className={styles.customer_transaction_wrapper}>
@@ -59,7 +62,7 @@ const Report = ({stateData}) => { // eslint-disable-line no-unused-vars
                   </select>
                   <input name = "start_date" onChange = {convertStartDate} id = "sstart_date" type="date"></input>
                   <input name = "end_date" onChange = {convertEndDate} id = "eend_date" type="date"></input>
-                  <form id = "download_form" action="https://reports.scarcity31.hasura-app.io/reports/admin_reports/bar_settlement_report" content-type="application/json" method="post">
+                  <form id = "download_form" action= {url} content-type="application/json" method="post">
                     <input className = "hide" name = "start_date" id = "start_date" type="int"></input>
                     <input className = "hide" name = "end_date" id = "end_date" type="int"></input>
                     <input type = "submit"></input>

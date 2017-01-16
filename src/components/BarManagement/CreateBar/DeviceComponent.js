@@ -36,19 +36,25 @@ const DeviceComponent = ( {
         </div>
         <div className="clearfix"></div>
         <div className={styles.custom_table_th + ' ' + 'row'}>
-          <div className={styles.table_th + ' ' + 'col-md-6'}>
+          <div className={styles.table_th + ' ' + 'col-md-4'}>
             Mobile Number
           </div>
-          <div className={styles.table_th + ' ' + 'col-md-6'}>
+          <div className={styles.table_th + ' ' + 'col-md-4'}>
             Operator
+          </div>
+          <div className={styles.table_th + ' ' + 'col-md-4'}>
+            Is Active
           </div>
         </div>
         <div className={styles.custom_table_td + ' ' + 'row'}>
-          <div className={styles.table_td + ' ' + 'col-md-6'}>
+          <div className={styles.table_td + ' ' + 'col-md-4'}>
             { devices[device].device.mobile_number }
           </div>
-          <div className={styles.table_td + ' ' + 'col-md-6'}>
+          <div className={styles.table_td + ' ' + 'col-md-4'}>
             { devices[device].device.operator }
+          </div>
+          <div className={styles.table_td + ' ' + 'col-md-4'}>
+            { devices[device].is_active ? 'Yes' : 'No' }
           </div>
         </div>
       </div>
@@ -67,19 +73,25 @@ const DeviceComponent = ( {
         </div>
         <div className="clearfix"></div>
         <div className={styles.custom_table_th + ' ' + 'row'}>
-          <div className={styles.table_th + ' ' + 'col-md-6'}>
+          <div className={styles.table_th + ' ' + 'col-md-4'}>
             Mobile Number
           </div>
-          <div className={styles.table_th + ' ' + 'col-md-6'}>
+          <div className={styles.table_th + ' ' + 'col-md-4'}>
             Operator
+          </div>
+          <div className={styles.table_th + ' ' + 'col-md-4'}>
+            Is Active
           </div>
         </div>
         <div className={styles.custom_table_td + ' ' + 'row'}>
-          <div className={styles.table_td + ' ' + 'col-md-6'}>
+          <div className={styles.table_td + ' ' + 'col-md-4'}>
             { localDevs[device].mobile_number }
           </div>
-          <div className={styles.table_td + ' ' + 'col-md-6'}>
+          <div className={styles.table_td + ' ' + 'col-md-4'}>
             { localDevs[device].operator }
+          </div>
+          <div className={styles.table_td + ' ' + 'col-md-4'}>
+            { localDevs[device].is_active ? 'Yes' : 'No' }
           </div>
         </div>
       </div>
