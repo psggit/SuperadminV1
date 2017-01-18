@@ -22,6 +22,13 @@ import PaginationContainer from './Pagination';
 
 import commonDecorator from '../../Common/CommonDecorator';
 
+import {
+  TOGGLE_SEARCH,
+  RESET_FILTER
+} from '../../Common/SearchComponentGen/FilterState';
+
+import SearchComponent from '../../Common/SearchComponentGen/SearchComponent';
+
 class ManageBarSku extends Component {
   componentWillMount() {
     console.log('Will mount called');
@@ -48,13 +55,16 @@ class ManageBarSku extends Component {
     this.props.dispatch(getBarData(page, 16));
     */
   }
-
   shouldComponentUpdate() {
     return true;
   }
+
   componentWillUnmount() {
     console.log('Unmounted');
-    this.props.dispatch({ type: RESET });
+    Promise.all([
+      this.props.dispatch({ type: RESET_FILTER }),
+      this.props.dispatch({ type: RESET })
+    ]);
   }
 
   onToggleStatus( e, id, isActive, pricingId, barId ) {
@@ -89,6 +99,18 @@ class ManageBarSku extends Component {
       });
     }
   }
+  enableSearch() {
+    const page = 1;
+
+    Promise.all([
+      this.props.dispatch({ type: MAKE_REQUEST }),
+      this.props.dispatch({ type: TOGGLE_SEARCH }),
+      this.props.dispatch(getAllBarSkusData(page, 10))
+    ])
+    .then( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED });
+    });
+  }
   render() {
     const styles = require('./ManageBarSku.scss');
     const { ongoingRequest, lastError, lastSuccess, count} = this.props;
@@ -99,9 +121,27 @@ class ManageBarSku extends Component {
     const page = (Object.keys(query).length > 0) ? parseInt(query.p, 10) : 1;
     console.log(lastError);
     console.log(ongoingRequest);
+
+    const fields = [ 'id', 'sku_pricing.sku.brand.brand_name', 'bar.name'];
+    // const operator = ['$eq'];
+    const fieldOperatorMap = {
+      'bar.name': ['$eq', '$like', '$ilike'],
+      'sku_pricing.sku.brand.brand_name': ['$eq', '$like', '$ilike'],
+      'id': ['$eq', '$gt', '$lt']
+    };
+    const fieldTypeMap = {
+      'bar.name': 'text',
+      'sku_pricing.sku.brand.brand_name': 'text',
+      'id': 'number'
+    };
     return (
           <div className={styles.recharge_container}>
             <TableHeader title={'Bar Management/ View Bars Skus'} />
+            <SearchComponent configuredFields={ fields } fieldOperatorMap={ fieldOperatorMap } fieldTypeMap={ fieldTypeMap }>
+              <button className={styles.common_btn} onClick={ this.enableSearch.bind(this) }>
+                Search
+              </button>
+            </SearchComponent>
             <BarSearchWrapper data={lastSuccess} onClickHandler={ this.onToggleStatus.bind(this) }/>
             <PaginationContainer limit="10" onClickHandler={this.onClickHandle.bind(this)} currentPage={page} showMax="5" count={count} parentUrl={ paginationUrl } />
           </div>

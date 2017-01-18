@@ -390,6 +390,7 @@ const updateBranch = () => {
 
     /* Adding address for retailer */
     branchDataObj.org_address = branchState.branchContact.branch_address;
+    branchDataObj.updated_at = new Date().toISOString();
     /* End of it */
 
     const insertObj = {};
