@@ -59,7 +59,7 @@ const activateDevice = ( devId, retailId, option ) => {
     const devUrl = Endpoints.db + '/table/retailer_pos/update';
 
     const retailerDataObj = {
-      'is_active': option === 'true' ? true : false,
+      'is_active': ((option === 'true') || (option === true)) ? true : false,
     };
 
     const updateObj = {};
