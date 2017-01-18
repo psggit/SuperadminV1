@@ -1,8 +1,11 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchAd} from './ViewAdImageActions';
+import { fetchStates, fetchAd, fetchBrands, citiesViewHandler, IMAGE_UPLOAD_SUCCESS, IMAGE_UPLOAD_ERROR, IMAGE_CANCEL} from './CreateAdImageActions';
+import { checkState, unCheckState } from './CreateAdImageActions';
+import { checkCity, unCheckCity, finalSave } from './CreateAdImageActions';
+import uploadFile from '../../Common/Actions/upload';
 import Endpoints from '../../../Endpoints';
-
+import { RESET } from './CreateAdImageActions';
 /*
   Decorator which adds couple of use ful features like
   1. Clearing the state on component unmount
@@ -25,15 +28,25 @@ class ViewImageAd extends Component { // eslint-disable-line no-unused-vars
       link: '#' // TODO
     });
     this.breadCrumbs.push({
-      title: 'View Image Ad',
+      title: 'Create Image Ad',
       sequence: 2,
       link: '#' // TODO
     });
   }
   componentWillMount() {
+    console.log(this.props);
+    const Id = parseInt(this.props.params.Id, 10);
     Promise.all([
-      this.props.dispatch(fetchAd(parseInt(this.props.params.Id, 10)))
-    ]);
+      this.props.dispatch(fetchBrands()),
+      this.props.dispatch(fetchStates())
+    ]).then( () => {
+      Promise.all([
+        this.props.dispatch(fetchAd(Id))
+      ]);
+    });
+  }
+  componentWillUnmount() {
+    this.props.dispatch({ type: RESET });
   }
   onClickCitiesView(stateObj) {
     Promise.all([
@@ -79,7 +92,7 @@ class ViewImageAd extends Component { // eslint-disable-line no-unused-vars
   // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
   render() {
     const {statesAll, hideCities, citiesView, selectedCities} = this.props;
-    const styles = require('./ViewImageAd.scss');
+    const styles = require('./CreateImageAd.scss');
     const { imageUrl } = this.props;
     const imgUr = Endpoints.file_get + imageUrl;
     const checkAllStatesInCity = (state) => {
@@ -101,7 +114,7 @@ class ViewImageAd extends Component { // eslint-disable-line no-unused-vars
       return (
         <li key={city.id}>
           <label>
-            <input type="checkbox" checked={(selectedCities.hasOwnProperty(city.id)) ? 'checked' : ''} onChange={this.onChangeCityCheck.bind(this, city)}/> {city.name}
+            <input type="checkbox" disabled="disabled" checked={(selectedCities.hasOwnProperty(city.id)) ? 'checked' : ''} onChange={this.onChangeCityCheck.bind(this, city)}/> {city.name}
           </label>
         </li>
       );
@@ -110,7 +123,7 @@ class ViewImageAd extends Component { // eslint-disable-line no-unused-vars
       return (
         <li key={state.id}>
           <label>
-            <input type="checkbox" checked={checkAllStatesInCity(state) ? 'checked' : ''} onChange={this.onChangeStateCheck.bind(this, state)}/> {state.state_name}
+            <input type="checkbox" disabled="disabled" checked={checkAllStatesInCity(state) ? 'checked' : ''} onChange={this.onChangeStateCheck.bind(this, state)}/> {state.state_name}
           </label>
           <p onClick={this.onClickCitiesView.bind(this, state)}>{getSelectedCitiesForState(state)}/{state.cities.length} Cities</p>
         </li>
@@ -120,7 +133,7 @@ class ViewImageAd extends Component { // eslint-disable-line no-unused-vars
       <div className={styles.container}>
         <BreadCrumb breadCrumbs={this.breadCrumbs} />
         <div className={styles.brand_wrapper}>
-          <AdInfo dispatch={this.props.dispatch} adDetails={this.props.campaignDetails}/>
+          <AdInfo dispatch={this.props.dispatch} campaign={this.props.campaignDetails} brands={this.props.brandsAll} sb={this.props.selectedBrand} bms={this.props.brandManagers} />
 
           {/* Image Upload */}
           <div className={styles.profile_view_right}>
@@ -143,7 +156,7 @@ class ViewImageAd extends Component { // eslint-disable-line no-unused-vars
                     <div className={styles.upload_actions}>
                       <input type="file" id="adImage" className={styles.ad_image}/>
                       <div className={styles.upload_action_button}>
-                        <button id="cutomer_upload" onClick={ this.onUploadClick.bind(this) } >Upload</button>
+                        <button className="hide" id="cutomer_upload" onClick={ this.onUploadClick.bind(this) } >Upload</button>
                       </div>
                     </div>
                   ) : ''
@@ -175,7 +188,7 @@ class ViewImageAd extends Component { // eslint-disable-line no-unused-vars
             </div>
           </div>
           <div className="clearfix"></div>
-          <button className={styles.edit_brand_btn} onClick={this.onClickSave.bind(this)}>
+          <button className="hide" onClick={this.onClickSave.bind(this)}>
             Save Ad
           </button>
         </div>
@@ -187,6 +200,10 @@ class ViewImageAd extends Component { // eslint-disable-line no-unused-vars
 ViewImageAd.propTypes = {
   imageUrl: PropTypes.string.isRequired,
   statesAll: PropTypes.array.isRequired,
+  brandsAll: PropTypes.array.isRequired,
+  brandManagers: PropTypes.array.isRequired,
+  selectedBrand: PropTypes.object.isRequired,
+  params: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
   hideCities: PropTypes.string.isRequired,
   citiesView: PropTypes.object.isRequired,

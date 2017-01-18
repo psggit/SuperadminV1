@@ -50,7 +50,9 @@ import whatsNewReducer from './components/WhatsNewArticle/CreateArticle/CreateAr
 // Ads
 import adsListReducer from './components/BrandsOffersAndPromos/AdsListing/AdsListActions';
 import adsCreateImageReducer from './components/BrandsOffersAndPromos/AdsCreateImageAd/CreateAdImageActions';
+import adsViewImageReducer from './components/BrandsOffersAndPromos/AdsViewImageAd/CreateAdImageActions';
 import adsCreateSkuReducer from './components/BrandsOffersAndPromos/AdsCreateSkuAd/CreateAdSkuActions';
+import adsViewSkuReducer from './components/BrandsOffersAndPromos/AdsViewSkuAd/CreateAdImageActions';
 import adsCreatePromoReducer from './components/BrandsOffersAndPromos/AdsCreatePromoAd/CreateAdPromoActions';
 import adsCreateBarReducer from './components/BrandsOffersAndPromos/AdsCreateBarAd/CreateAdBarActions';
 // import adsViewImageReducer from './components/BrandsOffersAndPromos/AdsViewImageAd/ViewAdImageActions';
@@ -63,6 +65,9 @@ import retailerDebitCreditRedicer from './components/RetailerManagement/DebitsCr
 import barDebitCreditRedicer from './components/RetailerManagement/BarDebitsCredits/Actions';
 
 import barAllSkuReducer from './components/BarManagement/ManageBarSku/Actions';
+
+// Invite
+import invitationReducer from './components/Invites/reducer';
 
 const reducer = combineReducers({
   // The promos Side-menu states
@@ -103,6 +108,8 @@ const reducer = combineReducers({
   bar_sku_create_data: barSkuDataReducer,
   adslist_data: adsListReducer,
   createImageAd_data: adsCreateImageReducer,
+  viewSkuAd_data: adsViewSkuReducer,
+  viewImageAd_data: adsViewImageReducer,
   createSkuAd_data: adsCreateSkuReducer,
   createPromoAd_data: adsCreatePromoReducer,
   whats_new_data: whatsNewReducer,
@@ -112,7 +119,9 @@ const reducer = combineReducers({
   retailer_debit_credit: retailerDebitCreditRedicer,
   bar_debit_credit: barDebitCreditRedicer,
   all_bar_skus: barAllSkuReducer,
+  invite_data: invitationReducer,
   gen_filter_data: filterGenReducer
+
 });
 
 export default reducer;

@@ -47,8 +47,8 @@ class RechargeHistory extends Component {
         const giftText = (isGift) ? 'Yes' : 'No';
         const isSuccess = (item.payment_detail) ? item.payment_detail.is_success : false;
 
-        createdAt = new Date(new Date(createdAt).getTime()).toLocaleString();
-        updatedAt = new Date(new Date(updatedAt).getTime()).toLocaleString();
+        createdAt = new Date(new Date(createdAt).getTime()).toLocaleString('en-GB');
+        updatedAt = new Date(new Date(updatedAt).getTime()).toLocaleString('en-GB');
         return (
                   <tr key={index}>
                     <td> { item.id} </td>

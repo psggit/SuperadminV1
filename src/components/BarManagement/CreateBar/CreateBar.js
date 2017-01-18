@@ -30,7 +30,9 @@ import {
   updateDeviceLocal,
   deleteDeviceLocal,
   RESET_DEVICE,
-  fetchDevice
+  fetchDevice,
+  emailSmsDeviceCreation,
+  emailSmsCredsCreation
 } from './DeviceAction';
 
 class CreateBar extends Component { // eslint-disable-line no-unused-vars
@@ -85,6 +87,12 @@ class CreateBar extends Component { // eslint-disable-line no-unused-vars
       this.props.dispatch({ type: RESET_BAR }),
       this.props.dispatch({ type: RESET_DEVICE })
     ]);
+  }
+  emailSmsDeviceCreation( id, templateName ) {
+    this.props.dispatch( emailSmsDeviceCreation(id, templateName ) );
+  }
+  emailSmsCredsCreation( id, templateName ) {
+    this.props.dispatch( emailSmsCredsCreation(id, templateName ) );
   }
   saveBar() {
     Promise.all([
@@ -194,6 +202,8 @@ class CreateBar extends Component { // eslint-disable-line no-unused-vars
         createDeviceLocal = { this.createDeviceLocal.bind(this) }
         updateDeviceLocal = { this.updateDeviceLocal.bind(this) }
         deleteDeviceLocal = { this.deleteDeviceLocal.bind(this) }
+        emailSmsDeviceCreation = { this.emailSmsDeviceCreation.bind(this) }
+        emailSmsCredsCreation = { this.emailSmsCredsCreation.bind(this) }
           />
           </div>
           { actionButton }

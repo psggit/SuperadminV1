@@ -152,7 +152,9 @@ export AdsMain from './BrandsOffersAndPromos/Ads/AdsMain';
 export CreateMain from './BrandsOffersAndPromos/Ads/CreateMain';
 export AdsListing from './BrandsOffersAndPromos/AdsListing/AdsListing';
 export CreateImageAd from './BrandsOffersAndPromos/AdsCreateImageAd/CreateImageAd';
+export ViewImageAd from './BrandsOffersAndPromos/AdsViewImageAd/CreateImageAd';
 export CreateSkuAd from './BrandsOffersAndPromos/AdsCreateSkuAd/CreateSkuAd';
+export ViewSkuAd from './BrandsOffersAndPromos/AdsViewSkuAd/CreateImageAd';
 export CreatePromoAd from './BrandsOffersAndPromos/AdsCreatePromoAd/CreatePromoAd';
 export CreateUrlAd from './BrandsOffersAndPromos/AdsCreateUrlAd/CreateUrlAd';
 export CreateBarAd from './BrandsOffersAndPromos/AdsCreateBarAd/CreateBarAd';
@@ -160,6 +162,8 @@ export CreateBarAd from './BrandsOffersAndPromos/AdsCreateBarAd/CreateBarAd';
 
 /* Reports */
 export Reports from './Reports/Reports/Report';
+export BarReportUpload from './Reports/Reports/UploadBar';
+export RetailerReportUpload from './Reports/Reports/UploadRetailer';
 /* */
 
 /* Retailer Transactions */
@@ -174,7 +178,7 @@ export RetailerRedemptions from './RetailerManagement/Transactions/Redemptions/R
 
 /* Invite a Friend */
 
-export InvitationLanding from './InvitationStats/InvitationLanding/TransactionLanding';
+export InvitationLanding from './Invites/approvedUserComponent/approvedUserComponent';
 
 /* Bar Transactions */
 

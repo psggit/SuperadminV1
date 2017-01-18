@@ -78,7 +78,7 @@ class BrandManagerProfile extends Component { // eslint-disable-line no-unused-v
             limit = "10"
             triggerPageChange={ this.triggerPageChange.bind(this) }
             showMax="5"
-            parentUrl="/hadmin/brands_offers_and_promos/brand_manager_profile"
+            parentUrl="/hadmin/brands_offers_and_promos/brand_managers_list"
           />
       </div>);
   }

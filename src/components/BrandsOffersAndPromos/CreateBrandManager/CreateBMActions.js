@@ -181,6 +181,7 @@ const createBM = (bmInfo, sbList) => {
     return dispatch(requestAction(bmUrl, bmOptions)).then((response) => {
       if (response.returning !== undefined) {
         console.log('Brand Manager Saved!!');
+        console.log(response);
         const brUrl = Endpoints.db + '/table/managers/insert';
         const brOptions = sbListToOptions(sbList, response.returning[0].id);
         dispatch(requestAction(brUrl, brOptions)).then((resp) => {

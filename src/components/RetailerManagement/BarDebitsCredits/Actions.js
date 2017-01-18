@@ -15,6 +15,8 @@ import { routeActions } from 'redux-simple-router';
 const defaultState = {
   bars: [],
   transactionCode: [],
+  barMap: {},
+  codeMap: {},
   bar_id: 0,
   bar_credits_and_debit_codes_id: 0,
   amount: 0,
@@ -70,7 +72,10 @@ const getInitData = ( Id ) => {
     const debitCodesUrl = Endpoints.db + '/table/bar_credits_and_debit_codes/select';
 
     const branchSelectObj = {};
-    branchSelectObj.columns = [ 'id', 'name' ];
+    branchSelectObj.columns = [ 'id', 'name', {
+      'name': 'addresses',
+      'columns': ['email', 'mobile_number']
+    }];
     const codeSelectObj = {};
     codeSelectObj.columns = [ '*' ];
 
@@ -93,6 +98,86 @@ const getInitData = ( Id ) => {
     });
   };
 };
+
+/* Emailer */
+
+/* Nicked it */
+const getDateInDDMMYY = ( dat ) => {
+  let today = dat;
+  let dd = today.getDate();
+  let mm = today.getMonth() + 1;
+
+  const yyyy = today.getFullYear();
+  if (dd < 10) {
+    dd = '0' + dd;
+  }
+  if (mm < 10) {
+    mm = '0' + mm;
+  }
+  today = dd + '/' + mm + '/' + yyyy;
+  return today;
+};
+
+const sendEmail = ( getState, insertObj ) => {
+  const currDate = new Date();
+
+  const currState = getState().bar_debit_credit;
+  const emailerObj = {};
+  const emailerUrl = Endpoints.blogicUrl + '/admin/trigger/email';
+  emailerObj.to = [ currState.barMap[insertObj.bar_id].email ];
+  emailerObj.template_name = currState.codeMap[insertObj.bar_credits_and_debit_codes_id] === 'debit' ? 'manual-debit-retailer' : 'manual-credit-retailer';
+  emailerObj.content = {
+    'retailer': {
+      'name': currState.barMap[insertObj.bar_id].name,
+      'created_at': getDateInDDMMYY(currDate),
+      'value': insertObj.amount
+    }
+  };
+
+  if ( emailerObj.to[0].length === 0 ) {
+    alert('Email not present to add the credit');
+    return Promise.reject();
+  }
+
+  const emailerOptions = {
+    ...genOptions,
+    body: JSON.stringify(emailerObj)
+  };
+
+  return Promise.resolve(requestAction( emailerUrl, emailerOptions));
+};
+
+const sendSMS = ( getState, insertObj ) => {
+  const currDate = new Date();
+
+  const currState = getState().bar_debit_credit;
+  const smsObj = {};
+  const smsUrl = Endpoints.blogicUrl + '/admin/trigger/sms';
+  smsObj.to = [ currState.barMap[insertObj.bar_id].mobile_number ];
+  smsObj.template_name = currState.codeMap[insertObj.bar_credits_and_debit_codes_id] === 'debit' ? 'manual-debit-retailer' : 'manual-credit-retailer';
+
+  smsObj.content = {
+    'retailer': {
+      'name': currState.barMap[insertObj.bar_id].name,
+      'created_at': getDateInDDMMYY(currDate),
+      'value': insertObj.amount
+    }
+  };
+
+  if ( smsObj.to[0].length === 0 ) {
+    alert('Mobile Number not present to add the credit');
+    return Promise.reject();
+  }
+
+  const smsOptions = {
+    ...genOptions,
+    body: JSON.stringify(smsObj)
+  };
+
+  return Promise.resolve(requestAction( smsUrl, smsOptions));
+};
+
+/* End of it */
 
 const saveTransaction = () => {
   return ( dispatch, getState ) => {
@@ -128,7 +213,11 @@ const saveTransaction = () => {
     .then( ( resp ) => {
       if ( resp.returning.length > 0 ) {
         alert('Added');
-        return dispatch( routeActions.push('/hadmin/bar_management/debits_credits_landing'));
+        return Promise.all([
+          sendEmail(getState, insertObj).then( ( asyncAction ) => { return dispatch( asyncAction ); }),
+          sendSMS(getState, insertObj).then( ( asyncAction ) => { return dispatch( asyncAction ); }),
+          dispatch( routeActions.push('/hadmin/bar_management/debits_credits_landing'))
+        ]);
       }
     })
     .catch( ( resp ) => {
@@ -190,11 +279,20 @@ const updateTransaction = ( Id ) => {
 /* Reducer */
 
 const barDebitCreditReducer = ( state = defaultState, action ) => {
+  let map = {};
   switch ( action.type ) {
     case BAR_FETCHED:
-      return { ...state, bars: action.data };
+      map = {};
+      action.data.forEach( ( bar ) => {
+        map[ bar.id ] = { 'name': bar.name, 'email': ( bar.addresses ).length > 0 ? bar.addresses[0].email : '', 'mobile_number': ( bar.addresses ).length > 0 ? bar.addresses[0].mobile_number : ''};
+      });
+      return { ...state, bars: action.data, barMap: { ...map }};
     case CODE_FETCHED:
-      return { ...state, transactionCode: action.data };
+      map = {};
+      action.data.forEach( ( code ) => {
+        map[ code.id ] = code.code_type;
+      });
+      return { ...state, transactionCode: action.data, codeMap: { ...map } };
     case INPUT_CHANGED:
       const transactionDetail = {};
       transactionDetail[action.data.key] = action.data.value;

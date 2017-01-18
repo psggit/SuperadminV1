@@ -1,13 +1,16 @@
 import fetch from 'isomorphic-fetch';
+import { MAKE_REQUEST, REQUEST_COMPLETED } from '../../Common/Actions/Actions';
 
 const requestAction = (url, options, SUCCESS, ERROR) => {
   if (!(options.credentials)) {
     options.credentials = 'include';
   }
   return (dispatch) => {
+    dispatch({type: MAKE_REQUEST});
     const p1 = new Promise( (resolve, reject) => {
       fetch( url, options).then(
         (response) => {
+          dispatch({type: REQUEST_COMPLETED});
           if (response.ok) {
             return response.json().then((results) => {
               // completeReq(dispatch);
@@ -31,6 +34,7 @@ const requestAction = (url, options, SUCCESS, ERROR) => {
           reject();
         },
         (error) => {
+          dispatch({type: REQUEST_COMPLETED});
           if (ERROR) {
             dispatch({
               type: ERROR, code: 'server-connection-failed',

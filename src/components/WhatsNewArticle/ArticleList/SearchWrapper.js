@@ -11,9 +11,9 @@ const SearchWrapper = ( {data, onClickActivate} ) => {
     let createdAt = dat.created_at;
     let updatedAt = dat.updated_at;
 
-    createdAt = new Date(new Date(createdAt).getTime()).toLocaleString();
+    createdAt = new Date(new Date(createdAt).getTime()).toLocaleString('en-GB');
     if (updatedAt !== null) {
-      updatedAt = new Date(new Date(updatedAt).getTime()).toLocaleString();
+      updatedAt = new Date(new Date(updatedAt).getTime()).toLocaleString('en-GB');
     } else {
       updatedAt = 'NA';
     }

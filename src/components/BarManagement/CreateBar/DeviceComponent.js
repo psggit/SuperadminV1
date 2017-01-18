@@ -1,12 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import templates from './emailTemplates';
+
 const DeviceComponent = ( {
   toggleDeviceDetail,
   devices,
   localDevs,
   loadLocalDevice,
-  loadDevice
+  loadDevice,
+  emailSmsDeviceCreation,
+  emailSmsCredsCreation
 } ) => { // eslint-disable-line no-unused-vars
   const styles = require('./CreateBar.scss');
   // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
@@ -22,21 +26,35 @@ const DeviceComponent = ( {
             Edit
           </p>
         </div>
+        <div className={styles.heading_container}>
+          <button className={styles.button_email} onClick={ () => emailSmsDeviceCreation.call(undefined, devices[device].device.id, templates.deviceCreation ) } data-dev-id={ devices[device].device.id } >
+            Email/SMS Device Info
+          </button>
+          <button className={styles.button_email} onClick={ () => emailSmsCredsCreation.call(undefined, devices[device].device.id, templates.credsCreation ) } data-dev-id={ devices[device].device.id } >
+            Email/SMS Credentials
+          </button>
+        </div>
         <div className="clearfix"></div>
         <div className={styles.custom_table_th + ' ' + 'row'}>
-          <div className={styles.table_th + ' ' + 'col-md-6'}>
+          <div className={styles.table_th + ' ' + 'col-md-4'}>
             Mobile Number
           </div>
-          <div className={styles.table_th + ' ' + 'col-md-6'}>
+          <div className={styles.table_th + ' ' + 'col-md-4'}>
             Operator
+          </div>
+          <div className={styles.table_th + ' ' + 'col-md-4'}>
+            Is Active
           </div>
         </div>
         <div className={styles.custom_table_td + ' ' + 'row'}>
-          <div className={styles.table_td + ' ' + 'col-md-6'}>
+          <div className={styles.table_td + ' ' + 'col-md-4'}>
             { devices[device].device.mobile_number }
           </div>
-          <div className={styles.table_td + ' ' + 'col-md-6'}>
+          <div className={styles.table_td + ' ' + 'col-md-4'}>
             { devices[device].device.operator }
+          </div>
+          <div className={styles.table_td + ' ' + 'col-md-4'}>
+            { devices[device].is_active ? 'Yes' : 'No' }
           </div>
         </div>
       </div>
@@ -55,19 +73,25 @@ const DeviceComponent = ( {
         </div>
         <div className="clearfix"></div>
         <div className={styles.custom_table_th + ' ' + 'row'}>
-          <div className={styles.table_th + ' ' + 'col-md-6'}>
+          <div className={styles.table_th + ' ' + 'col-md-4'}>
             Mobile Number
           </div>
-          <div className={styles.table_th + ' ' + 'col-md-6'}>
+          <div className={styles.table_th + ' ' + 'col-md-4'}>
             Operator
+          </div>
+          <div className={styles.table_th + ' ' + 'col-md-4'}>
+            Is Active
           </div>
         </div>
         <div className={styles.custom_table_td + ' ' + 'row'}>
-          <div className={styles.table_td + ' ' + 'col-md-6'}>
+          <div className={styles.table_td + ' ' + 'col-md-4'}>
             { localDevs[device].mobile_number }
           </div>
-          <div className={styles.table_td + ' ' + 'col-md-6'}>
+          <div className={styles.table_td + ' ' + 'col-md-4'}>
             { localDevs[device].operator }
+          </div>
+          <div className={styles.table_td + ' ' + 'col-md-4'}>
+            { localDevs[device].is_active ? 'Yes' : 'No' }
           </div>
         </div>
       </div>

@@ -353,6 +353,17 @@ const defaultViewImageAdData = {
     cities: [{}]
   }],
   selectedCities: {},
+  budgeted_amount: '',
+  ad_location: '',
+  ad_title: '',
+  brand_manager_id: '',
+  sku_id: '',
+  brand_id: '',
+  funds_credited: '',
+  target_views: '',
+  active_from: '',
+  active_to: '',
+  ad_status: '',
   hideCities: 'hide',
   citiesView: {
     state_name: '',

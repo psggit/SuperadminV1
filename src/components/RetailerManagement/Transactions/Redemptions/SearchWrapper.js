@@ -7,27 +7,28 @@ const SearchWrapper = ( {data} ) => {
 
   tableBody = data.map((dat, index) => {
     let createdAt = dat.created_at;
-    let updatedAt = dat.updated_at;
 
-    createdAt = new Date(new Date(createdAt).getTime()).toLocaleString();
-    updatedAt = new Date(new Date(updatedAt).getTime()).toLocaleString();
+    createdAt = new Date(new Date(createdAt).getTime()).toLocaleString('en-GB');
     return (
           <tr key={index}>
-            <td> { dat.id } </td>
+            <td> { dat.order_id } </td>
             <td>
-                { dat.org_name}
+                { dat.reservation_id}
             </td>
             <td>
-                { dat.qr_code_id }
+                { dat.retailer_id}
             </td>
             <td>
-                { dat.full_name }
+                { dat.retailer_pos_id}
             </td>
-            <td>
-                Rs { dat.txn_amount }
-            </td>
+            <td> Rs { dat.amount} </td>
+            <td> { dat.brand_name } </td>
+            <td> { dat.sku_volume} </td>
+            <td> { dat.itemtype} </td>
+            <td> { dat.cashback_amount} </td>
+            <td> { dat.status} </td>
+            <td> { dat.cancelled_by} </td>
             <td> { createdAt } </td>
-            <td> { updatedAt } </td>
           </tr>
         );
   });
@@ -46,13 +47,18 @@ const SearchWrapper = ( {data} ) => {
             <table className={'table table-striped'}>
               <thead>
                 <tr>
-                  <th> ID </th>
-                  <th> Branch Name </th>
-                  <th> QR Code </th>
-                  <th> Full Name </th>
-                  <th> Transaction Amount </th>
+                  <th> Order ID </th>
+                  <th> Reservation Id </th>
+                  <th> Retailer ID </th>
+                  <th> Retailer POS Id </th>
+                  <th> Amount </th>
+                  <th> Brand Name </th>
+                  <th> Sku Volume </th>
+                  <th> Item Type </th>
+                  <th> Cashback Amount </th>
+                  <th> Status </th>
+                  <th> Cancelled By </th>
                   <th> Created At </th>
-                  <th> Updated At </th>
                 </tr>
               </thead>
               <tbody>

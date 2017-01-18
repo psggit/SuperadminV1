@@ -1,20 +1,31 @@
 import React from 'react';
-import { Link } from 'react-router';
+import {Link} from 'react-router';
 
-const AdsList = ( {data} ) => {
+const AdsList = ( {data, activation} ) => {
   const styles = require('./AdsList.scss');
   let tableBody;
   let objHtml;
+  let activeTag;
 
   tableBody = data.map((dat, index) => {
+    if (dat.status !== 'Active') {
+      activeTag = 'Enable';
+    } else {
+      activeTag = 'Disable';
+    }
     return (
           <tr key={index}>
             <td>
-              <Link to={'#'}>
-                <button className={styles.edit_btn} data-state-id={dat.id}>
-                  View
-                </button>
-              </Link>
+              <button onClick={activation} data-state-active={dat.status} className={styles.edit_btn} data-state-type={dat.type} data-state-id={dat.id}>
+                { activeTag }
+              </button>
+            </td>
+            <td>
+              <button className={styles.edit_btn}>
+                <Link to={'/hadmin/brands_offers_and_promos/view_' + dat.type + '/' + dat.id} target="_blank">
+                    View
+                </Link>
+              </button>
             </td>
             <td> { dat.id } </td>
             <td>
@@ -59,6 +70,7 @@ const AdsList = ( {data} ) => {
             <table className={'table table-striped'}>
               <thead>
                 <tr>
+                  <th> </th>
                   <th> </th>
                   <th> ID </th>
                   <th> Type </th>

@@ -234,12 +234,12 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
               </li>
               <li className={styles.sidebar_list}>
                 <label>
-                  <Link to={'/hadmin/reports/upload1'} className={ lastPathname === 'upload1' ? styles.active : '' }>Upload 1</Link>
+                  <Link to={'/hadmin/bar_report_upload'} className={ lastPathname === 'upload1' ? styles.active : '' }>Upload Bar Reports</Link>
                 </label>
               </li>
               <li className={styles.sidebar_list}>
                 <label>
-                  <Link to={'/hadmin/reports/upload2'} className={ lastPathname === 'upload2' ? styles.active : '' }>Upload 2</Link>
+                  <Link to={'/hadmin/retailer_report_upload'} className={ lastPathname === 'upload2' ? styles.active : '' }>Upload Retailer Reports</Link>
                 </label>
               </li>
               </ul>
