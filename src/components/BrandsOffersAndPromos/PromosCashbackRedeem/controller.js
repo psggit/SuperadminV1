@@ -228,23 +228,27 @@ const promoValidatorDict = {
   sku: (sku, otherValues) => {
     // returns true if the range of the sku is a subset or super-set
     // of the current campaign's activeTo or activeFrom date.
-    const dateRangeCheck = ({activeTo, activeFrom}) => {
+    const dateRangeCheck = ({activeTo, activeFrom, isActive}) => {
       const activeToDate = convertStrToISODate(activeTo);
       const activeFromDate = convertStrToISODate(activeFrom);
       const campaignActiveToDate = convertStrToISODate(otherValues.activeTo, false);
       const campaignActiveFromDate = convertStrToISODate(otherValues.activeFrom, false);
 
-      // if the offer activeFromDate within a previous campaign date
-      if (activeFromDate <= campaignActiveFromDate <= activeToDate) {
-        return true;
+      // if the campaign is active then change.
+      if (isActive && isActive === 'active') {
         // if the offer activeFromDate within a previous campaign date
-      } else if (activeFromDate <= campaignActiveToDate <= activeToDate) {
-        return true;
-        // if the offer  campaign date are a super-set of the active dates
-        // of a offer.
-      } else if (campaignActiveFromDate <= activeFromDate <= activeToDate
-          <= campaignActiveToDate) {
-        return true;
+        if (activeFromDate <= campaignActiveFromDate <= activeToDate) {
+          return true;
+          // if the offer activeFromDate within a previous campaign date
+        } else if (activeFromDate <= campaignActiveToDate <= activeToDate) {
+          return true;
+          // if the offer  campaign date are a super-set of the active dates
+          // of a offer.
+        } else if (campaignActiveFromDate <= activeFromDate <= activeToDate
+            <= campaignActiveToDate) {
+          return true;
+        }
+        return false;
       }
       return false;
     };
@@ -253,7 +257,8 @@ const promoValidatorDict = {
       const offers = pricing.cash_back_offers.filter((offer) => {
         return dateRangeCheck({
           activeFrom: offer.offer.campaign.active_from,
-          activeTo: offer.offer.campaign.active_to
+          activeTo: offer.offer.campaign.active_to,
+          isActive: offer.offer.campaign.status
         });
       });
       return offers.length > 0;
