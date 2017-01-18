@@ -545,8 +545,9 @@ const onSave = () => {
         /* Add an entry to brand listing table too */
         return dispatch(routeActions.push('/hadmin/skus/list_sku'));
       })
-      .catch((resp) => {
-        alert('Error: ' + resp.error);
+      .catch(() => {
+        // alert('Error: ' + resp.error);
+        alert('Partially created SKU');
         return dispatch(routeActions.push('/hadmin/skus/list_sku'));
       });
   };
