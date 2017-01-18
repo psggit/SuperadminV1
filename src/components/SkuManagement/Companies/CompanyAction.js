@@ -156,7 +156,6 @@ const updateCompany = () => {
       'name': currState.name.toUpperCase(),
       'address': currState.address,
       'pin_code': currState.pinCode,
-      'created_at': new Date().toISOString(),
       'updated_at': new Date().toISOString()
     };
 

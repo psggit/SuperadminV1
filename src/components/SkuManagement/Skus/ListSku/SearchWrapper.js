@@ -64,8 +64,8 @@ const SearchWrapper = ( {data} ) => {
                   <th> Volume </th>
                   <th> Alcohol Percentage </th>
                   <th> Temperature </th>
-                  <th> Updated At </th>
                   <th> Created At </th>
+                  <th> Updated At </th>
                 </tr>
               </thead>
               <tbody>
