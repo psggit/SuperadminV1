@@ -106,7 +106,8 @@ const updateGenre = () => {
       'display_name': currState.displayName,
       'ordinal_position': currState.displayOrder,
       'is_active': currState.genreStatus,
-      'image': currState.image
+      'image': currState.image,
+      'updated_at': new Date().toISOString()
     };
     payload.where = {
       'id': currState.genreId

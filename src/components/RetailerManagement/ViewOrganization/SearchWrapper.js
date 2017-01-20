@@ -29,8 +29,8 @@ const SearchWrapper = ( {data} ) => {
             <td> { dat.type_of_organisation } </td>
             <td> { dat.bars.length } </td>
             <td> { dat.retailers.length } </td>
-            <td> { dat.kyc_status } </td>
-            <td> { dat.status } </td>
+            <td> { dat.kyc_status === 'true' ? 'Verified' : 'Not Verified' } </td>
+            <td> { dat.status === 'true' ? 'Active' : 'Inactive' } </td>
             <td> { dat.pan_number } </td>
             <td> { dat.tin_number } </td>
             <td> { dat.tan_number } </td>

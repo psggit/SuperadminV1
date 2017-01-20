@@ -20,6 +20,9 @@ const SearchWrapper = ( {data} ) => {
               </Link>
             </td>
             <td>
+                { dat.id }
+            </td>
+            <td>
                 { dat.amount }
             </td>
             <td>
@@ -54,6 +57,7 @@ const SearchWrapper = ( {data} ) => {
               <thead>
                 <tr>
                   <th> Consumer ID </th>
+                  <th> Transaction ID </th>
                   <th> Amount </th>
                   <th> Reason </th>
                   <th> Transaction Code </th>

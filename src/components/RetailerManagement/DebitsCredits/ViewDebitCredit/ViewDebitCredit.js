@@ -15,8 +15,17 @@ import commonDecorator from '../../../Common/CommonDecorator';
 import BreadCrumb from '../../../Common/BreadCrumb';
 
 import {
+  MAKE_REQUEST,
+  REQUEST_COMPLETED,
   RESET
 } from '../../../Common/Actions/Actions';
+
+import {
+  TOGGLE_SEARCH,
+  RESET_FILTER
+} from '../../../Common/SearchComponentGen/FilterState';
+
+import SearchComponent from '../../../Common/SearchComponentGen/SearchComponent';
 
 /*
  1. Required Components:
@@ -44,7 +53,10 @@ class ViewDebitCredit extends React.Component { // eslint-disable-line no-unused
     });
   }
   componentWillUnmount() {
-    this.props.dispatch({ type: RESET });
+    Promise.all([
+      this.props.dispatch({ type: RESET }),
+      this.props.dispatch({ type: RESET_FILTER })
+    ]);
   }
   // Hook used by pagination wrapper to fetch the initial data
   fetchInitialData(page, limit) {
@@ -53,24 +65,48 @@ class ViewDebitCredit extends React.Component { // eslint-disable-line no-unused
   triggerPageChange(clickedPage, limit) {
     this.props.dispatch(getTransactionData(clickedPage, limit));
   }
+  enableSearch() {
+    const page = 1;
+
+    Promise.all([
+      this.props.dispatch({ type: MAKE_REQUEST }),
+      this.props.dispatch({ type: TOGGLE_SEARCH }),
+      this.props.dispatch(getAllTransactionData(page, 10))
+    ])
+    .then( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED });
+    });
+  }
   render() {
     const styles = require('./ViewDebitCredit.scss');
     const { lastSuccess } = this.props;
+
+    const fields = [ 'id', 'retailer.org_name', 'retailer_credits_and_debit_code.code', 'amount', 'comment' ];
+    // const operator = ['$eq'];
+    const fieldOperatorMap = {
+      'retailer.org_name': ['$eq', '$like', '$ilike'],
+      'retailer_credits_and_debit_code.code': ['$eq', '$like', '$ilike'],
+      'id': ['$eq', '$gt', '$lt'],
+      'amount': ['$eq', '$gt', '$lt'],
+      'comment': ['$eq', '$like', '$ilike'],
+    };
+    const fieldTypeMap = {
+      'retailer.org_name': 'text',
+      'retailer_credits_and_debit_code.code': 'text',
+      'comment': 'text',
+      'id': 'number',
+      'amount': 'number'
+    };
 
     // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
     return (
         <div className={styles.container}>
           <BreadCrumb breadCrumbs={this.breadCrumbs} />
-
-         	<div className={styles.search_wrapper + ' ' + styles.wd_100}>
-         		<p>Search</p>
-         		<div className={styles.search_form + ' ' + styles.wd_100}>
-         			<input type="text" placeholder="Mobile Number" />
-         			<input type="text" placeholder="Contains" />
-         			<input type="number" />
-         			<button className={styles.common_btn}>Search</button>
-         		</div>
-         	</div>
+          <SearchComponent configuredFields={ fields } fieldOperatorMap={ fieldOperatorMap } fieldTypeMap={ fieldTypeMap }>
+            <button className={styles.common_btn} onClick={ this.enableSearch.bind(this) }>
+              Search
+            </button>
+          </SearchComponent>
 
           <div className={styles.create_layout + ' ' + styles.wd_100}>
             <Link to={'/hadmin/retailer_management/debit_credit_transactions'}>

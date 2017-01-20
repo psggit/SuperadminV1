@@ -180,6 +180,7 @@ const updateStateSaveCity = () => {
       const insertObj = {};
       dataObj.state_name = currProps.stateInput;
       dataObj.short_name = currProps.shortName;
+      dataObj.updated_at = new Date().toISOString();
       updateObj.values = dataObj;
       updateObj.where = {
         'id': parseInt(currProps.fromDB[0].id, 10)

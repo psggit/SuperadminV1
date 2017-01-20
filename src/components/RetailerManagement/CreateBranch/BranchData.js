@@ -24,12 +24,17 @@ const BRANCH_FETCHED = '@branchDataReducer/BRANCH_FETCHED';
 
 /* Action creators */
 
-const getOrganisation = () => {
+const getOrganisation = ( isEdit ) => {
   return ( dispatch ) => {
     const orgUrl = Endpoints.db + '/table/organisation/select';
 
     const selectObj = {};
     selectObj.columns = ['id', 'organisation_name'];
+    if ( !isEdit ) {
+      selectObj.where = {
+        'status': 'true'
+      };
+    }
 
     const options = {
       ...genOptions,
@@ -390,6 +395,7 @@ const updateBranch = () => {
 
     /* Adding address for retailer */
     branchDataObj.org_address = branchState.branchContact.branch_address;
+    branchDataObj.updated_at = new Date().toISOString();
     /* End of it */
 
     const insertObj = {};

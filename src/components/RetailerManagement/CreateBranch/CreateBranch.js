@@ -81,7 +81,7 @@ class CreateBrand extends Component { // eslint-disable-line no-unused-vars
     Promise.all([
       this.props.dispatch( { type: MAKE_REQUEST }),
       this.props.dispatch( fetchStateCity() ),
-      this.props.dispatch( getOrganisation() ),
+      this.props.dispatch( getOrganisation( brId ? true : false ) ),
       ( brId ? ( this.props.dispatch(getBranchData( brId ) )) : Promise.resolve() ),
       (
       brId ?

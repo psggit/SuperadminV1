@@ -108,7 +108,7 @@ class ViewConsumerProfile extends Component {
       const rechargeCount = transactionHistory.filter( ( ts ) => { return ( ts.type === 'recharge' ); }).length;
       const reservationCount = transactionHistory.filter( ( ts ) => { return ( ts.type === 'reservation' ); }).length;
       const cancellationCount = transactionHistory.filter( ( ts ) => { return ( ts.type === 'cancellation' ); }).length;
-      const redemptionCount = transactionHistory.filter( ( ts ) => { return ( ts.type === 'redemption' ); }).length;
+      const redemptionCount = transactionHistory.filter( ( ts ) => { return ( ts.type === 'redemption' || ts.type === 'wallet' ); }).length;
 
       const cartHtml = ( cartInfo.length > 0 ) ?
         (

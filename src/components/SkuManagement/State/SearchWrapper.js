@@ -52,8 +52,8 @@ const SearchWrapper = ( {data} ) => {
                   <th> ID </th>
                   <th> State Name </th>
                   <th> Short Name </th>
-                  <th> Updated At </th>
                   <th> Created At </th>
+                  <th> Updated At </th>
                 </tr>
               </thead>
               <tbody>
