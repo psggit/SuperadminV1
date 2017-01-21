@@ -284,6 +284,8 @@ const updateBar = () => {
       return Promise.reject({ stage: 0 });
     }
 
+    barDataObj.updated_at = new Date().toISOString();
+
     const insertObj = {};
 
     const brId = barState.barData.id;

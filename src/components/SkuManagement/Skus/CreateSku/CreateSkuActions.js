@@ -545,8 +545,9 @@ const onSave = () => {
         /* Add an entry to brand listing table too */
         return dispatch(routeActions.push('/hadmin/skus/list_sku'));
       })
-      .catch((resp) => {
-        alert('Error: ' + resp.error);
+      .catch(() => {
+        // alert('Error: ' + resp.error);
+        alert('Partially created SKU');
         return dispatch(routeActions.push('/hadmin/skus/list_sku'));
       });
   };
@@ -769,7 +770,7 @@ const onUpdate = () => {
     let skuReqObj = {};
     skuReqObj = Object.assign( {}, currState.skuReqObj );
     // skuReqObj.image = (currState.create_sku_data.skuImageUrl.length > 0) ? currState.create_sku_data.skuImageUrl : null;
-    skuReqObj.created_at = new Date().toISOString();
+    // skuReqObj.created_at = new Date().toISOString();
     skuReqObj.updated_at = new Date().toISOString();
 
 

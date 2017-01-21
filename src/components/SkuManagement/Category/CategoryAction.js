@@ -130,6 +130,8 @@ const updateCategory = () => {
       'is_active': currState.categoryStatus
     };
 
+    categoryObj.updated_at = new Date().toISOString();
+
     updateObj.values = categoryObj;
     updateObj.returning = ['id'];
     updateObj.where = {

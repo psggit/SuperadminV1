@@ -16,9 +16,11 @@ import {
 
 const BAR_SKU_FETCHED = '@barAllSku/BAR_SKU_FETCHED';
 
+import beginFilter from '../../Common/SearchComponentGen/GenerateFilter';
+
 /* */
 
-const getBarSkusCount = ( ) => {
+const getBarSkusCount = ( filterObj, isSearched ) => {
   return (dispatch) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
@@ -26,6 +28,9 @@ const getBarSkusCount = ( ) => {
     const payload = {
       'columns': ['*']
     };
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
 
     const url = Endpoints.db + '/table/' + 'bars_inventory' + '/count';
     const options = {
@@ -36,7 +41,7 @@ const getBarSkusCount = ( ) => {
   };
 };
 
-const getBarSkusData = ( page ) => {
+const getBarSkusData = ( page, filterObj, isSearched) => {
   return (dispatch) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
@@ -71,6 +76,10 @@ const getBarSkusData = ( page ) => {
       order_by: '+id'
     };
 
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
+
     const url = Endpoints.db + '/table/' + 'bars_inventory' + '/select';
     const options = {
       ...genOptions,
@@ -83,10 +92,13 @@ const getBarSkusData = ( page ) => {
 const getAllBarSkusData = (page ) => {
   const gotPage = page;
   /* Dispatching first one */
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const filterData = getState().gen_filter_data;
+    const filterObj = { ...beginFilter(getState) };
+
     return Promise.all([
-      dispatch(getBarSkusCount( )),
-      dispatch(getBarSkusData(gotPage))
+      dispatch(getBarSkusCount( filterObj, filterData.isSearched )),
+      dispatch(getBarSkusData(gotPage, filterObj, filterData.isSearched))
     ]);
   };
 };

@@ -69,15 +69,29 @@ class ManageCompanies extends React.Component { // eslint-disable-line no-unused
       companyId
     } = this.props;
 
-    const cityHtml = cityList.map((city, index) => {
-      return (
-          <option key={index} value={city.id}>{city.name }</option>
-        );
+    // const cityHtml = cityList.map((city, index) => {
+    //   return (
+    //       <option key={index} value={city.id}>{city.name }</option>
+    //     );
+    // });
+
+    const stateMap = {};
+
+    stateList.forEach( ( state ) => {
+      stateMap[[state.id]] = state.short_name;
     });
 
     const stateHtml = stateList.map((state, index) => {
       return (
           <option key={index} value={state.id}>{state.state_name}</option>
+        );
+    });
+    const filteredCityList = cityList.filter( ( c ) => {
+      return c.state_short_name === stateMap[stateId];
+    });
+    const cityHtml = filteredCityList.map((city, index) => {
+      return (
+          <option key={index} value={city.id}>{city.name }</option>
         );
     });
     return (
@@ -106,17 +120,17 @@ class ManageCompanies extends React.Component { // eslint-disable-line no-unused
                     <textarea rows="4" cols="10" data-field-name="address" data-field-type="text" value={ address }></textarea>
                   </li>
                   <li>
-                    <label>City</label>
-                    <select data-field-name="cityId" data-field-type="int" value={ cityId }>
-                      <option > Select City </option>
-                      { cityHtml }
-                    </select>
-                  </li>
-                  <li>
                     <label>State</label>
                     <select data-field-name="stateId" data-field-type="int" value={ stateId }>
                       <option > Select State </option>
                       { stateHtml }
+                    </select>
+                  </li>
+                  <li>
+                    <label>City</label>
+                    <select data-field-name="cityId" data-field-type="int" value={ cityId }>
+                      <option > Select City </option>
+                      { cityHtml }
                     </select>
                   </li>
                   <li>

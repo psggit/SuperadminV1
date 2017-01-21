@@ -18,9 +18,11 @@ const genOptions = {
   credentials: globalCookiePolicy
 };
 
+import beginFilter from '../../../Common/SearchComponentGen/GenerateFilter';
+
 /* Action Creators for ListTransaction Management Listing */
 
-const getTransactionCount = () => {
+const getTransactionCount = ( filterObj, isSearched ) => {
   return (dispatch) => {
     dispatch({ type: MAKE_REQUEST});
     //
@@ -28,6 +30,9 @@ const getTransactionCount = () => {
     const payload = {
       'columns': ['*']
     };
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
 
     const url = Endpoints.db + '/table/' + 'retailer_debits_and_credits' + '/count';
     const options = {
@@ -59,7 +64,7 @@ const getTransactionCount = () => {
   };
 };
 
-const getTransactionData = (page, limit) => {
+const getTransactionData = (page, limit, filterObj, isSearched) => {
   return (dispatch) => {
     dispatch({ type: MAKE_REQUEST});
     //
@@ -86,6 +91,10 @@ const getTransactionData = (page, limit) => {
       offset: offset,
       order_by: '+id'
     };
+
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
 
     const url = Endpoints.db + '/table/' + 'retailer_debits_and_credits' + '/select';
     const options = {
@@ -121,10 +130,12 @@ const getAllTransactionData = (page, limit) => {
   const gotPage = page;
   const gotLimit = limit;
   /* Dispatching first one */
-  return (dispatch) => {
-    dispatch(getTransactionCount())
+  return (dispatch, getState) => {
+    const filterData = getState().gen_filter_data;
+    const filterObj = { ...beginFilter(getState) };
+    dispatch(getTransactionCount( filterObj, filterData.isSearched ))
       .then(() => {
-        return dispatch(getTransactionData(gotPage, gotLimit));
+        return dispatch(getTransactionData(gotPage, gotLimit, filterObj, filterData.isSearched ));
       })
       .then(() => {
         console.log('Transaction Data fetched');

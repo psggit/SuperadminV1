@@ -428,6 +428,7 @@ const updateBrand = () => {
       brandObj.cal_total = currState.caloriesTotal;
       brandObj.origin_name = currState.origin;
       brandObj.description = currState.description;
+      brandObj.updated_at = new Date().toISOString();
 
       updateObj.values = brandObj;
       updateObj.where = {

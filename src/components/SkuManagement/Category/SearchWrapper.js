@@ -58,8 +58,8 @@ const SearchWrapper = ( {data} ) => {
                   <th> Category Name </th>
                   <th> Genre Name </th>
                   <th> Status </th>
-                  <th> Updated At </th>
                   <th> Created At </th>
+                  <th> Updated At </th>
                 </tr>
               </thead>
               <tbody>

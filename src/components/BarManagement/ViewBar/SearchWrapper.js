@@ -29,7 +29,7 @@ const SearchWrapper = ( {data} ) => {
             <td> { dat.addresses.length ? dat.addresses[0].branch_address : 'N/A' } </td>
             <td> { dat.type } </td>
             <td> { dat.kyc_status === 'true' ? 'Verified' : 'Not Verified' } </td>
-            <td> { dat.bar_status ? dat.bar_status : 'N/A'} </td>
+            <td> { dat.bar_status === 'true' ? 'Active' : 'Not Active' } </td>
             <td> { createdAt } </td>
             <td> { updatedAt} </td>
           </tr>
@@ -56,7 +56,7 @@ const SearchWrapper = ( {data} ) => {
                   <th> Address </th>
                   <th> Type of Retailer </th>
                   <th> Kyc Status </th>
-                  <th> Branch Status </th>
+                  <th> Bar Status </th>
                   <th> Created At </th>
                   <th> Updated At </th>
                 </tr>

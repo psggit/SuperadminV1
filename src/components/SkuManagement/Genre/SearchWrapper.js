@@ -67,8 +67,8 @@ const SearchWrapper = ( {data} ) => {
                   <th> Display Name </th>
                   <th> Display Order </th>
                   <th> Status </th>
-                  <th> Updated At </th>
                   <th> Created At </th>
+                  <th> Updated At </th>
                 </tr>
               </thead>
               <tbody>
