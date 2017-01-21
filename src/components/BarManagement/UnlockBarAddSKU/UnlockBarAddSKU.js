@@ -106,7 +106,6 @@ class UnlockBarAddSKU extends Component {
       barData,
       showSku,
       barCityInfo,
-      addedInventory,
       newSkuData,
       barSKUs,
       isEdit
@@ -148,13 +147,7 @@ class UnlockBarAddSKU extends Component {
       );
     });
 
-    const filteredSkuData = ( barData[0] && !isEdit ) ? skuData.filter( ( sku ) => {
-      return (
-        addedInventory.indexOf(sku.id) === -1
-      );
-    }) : skuData;
-
-    const skuHtml = filteredSkuData.map( ( sku, index ) => {
+    const skuHtml = skuData.map( ( sku, index ) => {
       return (
         <option key={ index } value={ sku.id }> { sku.sku.brand.brand_name } - { sku.sku.volume } ML </option>
       );
