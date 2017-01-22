@@ -318,7 +318,8 @@ const updateSku = ( barId ) => {
           dispatch(getBar( barId ))
         ]);
       }
-      alert('Updated Failed');
+    }).catch((err) => {
+      alert(JSON.stringify(err));
     });
     // return Promise.resolve();
   };
