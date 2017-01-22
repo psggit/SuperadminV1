@@ -9,6 +9,7 @@ import requestAction from '../../Common/Actions/requestAction';
 import Endpoints from '../../../Endpoints';
 
 import { genOptions } from '../../Common/Actions/commonFunctions';
+import { indexSku } from '../../SkuManagement/Brand/BrandAction';
 
 /* Action Constant */
 
@@ -135,8 +136,10 @@ const fetchSKUs = ( retailerId ) => {
   };
 };
 
-const disableSKUs = ( skuId ) => {
+const disableSKUs = ( sku ) => {
   return ( dispatch, getState ) => {
+    const skuId = sku.id;
+    const brandId = sku.brand_id;
     const devUrl = Endpoints.db + '/table/inventory/update';
 
     const branchState = getState().branch_data.branchData;
@@ -164,14 +167,17 @@ const disableSKUs = ( skuId ) => {
 
     return dispatch( requestAction( devUrl, options ) )
     .then( () => {
+      dispatch(indexSku(brandId));
       alert('Sku Deleted');
       return dispatch( fetchSKUs(brId) );
     });
   };
 };
 
-const enableSKUs = ( skuId ) => {
+const enableSKUs = ( sku ) => {
   return ( dispatch, getState ) => {
+    const skuId = sku.id;
+    const brandId = sku.brand_id;
     const devUrl = Endpoints.db + '/table/inventory/update';
 
     const branchState = getState().branch_data.branchData;
@@ -199,6 +205,7 @@ const enableSKUs = ( skuId ) => {
 
     return dispatch( requestAction( devUrl, options ) )
     .then( () => {
+      dispatch(indexSku(brandId));
       alert('Sku Activated');
       return dispatch( fetchSKUs(brId) );
     });
