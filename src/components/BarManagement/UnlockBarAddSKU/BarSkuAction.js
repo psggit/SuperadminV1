@@ -442,5 +442,6 @@ export {
   updateSku,
   VIEW_SKU,
   CANCEL_SKU,
+  indexSku,
   disableSku
 };
