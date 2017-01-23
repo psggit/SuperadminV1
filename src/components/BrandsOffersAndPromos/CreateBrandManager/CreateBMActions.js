@@ -177,9 +177,9 @@ const setViewCities = (region) => {
 const createBM = (bmInfo, sbList) => {
   return (dispatch) => {
     const bmUrl = Endpoints.backendUrl + '/hadmin/brand-manager/create';
-    const insertObj = {user_name: bmInfo.name,
+    const insertObj = {username: bmInfo.name,
       password: bmInfo.password,
-      phone_no: bmInfo.mobile_number,
+      mobile: bmInfo.mobile_number,
       email: bmInfo.email,
       company_id: bmInfo.company_id,
       status: (bmInfo.is_disabled === 'false') ? true : false,
@@ -200,11 +200,17 @@ const createBM = (bmInfo, sbList) => {
         insertObj.brands.push(obj);
       }
     });
+    const brOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(insertObj),
+    };
     console.log(insertObj);
     console.log(bmUrl);
     console.log(dispatch);
     console.log('----------------');
-    dispatch(requestAction(bmUrl, insertObj)).then((resp) => {
+    dispatch(requestAction(bmUrl, brOptions)).then((resp) => {
       console.log(resp);
     });
 //    const bmOptions = bmInfoToOptions(bmInfo);
