@@ -176,7 +176,7 @@ const setViewCities = (region) => {
 
 const createBM = (bmInfo, sbList) => {
   return (dispatch) => {
-    const bmUrl = 'https://apitest.scarcity31.hasura-app.io/hadmin/brand-manager/create';
+    const bmUrl = Endpoints.backendUrl + '/hadmin/brand-manager/create';
     const insertObj = {user_name: bmInfo.name,
       password: bmInfo.password,
       phone_no: bmInfo.mobile_number,
