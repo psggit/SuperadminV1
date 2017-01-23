@@ -35,6 +35,10 @@ const BrandManagerInfo = ({dispatch, companyList}) => {
             <input data-field-name="email" data-field-type="text"/>
           </li>
           <li>
+            <label>Password</label>
+            <input data-field-name="password" data-field-type="text"/>
+          </li>
+          <li>
             <label>Mobile Number</label>
             <input data-field-name="mobile_number" data-field-type="number"/>
           </li>
@@ -50,7 +54,7 @@ const BrandManagerInfo = ({dispatch, companyList}) => {
             <label>KYC Status</label>
             <select data-field-name="kyc_status" data-field-type="text">
               <option disable selected value> -- select -- </option>
-              <option value="Verfied">Verified</option>
+              <option value="Verified">Verified</option>
               <option value="Pending">Pending</option>
             </select>
           </li>

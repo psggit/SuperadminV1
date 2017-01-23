@@ -256,7 +256,7 @@ class UnlockBarAddSKU extends Component {
               Charges And Tax percentage at Bar
             </div>
             <div className = {styles.information_rightpanel}>
-              <input type="int" data-field-name="charges_and_tax_percentage" data-field-type="float" value={ newSkuData.charges_and_tax_percentage}/>
+              <input type="number" min="0" max="100" data-field-name="charges_and_tax_percentage" data-field-type="float" value={ newSkuData.charges_and_tax_percentage}/>
             </div>
           </div>
           <div className = {styles.command_wrapper}>

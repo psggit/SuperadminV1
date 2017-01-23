@@ -14,7 +14,7 @@ const SearchWrapper = ( {data} ) => {
                 { dat.consumer ? dat.consumer.email : 'N/A'}
             </td>
             <td> { dat.amount} </td>
-            <td> { dat.transaction_id} </td>
+            <td> { dat.id} </td>
             <td> { dat.batch_number} </td>
           </tr>
         );
