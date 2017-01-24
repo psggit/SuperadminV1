@@ -277,27 +277,27 @@ const updateBM = (mod) => {
   };
 };
 
-const deleteRegionsFunc = (dArr) => {
-  return (dispatch) => {
-    const delRegionUrl = Endpoints.db + '/table/managers/delete';
-    const dataArr = dArr.map((dId) => ({'id': dId}));
-    const data = {};
-    data.where = {'$or': dataArr};
-    data.returning = ['id'];
-    const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(data),
-    };
-    console.log(options);
-    return dispatch(requestAction(delRegionUrl, options)).then((response) => {
-      console.log(response);
-    }).catch((resp) => {
-      console.log(JSON.stringify(resp));
-    });
-  };
-};
+// const deleteRegionsFunc = (dArr) => {
+//   return (dispatch) => {
+//     const delRegionUrl = Endpoints.db + '/table/managers/delete';
+//     const dataArr = dArr.map((dId) => ({'id': dId}));
+//     const data = {};
+//     data.where = {'$or': dataArr};
+//     data.returning = ['id'];
+//     const options = {
+//       method: 'POST',
+//       headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+//       credentials: globalCookiePolicy,
+//       body: JSON.stringify(data),
+//     };
+//     console.log(options);
+//     return dispatch(requestAction(delRegionUrl, options)).then((response) => {
+//       console.log(response);
+//     }).catch((resp) => {
+//       console.log(JSON.stringify(resp));
+//     });
+//   };
+// };
 
 const insertRegionsFunc = (srList) => {
   return (dispatch) => {
@@ -322,49 +322,49 @@ const insertRegionsFunc = (srList) => {
   };
 };
 
-const regionsUpdateOrDelete = (mod, bmId) => {
-  return (dispatch) => {
-    const modArr = [...mod];
-    const srListForCreate = [];     // array of region objects
-    const deleteRegionIds = [];     // array of region ids
-    const finalSelectedBrandsList = [];
-    modArr.forEach((brand) => {
-      const finalSBRegions = [];
-      if (brand.is_deleted) {
-        brand.regions.forEach((region) => {
-          deleteRegionIds.push(region.id);
-        });
-      } else {
-        brand.regions.forEach((region) => {
-          if (region.is_selected && region.in_db === undefined) {
-            // Create new
-            region.in_db = true;
-            const obj = {};
-            obj.brand_id = brand.id;
-            obj.brand_manager_id = bmId;
-            obj.region_id = region.id;
-            obj.created_at = new Date().toISOString();
-            obj.updated_at = new Date().toISOString();
-            srListForCreate.push(obj);
-          }
-          if (!region.is_selected && region.in_db !== undefined) {
-            // Delete existing
-            deleteRegionIds.push(region.id);
-          }
-          finalSBRegions.push(region);
-        });
-      }
-      brand.regions = [...finalSBRegions];
-      finalSelectedBrandsList.push(brand);
-    });
-    return Promise.all([
-      dispatch(deleteRegionsFunc([...deleteRegionIds])).then(
-        dispatch(insertRegionsFunc([...srListForCreate])),
-      dispatch({type: UPDATE_SELECTED_BRANDS_LIST, data: finalSelectedBrandsList}),
-      )
-    ]);
-  };
-};
+// const regionsUpdateOrDelete = (mod, bmId) => {
+//   return (dispatch) => {
+//     const modArr = [...mod];
+//     const srListForCreate = [];     // array of region objects
+//     const deleteRegionIds = [];     // array of region ids
+//     const finalSelectedBrandsList = [];
+//     modArr.forEach((brand) => {
+//       const finalSBRegions = [];
+//       if (brand.is_deleted) {
+//         brand.regions.forEach((region) => {
+//           deleteRegionIds.push(region.id);
+//         });
+//       } else {
+//         brand.regions.forEach((region) => {
+//           if (region.is_selected && region.in_db === undefined) {
+//             // Create new
+//             region.in_db = true;
+//             const obj = {};
+//             obj.brand_id = brand.id;
+//             obj.brand_manager_id = bmId;
+//             obj.region_id = region.id;
+//             obj.created_at = new Date().toISOString();
+//             obj.updated_at = new Date().toISOString();
+//             srListForCreate.push(obj);
+//           }
+//           if (!region.is_selected && region.in_db !== undefined) {
+//             // Delete existing
+//             deleteRegionIds.push(region.id);
+//           }
+//           finalSBRegions.push(region);
+//         });
+//       }
+//       brand.regions = [...finalSBRegions];
+//       finalSelectedBrandsList.push(brand);
+//     });
+//     return Promise.all([
+//       dispatch(deleteRegionsFunc([...deleteRegionIds])).then(
+//         dispatch(insertRegionsFunc([...srListForCreate])),
+//       dispatch({type: UPDATE_SELECTED_BRANDS_LIST, data: finalSelectedBrandsList}),
+//       )
+//     ]);
+//   };
+// };
 
 const updateBrandManager = () => {
   // update B_M
@@ -374,10 +374,46 @@ const updateBrandManager = () => {
     const modSBList = [...state_.selectedBrandsList];
     const modBMInfo = {...state_.brandManagerInfo};
     delete modBMInfo.company;
-    return Promise.all([
-      dispatch(updateBM(modBMInfo)),
-      dispatch(regionsUpdateOrDelete(modSBList, modBMInfo.id))
-    ]);
+    console.log(modBMInfo);
+    console.log(modSBList);
+    console.log('-=-=-=-=-=-=-=-');
+    const bmUrl = Endpoints.backendUrl + '/hadmin/brand-manager/update';
+    const insertObj = {mobile: modBMInfo.mobile_number,
+      is_disabled: (modBMInfo.is_disabled === 'false') ? true : false,
+      kyc_status: modBMInfo.kyc_status,
+      brand_manager_id: modBMInfo.id,
+      brands: []};
+    modSBList.forEach((brand) => {
+      const obj = {
+        brand_id: '',
+        region_id: []
+      };
+      brand.regions.forEach((region) => {
+        if (region.is_selected) {
+          obj.brand_id = brand.id;
+          obj.region_id.push(region.id);
+        }
+      });
+      if (obj.brand_id !== '') {
+        insertObj.brands.push(obj);
+      }
+    });
+    const brOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(insertObj),
+    };
+    console.log('----------------');
+    dispatch(requestAction(bmUrl, brOptions)).then((resp) => {
+      console.log(resp);
+    }).catch((resp) => {
+      console.log(resp);
+    });
+//    return Promise.all([
+//      dispatch(updateBM(modBMInfo)),
+//      dispatch(regionsUpdateOrDelete(modSBList, modBMInfo.id))
+//    ]);
   };
 };
 
