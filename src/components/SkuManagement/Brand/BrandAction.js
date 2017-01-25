@@ -1251,6 +1251,7 @@ export {
   INPUT_VALUE_CHANGED,
   IMAGE_UPLOAD_SUCCESS,
   IMAGE_UPLOAD_ERROR,
+  indexSku,
   CANCEL_IMAGE
 };
 export default brandReducer;

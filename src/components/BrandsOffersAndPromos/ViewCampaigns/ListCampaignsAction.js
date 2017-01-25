@@ -90,6 +90,9 @@ const getCampaignData = (page, limit, filterObj, isSearched ) => {
                 'name': 'brand',
                 'columns': ['*']
               }]
+            }, {
+              'name': 'state_short',
+              'columns': ['*']
             }]
           }]
         }]

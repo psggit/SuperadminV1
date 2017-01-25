@@ -181,12 +181,12 @@ const saveSku = ( barId ) => {
 
     const barState = getState().bar_sku_create_data;
 
-    if ( new Date(barState.newSkuData.start_date).toString() === 'Invalid Date' ) {
+    if ( new Date(barState.newSkuData.start_date).toISOString() === 'Invalid Date' ) {
       alert('Invalid Start Date');
       return Promise.reject();
     }
 
-    if ( new Date(barState.newSkuData.end_date).toString() === 'Invalid Date' ) {
+    if ( new Date(barState.newSkuData.end_date).toISOString() === 'Invalid Date' ) {
       alert('Invalid End Date');
       return Promise.reject();
     }
@@ -280,12 +280,12 @@ const updateSku = ( barId ) => {
       return Promise.reject({ stage: 0 });
     }
 
-    if ( new Date(barState.newSkuData.start_date).toString() === 'Invalid Date' ) {
+    if ( new Date(barState.newSkuData.start_date).toISOString() === 'Invalid Date' ) {
       alert('Invalid Start Date');
       return Promise.reject();
     }
 
-    if ( new Date(barState.newSkuData.end_date).toString() === 'Invalid Date' ) {
+    if ( new Date(barState.newSkuData.end_date).toISOString() === 'Invalid Date' ) {
       alert('Invalid End Date');
       return Promise.reject();
     }
@@ -318,7 +318,8 @@ const updateSku = ( barId ) => {
           dispatch(getBar( barId ))
         ]);
       }
-      alert('Updated Failed');
+    }).catch((err) => {
+      alert(JSON.stringify(err));
     });
     // return Promise.resolve();
   };
@@ -441,5 +442,6 @@ export {
   updateSku,
   VIEW_SKU,
   CANCEL_SKU,
+  indexSku,
   disableSku
 };

@@ -3,6 +3,7 @@ import Endpoints from '../../../Endpoints';
 import { genOptions } from '../../Common/Actions/commonFunctions';
 
 import requestAction from '../../Common/Actions/requestAction';
+import {indexSku} from '../UnlockBarAddSKU/BarSkuAction';
 
 import {
   REQUEST_SUCCESS,
@@ -165,11 +166,12 @@ const toggleBarSkuStatus = ( id, isActive, currPage, pricingId, barId ) => {
     return dispatch( requestAction( invUrl, options ) )
     .then( ( resp ) => {
       if ( resp.returning.length > 0 ) {
-        alert('Updated');
         return Promise.all([
+          dispatch(indexSku(parseInt(barId, 10))),
           ( !isActive === false && currState.barSKUs[uniqueIdentifier] ) ?
           dispatch(cancelReservations(currState.barSKUs[uniqueIdentifier])) : Promise.resolve(1),
-          dispatch(getAllBarSkusData( currPage ))
+          dispatch(getAllBarSkusData( currPage )),
+          dispatch(alert('Updated'))
         ]);
       }
       alert('Updated Failed');

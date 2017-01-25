@@ -15,7 +15,7 @@ const SkuComponent = ( {
     return (
       <li key={ serverSkus[sku].id } >
         <label>{ serverSkus[sku].brand_name } - { serverSkus[sku].volume } ML / ( { serverSkus[sku].inventory_status_name ? serverSkus[sku].inventory_status_name : 'N/A' } ) </label>
-        <p onClick={ () => { return disableSKUs.call( undefined, serverSkus[sku].id ); } }>
+        <p onClick={ () => { return disableSKUs.call( undefined, serverSkus[sku]); } }>
           Deactivate
         </p>
       </li>
@@ -36,7 +36,7 @@ const SkuComponent = ( {
     return (
       <li key={ inactiveSkus[sku].id } >
         <label>{ inactiveSkus[sku].brand_name } - { inactiveSkus[sku].volume } ML / ( { inactiveSkus[sku].inventory_status_name ? inactiveSkus[sku].inventory_status_name : 'N/A' } )</label>
-        <p onClick={ () => { return enableSKUs.call( undefined, inactiveSkus[sku].id ); } }>
+        <p onClick={ () => { return enableSKUs.call( undefined, inactiveSkus[sku]); } }>
           Activate
         </p>
       </li>

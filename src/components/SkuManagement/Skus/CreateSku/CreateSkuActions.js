@@ -123,6 +123,27 @@ const hydrateStateObj = () => {
   };
 };
 
+const indexSku = ( dispatch, brandIds ) => {
+  const skuIndexUrl = Endpoints.blogicUrl + '/admin/update_index/index/brand';
+
+  /*
+  if ( brandIds.length === 0 ) {
+    return Promise.reject('Brand cannot be empty to index');
+  }
+  */
+
+  const skuIndexObj = {
+    'ids': [ brandIds ]
+  };
+
+  const options = {
+    ...genOptions,
+    body: JSON.stringify(skuIndexObj)
+  };
+
+  return dispatch(requestAction(skuIndexUrl, options));
+};
+
 const toggleSkuStatus = ( id, status ) => {
   return ( dispatch, getState ) => {
     const devUrl = Endpoints.db + '/table/inventory/update';
@@ -157,6 +178,7 @@ const toggleSkuStatus = ( id, status ) => {
 
     return dispatch( requestAction( devUrl, options ) )
     .then( () => {
+      dispatch(indexSku(dispatch, skuState.brandSlug[skuState.skuReqObj.brand_id]));
       alert('Sku Toggled');
       return dispatch( hydrateStateObj() );
     });
@@ -327,27 +349,6 @@ const getReservedItems = ( Id ) => {
         dispatch({ type: FETCHED_RESERVED_ITEMS, data: data });
       });
   };
-};
-
-const indexSku = ( dispatch, brandIds ) => {
-  const skuIndexUrl = Endpoints.blogicUrl + '/admin/update_index/index/brand';
-
-  /*
-  if ( brandIds.length === 0 ) {
-    return Promise.reject('Brand cannot be empty to index');
-  }
-  */
-
-  const skuIndexObj = {
-    'ids': [ brandIds ]
-  };
-
-  const options = {
-    ...genOptions,
-    body: JSON.stringify(skuIndexObj)
-  };
-
-  return dispatch(requestAction(skuIndexUrl, options));
 };
 
 /* Function to Create sku */
