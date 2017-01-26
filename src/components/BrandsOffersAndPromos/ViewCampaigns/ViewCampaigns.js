@@ -81,7 +81,9 @@ class ViewCampaigns extends React.Component { // eslint-disable-line no-unused-v
   toggleCampaignStatus(e) {
     const campaignStatus = e.target.getAttribute('data-campaign-status');
     const campaignId = e.target.getAttribute('data-campaign-id');
-    this.props.dispatch(toggleStatus(campaignId, campaignStatus));
+    const brandId = e.target.getAttribute('data-campaign-brand-id');
+    const isDisable = (e.target.getAttribute('data-campaign-type') === 'status') ? false : true;
+    this.props.dispatch(toggleStatus(campaignId, campaignStatus, brandId, isDisable));
   }
   render() {
     const styles = require('./ViewCampaigns.scss');
