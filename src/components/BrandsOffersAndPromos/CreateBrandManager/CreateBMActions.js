@@ -131,77 +131,113 @@ const setViewCities = (region) => {
   };
 };
 
-const sbListToOptions = (sbList, bmId) => {
-  const brData = {};
-  brData.objects = [];
-  sbList.forEach((brand)=> {
-    brand.regions.forEach((region) => {
-      if (region.is_selected) {
-        const obj = {};
-        obj.brand_id = brand.id;
-        obj.brand_manager_id = bmId;
-        obj.region_id = region.id;
-        obj.created_at = new Date().toISOString();
-        obj.updated_at = new Date().toISOString();
-        brData.objects.push(obj);
-      }
-    });
-  });
-  const brOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
-    credentials: globalCookiePolicy,
-    body: JSON.stringify(brData),
-  };
-  return brOptions;
-};
-
-const bmInfoToOptions = (bmInfo) => {
-  bmInfo.is_disabled = (bmInfo.is_disabled === 'true') ? true : false;
-  bmInfo.tm_id = 123456789;
-  bmInfo.created_at = new Date().toISOString();
-  bmInfo.updated_at = new Date().toISOString();
-  console.log(bmInfo);
-  const bmData = {};
-  bmData.objects = [bmInfo];
-  bmData.returning = ['id'];
-  const options = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
-    credentials: globalCookiePolicy,
-    body: JSON.stringify(bmData),
-  };
-  return options;
-};
+// const sbListToOptions = (sbList, bmId) => {
+//   const brData = {};
+//   brData.objects = [];
+//   sbList.forEach((brand)=> {
+//     brand.regions.forEach((region) => {
+//       if (region.is_selected) {
+//         const obj = {};
+//         obj.brand_id = brand.id;
+//         obj.brand_manager_id = bmId;
+//         obj.region_id = region.id;
+//         obj.created_at = new Date().toISOString();
+//         obj.updated_at = new Date().toISOString();
+//         brData.objects.push(obj);
+//       }
+//     });
+//   });
+//   const brOptions = {
+//     method: 'POST',
+//     headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+//     credentials: globalCookiePolicy,
+//     body: JSON.stringify(brData),
+//   };
+//   return brOptions;
+// };
+//
+// const bmInfoToOptions = (bmInfo) => {
+//   bmInfo.is_disabled = (bmInfo.is_disabled === 'true') ? true : false;
+//   bmInfo.tm_id = 123456789;
+//   bmInfo.created_at = new Date().toISOString();
+//   bmInfo.updated_at = new Date().toISOString();
+//   console.log(bmInfo);
+//   const bmData = {};
+//   bmData.objects = [bmInfo];
+//   bmData.returning = ['id'];
+//   const options = {
+//     method: 'POST',
+//     headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+//     credentials: globalCookiePolicy,
+//     body: JSON.stringify(bmData),
+//   };
+//   return options;
+// };
 
 const createBM = (bmInfo, sbList) => {
   return (dispatch) => {
-    const bmUrl = Endpoints.db + '/table/brand_manager/insert';
-    const bmOptions = bmInfoToOptions(bmInfo);
-    return dispatch(requestAction(bmUrl, bmOptions)).then((response) => {
-      if (response.returning !== undefined) {
-        console.log('Brand Manager Saved!!');
-        console.log(response);
-        const brUrl = Endpoints.db + '/table/managers/insert';
-        const brOptions = sbListToOptions(sbList, response.returning[0].id);
-        dispatch(requestAction(brUrl, brOptions)).then((resp) => {
-          console.log('Brand Map Saved!!');
-          console.log(resp);
-          return Promise.all([
-            dispatch(routeActions.push('/hadmin/brands_offers_and_promos/brand_managers_list')),
-            dispatch({type: REQUEST_COMPLETED})
-          ]);
-        }).catch((brResp) => {
-          alert(JSON.stringify(brResp));
-          return dispatch({type: REQUEST_COMPLETED});
-        });
+    const bmUrl = Endpoints.backendUrl + '/hadmin/brand-manager/create';
+    const insertObj = {username: bmInfo.name,
+      password: bmInfo.password,
+      mobile: bmInfo.mobile_number,
+      email: bmInfo.email,
+      company_id: bmInfo.company_id,
+      status: (bmInfo.is_disabled === 'false') ? true : false,
+      kyc_status: bmInfo.kyc_status,
+      brands: []};
+    sbList.forEach((brand) => {
+      const obj = {
+        brand_id: '',
+        region_id: []
+      };
+      brand.regions.forEach((region) => {
+        if (region.is_selected) {
+          obj.brand_id = brand.id;
+          obj.region_id.push(region.id);
+        }
+      });
+      if (obj.brand_id !== '') {
+        insertObj.brands.push(obj);
       }
-    }).catch((bmResponse) => {
-      alert(JSON.stringify(bmResponse));
-      return Promise.all([
-        dispatch({type: REQUEST_COMPLETED})
-      ]);
     });
+    const brOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(insertObj),
+    };
+    console.log(insertObj);
+    console.log(bmUrl);
+    console.log(dispatch);
+    console.log('----------------');
+    dispatch(requestAction(bmUrl, brOptions)).then((resp) => {
+      console.log(resp);
+    });
+//    const bmOptions = bmInfoToOptions(bmInfo);
+//    return dispatch(requestAction(bmUrl, bmOptions)).then((response) => {
+//      if (response.returning !== undefined) {
+//        console.log('Brand Manager Saved!!');
+//        console.log(response);
+//        const brUrl = Endpoints.db + '/table/managers/insert';
+//        const brOptions = sbListToOptions(sbList, response.returning[0].id);
+//        dispatch(requestAction(brUrl, brOptions)).then((resp) => {
+//          console.log('Brand Map Saved!!');
+//          console.log(resp);
+//          return Promise.all([
+//            dispatch(routeActions.push('/hadmin/brands_offers_and_promos/brand_managers_list')),
+//            dispatch({type: REQUEST_COMPLETED})
+//          ]);
+//        }).catch((brResp) => {
+//          alert(JSON.stringify(brResp));
+//          return dispatch({type: REQUEST_COMPLETED});
+//        });
+//      }
+//    }).catch((bmResponse) => {
+//      alert(JSON.stringify(bmResponse));
+//      return Promise.all([
+//        dispatch({type: REQUEST_COMPLETED})
+//      ]);
+//    });
   };
 };
 

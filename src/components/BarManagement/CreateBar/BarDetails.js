@@ -101,11 +101,11 @@ const BarDetails = ( { currState, organisationData } ) => { // eslint-disable-li
         <li>
           <div className={styles.wd_50}>
             <label>Discount Percent</label>
-            <input type="text" data-field-name="discount_percent" data-field-type="int" value={ currState.discount_percent } />
+            <input type="number" min="0" max="100" data-field-name="discount_percent" data-field-type="float" value={ currState.discount_percent } />
           </div>
           <div className={styles.wd_50}>
             <label>Service Charge Percent</label>
-            <input type="text" data-field-name="service_charge_percent" data-field-type="int" value={ currState.service_charge_percent } />
+            <input type="number" min="0" max="100" data-field-name="service_charge_percent" data-field-type="float" value={ currState.service_charge_percent } />
           </div>
         </li>
         <li>
@@ -114,7 +114,7 @@ const BarDetails = ( { currState, organisationData } ) => { // eslint-disable-li
           </div>
           <div className={styles.wd_50}>
             <label>House Rules</label>
-            <input type="text" data-field-name="house_rules" data-field-type="text" value={ currState.house_rules } />
+            <textarea type="text" data-field-name="house_rules" data-field-type="text" value={ currState.house_rules } />
           </div>
         </li>
       </ul>

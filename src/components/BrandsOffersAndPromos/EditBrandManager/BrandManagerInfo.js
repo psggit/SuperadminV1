@@ -45,7 +45,7 @@ const BrandManagerInfo = ({brandManagerInfo, dispatch}) => {
             <select data-field-name="kyc_status" data-field-type="text">
               {/* Mess here */}
               <option selected value={bmInfo.kyc_status}>{bmInfo.kyc_status}</option>
-              <option value="Verfied">Verified</option>
+              <option value="Verified">Verified</option>
               <option value="Pending">Pending</option>
             </select>
           </li>

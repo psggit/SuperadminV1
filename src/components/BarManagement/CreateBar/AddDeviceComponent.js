@@ -89,7 +89,7 @@ const AddDeviceComponent = ( {
           <label className={styles.success_msg_lab}>
             Consumer Password
           </label>
-          <input type="password" data-field-name="password" data-field-type="text" value={ currState.password } disabled = { isEditing }/>
+          <input type="text" data-field-name="password" data-field-type="text" value={ currState.password } disabled = { isEditing }/>
         </div>
         <div className={styles.wd_100 + ' ' + styles.margin_bottom}>
           <label className={styles.success_msg_lab}>
