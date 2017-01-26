@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { getAllCampaignsData, getCampaignData } from './ListCampaignsAction';
+import { getAllCampaignsData, getCampaignData, toggleStatus } from './ListCampaignsAction';
 import SearchWrapper from './SearchWrapper';
 
 import PaginationWrapper from '../../Common/PaginationWrapper.js';
@@ -78,15 +78,15 @@ class ViewCampaigns extends React.Component { // eslint-disable-line no-unused-v
       this.props.dispatch({ type: REQUEST_COMPLETED });
     });
   }
-  get myName() {
-    return 'Karthik Venkateswaran';
+  toggleCampaignStatus(e) {
+    const campaignStatus = e.target.getAttribute('data-campaign-status');
+    const campaignId = e.target.getAttribute('data-campaign-id');
+    this.props.dispatch(toggleStatus(campaignId, campaignStatus));
   }
   render() {
     const styles = require('./ViewCampaigns.scss');
     const { lastSuccess } = this.props;
 
-    console.log('my name is ');
-    console.log(this.myName);
     const fields = [ 'id', 'name', 'brand_manager.name', 'brand_manager.email', 'cashback_promos.skus.sku_pricing.sku.brand.brand_name', 'active_to', 'active_from' ];
     // const operator = ['$eq'];
     const fieldOperatorMap = {
@@ -123,7 +123,7 @@ class ViewCampaigns extends React.Component { // eslint-disable-line no-unused-v
               <button className={styles.common_btn}>Create Campaigns </button>
             </Link>
           </div>
-          <SearchWrapper data={lastSuccess}/>
+          <SearchWrapper data={lastSuccess} onToggle={this.toggleCampaignStatus.bind(this)}/>
           <PaginationWrapper
             {...this.props }
             fetchInitialData = { this.fetchInitialData.bind(this) }

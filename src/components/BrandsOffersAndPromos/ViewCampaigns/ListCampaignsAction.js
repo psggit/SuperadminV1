@@ -2,7 +2,7 @@
  * Will receive default state from Common
  * */
 
-// import requestAction from '../../../Common/Actions/requestAction';
+import requestAction from '../../Common/Actions/requestAction';
 import Endpoints, { globalCookiePolicy } from '../../../Endpoints';
 import { MAKE_REQUEST,
   REQUEST_SUCCESS,
@@ -156,6 +156,41 @@ const getAllCampaignsData = (page, limit) => {
   };
 };
 
+const indexBrand = (campaignId) => {
+  return (dispatch) => {
+    console.log(campaignId);
+    Promise.all([
+      dispatch()
+    ]);
+  };
+};
+
+const toggleStatus = (campaignId, campaignStatus) => {
+  return (dispatch) => {
+    const url = Endpoints.dataUrl + '/v1/query';
+    const payload = {};
+    payload.type = 'update';
+    payload.args = {
+      'table': 'campaign',
+      '$set': {'status': (campaignStatus === 'active') ? 'inactive' : 'active'},
+      'where': {'id': parseInt(campaignId, 10) }
+    };
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(payload)
+    };
+    Promise.all([
+      dispatch(requestAction(url, options)).then(() => {
+        alert('Status changed');
+        window.location.reload(); // better way to handle this
+        dispatch(indexBrand(campaignId));
+      }).catch( (err) => {
+        alert('Error: ' + JSON.stringify(err));
+      })
+    ]);
+  };
+};
+
 /* End of it */
 
 
@@ -164,5 +199,6 @@ const getAllCampaignsData = (page, limit) => {
 export {
   getCampaignData,
   getAllCampaignsData,
+  toggleStatus,
   RESET
 };

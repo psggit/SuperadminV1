@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router';
+// import { Link } from 'react-router';
 
-const SearchWrapper = ( {data} ) => {
+const SearchWrapper = ( {data, onToggle} ) => {
   const styles = require('./SearchWrapper.scss');
   let tableBody;
   let objHtml;
@@ -79,11 +79,9 @@ const SearchWrapper = ( {data} ) => {
     return (
           <tr key={index}>
             <td>
-              <Link to={'#'}>
-                <button className={styles.edit_btn} data-campaign-id={dat.id}>
-                  Disable
-                </button>
-              </Link>
+              <button className={styles.edit_btn} data-campaign-status={dat.status} data-campaign-id={dat.id} onClick={onToggle}>
+                { dat.status }
+              </button>
             </td>
             <td> { dat.id } </td>
             <td> { dat.name } </td>
