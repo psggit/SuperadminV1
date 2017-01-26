@@ -21,6 +21,29 @@
 	font-size: 15px;
 	letter-spacing: 0.3px;
 }
+.brand_manager_btn
+{
+	width: 230px;
+	height: 30px;
+	color: rgba(255, 116, 0, 0.8);
+	border: 1px solid #FF7400;
+	border-radius: 4px;
+	background: #FFF;
+	cursor: pointer;
+	font-weight: 400;
+	text-align: center;
+	font-size: 13px;
+	letter-spacing: 0.5px;
+	transition: all 0.2s linear;
+	&:hover
+	{
+		color: rgba(255, 116, 0, 1); 
+	}
+	&:focus
+	{
+		outline: none;
+	}
+}
 .common_btn
 {
 	width: 130px;

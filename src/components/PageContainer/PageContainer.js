@@ -115,9 +115,6 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
             <li><input type="checkbox" id="cb4"/><label htmlFor="cb4">BRANDS OFFERS AND PROMOS</label>
               <ul>
               <li className={styles.sidebar_list}><label>
-                <Link to={'/hadmin/brands_offers_and_promos/brand_managers_list'} className={ lastPathname === 'kycfunctions' ? styles.active : '' }>Brand Manager Profile</Link>
-              </label></li>
-              <li className={styles.sidebar_list}><label>
                 <Link to={'/hadmin/brands_offers_and_promos/promos'} className={ lastPathname === 'profiles' ? styles.active : '' }>Promos</Link>
               </label></li>
               <li className={styles.sidebar_list}><label>
@@ -193,6 +190,9 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
           <ul>
             <li><input type="checkbox" id="cb7"/><label htmlFor="cb7">BRAND MANAGER</label>
               <ul>
+              <li className={styles.sidebar_list}><label>
+                <Link to={'/hadmin/brands_offers_and_promos/brand_managers_list'} className={ lastPathname === 'kycfunctions' ? styles.active : '' }>Brand Manager Profile</Link>
+              </label></li>
               <li className={styles.sidebar_list}>
                 <label>
                   <Link to={'/hadmin/brands_offers_and_promos/promos'} className={ lastPathname === 'promos' ? styles.active : '' }> Promos </Link>

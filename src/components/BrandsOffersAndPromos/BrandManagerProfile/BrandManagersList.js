@@ -12,7 +12,7 @@ const BrandManagersList = ( {data} ) => {
             <td>
               <Link to={'/hadmin/brands_offers_and_promos/brand_manager_view/' + dat.id}>
                 <button className={styles.edit_btn} data-state-id={dat.id}>
-                  View
+                  View/Edit
                 </button>
               </Link>
             </td>

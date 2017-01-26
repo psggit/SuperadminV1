@@ -35,11 +35,6 @@ class BrandManagerProfile extends Component { // eslint-disable-line no-unused-v
       sequence: 1,
       link: '#' // TODO
     });
-    this.breadCrumbs.push({
-      title: 'Create Brand Manager',
-      sequence: 2,
-      link: '#' // TODO
-    });
   }
   // Hook used by pagination wrapper to fetch the initial data
   fetchInitialData(page, limit) {
@@ -67,7 +62,7 @@ class BrandManagerProfile extends Component { // eslint-disable-line no-unused-v
           </div>
           <div className={styles.create_layout + ' ' + styles.wd_100}>
             <Link to={'/hadmin/brands_offers_and_promos/create_brand_manager'}>
-              <button className={styles.common_btn}>Create BM</button>
+              <button className={styles.brand_manager_btn}>Create New Brand Manager</button>
             </Link>
           </div>
           <BrandManagersList data={lastSuccess}/>
