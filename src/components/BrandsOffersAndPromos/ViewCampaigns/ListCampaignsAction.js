@@ -2,12 +2,13 @@
  * Will receive default state from Common
  * */
 
-// import requestAction from '../../../Common/Actions/requestAction';
+import requestAction from '../../Common/Actions/requestAction';
 import Endpoints, { globalCookiePolicy } from '../../../Endpoints';
 import { MAKE_REQUEST,
   REQUEST_SUCCESS,
   COUNT_FETCHED,
   REQUEST_ERROR, RESET } from '../../Common/Actions/Actions';
+import { indexSku } from '../../SkuManagement/Brand/BrandAction';
 
 // import { routeActions } from 'redux-simple-router';
 // import commonReducer from '../Common/Actions/CommonReducer';
@@ -94,6 +95,19 @@ const getCampaignData = (page, limit, filterObj, isSearched ) => {
               'name': 'state_short',
               'columns': ['*']
             }]
+          }, {
+            'name': 'cart_items',
+            'columns': ['id', {
+              'name': 'reserved_item',
+              'columns': ['id', {
+                'name': 'redemption_items',
+                'columns': ['id']
+              }, {
+                'name': 'cancelled_items',
+                'columns': ['id']
+              }],
+              'where': {'status': 'open'}
+            }]
           }]
         }]
       }, {
@@ -156,6 +170,62 @@ const getAllCampaignsData = (page, limit) => {
   };
 };
 
+const cancelCampaign = (campaignId) => {
+  return (dispatch) => {
+    const url = Endpoints.blogicUrl + '/admin/cancel/cashback';
+    const payload = { 'itemId': [campaignId]};
+
+    const options = {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(payload)
+    };
+
+    return dispatch(requestAction(url, options));
+  };
+};
+
+const toggleStatus = (campaignId, campaignStatus, brandId, disableCampaign = false) => {
+  return (dispatch) => {
+    const url = Endpoints.dataUrl + '/v1/query';
+    let _status;
+    if (disableCampaign) {
+      _status = 'cancelled';
+    } else {
+      _status = (campaignStatus === 'active') ? 'inactive' : 'active';
+    }
+    const payload = {};
+    payload.type = 'update';
+    payload.args = {
+      'table': 'campaign',
+      '$set': {'status': _status },
+      'where': {'id': parseInt(campaignId, 10) }
+    };
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(payload)
+    };
+    Promise.all([
+      dispatch(requestAction(url, options)).then(() => {
+        dispatch(indexSku(brandId)).then(() => {
+          if (disableCampaign) {
+            dispatch(cancelCampaign(campaignId)).then(() => {
+              alert('Status changed and Items will be cancelled soon..');
+              window.location.reload(); // better way to handle this
+            });
+          } else {
+            alert('Status changed');
+            window.location.reload(); // better way to handle this
+          }
+        });
+      }).catch( (err) => {
+        alert('Error: ' + JSON.stringify(err));
+      })
+    ]);
+  };
+};
+
 /* End of it */
 
 
@@ -164,5 +234,6 @@ const getAllCampaignsData = (page, limit) => {
 export {
   getCampaignData,
   getAllCampaignsData,
+  toggleStatus,
   RESET
 };

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router';
+// import { Link } from 'react-router';
 
-const SearchWrapper = ( {data} ) => {
+const SearchWrapper = ( {data, onToggle } ) => {
   const styles = require('./SearchWrapper.scss');
   let tableBody;
   let objHtml;
@@ -73,17 +73,30 @@ const SearchWrapper = ( {data} ) => {
       );
     };
 
+    const reservationCount = () => {
+      const reserverdItemsCount = (dat.cashback_promos.length > 0 &&
+        dat.cashback_promos[0].skus.length > 0 &&
+        dat.cashback_promos[0].skus[0].cart_items.length > 0 ) ?
+        dat.cashback_promos[0].skus[0].cart_items.reduce((count = 0, ci) => {
+          return count + ((ci.reserved_item) ? 1 : 0);
+        }).length : 0;
+      return reserverdItemsCount;
+    };
 
     from = new Date(new Date(from).getTime()).toLocaleString('en-GB');
     to = new Date(new Date(to).getTime()).toLocaleString('en-GB');
     return (
           <tr key={index}>
             <td>
-              <Link to={'#'}>
-                <button className={styles.edit_btn} data-campaign-id={dat.id}>
-                  Disable
-                </button>
-              </Link>
+              <button className={styles.edit_btn} data-campaign-status={dat.status} data-campaign-id={dat.id} data-campaign-type="status" data-campaign-brand-id={ dat.cashback_promos.length > 0 ? dat.cashback_promos[0].skus[0].sku_pricing.sku.brand.id : 0 } onClick={(dat.status !== 'cancelled') ? onToggle : null}>
+                { (dat.status === 'active') ? 'Disable' : 'Enable' }
+              </button>
+            </td>
+            <td>
+              <button className={styles.edit_btn} data-campaign-status={dat.status} data-campaign-id={dat.id} data-campaign-type="disable" data-campaign-brand-id={ dat.cashback_promos.length > 0 ? dat.cashback_promos[0].skus[0].sku_pricing.sku.brand.id : 0 } onClick={(dat.status !== 'cancelled') ? onToggle : null}>
+                { (dat.status !== 'cancelled') ? 'Cancel' : 'Cancelled' }
+              </button>
+            { 'Items reserved: ' + reservationCount()}
             </td>
             <td> { dat.id } </td>
             <td> { dat.name } </td>
