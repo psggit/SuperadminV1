@@ -212,6 +212,11 @@ const createBM = (bmInfo, sbList) => {
     console.log('----------------');
     dispatch(requestAction(bmUrl, brOptions)).then((resp) => {
       console.log(resp);
+    }).catch((resp) => {
+      let message = 'ALERT : Creation Unsuccessfull\n\n';
+      message += 'Message : ';
+      message += resp.message;
+      alert(message);
     });
 //    const bmOptions = bmInfoToOptions(bmInfo);
 //    return dispatch(requestAction(bmUrl, bmOptions)).then((response) => {
