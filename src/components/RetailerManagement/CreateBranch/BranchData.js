@@ -69,38 +69,80 @@ const saveBranch = () => {
 
     const brInsertCheck = [
       'gps_cordinates',
-      'is_open',
       'organisation_id',
       'application_number',
       'kyc_status',
       'branch_status',
-      'is_active',
       'city_id',
       'excise_licence_number',
       'org_name',
-      'kyc_outlet',
       'service_charge_percent',
       'discount_percent'
     ];
     let brCheckStatus = true;
     const brList = [];
 
-
     brInsertCheck.forEach( ( i ) => {
       brCheckStatus = brCheckStatus && ( branchDataObj[i] ? true : false );
-      if ( branchDataObj[i] === undefined ) {
+      if (( branchDataObj[i] === undefined ) || (branchDataObj[i] === 0)) {
         brList.push(i);
       }
     });
 
     if ( !brCheckStatus ) {
-      let text = 'Following Fields Missing:\n';
+      let text = '1) Following Fields Missing:\n';
       brList.forEach( ( i, index ) => {
         text += (index + 1) + ') ' + i + '\n';
       });
       alert(text);
       return Promise.reject({ stage: 0 });
     }
+
+    // check Branch Contact => If not available throw list of invalid inputs
+    const branchConDataObj = { ...branchState.branchContact };
+    const brConInsertCheck = ['branch_address', 'pincode', 'city_id', 'state_id', 'email', 'mobile_number', 'landline_number', 'gps_cordinates'];
+    let brConCheckStatus = true;
+    const brConList = [];
+
+    brConInsertCheck.forEach( ( i ) => {
+      brConCheckStatus = brConCheckStatus && ( branchConDataObj[i] ? true : false );
+      if (( branchConDataObj[i] === undefined ) || (branchConDataObj[i] === 0) || (branchConDataObj[i] === '')) {
+        brConList.push(i);
+      }
+    });
+
+    if ( !brConCheckStatus ) {
+      let text = '2) Following Fields Missing:\n';
+      brConList.forEach( ( i, index ) => {
+        text += (index + 1) + ') ' + i + '\n';
+      });
+      alert(text);
+      return Promise.reject({ stage: 0 });
+    }
+
+    // Check Branch Account Details => If not available throw list of invalid inputs
+    const branchAccDataObj = { ...branchState.branchAccountRegistered };
+
+    const brAccInsertCheck = ['ifsc_code', 'account_number', 'branch', 'bank_name'];
+    let brAccCheckStatus = true;
+    const brAccList = [];
+
+    brAccInsertCheck.forEach( ( i ) => {
+      brAccCheckStatus = brAccCheckStatus && ( branchAccDataObj[i] ? true : false );
+      if ( branchAccDataObj[i] === undefined ) {
+        brAccList.push(i);
+      }
+    });
+
+    if ( !brAccCheckStatus ) {
+      let text = '3) Following Fields Missing:\n';
+      brAccList.forEach( ( i, index ) => {
+        text += (index + 1) + ') ' + i + '\n';
+      });
+      alert(text);
+      return Promise.reject( { stage: 0 });
+    }
+
 
     /* Adding address for retailer */
     branchDataObj.org_address = branchState.branchContact.branch_address;
