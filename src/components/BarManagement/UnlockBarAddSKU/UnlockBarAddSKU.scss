@@ -259,3 +259,24 @@
 	  }
 	}
 }
+[data-field-value]
+{
+  border : 1px solid green!important;
+}
+[type = "datetime-local"]
+{
+  width : 200px !important;
+  border : 1px solid green!important;
+}
+[data-field-value = "0"]
+{
+  border : 1px solid red !important;
+}
+[data-field-value = ""]
+{
+  border : 1px solid red !important;
+}
+[data-field-non-mandatory]
+{
+  border : 1px solid grey!important;
+}

@@ -11,7 +11,6 @@ const brandHtml = (companyBrands, selectedBrandsList) => {
   selectedBrandsList.forEach((sbl) => {
     sbIds.push(sbl.id);
   });
-  console.log('goat fucker');
   console.log(sbIds);
   companyBrands.forEach((cb) => {
     if (!(cb.id in sbIds)) {
@@ -36,8 +35,8 @@ const regionsHtml = (styles, selectedBrand, dispatch) => {
   console.log(selectedBrand);
   return (selectedBrand.regions === undefined ) ? (<li></li>) : selectedBrand.regions.map((region) => (
     <li>
-      <label>
-        <input type="checkbox" defaultChecked={(region.is_selected === undefined | region.is_selected === false) ? false : true} value={region.id} data-field-name="selected_region_id" onClick={onRegionCheck.bind(this, dispatch, selectedBrand)}/> {region.region_name}
+      <label title={ ( region.managers.length > 0) ? 'Managed By :' + region.managers[0].brand_manager.name + '\n' + 'Email :' + region.managers[0].brand_manager.email : 'No Managers Assigned'} >
+        <input disabled={ ( region.managers.length > 0) ? 'disabled' : '' } type="checkbox" defaultChecked={(region.is_selected === undefined | region.is_selected === false) ? false : true} value={region.id} data-field-name="selected_region_id" onClick={onRegionCheck.bind(this, dispatch, selectedBrand)}/> {region.region_name}
       </label>
       <p className={styles.pointer_click} onClick={onViewCities.bind(this, region, dispatch)}>{region.cities.length} {(region.cities.length > 1) ? 'Cities' : 'City'}</p>
     </li>

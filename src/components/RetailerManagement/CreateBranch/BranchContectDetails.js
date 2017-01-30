@@ -36,12 +36,12 @@ const BranchContectDetails = ( { stateData, currState } ) => { // eslint-disable
         </li>
         <li>
           <div className={styles.wd_50}>
-            <label>Branch Address</label>
-            <textarea data-field-name="branch_address" data-field-type="text" rows="4" cols="10" value={ currState.branch_address }></textarea>
+            <label>Branch Address*</label>
+            <textarea data-field-name="branch_address" data-field-type="text" rows="4" cols="10" data-field-value={currState.branch_address } value={ currState.branch_address }></textarea>
           </div>
           <div className={styles.wd_50}>
-            <label>State</label>
-            <select data-field-name="state_id" data-field-type="int" value={ currState.state_id } >
+            <label>State*</label>
+            <select data-field-name="state_id" data-field-type="int" data-field-value={ currState.state_id } value={ currState.state_id } >
               <option value="0">Select State</option>
               { stateObj }
             </select>
@@ -49,12 +49,12 @@ const BranchContectDetails = ( { stateData, currState } ) => { // eslint-disable
         </li>
         <li>
           <div className={styles.wd_50}>
-            <label>Pincode</label>
-            <input type="number" data-field-name="pincode" data-field-type="text" value={ currState.pincode } />
+            <label>Pincode*</label>
+            <input type="number" data-field-name="pincode" data-field-type="text" data-field-value={ currState.pincode } value={ currState.pincode } />
           </div>
           <div className={styles.wd_50}>
-            <label>City</label>
-            <select data-field-name="city_id" data-field-type="int" value={ currState.city_id }>
+            <label>City*</label>
+            <select data-field-name="city_id" data-field-type="int" data-field-value={ currState.city_id } value={ currState.city_id }>
               <option value="0">Select City</option>
               { cityObj }
             </select>
@@ -62,22 +62,22 @@ const BranchContectDetails = ( { stateData, currState } ) => { // eslint-disable
         </li>
         <li>
           <div className={styles.wd_50}>
-            <label>Mobile Number</label>
-            <input type="number" data-field-name="mobile_number" data-field-type="text" value={ currState.mobile_number } />
+            <label>Mobile Number*</label>
+            <input type="number" data-field-name="mobile_number" data-field-type="text" data-field-value={ currState.mobile_number } value={ currState.mobile_number } />
           </div>
           <div className={styles.wd_50}>
-            <label>Email</label>
-            <input type="text" data-field-name="email" data-field-type="text" value={ currState.email } />
+            <label>Email*</label>
+            <input type="text" data-field-name="email" data-field-type="text" data-field-value={ currState.email } value={ currState.email } />
           </div>
         </li>
         <li>
           <div className={styles.wd_50}>
-            <label>Gps Coordinates</label>
-            <input type="text" data-field-name="gps_cordinates" data-field-type="text" value={ currState.gps_cordinates }/>
+            <label>Gps Coordinates*</label>
+            <input type="text" data-field-name="gps_cordinates" data-field-type="text" data-field-value={ currState.gps_cordinates } value={ currState.gps_cordinates }/>
           </div>
           <div className={styles.wd_50}>
-            <label>Landline Number</label>
-            <input type="text" data-field-name="landline_number" data-field-type="text" value={ currState.landline_number }/>
+            <label>Landline Number*</label>
+            <input type="text" data-field-name="landline_number" data-field-type="text" data-field-value={ currState.landline_number } value={ currState.landline_number }/>
           </div>
         </li>
       </ul>

@@ -76,13 +76,21 @@ const createBeneficiary = () => {
 
     const beneficiaryInsertCheck = ['name', 'address', 'landline_number', 'pincode', 'email', 'city_id', 'state_id'];
     let beneficiaryCheck = true;
+    const beneficiaryList = [];
 
     beneficiaryInsertCheck.forEach( ( i ) => {
       beneficiaryCheck = beneficiaryCheck && ( beneficiaryDataObj[i] ? true : false );
+      if ( beneficiaryDataObj[i] === '' ) {
+        beneficiaryList.push(i);
+      }
     });
 
-    if ( !beneficiaryInsertCheck ) {
-      alert('All the fields for organisation are mandatory');
+    if ( !beneficiaryCheck ) {
+      let text = 'Following Fields Missing:\n';
+      beneficiaryList.forEach( ( i, index ) => {
+        text += (index + 1) + ') ' + i + '\n';
+      });
+      alert(text);
       return Promise.reject();
     }
 

@@ -15,7 +15,7 @@ const BeneficiarySelect = ({label, defaultValue, fieldType, fieldName, selectOpt
         {label}
       </div>
       <div className = {styles.add_beneficiary_select_box_wrapper }>
-      <select data-field-name={ fieldName } data-field-type={ fieldType } value={ value }>
+      <select data-field-name={ fieldName } data-field-type={ fieldType } data-field-value={ value } value={ value }>
         <option value={ defaultValue }>
           { defaultValue }
         </option>

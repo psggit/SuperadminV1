@@ -88,13 +88,13 @@ const BeneficiaryAdd = ( { isShow,
       <div className = {styles.add_beneficiaries_head}>
         beneficiaries
       </div>
-      <AddBeneficiaryInput labelVal = "Name" fieldName="name" fieldType="text" value={ currState.name } />
-      <AddBeneficiaryTextarea labelVal = "Address" fieldName="address" fieldType="text" value={ currState.address } />
-      <AddBeneficiaryInput labelVal = "Pincode" fieldName="pincode" fieldType="text" value={ currState.pincode } />
-      <BeneficiarySelect label = "State" defaultValue="Select State" selectOptions = { stateObj } fieldName="state_id" fieldType="int" value={ currState.state_id } />
-      <BeneficiarySelect label = "City" defaultValue="Select City" selectOptions = { cityObj } fieldName="city_id" fieldType="int" value={ currState.city_id }/>
-      <AddBeneficiaryInput labelVal = "Landline Number" fieldName="landline_number" fieldType="text" value={ currState.landline_number } />
-      <AddBeneficiaryInput labelVal = "Email" fieldName="email" fieldType="text" value={ currState.email } />
+      <AddBeneficiaryInput labelVal = "Name*" fieldName="name" fieldType="text" value={ currState.name } />
+      <AddBeneficiaryTextarea labelVal = "Address*" fieldName="address" fieldType="text" value={ currState.address } />
+      <AddBeneficiaryInput labelVal = "Pincode*" fieldName="pincode" fieldType="text" value={ currState.pincode } />
+      <BeneficiarySelect label = "State*" defaultValue="" selectOptions = { stateObj } fieldName="state_id" fieldType="int" value={ currState.state_id } />
+      <BeneficiarySelect label = "City*" defaultValue="" selectOptions = { cityObj } fieldName="city_id" fieldType="int" value={ currState.city_id }/>
+      <AddBeneficiaryInput labelVal = "Landline Number*" fieldName="landline_number" fieldType="text" value={ currState.landline_number } />
+      <AddBeneficiaryInput labelVal = "Email*" fieldName="email" fieldType="text" value={ currState.email } />
       { actionButtons }
     </div>
   );

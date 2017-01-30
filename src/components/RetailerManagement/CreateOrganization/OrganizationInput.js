@@ -7,7 +7,7 @@ const OrganizationInput = ({labelVal, Val, fieldName, fieldType, value }) => {
         {labelVal}
       </div>
       <div className = {styles.constitution_organisation_input_right}>
-        <input type={ fieldType } placeholder = {Val} data-field-name={ fieldName } data-field-type = { fieldType } value={ value }/>
+        <input type={ fieldType } placeholder = {Val} data-field-name={ fieldName } data-field-type = { fieldType } data-field-value={ value } value={ value }/>
       </div>
     </div>
   );

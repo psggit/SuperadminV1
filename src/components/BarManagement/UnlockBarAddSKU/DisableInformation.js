@@ -7,7 +7,7 @@ const DisableInformation = ( { label, val, options, fieldName, fieldType, currVa
         {label}
       </div>
       <div className = {styles.information_rightpanel}>
-        <select data-field-name={ fieldName } data-field-type={ fieldType } value={ currVal } disabled={ disable }>
+        <select data-field-name={ fieldName } data-field-type={ fieldType } data-field-value={ currVal } value={ currVal } disabled={ disable }>
           <option value="default">{val}</option>
           { options }
         </select>

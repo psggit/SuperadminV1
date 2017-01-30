@@ -1,7 +1,6 @@
 import React from 'react';
 const OrganizationSelect = ({label, defaultValue, fieldType, fieldName, selectOptions, value}) => {
-  const styles = require('./OrganizationSelect.scss');
-  const selectObj = selectOptions.map( ( option, index ) => {
+  const styles = require('./OrganizationSelect.scss'); const selectObj = selectOptions.map( ( option, index ) => {
     return (
           <option value={ option.value } key={ index }>
             { option.label}
@@ -14,7 +13,7 @@ const OrganizationSelect = ({label, defaultValue, fieldType, fieldName, selectOp
         {label}
       </div>
       <div className = {styles.constitution_organisation_input_right}>
-      <select data-field-name={ fieldName } data-field-type={ fieldType } value={ value }>
+      <select data-field-name={ fieldName } data-field-type={ fieldType } data-field-value={ value } value={ value }>
         <option value={ defaultValue }>
           { defaultValue }
         </option>

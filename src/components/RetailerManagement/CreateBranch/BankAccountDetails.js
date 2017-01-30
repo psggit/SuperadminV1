@@ -12,8 +12,7 @@ import {
 } from './BranchData';
 
 const BankAccountDetails = ( { currState } ) => { // eslint-disable-line no-unused-vars
-  const styles = require('./CreateBrand.scss');
-  // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
+  const styles = require('./CreateBrand.scss'); // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
   return (
     <div>
       <ul>
@@ -24,20 +23,20 @@ const BankAccountDetails = ( { currState } ) => { // eslint-disable-line no-unus
           <div className={styles.wd_50}>
             <ul>
               <li>
-                <label>Name of the Bank</label>
-                <input type="text" data-field-name="bank_name" data-field-type="text" value={ currState.bank_name } />
+                <label>Name of the Bank*</label>
+                <input type="text" data-field-name="bank_name" data-field-type="text" data-field-value={ currState.bank_name } value={ currState.bank_name } />
               </li>
               <li>
-                <label>IFSC Code</label>
-                <input type="text" data-field-name="ifsc_code" data-field-type="text"value={ currState.ifsc_code } />
+                <label>IFSC Code*</label>
+                <input type="text" data-field-name="ifsc_code" data-field-type="text" data-field-value={ currState.ifsc_code } value={ currState.ifsc_code } />
               </li>
               <li>
-                <label>Account Number</label>
-                <input type="text" data-field-name="account_number" data-field-type="text"value={ currState.account_number } />
+                <label>Account Number*</label>
+                <input type="text" data-field-name="account_number" data-field-type="text" data-field-value={ currState.account_number } value={ currState.account_number } />
               </li>
               <li>
-                <label>Branch Name</label>
-                <input type="text" data-field-name="branch" data-field-type="text" value={ currState.branch }/>
+                <label>Branch Name*</label>
+                <input type="text" data-field-name="branch" data-field-type="text" data-field-value={ currState.branch } value={ currState.branch }/>
               </li>
             </ul>
           </div>

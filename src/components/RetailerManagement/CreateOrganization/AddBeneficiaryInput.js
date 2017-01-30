@@ -7,7 +7,7 @@ const AddBeneficiaryInput = ({labelVal, Val, fieldType, fieldName, value }) => {
         {labelVal}
       </div>
       <div className = {styles.add_beneficiary_input_right}>
-        <input type="text" placeholder = {Val} data-field-name={ fieldName } data-field-type={ fieldType } value={ value } />
+        <input type="text" placeholder = {Val} data-field-name={ fieldName } data-field-type={ fieldType } data-field-value={ value } value={ value } />
       </div>
     </div>
   );

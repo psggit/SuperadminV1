@@ -83,13 +83,22 @@ const saveBranch = () => {
       'discount_percent'
     ];
     let brCheckStatus = true;
+    const brList = [];
+
 
     brInsertCheck.forEach( ( i ) => {
       brCheckStatus = brCheckStatus && ( branchDataObj[i] ? true : false );
+      if ( branchDataObj[i] === undefined ) {
+        brList.push(i);
+      }
     });
 
     if ( !brCheckStatus ) {
-      alert('All the fields for Branch are mandatory');
+      let text = 'Following Fields Missing:\n';
+      brList.forEach( ( i, index ) => {
+        text += (index + 1) + ') ' + i + '\n';
+      });
+      alert(text);
       return Promise.reject({ stage: 0 });
     }
 

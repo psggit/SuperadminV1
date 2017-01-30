@@ -32,8 +32,7 @@ const fetchBrands = (companyId) => {
     /* Url */
     const url = Endpoints.db + '/table/brand/select';
     const queryObj = {};
-    // queryObj.columns = [ '*' ];
-    queryObj.columns = ['*', {'name': 'regions', 'columns': ['region_name', 'id', { 'name': 'cities', 'columns': [{'name': 'city', 'columns': ['*', {'name': 'state', 'columns': ['id', 'state_name']}]}]}]}];
+    queryObj.columns = ['*', {'name': 'regions', 'columns': ['region_name', 'id', { 'name': 'cities', 'columns': [{'name': 'city', 'columns': ['*', {'name': 'state', 'columns': ['id', 'state_name']}]}]}, {'name': 'managers', 'columns': [{'name': 'brand_manager', 'columns': ['name', 'email']}]}]}];
     queryObj.where = {'company_id': companyId, 'regions': {'id': {'$gt': 0}}};
     const options = {
       method: 'POST',

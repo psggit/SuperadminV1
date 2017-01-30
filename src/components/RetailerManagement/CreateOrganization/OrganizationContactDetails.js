@@ -36,13 +36,13 @@ const OrganizationContactDetails = ( { stateData, currState } ) => {
       <div className = {styles.constitution_organisation_head}>
         Organisation Contact Details
       </div>
-      <OrganizationTextarea labelVal = "Organization Address" fieldName="address" fieldType="text" value={ currState.address } />
-      <OrganizationSelect label = "State" defaultValue="Select State" selectOptions = { stateObj } fieldName="state_id" fieldType="int" value={ currState.state_id }/>
-      <OrganizationSelect label = "City" defaultValue="Select City" selectOptions = { cityObj } fieldName="city_id" fieldType="int" value={ currState.city_id } />
-      <OrganizationInput labelVal = "Pincode" Val = "600018" fieldName="pincode" fieldType="text" value={ currState.pincode }/>
-      <OrganizationInput labelVal = "Email" Val = "contact@apesale.com" fieldName="email" fieldType="text" value={ currState.email } />
-      <OrganizationInput labelVal = "Mobile Number" Val = "8220645452" fieldName="mobile_number" fieldType="text" value={ currState.mobile_number } />
-      <OrganizationInput labelVal = "Landline Number" Val = "8220645452" fieldName="landline_number" fieldType="text" value={ currState.landline_number }/>
+      <OrganizationTextarea labelVal = "Organization Address*" fieldName="address" fieldType="text" value={ currState.address } />
+      <OrganizationSelect label = "State*" defaultValue="" selectOptions = { stateObj } fieldName="state_id" fieldType="int" value={ currState.state_id }/>
+      <OrganizationSelect label = "City*" defaultValue="" selectOptions = { cityObj } fieldName="city_id" fieldType="int" value={ currState.city_id } />
+      <OrganizationInput labelVal = "Pincode*" Val = "" fieldName="pincode" fieldType="text" value={ currState.pincode }/>
+      <OrganizationInput labelVal = "Email*" Val = "" fieldName="email" fieldType="text" value={ currState.email } />
+      <OrganizationInput labelVal = "Mobile Number*" Val = "" fieldName="mobile_number" fieldType="text" value={ currState.mobile_number } />
+      <OrganizationInput labelVal = "Landline Number*" Val = "" fieldName="landline_number" fieldType="text" value={ currState.landline_number }/>
     </div>
   );
 };

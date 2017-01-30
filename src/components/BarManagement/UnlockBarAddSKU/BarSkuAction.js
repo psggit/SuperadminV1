@@ -212,9 +212,16 @@ const saveSku = ( barId ) => {
       'end_date'
     ];
     let brCheckStatus = true;
+    const brList = [];
 
     brInsertCheck.forEach( ( i ) => {
       brCheckStatus = brCheckStatus && ( barDataObj[i] ? true : false );
+      if ( barDataObj[i] === undefined) {
+        brList.push(i);
+      }
+      if ( barDataObj[i] === 0) {
+        brList.push(i);
+      }
     });
 
     // This is THE spot
@@ -223,7 +230,11 @@ const saveSku = ( barId ) => {
 
 
     if ( !brCheckStatus ) {
-      alert('All the fields for Bar are mandatory');
+      let text = 'Following Fields Missing:\n';
+      brList.forEach( ( i, index ) => {
+        text += (index + 1) + ') ' + i + '\n';
+      });
+      alert(text);
       return Promise.reject({ stage: 0 });
     }
 
@@ -241,6 +252,8 @@ const saveSku = ( barId ) => {
         dispatch({ type: TOGGLE_SKU_DIV }),
         dispatch(getBar( barId ))
       ]);
+    }).catch( (error) => {
+      alert('Unsuccessfull :' + error.message);
     });
     // return Promise.resolve();
   };
@@ -372,7 +385,7 @@ const defaultBarSkuState = {
     sku_pricing_id: 0,
     hipbarPrice: 0,
     menuPrice: 0,
-    is_active: 0,
+    is_active: false,
     listingOrder: 0,
     quantity: 0,
   },

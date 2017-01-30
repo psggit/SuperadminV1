@@ -55,47 +55,47 @@ const BranchDetails = ( { currState, organisationData } ) => { // eslint-disable
       <div className={styles.heading + ' ' + styles.wd_100}>Branch Details</div>
       <ul>
         <li>
-          <label>Select Organisation</label>
-          <select data-field-name="organisation_id" data-field-type="int" value={ currState.organisation_id } >
+          <label>Select Organisation*</label>
+          <select data-field-name="organisation_id" data-field-type="int" data-field-value={ currState.organisation_id } value={ currState.organisation_id } >
             <option value="0">Select Organisation </option>
             { orgObj }
           </select>
         </li>
         <li>
-          <label>Application Number</label>
-          <input data-field-name="name" type="text" data-field-name="application_number" data-field-type="text" value={ currState.application_number } />
+          <label>Application Number*</label>
+          <input data-field-name="name" type="text" data-field-name="application_number" data-field-type="text" data-field-value={ currState.application_number } value={ currState.application_number } />
         </li>
         <li>
-          <label>Branch Name</label>
-          <input data-field-name="name" type="text" data-field-name="org_name" data-field-type="text" value={ currState.org_name } />
+          <label>Branch Name*</label>
+          <input data-field-name="name" type="text" data-field-name="org_name" data-field-type="text" data-field-value={ currState.org_name } value={ currState.org_name } />
         </li>
         <li>
-          <label>Excise License Number</label>
-          <input type="text" data-field-name="excise_licence_number" data-field-type="text" value={ currState.excise_licence_number } />
+          <label>Excise License Number*</label>
+          <input type="text" data-field-name="excise_licence_number" data-field-type="text" data-field-value={ currState.excise_licence_number } value={ currState.excise_licence_number } />
         </li>
         <li>
           <label>CST Number</label>
           <input type="text" data-field-name="cst_number" data-field-type="text" value={ currState.cst_number } />
         </li>
         <li>
-          <label>Discount Percent</label>
-          <input type="number" data-field-name="discount_percent" data-field-type="float" value={ currState.discount_percent } />
+          <label>Discount Percent*</label>
+          <input type="number" data-field-name="discount_percent" data-field-type="float" data-field-value={ currState.discount_percent } value={ currState.discount_percent } />
         </li>
         <li>
-          <label>Service Charge Percent</label>
-          <input type="number" data-field-name="service_charge_percent" data-field-type="float" value={ currState.service_charge_percent } />
+          <label>Service Charge Percent*</label>
+          <input type="number" data-field-name="service_charge_percent" data-field-type="float" data-field-value={ currState.service_charge_percent } value={ currState.service_charge_percent } />
         </li>
         <li>
           <div className={styles.wd_50}>
-            <label>KYC Verified</label>
-            <select data-field-name="kyc_status" data-field-type="text" value={ currState.kyc_status }>
+            <label>KYC Verified*</label>
+            <select data-field-name="kyc_status" data-field-type="text" data-field-value={ currState.kyc_status } value={ currState.kyc_status }>
               <option value="">Select Kyc Status</option>
               { kycHtml }
             </select>
           </div>
           <div className={styles.wd_50}>
-            <label>Branch Status</label>
-            <select data-field-name="branch_status" data-field-type="text" value={ currState.branch_status }>
+            <label>Branch Status*</label>
+            <select data-field-name="branch_status" data-field-type="text" data-field-value={ currState.branch_status } value={ currState.branch_status }>
               <option value="">Select Branch Status</option>
               { branchStatusHtml }
             </select>

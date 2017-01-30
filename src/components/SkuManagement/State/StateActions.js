@@ -88,7 +88,7 @@ const saveState = () => {
             insertObj.objects = cityObjs;
             insertObj.returning = ['id'];
             options.body = JSON.stringify(insertObj);
-            return dispatch(requestAction(cityUrl, options));
+            return dispatch(requestAction(cityUrl, options, FETCH_STATE, REQUEST_ERROR));
           }
           // console.log('return empty');
           return [];
@@ -97,7 +97,7 @@ const saveState = () => {
           return dispatch(routeActions.push('/hadmin/state_management'));
         })
         .catch(() => {
-          alert('Update Unsuccessful!!!');
+          alert('Creation Unsuccessful: Short Name is Already in Use');
         });
     })
     .catch((error) => {

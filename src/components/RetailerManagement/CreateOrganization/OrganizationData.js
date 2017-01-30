@@ -22,22 +22,76 @@ const saveOrganization = () => {
     const orgUrl = Endpoints.db + '/table/organisation/insert';
 
     const orgState = getState().organization_data.organizationData;
-    const organizationDataObj = { ...orgState.orgDetail };
+    const organizationDetailsDataObj = { ...orgState.orgDetail };
 
-    const orgInsertCheck = ['date_of_incorporation', 'organisation_name', 'pan_number', 'type_of_organisation', 'kyc_status', 'status'];
+    // Details Check
+    let orgInsertCheck = ['date_of_incorporation', 'organisation_name', 'pan_number', 'type_of_organisation', 'kyc_status', 'status'];
     let orgCheckStatus = true;
+    const orgList = [];
 
     orgInsertCheck.forEach( ( i ) => {
-      orgCheckStatus = orgCheckStatus && ( organizationDataObj[i] ? true : false );
+      orgCheckStatus = orgCheckStatus && ( organizationDetailsDataObj[i] ? true : false );
+      if ( organizationDetailsDataObj[i] === undefined ) {
+        orgList.push(i);
+      }
     });
 
     if ( !orgCheckStatus ) {
-      alert('All the fields for organisation are mandatory');
+      let text = 'Following Fields Missing:\n';
+      orgList.forEach( ( i, index ) => {
+        text += (index + 1) + ') ' + i + '\n';
+      });
+      alert(text);
       return Promise.reject({ stage: 0 });
     }
 
+    // Address Check
+    let organizationDataObj = { ...orgState.orgContact};
+
+    orgInsertCheck = ['address', 'pincode', 'city_id', 'state_id', 'email', 'mobile_number', 'landline_number'];
+    orgCheckStatus = true;
+    const orgAddressList = [];
+
+    orgInsertCheck.forEach( ( i ) => {
+      orgCheckStatus = orgCheckStatus && ( organizationDataObj[i] ? true : false );
+      if ( organizationDataObj[i] === undefined ) {
+        orgAddressList.push(i);
+      }
+    });
+
+    if ( !orgCheckStatus ) {
+      let text = 'Following Fields Missing:\n';
+      orgAddressList.forEach( ( i, index ) => {
+        text += (index + 1) + ') ' + i + '\n';
+      });
+      alert(text);
+      return Promise.reject( { stage: 0 });
+    }
+
+    // REg Address Check
+    organizationDataObj = { ...orgState.orgRegistered};
+
+    orgInsertCheck = ['address', 'pincode', 'city_id', 'state_id'];
+    orgCheckStatus = true;
+    const orgRegAddressList = [];
+
+    orgInsertCheck.forEach( ( i ) => {
+      orgCheckStatus = orgCheckStatus && ( organizationDataObj[i] ? true : false );
+      if ( organizationDataObj[i] === undefined ) {
+        orgRegAddressList.push(i);
+      }
+    });
+
+    if ( !orgCheckStatus ) {
+      let text = 'Following Fields Missing:\n';
+      orgRegAddressList.forEach( ( i, index ) => {
+        text += (index + 1) + ') ' + i + '\n';
+      });
+      alert(text);
+      return Promise.reject( { stage: 0 });
+    }
     const insertObj = {};
-    insertObj.objects = [ { ...organizationDataObj } ];
+    insertObj.objects = [ { ...organizationDetailsDataObj } ];
     insertObj.returning = ['id'];
 
     const options = {

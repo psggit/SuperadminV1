@@ -225,64 +225,64 @@ class UnlockBarAddSKU extends Component {
         </div>
         <div className={styles.add_sku_wrapper + ( showSku ? '' : ' hide' )}>
           <div className={styles.add_sku_head}>
-            SKU
+            SKU*
           </div>
-          <DisableInformation label = "Select SKU" val = "Select" options={ skuHtml } fieldName="sku_pricing_id" fieldType="int" currVal = { newSkuData.sku_pricing_id ? newSkuData.sku_pricing_id : 0} disable = { isEdit } />
+          <DisableInformation label = "Select SKU*" val = "Select" options={ skuHtml } fieldName="sku_pricing_id" fieldType="int" currVal = { newSkuData.sku_pricing_id ? newSkuData.sku_pricing_id : 0} disable = { isEdit } />
           <div className = {styles.command_wrapper}>
             <div className = {styles.information_leftpanel}>
-              Base SKU  Price
+              Base SKU  Price*
             </div>
             <div className = {styles.information_rightpanel}>
-              <input type="int" data-field-name="base_sku_price" data-field-type="int" value={ newSkuData.base_sku_price}/>
-            </div>
-          </div>
-          <div className = {styles.command_wrapper}>
-            <div className = {styles.information_leftpanel}>
-              Negotiated SKU Price
-            </div>
-            <div className = {styles.information_rightpanel}>
-              <input type="int" data-field-name="negotiated_sku_price" data-field-type="int" value={ newSkuData.negotiated_sku_price}/>
+              <input type="int" data-field-name="base_sku_price" data-field-type="int" data-field-value={ newSkuData.base_sku_price} value={ newSkuData.base_sku_price}/>
             </div>
           </div>
           <div className = {styles.command_wrapper}>
             <div className = {styles.information_leftpanel}>
-              Charges And Tax percentage at Bar
+              Negotiated SKU Price*
             </div>
             <div className = {styles.information_rightpanel}>
-              <input type="number" min="0" max="100" data-field-name="charges_and_tax_percentage" data-field-type="float" value={ newSkuData.charges_and_tax_percentage}/>
+              <input type="int" data-field-name="negotiated_sku_price" data-field-type="int" data-field-value={ newSkuData.negotiated_sku_price} value={ newSkuData.negotiated_sku_price}/>
             </div>
           </div>
           <div className = {styles.command_wrapper}>
             <div className = {styles.information_leftpanel}>
-              Quantity
+              Charges And Tax percentage at Bar*
             </div>
             <div className = {styles.information_rightpanel}>
-              <input type="text" data-field-name="quantity" data-field-type="int" value={ newSkuData.quantity }/>
+              <input type="number" min="0" max="100" data-field-name="charges_and_tax_percentage" data-field-type="float" data-field-value={ newSkuData.charges_and_tax_percentage} value={ newSkuData.charges_and_tax_percentage}/>
             </div>
           </div>
           <div className = {styles.command_wrapper}>
             <div className = {styles.information_leftpanel}>
-              ListingOrder
+              Quantity*
             </div>
             <div className = {styles.information_rightpanel}>
-              <input type="text" data-field-name="listingOrder" data-field-type="int" value={ newSkuData.listingOrder }/>
-            </div>
-          </div>
-          <DisableInformation label = "Status" val = "Status" options={ statusHtml } fieldName = "is_active" fieldType = "boolean" currVal = { newSkuData.is_active ? 1 : 0 }/>
-          <div className = {styles.command_wrapper}>
-            <div className = {styles.information_leftpanel}>
-              Start Date
-            </div>
-            <div className = {styles.information_rightpanel}>
-              <input data-field-name="start_date" data-field-type="text" type="datetime-local" value={ isEdit ? getValidDate(newSkuData.start_date) : newSkuData.start_date }/>
+              <input type="text" data-field-name="quantity" data-field-type="int" data-field-value={ newSkuData.quantity } value={ newSkuData.quantity }/>
             </div>
           </div>
           <div className = {styles.command_wrapper}>
             <div className = {styles.information_leftpanel}>
-              End Date
+              ListingOrder*
             </div>
             <div className = {styles.information_rightpanel}>
-              <input data-field-name="end_date" data-field-type="text" type="datetime-local" value={ isEdit ? getValidDate(newSkuData.end_date) : newSkuData.end_date }/>
+              <input type="text" data-field-name="listingOrder" data-field-type="int" data-field-value={ newSkuData.listingOrder } value={ newSkuData.listingOrder }/>
+            </div>
+          </div>
+          <DisableInformation label = "Status*" val = "Status" options={ statusHtml } fieldName = "is_active" fieldType = "boolean" currVal = { newSkuData.is_active ? 1 : 0 }/>
+          <div className = {styles.command_wrapper}>
+            <div className = {styles.information_leftpanel}>
+              Start Date*
+            </div>
+            <div className = {styles.information_rightpanel}>
+              <input data-field-name="start_date" data-field-type="text" type="datetime-local" data-field-value={ isEdit ? getValidDate(newSkuData.start_date) : newSkuData.start_date } value={ isEdit ? getValidDate(newSkuData.start_date) : newSkuData.start_date }/>
+            </div>
+          </div>
+          <div className = {styles.command_wrapper}>
+            <div className = {styles.information_leftpanel}>
+              End Date*
+            </div>
+            <div className = {styles.information_rightpanel}>
+              <input data-field-name="end_date" data-field-type="text" type="datetime-local" data-field-value={ isEdit ? getValidDate(newSkuData.end_date) : newSkuData.end_date } value={ isEdit ? getValidDate(newSkuData.end_date) : newSkuData.end_date }/>
             </div>
           </div>
           <div className={ styles.warning_block + ' ' + ( !newSkuData.is_active && !newSkuData.status ? '' : 'hide' ) }>

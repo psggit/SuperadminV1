@@ -20,7 +20,7 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
       <div className={styles.flexRow}>
         <div className={styles.sidebar + ' col-md-3'}>
           <div className={styles.account}>
-            Logged in: <b>admin</b>
+            Logged in: <b>admin</b> <br> Logout </br>
           </div>
           <hr/>
           <br/><br/>
