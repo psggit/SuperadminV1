@@ -59,6 +59,17 @@ const Report = ({stateData}) => { // eslint-disable-line no-unused-vars
                   <select onChange = {changeUrl} id = "option">
                       <option value = "bar_settlement_report">Bar Settlement Report</option>
                       <option value = "retailer_settlement_report">Retailer Settlement Report</option>
+                      <option value = "horeca_sales_report">Horeca Sales Report</option>
+                      <option value = "bars_reservations">Bars Reservation</option>
+                      <option value = "retailers_reservations">Retailers Reservation</option>
+                      <option value = "retailer_redemption_report">Retailer Redemption Report</option>
+                      <option value = "bm_adv_settlement_report">BM ADV Settlement Report</option>
+                      <option value = "brand_sales_report">Brand Sales Report</option>
+                      <option value = "bar_manual_credits_and_debits_report">Bar Manual Credits And Debits Report</option>
+                      <option value = "brand_manager_promo_settlement_report">Brand Manager Promo Settlement Report</option>
+                      <option value = "retailer_manual_credits_and_debits_report">Retailer Manual Credits and Debits Report</option>
+                      <option value = "consumer_manual_credits_and_debits_view">Consumer Manual Credit and Debit View</option>
+                      <option value = "bars_redeem_and_cancellation_report">Bars Redeem and Cancellation Report</option>
                   </select>
                   <input name = "start_date" onChange = {convertStartDate} id = "sstart_date" type="date"></input>
                   <input name = "end_date" onChange = {convertEndDate} id = "eend_date" type="date"></input>
