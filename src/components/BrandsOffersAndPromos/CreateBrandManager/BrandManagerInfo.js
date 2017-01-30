@@ -24,26 +24,26 @@ const BrandManagerInfo = ({dispatch, companyList}) => {
             <input data-field-name="name" data-field-type="text" />
           </li>
           <li>
-            <label>Company Name</label>
+            <label>Company Name*</label>
             <select data-field-name="company_id" data-field-type="int" onChange={onSelectCompany.bind(this)}>
               <option disabled selected value> -- select an option -- </option>
               { companyHtml }
             </select>
           </li>
           <li>
-            <label>Email</label>
+            <label>Email*</label>
             <input data-field-name="email" data-field-type="text"/>
           </li>
           <li>
-            <label>Password</label>
+            <label>Password*</label>
             <input data-field-name="password" data-field-type="text"/>
           </li>
           <li>
-            <label>Mobile Number</label>
+            <label>Mobile Number*</label>
             <input data-field-name="mobile_number" data-field-type="number"/>
           </li>
           <li>
-            <label>Status</label>
+            <label>Status*</label>
             <select data-field-name="is_disabled">
               <option disable selected value> -- select status -- </option>
               <option value="false">Active</option>
@@ -51,7 +51,7 @@ const BrandManagerInfo = ({dispatch, companyList}) => {
             </select>
           </li>
           <li>
-            <label>KYC Status</label>
+            <label>KYC Status*</label>
             <select data-field-name="kyc_status" data-field-type="text">
               <option disable selected value> -- select -- </option>
               <option value="Verified">Verified</option>

@@ -28,10 +28,17 @@ class CreateCredit extends Component { // eslint-disable-line no-unused-vars
     transactionObj = document.querySelectorAll('[data-field-name="transaction_code"] option:checked')[0];
     transactionId = transactionObj.getAttribute('data-trans-id');
     transactionCode = transactionObj.getAttribute('data-trans-code');
-
     batchNumber = document.querySelectorAll('[data-field-name="batch_number"]')[0].value;
     amount = document.querySelectorAll('[data-field-name="amount"]')[0].value;
     comment = document.querySelectorAll('[data-field-name="comment"]')[0].value;
+    if (amount === '') {
+      alert('Enter Amount');
+      return;
+    }
+    if (transactionCode === '') {
+      alert('Enter Transaction Code');
+      return;
+    }
 
     /* Removing all the white spaces in the email */
     emailIds = emailIds.replace(/\s/g, '');

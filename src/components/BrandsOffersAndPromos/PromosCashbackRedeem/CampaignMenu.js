@@ -9,48 +9,48 @@ const CampaignMenu = ({styles, brandManagerCampaignMap, brandManagerBrandMap, on
     </div>
     <ul>
       <li>
-        <label>Company</label>
+        <label>Company*</label>
         <select data-field-name="name" type="text" name="company_name"
           value={company} onChange={onCompanyChange.bind(this)} >
           {companyOptions}
         </select>
       </li>
       <li>
-        <label>Brand Manager Email</label>
+        <label>Brand Manager Email*</label>
         <select data-field-name="name" type="text" name="brand_email"
-          value={brandEmail} onChange={onBrandManagerChange.bind(this, brandManagerCampaignMap, brandManagerBrandMap)} >
+          value={brandEmail} data-field-value={brandEmail} onChange={onBrandManagerChange.bind(this, brandManagerCampaignMap, brandManagerBrandMap)} >
           {brandManagerOptions}
         </select>
       </li>
       <li>
-        <label>Campaign Name</label>
+        <label>Campaign Name*</label>
         <input data-field-name="name" type="text" name="campaign_name"
-          value={campaignName} onChange={onValueChange.bind(this, 'campaignName')} />
+          value={campaignName} data-field-value={campaignName} onChange={onValueChange.bind(this, 'campaignName')} />
       </li>
       <li>
-        <label>Budgeted Amount</label>
+        <label>Budgeted Amount*</label>
         <input type="text" name="budgeted_amount"
-          value={budgetedAmount} onChange={onValueChange.bind(this, 'budgetedAmount')} />
+          value={budgetedAmount} data-field-value={budgetedAmount} onChange={onValueChange.bind(this, 'budgetedAmount')} />
       </li>
       <li>
-        <label>Funds Credited</label>
+        <label>Funds Credited*</label>
         <input type="text" name="funds_credited"
-          value={fundsCredited} onChange={onValueChange.bind(this, 'fundsCredited')} />
+          value={fundsCredited} data-field-value={fundsCredited} onChange={onValueChange.bind(this, 'fundsCredited')} />
       </li>
       <li>
-        <label>Active From</label>
+        <label>Active From*</label>
         <input type="datetime-local" name="active_from"
-          value={activeFrom} onChange={onValueChange.bind(this, 'activeFrom')} />
+          value={activeFrom} data-field-value={activeFrom} onChange={onValueChange.bind(this, 'activeFrom')} />
       </li>
       <li>
-        <label>Active To</label>
+        <label>Active To*</label>
         <input type="datetime-local" name="active_to"
-          value={activeTo} onChange={onValueChange.bind(this, 'activeTo')} />
+          value={activeTo} data-field-value={activeTo} onChange={onValueChange.bind(this, 'activeTo')} />
       </li>
       <li>
-        <label>Campaign Status</label>
+        <label>Campaign Status*</label>
         <select data-field-name="" name="campaign_status"
-          value={campaignStatus} onChange={onValueChange.bind(this, 'campaignStatus')} >
+          value={campaignStatus} data-field-value={campaignStatus} onChange={onValueChange.bind(this, 'campaignStatus')} >
           <option value="inactive">In-Active</option>
           <option value="active">Active</option>
         </select>

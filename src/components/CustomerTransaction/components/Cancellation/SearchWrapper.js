@@ -18,6 +18,8 @@ const CancellationSearchWrapper = ( {data} ) => {
               </Link>
             </td>
             <td> { dat.order_id } </td>
+            <td> { dat.amount } </td>
+            <td> { dat.count } </td>
             <td> { createdAt } </td>
           </tr>
         );
@@ -39,6 +41,8 @@ const CancellationSearchWrapper = ( {data} ) => {
                 <tr>
                   <th> Consumer ID </th>
                   <th> Order ID </th>
+                  <th> Amount </th>
+                  <th> Number Of Items </th>
                   <th> Created At </th>
                 </tr>
               </thead>
