@@ -30,7 +30,7 @@ if (window.location.href.split(':')[1] === '//localhost') {
   reportUrl = scheme + '://reports' + baseHost;
   authUrl = scheme + '://auth' + baseHost;
   fileUrl = scheme + '://api2' + baseHost;
-  backendUrl = scheme + '://apitest' + baseHost;
+  backendUrl = scheme + '://api1' + baseHost;
   blogicUrl = scheme + '://api1' + baseHost;
   downloadRepUrl = scheme + '://downloadrep' + baseHost;
 }
