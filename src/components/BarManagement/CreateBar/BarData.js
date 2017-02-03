@@ -65,6 +65,7 @@ const saveBar = () => {
 
     if ( barState.barContact.branch_address ) {
       barDataObj.address = barState.barContact.branch_address;
+      barDataObj.contact = barState.barContact.mobile_number.toString();
     }
 
     const brInsertCheck = [
@@ -80,6 +81,7 @@ const saveBar = () => {
       'excise_licence_number',
       'name',
       'address',
+      'contact',
       'discount_percent',
       'service_charge_percent'
     ];
@@ -256,6 +258,7 @@ const updateBar = () => {
 
     if ( barState.barContact.branch_address ) {
       barDataObj.address = barState.barContact.branch_address;
+      barDataObj.contact = barState.barContact.mobile_number.toString();
     }
 
     const brInsertCheck = [
@@ -269,6 +272,8 @@ const updateBar = () => {
       'city_id',
       'excise_licence_number',
       'name',
+      'address',
+      'contact',
       'discount_percent',
       'service_charge_percent'
     ];
