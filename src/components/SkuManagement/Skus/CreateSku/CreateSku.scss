@@ -355,27 +355,15 @@
 	@extend .upload_btn;
 	margin-top: 20px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+[data-field-value]
+{
+  border : 1px solid green!important;
+}
+[data-field-value = ""]
+{
+  border : 1px solid red !important;
+}
+[data-field-non-mandatory]
+{
+  border : 1px solid grey!important;
+}

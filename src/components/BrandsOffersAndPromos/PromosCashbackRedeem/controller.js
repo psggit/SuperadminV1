@@ -105,7 +105,8 @@ const campaignValidatorsDict = {
     return !isEmpty(value) ? () => {
       return true;
     } : () => {
-      return confirm('Campaign name can\'t be empty!. Do you want to continue?');
+      alert('Campaign name can\'t be empty!');
+      return false;
     };
   },
   budgetedAmount: (value) => {
@@ -267,7 +268,8 @@ const promoValidatorDict = {
     return coincidingCampaigns.length <= 0 ? () => {
       return true;
     } : () => {
-      alert('This sku already has a campaign running with the dates'
+      console.log('Error');
+      alert('Thisd sku already has a campaign running with the dates'
         + ' coinciding.');
       return false;
     };

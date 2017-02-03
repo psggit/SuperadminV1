@@ -17,7 +17,7 @@ const StateElement = ({ stateInfo, stateCityMapping, onStateSelect, onStatePrice
           (stateCityMapping.is_selected) ?
             (
               <div className="input_wrapper">
-                <input type="number" data-state-id={ stateInfo.short_name } placeholder="Price" data-field-name="price" data-field-type="int" value={ stateCityMapping.price ? stateCityMapping.price : '' } onChange={ onStatePriceEntered }/>
+                <input type="number" data-state-id={ stateInfo.short_name } placeholder="Price" data-field-name="price" data-field-value={ stateCityMapping.price ? stateCityMapping.price : '' } data-field-type="int" value={ stateCityMapping.price ? stateCityMapping.price : '' } onChange={ onStatePriceEntered }/>
               </div>
             ) : ''
         }

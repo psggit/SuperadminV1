@@ -6,6 +6,15 @@ import { getBrandManagerData, getAllBrandManagerData, toggleActivation } from '.
 
 // import SearchWrapper from './SearchWrapper';
 import PaginationWrapper from '../../Common/PaginationWrapper.js';
+import SearchComponent from '../../Common/SearchComponentGen/SearchComponent';
+import {
+  MAKE_REQUEST,
+  REQUEST_COMPLETED
+} from '../../Common/Actions/Actions';
+
+import {
+  TOGGLE_SEARCH,
+} from '../../Common/SearchComponentGen/FilterState';
 
 /*
  * Decorator which adds couple of use ful features like
@@ -56,24 +65,48 @@ class AdsListing extends Component { // eslint-disable-line no-unused-vars
     this.props.dispatch(getBrandManagerData(clickedPage, limit));
   }
 
+  enableSearch() {
+    const page = 1;
+
+    Promise.all([
+      this.props.dispatch({ type: MAKE_REQUEST }),
+      this.props.dispatch({ type: TOGGLE_SEARCH }),
+      this.props.dispatch(getBrandManagerData(page, 10))
+    ])
+    .then( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED });
+    });
+  }
+
   // Here goes all the data fetching stuff
   render() {
     const styles = require('./AdsListing.scss');
     console.log(this.props.lastSuccess);
     const { lastSuccess } = this.props;
+
+    const fields = [ 'id', 'name', 'address', 'city.name' ];
+    // const operator = ['$eq'];
+    const fieldOperatorMap = {
+      'name': ['$eq', '$like', '$ilike'],
+      'address': ['$eq', '$like', '$ilike'],
+      'city.name': ['$eq', '$like', '$ilike'],
+      'id': ['$eq', '$gt', '$lt']
+    };
+    const fieldTypeMap = {
+      'name': 'text',
+      'address': 'text',
+      'city.name': 'text',
+      'id': 'number'
+    };
     return (
       <div className={styles.container}>
         <BreadCrumb breadCrumbs={this.breadCrumbs} />
         <div className={styles.profile_wrapper}>
-          <div className={styles.search_wrapper + ' ' + styles.wd_100}>
-              <p>Search</p>
-              <div className={styles.search_form + ' ' + styles.wd_100}>
-                <input type="text" placeholder="Mobile Number" />
-                <input type="text" placeholder="Contains" />
-                <input type="number" />
-                <button className={styles.common_btn}>Search</button>
-              </div>
-          </div>
+            <SearchComponent configuredFields={ fields } fieldOperatorMap={ fieldOperatorMap } fieldTypeMap={ fieldTypeMap }>
+              <button className={styles.common_btn} onClick={ this.enableSearch.bind(this) }>
+                Search
+              </button>
+            </SearchComponent>
           <AdsList activation = {this.activation.bind(this)} data={lastSuccess}/>
         </div>
           <PaginationWrapper

@@ -19,14 +19,15 @@ const SkuInfo = ({ brandList, skuReqObj, disableSKUs, reservedItems, page }) => 
   const styles = require('./CreateSku.scss');
   return (
         <div className={styles.create_sku_wrapper}>
-          <div className={styles.heading}>Create Sku</div>
+          <div className={ ( page === 'edit_page' ) ? styles.indiv_element : 'hide' }>Edit Sku</div>
+          <div className={ ( page !== 'edit_page' ) ? styles.indiv_element : 'hide' }>Create Sku</div>
           <div className={styles.indiv_element}>
             <label>Brand Name</label>
-            <BrandDropDown brandData={ brandList } value={ returnValue(skuReqObj, 'brand_id') }/>
+            <BrandDropDown page={ page } brandData={ brandList } value={ returnValue(skuReqObj, 'brand_id') }/>
           </div>
           <div className={styles.indiv_element}>
             <label>Volume in ml</label>
-            <input type="number" data-field-name="volume" data-field-type="int" value = {parseInt(returnValue(skuReqObj, 'volume'), 10) ? parseInt(returnValue(skuReqObj, 'volume'), 10) : '' } />
+            <input type="number" data-field-name="volume" data-field-type="int" data-field-value = {parseInt(returnValue(skuReqObj, 'volume'), 10) ? parseInt(returnValue(skuReqObj, 'volume'), 10) : '' } value = {parseInt(returnValue(skuReqObj, 'volume'), 10) ? parseInt(returnValue(skuReqObj, 'volume'), 10) : '' } />
           </div>
           <div className={styles.indiv_element}>
             <label>Status</label>

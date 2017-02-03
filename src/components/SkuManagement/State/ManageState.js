@@ -199,7 +199,7 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
                 </div>
               <div className={styles.indiv_form}>
               	<label>Short Name</label>
-              	<input type="text" data-field-name="shortName" onChange={ this.storeStateInput.bind(this) } value={ shortName } />
+              	<input maxLength={2} type="text" data-field-name="shortName" onChange={ this.storeStateInput.bind(this) } value={ shortName } />
               </div>
                 {/*
                 <div className={styles.indiv_form}>
@@ -272,7 +272,7 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
               </div>
               <div className={styles.indiv_form}>
               	<label>Short Name</label>
-              	<input type="text" data-field-name="shortName" onChange={ this.storeStateInput.bind(this) } value={ shortName }/>
+              	<input type="text" maxLength={2} data-field-name="shortName" onChange={ this.storeStateInput.bind(this) } value={ shortName }/>
               </div>
               {/*
               <div className={styles.indiv_form}>

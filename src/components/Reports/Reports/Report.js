@@ -53,7 +53,7 @@ const Report = ({stateData}) => { // eslint-disable-line no-unused-vars
         <div className={styles.customer_transaction_wrapper}>
             <TableHeader title={'Report Generation'} />
             <div className="clearfix"></div>
-            <div className={styles.customer_transaction_links}>
+            <div className={styles.parent}>
                 <label> Select Type of Report</label>
                 <div>
                   <select onChange = {changeUrl} id = "option">

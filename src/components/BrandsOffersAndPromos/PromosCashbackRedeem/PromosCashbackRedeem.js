@@ -85,8 +85,8 @@ export default class PromosCashbackRedeem extends Component {
 
     const brandManagerOptions = brandManagers.map((brandManager, index) => {
       return (
-        <option key={index} value={brandManager.email}>
-          {brandManager.email + ' <' + brandManager.name + '>'}
+        <option key={index} disabled = { (brandManager.brands.length === 0) ? true : false } value={brandManager.email}>
+          {brandManager.email + ' <' + brandManager.name + '>' + ' - (' + brandManager.brands.length + ') Brands'}
         </option>
       );
     });

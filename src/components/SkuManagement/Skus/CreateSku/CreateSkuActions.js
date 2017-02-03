@@ -361,10 +361,20 @@ const onSave = () => {
 
     const brandListingObjs = {};
     let brandListingObj = {};
+    let kill = false;
     const brandListingSelectObj = {};
     const brandListingUrl = Endpoints.db + '/table/brand_listing/insert';
     const brandListingSelectUrl = Endpoints.db + '/table/brand_listing/select';
 
+    Object.keys(currState.stateCityMapping).filter( ( state ) => {
+      if ( currState.stateCityMapping[state].is_selected && !currState.stateCityMapping[state].price ) {
+        kill = true;
+      }
+    });
+    if (kill === true) {
+      alert('Prices Missing');
+      return false;
+    }
     let options = {};
     let skuReqObj = {};
     skuReqObj = Object.assign({}, currState.create_sku_data.skuReqObj);
@@ -570,6 +580,10 @@ const onUpdate = () => {
      * Output: Return the disable status for all the entries
      * */
 
+    console.log('Function Entered');
+    // Validate and Kill
+    let kill = false;
+
     const currState = getState().create_sku_data;
 
     const disableRetailers = Object.keys(currState.retailerMapping).filter( ( ret ) => {
@@ -578,6 +592,10 @@ const onUpdate = () => {
 
     const disablePricings = Object.keys(currState.stateCityMapping).filter( ( state ) => {
       return ( currState.stateCityMapping[state].is_fetched && !currState.stateCityMapping[state].is_selected );
+    });
+
+    const updateListingObj = Object.keys(currState.stateCityMapping).filter( ( state ) => {
+      return ( !currState.stateCityMapping[state].is_fetched && currState.stateCityMapping[state].is_selected );
     });
 
     const enableRetailers = Object.keys(currState.retailerMapping).filter( ( ret ) => {
@@ -591,6 +609,19 @@ const onUpdate = () => {
     const updatePricings = Object.keys(currState.stateCityMapping).filter( ( state ) => {
       return ( ( 'is_fetched' in currState.stateCityMapping[state] ) && ( currState.stateCityMapping[state].is_selected ) && ( currState.stateCityMapping[state].is_updated ) );
     });
+
+    Object.keys(currState.stateCityMapping).filter( ( state ) => {
+      if ( currState.stateCityMapping[state].is_selected && !currState.stateCityMapping[state].price ) {
+        kill = true;
+      }
+    });
+    if (kill === true) {
+      alert('Prices Missing');
+      return false;
+    }
+
+    console.log('List of all Newly selected States');
+    console.log(updateListingObj);
 
     const updatePricing = ( pricings ) => {
       if ( pricings.length > 0 ) {
@@ -752,6 +783,47 @@ const onUpdate = () => {
       return Promise.resolve();
     };
 
+    let options = {};
+
+    // Gets a list of State Short Names that has not been present in the BrandListing Table  and a single Brand short Name and insert into Brand Listing
+    const updateBrandListing = ( updateList ) => {
+      // Create Object Template
+      if ( updateList.length > 0 ) {
+        const brandListingObj = {};
+        brandListingObj.brand_short_name = currState.skuReqObj.brand_id;
+        brandListingObj.featured_order = 1;
+        brandListingObj.all_display_order = 10000;
+        brandListingObj.state_short_name = '';
+        brandListingObj.created_at = new Date().toISOString();
+        brandListingObj.updated_at = new Date().toISOString();
+
+        const brandListingObjs = {'objects': []};
+        console.log(brandListingObj);
+        console.log(updateList);
+
+        // Populate Insert Object(Array) with new State_short_names
+        updateList.forEach( ( r ) => {
+          brandListingObj.state_short_name = r;
+          brandListingObjs.objects.push(brandListingObj);
+        });
+
+        //  Perform Insertion
+        const insertBrandListingUrl = Endpoints.db + '/table/brand_listing/insert';
+        options = {
+          ...genOptions,
+          body: JSON.stringify(brandListingObjs)
+        };
+
+        return dispatch(requestAction(insertBrandListingUrl, options))
+        .then( ( resp ) => {
+          console.log('Response After Brand Listing Inserted');
+          console.log(resp);
+          return Promise.resolve();
+        });
+      }
+      return Promise.resolve();
+    };
+
     /* Tester Funcs */
     /*
     removeState(disablePricings).then( ( resp ) => {
@@ -767,7 +839,6 @@ const onUpdate = () => {
     const skuInsertObj = {};
     const skuUrl = Endpoints.db + '/table/sku/update';
 
-    let options = {};
     let skuReqObj = {};
     skuReqObj = Object.assign( {}, currState.skuReqObj );
     // skuReqObj.image = (currState.create_sku_data.skuImageUrl.length > 0) ? currState.create_sku_data.skuImageUrl : null;
@@ -803,6 +874,7 @@ const onUpdate = () => {
       .then(() => {
         if ( disablePricings.length > 0 || disableRetailers.length > 0 || updatePricings.length > 0 || enableRetailers.length > 0 || enablePricings.length > 0 ) {
           return Promise.all([
+            updateBrandListing(updateListingObj),
             removeState(disablePricings),
             removeInventory(disableRetailers),
             updatePricing(updatePricings),
@@ -820,8 +892,9 @@ const onUpdate = () => {
         return dispatch(routeActions.push('/hadmin/skus/list_sku'));
       })
       .catch((resp) => {
+        console.log(resp);
         alert('Error: ' + resp.error);
-        return dispatch(routeActions.push('/hadmin/skus/list_sku'));
+        // return dispatch(routeActions.push('/hadmin/skus/list_sku'));
       });
   };
 };
