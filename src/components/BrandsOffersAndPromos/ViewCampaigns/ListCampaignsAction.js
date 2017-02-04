@@ -116,7 +116,7 @@ const getCampaignData = (page, limit, filterObj, isSearched ) => {
       }],
       limit: limit,
       offset: offset,
-      order_by: '+id'
+      order_by: '-created_at'
     };
 
     if ( isSearched ) {

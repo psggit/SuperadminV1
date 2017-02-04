@@ -74,7 +74,7 @@ export default class PromosCashbackRedeem extends Component {
 
   render() {
     // state variables.
-    const {brandManagers, brandEmail, campaignName, budgetedAmount, fundsCredited,
+    const {brandManagers, brandEmail, campaignName, budgetedAmount, fundsCredited, campaigns,
       currentEditingPromo, isPromoSectionShown, onRemovePromo, promos, activeFrom, activeTo,
       brands, campaignStatus, brandManagerCampaignMap, brandManagerBrandMap, companies,
       brandManagerIdMap} = this.props;
@@ -88,6 +88,40 @@ export default class PromosCashbackRedeem extends Component {
         <option key={index} disabled = { (brandManager.brands.length === 0) ? true : false } value={brandManager.email}>
           {brandManager.email + ' <' + brandManager.name + '>' + ' - (' + brandManager.brands.length + ') Brands'}
         </option>
+      );
+    });
+    const monthMap = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const campaignList = campaigns.map((campaign, index) => {
+      return (
+        <tr onClick={() => {alert('Promos:\n' + JSON.stringify(campaign.cashback_promos).split(',').join('\n'));}} className = {campaign.status}>
+          <td>
+            {index}
+          </td>
+          <td>
+            {campaign.name}
+          </td>
+          <td>
+            {parseInt(campaign.active_from.split('-')[2].slice(0, 2), 10) + ', ' + monthMap[parseInt(campaign.active_from.split('-')[1], 10) - 1] + '`' + parseInt(campaign.active_from.split('-')[0].slice(2, 4), 10) + ', ' + campaign.active_from.split('T')[1].slice(0, 5) }
+          </td>
+          <td>
+            {parseInt(campaign.active_to.split('-')[2].slice(0, 2), 10) + ', ' + monthMap[parseInt(campaign.active_to.split('-')[1], 10) - 1] + '`' + parseInt(campaign.active_to.split('-')[0].slice(2, 4), 10) + ', ' + campaign.active_to.split('T')[1].slice(0, 5) }
+          </td>
+          <td>
+            {parseInt(campaign.created_at.split('-')[2].slice(0, 2), 10) + ', ' + monthMap[parseInt(campaign.created_at.split('-')[1], 10) - 1] + '`' + parseInt(campaign.created_at.split('-')[0].slice(2, 4), 10) + ', ' + campaign.created_at.split('T')[1].slice(0, 5) }
+          </td>
+          <td>
+            {campaign.type}
+          </td>
+          <td>
+            {campaign.status}
+          </td>
+          <td>
+            {campaign.budgeted_amount}
+          </td>
+          <td>
+            {campaign.funds_credited}
+          </td>
+        </tr>
       );
     });
 
@@ -160,6 +194,7 @@ export default class PromosCashbackRedeem extends Component {
             activeFrom={activeFrom}
             activeTo={activeTo}
             campaignStatus={campaignStatus}
+            campaignList={campaignList}
             brandManagerCampaignMap={brandManagerCampaignMap}
             brandManagerBrandMap={brandManagerBrandMap}
             />

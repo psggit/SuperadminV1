@@ -146,6 +146,7 @@ const SearchWrapper = ( {data, onToggle } ) => {
               <thead>
                 <tr>
                   <th> </th>
+                  <th> </th>
                   <th> ID </th>
                   <th> Campaign Name </th>
                   <th> Brand Manager Name </th>

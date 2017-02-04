@@ -366,13 +366,21 @@ const onSave = () => {
     const brandListingUrl = Endpoints.db + '/table/brand_listing/insert';
     const brandListingSelectUrl = Endpoints.db + '/table/brand_listing/select';
 
-    Object.keys(currState.stateCityMapping).filter( ( state ) => {
-      if ( currState.stateCityMapping[state].is_selected && !currState.stateCityMapping[state].price ) {
+    Object.keys(currState.create_sku_data.stateCityMapping).filter( ( state ) => {
+      if ( currState.create_sku_data.stateCityMapping[state].is_selected && !currState.create_sku_data.stateCityMapping[state].price ) {
         kill = true;
       }
     });
     if (kill === true) {
       alert('Prices Missing');
+      return false;
+    }
+    if ( !currState.create_sku_data.skuReqObj.brand_id ) {
+      alert('Brand Missing');
+      return false;
+    }
+    if ( !currState.create_sku_data.skuReqObj.volume) {
+      alert('Volume Missing');
       return false;
     }
     let options = {};

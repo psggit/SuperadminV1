@@ -27,7 +27,7 @@ const SkuInfo = ({ brandList, skuReqObj, disableSKUs, reservedItems, page }) => 
           </div>
           <div className={styles.indiv_element}>
             <label>Volume in ml</label>
-            <input type="number" data-field-name="volume" data-field-type="int" data-field-value = {parseInt(returnValue(skuReqObj, 'volume'), 10) ? parseInt(returnValue(skuReqObj, 'volume'), 10) : '' } value = {parseInt(returnValue(skuReqObj, 'volume'), 10) ? parseInt(returnValue(skuReqObj, 'volume'), 10) : '' } />
+            <input type="number" data-field-name="volume" data-field-type="int" disabled ={ ( page === 'edit_page' ) ? true : false } data-field-value = {parseInt(returnValue(skuReqObj, 'volume'), 10) ? parseInt(returnValue(skuReqObj, 'volume'), 10) : '' } value = {parseInt(returnValue(skuReqObj, 'volume'), 10) ? parseInt(returnValue(skuReqObj, 'volume'), 10) : '' } />
           </div>
           <div className={styles.indiv_element}>
             <label>Status</label>

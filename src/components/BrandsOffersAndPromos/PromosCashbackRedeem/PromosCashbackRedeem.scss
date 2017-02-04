@@ -27,7 +27,7 @@
 {
 	padding-top: 15px;
 }
-.compaign_details
+.compaign_details,.table_details
 {
 	background: #FFF;
 	padding: 20px 15px;
@@ -600,6 +600,29 @@
 		}
 	}
 }
+.table_details
+{
+  overflow :scroll;
+  td
+  {
+    white-space: nowrap;
+    padding : 4px;
+    border : 1px solid white;
+  }
+  tr:nth-child(even)
+  {
+    background-color : #eee;
+  }
+  tr
+  {
+    padding: 5px 0px;
+  }
+  .active
+  {
+    background-color: #b6d9b6 !important;
+  }
+}
+
 [data-field-value]
 {
   border : 1px solid green!important;

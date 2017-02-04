@@ -101,6 +101,14 @@ const campaignValidatorsDict = {
       return false;
     };
   },
+  promos: (value) => {
+    return (value.length > 0) ? () => {
+      return true;
+    } : () => {
+      alert('No Promos Entered');
+      return false;
+    };
+  },
   campaignName: (value) => {
     return !isEmpty(value) ? () => {
       return true;
@@ -161,7 +169,7 @@ const promoValidatorDict = {
     return value && value.trim() !== '' ? () => {
       return true;
     } : () => {
-      return confirm('promo name can\'t be empty. Are you sure you want to continue?');
+      return confirm('Promo name is empty. Are you sure you want to continue?');
     };
   },
   serviceCharge: (value) => {
@@ -186,9 +194,9 @@ const promoValidatorDict = {
       () => {
         return true;
       } : () => {
-        alert('Promo type should be percentage \'or\' amount. If the discount'
+        alert('If the discount'
         + ' is percentage keep it below 100 and if amount then cost should be'
-        + ' below max price of the bottle.');
+        + ' below max price of the bottle for PROMO:' + otherValues.name + ', MAX PRICE:' + maxPriceFloat);
         return false;
       };
   },
@@ -229,7 +237,8 @@ const promoValidatorDict = {
   sku: (sku, otherValues) => {
     // returns true if the range of the sku is a subset or super-set
     // of the current campaign's activeTo or activeFrom date.
-    const dateRangeCheck = ({activeTo, activeFrom, isActive}) => {
+    let coincidingEvent;
+    const dateRangeCheck = ({activeTo, activeFrom, isActive, name}) => {
       const activeToDate = convertStrToISODate(activeTo);
       const activeFromDate = convertStrToISODate(activeFrom);
       const campaignActiveToDate = convertStrToISODate(otherValues.activeTo, false);
@@ -238,15 +247,17 @@ const promoValidatorDict = {
       // if the campaign is active then change.
       if (isActive && isActive === 'active') {
         // if the offer activeFromDate within a previous campaign date
-        if (activeFromDate <= campaignActiveFromDate <= activeToDate) {
+        if ((activeFromDate <= campaignActiveFromDate) && (campaignActiveFromDate <= activeToDate)) {
+          coincidingEvent = name;
           return true;
           // if the offer activeFromDate within a previous campaign date
-        } else if (activeFromDate <= campaignActiveToDate <= activeToDate) {
+        } else if ((activeFromDate <= campaignActiveToDate) && (campaignActiveToDate <= activeToDate)) {
+          coincidingEvent = name;
           return true;
           // if the offer  campaign date are a super-set of the active dates
           // of a offer.
-        } else if (campaignActiveFromDate <= activeFromDate <= activeToDate
-            <= campaignActiveToDate) {
+        } else if ((campaignActiveFromDate <= activeFromDate) && (activeFromDate <= activeToDate) && activeToDate <= campaignActiveToDate) {
+          coincidingEvent = name;
           return true;
         }
         return false;
@@ -259,7 +270,8 @@ const promoValidatorDict = {
         return dateRangeCheck({
           activeFrom: offer.offer.campaign.active_from,
           activeTo: offer.offer.campaign.active_to,
-          isActive: offer.offer.campaign.status
+          isActive: offer.offer.campaign.status,
+          name: offer.offer.campaign.name,
         });
       });
       return offers.length > 0;
@@ -270,7 +282,7 @@ const promoValidatorDict = {
     } : () => {
       console.log('Error');
       alert('Thisd sku already has a campaign running with the dates'
-        + ' coinciding.');
+        + ' coinciding:' + coincidingEvent);
       return false;
     };
   },
@@ -357,14 +369,20 @@ const mapDispatchToProps = (dispatch) => {
         validators(campaignValidatorsDict, 'budgetedAmount', values.budgetedAmount, values) &&
         validators(campaignValidatorsDict, 'fundsCredited', values.fundsCredited, values) &&
         validators(campaignValidatorsDict, 'activeFrom', values.activeFrom, values) &&
+        validators(campaignValidatorsDict, 'promos', values.promos, values) &&
         validators(campaignValidatorsDict, 'activeTo', values.activeTo, values)) {
         // valid data of each promo
+        let proceed = confirm('`Cashback on Promos Campaign` are currently UnEditable. You currently have (' + values.promos.length + ') promos listed under this campaign.\n Are you sure you want to continue?');
+        if (proceed === false) {
+          return;
+        }
         for (let i = 0; i < values.promos.length; i++ ) {
           const promo = values.promos[i];
           // there are multiple promos.
           if (!validators(promoValidatorDict, 'type', promo.type, {...values,
             price: promo.price,
             type: promo.type,
+            name: promo.promoName,
             maxPrice: (promo.pricing ? promo.pricing.price : 0)})
           || !validators(promoValidatorDict, 'promoName', promo.promoName)
           || !validators(promoValidatorDict, 'serviceCharge', promo.serviceCharge)
@@ -383,8 +401,13 @@ const mapDispatchToProps = (dispatch) => {
             maxPrice: (promo.pricing ? promo.pricing.price : 0),
             currentEditingPromo: i
           })) {
+            proceed = false;
             return;
           }
+        }
+        if (proceed === false) {
+          alert('OH FUCK');
+          return;
         }
 
         // If everything is valid then perform the submit of the data.

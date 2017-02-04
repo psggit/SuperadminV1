@@ -50,7 +50,7 @@ const PromoDetails = ({styles, currentEditingPromo, promos, brands, fundsCredite
                 checked={promo.pricing.state_short && (pricing.state_short.state_name === promo.pricing.state_short.state_name)}
                 onChange={onChangePromoObjInfo.bind(this, 'pricing', currentEditingPromo, pricing, {
                 })}/> {pricing.state_short.state_name}
-              <input type="number" name="quantity" value={promo.quantity} className={styles.input_val}
+              <input type="number" min ="0" name="quantity" value={promo.quantity} className={styles.input_val}
                 onChange={onChangePromoInfo.bind(this, 'quantity', currentEditingPromo, {
                   fundsCredited: fundsCredited,
                   price: promo.price,
@@ -80,10 +80,28 @@ const PromoDetails = ({styles, currentEditingPromo, promos, brands, fundsCredite
         */}
         <div className={styles.wd_100 + ' ' + styles.padding_top}>
           <label className={styles.success_msg_lab}>
+            Promo name
+          </label>
+          <div className={styles.text_input}>
+            <input type="text" data-field-value={promo.promoName} value={promo.promoName}
+              onChange={onChangePromoInfo.bind(this, 'promoName', currentEditingPromo, {})} />
+          </div>
+        </div>
+        <div className={styles.wd_100 + ' ' + styles.padding_top}>
+          <label className={styles.success_msg_lab}>
+            Promo Description
+          </label>
+          <div className={styles.text_input}>
+            <input data-field-value={promo.promo_description} value={promo.promo_description}
+              onChange={onChangePromoInfo.bind(this, 'promo_description', currentEditingPromo, {})} />
+          </div>
+        </div>
+        <div className={styles.wd_100 + ' ' + styles.padding_top}>
+          <label className={styles.success_msg_lab}>
             Cashback Amount
           </label>
           <div className={styles.custom_select}>
-            <input type="number" className={styles.input_cash} value={promo.price ? promo.price : 0}
+            <input type="number" min= "0" className={styles.input_cash} data-field-value={promo.price ? promo.price : 0} value={promo.price ? promo.price : 0}
               onChange={onChangePromoInfo.bind(this, 'price', currentEditingPromo, {
                 type: promo.type ? promo.type : 'amount',
                 maxPrice: (promo.pricing ? promo.pricing.price : 0)
@@ -105,7 +123,7 @@ const PromoDetails = ({styles, currentEditingPromo, promos, brands, fundsCredite
             Service Charge
           </label>
           <div className={styles.custom_select}>
-            <input type="number" className={styles.input_cash} value={promo.serviceCharge ? promo.serviceCharge : 0}
+            <input type="number" min= "0" className={styles.input_cash} data-field-value={promo.serviceCharge ? promo.serviceCharge : 0} value={promo.serviceCharge ? promo.serviceCharge : 0}
               onChange={onChangePromoInfo.bind(this, 'serviceCharge', currentEditingPromo, {
                 type: promo.type ? promo.type : 'amount',
                 maxPrice: (promo.pricing ? promo.pricing.price : 0)
@@ -122,24 +140,6 @@ const PromoDetails = ({styles, currentEditingPromo, promos, brands, fundsCredite
           </div>
         </div>
 
-        <div className={styles.wd_100 + ' ' + styles.padding_top}>
-          <label className={styles.success_msg_lab}>
-            Promo name
-          </label>
-          <div className={styles.text_input}>
-            <input type="text" value={promo.promoName}
-              onChange={onChangePromoInfo.bind(this, 'promoName', currentEditingPromo, {})} />
-          </div>
-        </div>
-        <div className={styles.wd_100 + ' ' + styles.padding_top}>
-          <label className={styles.success_msg_lab}>
-            Promo Description
-          </label>
-          <div className={styles.text_input}>
-            <input value={promo.promo_description}
-              onChange={onChangePromoInfo.bind(this, 'promo_description', currentEditingPromo, {})} />
-          </div>
-        </div>
         <div className={styles.select_container}>
           {/* Brand Picker*/}
           <div className={styles.heading}>
