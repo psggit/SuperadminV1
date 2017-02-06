@@ -267,7 +267,7 @@ const insertBrand = () => {
       brandObj.company_id = parseInt(currState.companyId, 10);
       brandObj.category_id = parseInt(currState.categoryId, 10);
       brandObj.image = currState.image;
-      brandObj.short_name = currState.brandName.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, '').replace(' ', '-').toLowerCase();
+      brandObj.short_name = currState.brandName.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, '').replaceAll(/ /g, '-').toLowerCase();
       brandObj.is_active = true;
       brandObj.alcohol_per = currState.alcoholPer;
       brandObj.temperature = currState.temperature;
