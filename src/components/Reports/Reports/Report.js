@@ -70,6 +70,7 @@ const Report = ({stateData}) => { // eslint-disable-line no-unused-vars
                       <option value = "retailer_manual_credits_and_debits_report">Retailer Manual Credits and Debits Report</option>
                       <option value = "consumer_manual_credits_and_debits_view">Consumer Manual Credit and Debit View</option>
                       <option value = "bars_redeem_and_cancellation_report">Bars Redeem and Cancellation Report</option>
+                      <option value = "loading_cash_into_wallet">Loading Cash Into Wallet</option>
                   </select>
                   <input name = "start_date" onChange = {convertStartDate} id = "sstart_date" type="date"></input>
                   <input name = "end_date" onChange = {convertEndDate} id = "eend_date" type="date"></input>
