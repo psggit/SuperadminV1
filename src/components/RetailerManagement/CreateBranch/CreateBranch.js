@@ -8,6 +8,9 @@ import BreadCrumb from '../../Common/BreadCrumb';
 
 import commonDecorator from '../../Common/CommonDecorator';
 
+import Lister from './Lister';
+import SearchWrapper from './SearchWrapper';
+
 import { fetchStateCity } from '../../Common/Actions/StateCityData';
 
 import {
@@ -18,6 +21,8 @@ import {
 import {
   getOrganisation,
   saveBranchDetail,
+  getRetailerSettlementReport,
+  getRetailerDailyReport,
   updateBranchDetail,
   getBranchData,
   RESET_BRANCH,
@@ -94,6 +99,8 @@ class CreateBrand extends Component { // eslint-disable-line no-unused-vars
       )
     ])
     .then( () => {
+      this.props.dispatch( getRetailerSettlementReport(1, brId) );
+      this.props.dispatch( getRetailerDailyReport(1, brId) );
       this.props.dispatch( { type: REQUEST_COMPLETED });
     })
     .catch( () => {
@@ -106,6 +113,36 @@ class CreateBrand extends Component { // eslint-disable-line no-unused-vars
       this.props.dispatch({ type: RESET_DEVICE }),
       this.props.dispatch({ type: RESET_BRAND }),
     ]);
+  }
+  onClickHandle(e) {
+    e.preventDefault();
+    const currentPage = parseInt(e.target.outerText, 10);
+    const brId = this.props.params.brId;
+    console.log(e.target.outerText);
+    if (currentPage) {
+      Promise.all([
+        this.props.dispatch({ type: MAKE_REQUEST }),
+        this.props.dispatch(getRetailerSettlementReport(currentPage, ( brId ? brId : '') ))
+      ])
+      .then( () => {
+        this.props.dispatch({ type: REQUEST_COMPLETED });
+      });
+    }
+  }
+  onClickHandleDailyReport(e) {
+    e.preventDefault();
+    const currentPage = parseInt(e.target.outerText, 10);
+    const brId = this.props.params.brId;
+    console.log(e.target.outerText);
+    if (currentPage) {
+      Promise.all([
+        this.props.dispatch({ type: MAKE_REQUEST }),
+        this.props.dispatch(getRetailerDailyReport(currentPage, ( brId ? brId : '') ))
+      ])
+      .then( () => {
+        this.props.dispatch({ type: REQUEST_COMPLETED });
+      });
+    }
   }
   emailSmsDeviceCreation( id, templateName ) {
     this.props.dispatch( emailSmsDeviceCreation(id, templateName ) );
@@ -232,6 +269,12 @@ class CreateBrand extends Component { // eslint-disable-line no-unused-vars
       , branchContact
       , branchAccountRegistered
       , branchDetail
+      , retailerSettlementReportCount
+      , retailerSettlementReport
+      , retailerSettlementReportPage
+      , dailyRetailerReportCount
+      , dailyRetailerReport
+      , dailyRetailerReportPage
       , isBrEdit
     } = branchData;
 
@@ -308,6 +351,12 @@ class CreateBrand extends Component { // eslint-disable-line no-unused-vars
           />
           </div>
           { actionButton }
+        </div>
+        <div className= { !this.props.params.brId ? 'hide' : '' }>
+          <SearchWrapper title = { 'Retailer Transactions' } body = { ['created_at', 'order_id', 'amount', 'brand_name', 'sku_volume', 'itemtype', 'status', 'cancelled_by'] } head = { ['Date', 'Order Id', 'Amount', 'Brand Name', 'Sku Volume', 'Item Type', 'Status', 'Cancelled By'] } data={retailerSettlementReport} />
+          <Lister limit="10" onClickHandler={this.onClickHandle.bind(this)} currentPage={retailerSettlementReportPage} showMax="5" count={retailerSettlementReportCount} />
+          <SearchWrapper title = { 'Daily Retailer Report' } body = { ['date', 'opening_balance', 'closing_balance', 'net_amount', 'net_payable_amount', 'settlement_for_the_day'] } head = { ['Date', 'Opening Balance', 'Closing Balance', 'Net Amount', 'Net Payable Amount', 'Settlement For The Day'] } data={dailyRetailerReport} />
+          <Lister limit="10" onClickHandler={this.onClickHandleDailyReport.bind(this)} currentPage={dailyRetailerReportPage} showMax="5" count={dailyRetailerReportCount} />
         </div>
       </div>);
   }

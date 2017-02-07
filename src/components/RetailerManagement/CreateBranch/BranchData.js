@@ -20,6 +20,11 @@ const CANCEL_IMAGE = '@branchDataReducer/CANCEL_IMAGE';
 
 const BRANCH_FETCHED = '@branchDataReducer/BRANCH_FETCHED';
 const RETAILER_SETTLEMENT_REPORT_FETCHED = '@branchDataReducer/RETAILER_SETTLEMENT_REPORT_FETCHED';
+const RETAILER_SETTLEMENT_CHANGED = '@branchDataReducer/RETAILER_SETTLEMENT_CHANGED';
+const RETAILER_SETTLEMENT_REPORT_COUNT_FETCHED = '@branchDataReducer/RETAILER_SETTLEMENT_REPORT_COUNT_FETCHED';
+const DAILY_RETAILER_SETTLEMENT_REPORT_FETCHED = '@branchDataReducer/DAILY_RETAILER_REPORT_FETCHED';
+const DAILY_RETAILER_SETTLEMENT_CHANGED = '@branchDataReducer/DAILY_RETAILER_CHANGED';
+const DAILY_RETAILER_SETTLEMENT_REPORT_COUNT_FETCHED = '@branchDataReducer/DAILY_RETAILER_REPORT_COUNT_FETCHED';
 
 /* End of it */
 
@@ -406,8 +411,56 @@ const getBranchData = ( brId ) => {
   };
 };
 
-const getRetailerSettlementReport = (page, brId ) => {
+const getRetailerDailyReport = (page, brId ) => {
   return (dispatch) => {
+    if (brId === '') {
+      alert('HANDLE');
+    }
+    let offset = 0;
+    let limit = 0;
+    // const count = currentProps.count;
+    // limit = (page * 10) > count ? count : ((page) * 10);
+    // limit = ((page) * 10);
+    limit = 10;
+    offset = (page - 1) * 10;
+    const payload2 = {
+      'columns': ['*'],
+      'order_by': '-date',
+      'limit': limit,
+      'offset': offset
+    };
+    payload2.where = {
+      'retailer_id': parseInt(brId, 10)
+    };
+
+    let url = Endpoints.db + '/table/' + 'daily_retailer_reports' + '/select';
+    let options = {
+      ...genOptions,
+      body: JSON.stringify(payload2),
+    };
+    return dispatch(requestAction(url, options, DAILY_RETAILER_SETTLEMENT_REPORT_FETCHED)).then( () => {
+      dispatch({'type': DAILY_RETAILER_SETTLEMENT_CHANGED, 'data': page});
+      const payload3 = {};
+      payload3.where = {
+        'retailer_id': parseInt(brId, 10)
+      };
+
+      url = Endpoints.db + '/table/' + 'daily_retailer_reports' + '/count';
+      options = {
+        ...genOptions,
+        body: JSON.stringify(payload3),
+      };
+      return dispatch(requestAction(url, options, DAILY_RETAILER_SETTLEMENT_REPORT_COUNT_FETCHED));
+    });
+  };
+};
+
+const getRetailerSettlementReport = (page, brId ) => {
+  return (dispatch, getState) => {
+    const devicesId = getState().branch_data.deviceData.devices.map((x) => { return x.id; });
+    if (brId === '') {
+      alert('HANDLE');
+    }
     let offset = 0;
     let limit = 0;
     // const count = currentProps.count;
@@ -422,15 +475,28 @@ const getRetailerSettlementReport = (page, brId ) => {
       'offset': offset
     };
     payload2.where = {
-      'retailer_id': parseInt(brId, 10)
+      'retailer_pos_id': {'$in': devicesId}
     };
 
-    const url = Endpoints.db + '/table/' + 'retailer_settlement_report' + '/select';
-    const options = {
+    let url = Endpoints.db + '/table/' + 'retailer_transactions' + '/select';
+    let options = {
       ...genOptions,
       body: JSON.stringify(payload2),
     };
-    return dispatch(requestAction(url, options, RETAILER_SETTLEMENT_REPORT_FETCHED));
+    return dispatch(requestAction(url, options, RETAILER_SETTLEMENT_REPORT_FETCHED)).then( () => {
+      dispatch({'type': RETAILER_SETTLEMENT_CHANGED, 'data': page});
+      const payload3 = {};
+      payload3.where = {
+        'retailer_pos_id': {'$in': devicesId}
+      };
+
+      url = Endpoints.db + '/table/' + 'retailer_transactions' + '/count';
+      options = {
+        ...genOptions,
+        body: JSON.stringify(payload3),
+      };
+      return dispatch(requestAction(url, options, RETAILER_SETTLEMENT_REPORT_COUNT_FETCHED));
+    });
   };
 };
 /* End of it */
@@ -634,7 +700,17 @@ const branchDataReducer = ( state = { organisationData: [], branchDetail: {}, br
     case IMAGE_UPLOAD_SUCCESS:
       return { ...state, branchAccountRegistered: { ...state.branchAccountRegistered, canceled_cheque_image: action.data[0]}};
     case RETAILER_SETTLEMENT_REPORT_FETCHED:
-      return { ...state, retailerSettlementReport: action.data[0]};
+      return { ...state, retailerSettlementReport: action.data};
+    case RETAILER_SETTLEMENT_REPORT_COUNT_FETCHED:
+      return { ...state, retailerSettlementReportCount: action.data.count};
+    case RETAILER_SETTLEMENT_CHANGED:
+      return { ...state, retailerSettlementReportPage: action.data};
+    case DAILY_RETAILER_SETTLEMENT_REPORT_FETCHED:
+      return { ...state, dailyRetailerReport: action.data};
+    case DAILY_RETAILER_SETTLEMENT_REPORT_COUNT_FETCHED:
+      return { ...state, dailyRetailerReportCount: action.data.count};
+    case DAILY_RETAILER_SETTLEMENT_CHANGED:
+      return { ...state, dailyRetailerReportPage: action.data};
     case IMAGE_UPLOAD_ERROR:
       return { ...state, branchAccountRegistered: { ...state.branchAccountRegistered, canceled_cheque_image: ''}};
     case CANCEL_IMAGE:
@@ -691,6 +767,7 @@ export {
   BRANCH_CONTACT_CHANGED,
   BRANCH_INPUT_CHANGED,
   BRANCH_ACCOUNT_CHANGED,
+  getRetailerDailyReport,
   getRetailerSettlementReport,
   saveBranchDetail,
   updateBranchDetail,
