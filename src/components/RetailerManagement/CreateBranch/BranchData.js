@@ -19,6 +19,7 @@ const IMAGE_UPLOAD_ERROR = '@branchDataReducer/IMAGE_UPLOAD_ERROR';
 const CANCEL_IMAGE = '@branchDataReducer/CANCEL_IMAGE';
 
 const BRANCH_FETCHED = '@branchDataReducer/BRANCH_FETCHED';
+const RETAILER_SETTLEMENT_REPORT_FETCHED = '@branchDataReducer/RETAILER_SETTLEMENT_REPORT_FETCHED';
 
 /* End of it */
 
@@ -405,6 +406,33 @@ const getBranchData = ( brId ) => {
   };
 };
 
+const getRetailerSettlementReport = (page, brId ) => {
+  return (dispatch) => {
+    let offset = 0;
+    let limit = 0;
+    // const count = currentProps.count;
+    // limit = (page * 10) > count ? count : ((page) * 10);
+    // limit = ((page) * 10);
+    limit = 10;
+    offset = (page - 1) * 10;
+    const payload2 = {
+      'columns': ['*'],
+      'order_by': '-created_at',
+      'limit': limit,
+      'offset': offset
+    };
+    payload2.where = {
+      'retailer_id': parseInt(brId, 10)
+    };
+
+    const url = Endpoints.db + '/table/' + 'retailer_settlement_report' + '/select';
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(payload2),
+    };
+    return dispatch(requestAction(url, options, RETAILER_SETTLEMENT_REPORT_FETCHED));
+  };
+};
 /* End of it */
 
 /* Update Branch */
@@ -605,6 +633,8 @@ const branchDataReducer = ( state = { organisationData: [], branchDetail: {}, br
       return { ...state, branchAccountRegistered: { ...state.branchAccountRegistered, ...branchAccountRegistered}};
     case IMAGE_UPLOAD_SUCCESS:
       return { ...state, branchAccountRegistered: { ...state.branchAccountRegistered, canceled_cheque_image: action.data[0]}};
+    case RETAILER_SETTLEMENT_REPORT_FETCHED:
+      return { ...state, retailerSettlementReport: action.data[0]};
     case IMAGE_UPLOAD_ERROR:
       return { ...state, branchAccountRegistered: { ...state.branchAccountRegistered, canceled_cheque_image: ''}};
     case CANCEL_IMAGE:
@@ -661,6 +691,7 @@ export {
   BRANCH_CONTACT_CHANGED,
   BRANCH_INPUT_CHANGED,
   BRANCH_ACCOUNT_CHANGED,
+  getRetailerSettlementReport,
   saveBranchDetail,
   updateBranchDetail,
   IMAGE_UPLOAD_SUCCESS,

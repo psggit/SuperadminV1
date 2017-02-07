@@ -231,7 +231,7 @@ class BrandEdit extends Component { // eslint-disable-line no-unused-vars
             <ul>
               <li>
                 <label>Brand Name</label>
-                <input data-field-name="brandName" type="text" data-field-type="text" value={ brandName } />
+                <input data-field-name="brandName" disabled type="text" data-field-type="text" value={ brandName } />
               </li>
               <li>
                 <label>Company Name</label>

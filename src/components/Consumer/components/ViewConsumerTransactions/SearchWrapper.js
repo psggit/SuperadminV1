@@ -17,12 +17,12 @@ const ConsumerSearchWrapper = ( {data} ) => {
                 { dat.consumer_id }
               </Link>
             </td>
-            <td> { (dat.amount ) ? dat.amount : 'N/A' } </td>
+            <td> { createdAt } </td>
             <td> { (dat.type ) ? dat.type : 'N/A' } </td>
             <td> { (dat.order_id ) ? dat.order_id : 'N/A' } </td>
+            <td> { (dat.amount ) ? dat.amount : 'N/A' } </td>
             <td> Rs. { (dat.opening_balance) ? dat.opening_balance : 0 } </td>
             <td> Rs. { (dat.closing_balance ) ? dat.closing_balance : 0 } </td>
-            <td> { createdAt } </td>
           </tr>
         );
   });
@@ -42,12 +42,12 @@ const ConsumerSearchWrapper = ( {data} ) => {
               <thead>
                 <tr>
                   <th> </th>
-                  <th> Amount </th>
+                  <th> CreatedAt </th>
                   <th> Type </th>
                   <th> Order Id </th>
+                  <th> Amount </th>
                   <th> Opening Balance </th>
                   <th> Closing Balance </th>
-                  <th> CreatedAt </th>
                 </tr>
               </thead>
               <tbody>

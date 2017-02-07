@@ -46,7 +46,7 @@ class ViewConsumerTransactions extends Component {
     this.breadCrumbs.push({
       title: 'Consumer Management',
       sequence: 1,
-      link: '#'
+      link: '/hadmin/consumer/profile/'
     });
     this.breadCrumbs.push({
       title: 'Consumer Transactions',
@@ -92,15 +92,17 @@ class ViewConsumerTransactions extends Component {
 
     /* Search Parameters */
 
-    const fields = [ 'type', 'amount', 'order_id' ];
+    const fields = [ 'type', 'amount', 'order_id', 'created_at'];
     // const operator = ['$eq'];
     const fieldOperatorMap = {
       'type': ['$eq', '$like', '$ilike'],
       'amount': ['$eq', '$gt', '$lt'],
+      'created_at': ['$gt', '$lt'],
       'order_id': ['$eq', '$gt', '$lt']
     };
     const fieldTypeMap = {
       'type': 'text',
+      'created_at': 'date',
       'amount': 'number',
       'order_id': 'number'
     };
