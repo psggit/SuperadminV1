@@ -1,4 +1,5 @@
 import React from 'react';
+import { convertStrToISODate } from '../../../utils/data';
 
 const PromoDetails = ({styles, currentEditingPromo, promos, brands, fundsCredited,
   activeFrom, activeTo, isPromoSectionShown, onChangePromoObjInfo, onChangePromoInfo}) => {
@@ -41,12 +42,49 @@ const PromoDetails = ({styles, currentEditingPromo, promos, brands, fundsCredite
       );
     }) : null;
 
+    const dateRangeCheck = (actTo, actFrom, campaignToDate, campaignFromDate, isActive) => {
+      const activeToDate = convertStrToISODate(actTo);
+      const activeFromDate = convertStrToISODate(actFrom);
+      const campaignActiveToDate = convertStrToISODate(campaignToDate, false);
+      const campaignActiveFromDate = convertStrToISODate(campaignFromDate, false);
+
+      // if the campaign is active then change.
+      if (isActive && isActive === 'active') {
+        // if the offer activeFromDate within a previous campaign date
+        if ((activeFromDate <= campaignActiveFromDate) && (campaignActiveFromDate <= activeToDate)) {
+          return true;
+          // if the offer activeFromDate within a previous campaign date
+        } else if ((activeFromDate <= campaignActiveToDate) && (campaignActiveToDate <= activeToDate)) {
+          return true;
+          // if the offer  campaign date are a super-set of the active dates
+          // of a offer.
+        } else if ((campaignActiveFromDate <= activeFromDate) && (activeFromDate <= activeToDate) && activeToDate <= campaignActiveToDate) {
+          return true;
+        }
+        return false;
+      }
+      return false;
+    };
+
     const stateMenu = promo.sku && promo.sku.pricings && promo.sku.pricings.length
       ? promo.sku.pricings.map((pricing, index) => {
+        const activeCampaigns = [];
+        pricing.cash_back_offers.forEach((offers) => {
+          const check = dateRangeCheck(offers.offer.campaign.active_to
+          , offers.offer.campaign.active_from
+          , activeFrom
+          , activeTo
+          , offers.offer.campaign.status
+          );
+          if (check) {
+            activeCampaigns.push(offers.offer.campaign);
+          }
+          console.log(activeCampaigns);
+        });
         return (
           <li key={index}>
-            <label>
-              <input type="radio" name="state" value={pricing.state_short.state_name}
+            <label title = {JSON.stringify(activeCampaigns).replace('/}/g', '\n')}>
+              <input disabled = {(activeCampaigns.length > 0) ? true : false } type="radio" name="state" value={pricing.state_short.state_name}
                 checked={promo.pricing.state_short && (pricing.state_short.state_name === promo.pricing.state_short.state_name)}
                 onChange={onChangePromoObjInfo.bind(this, 'pricing', currentEditingPromo, pricing, {
                 })}/> {pricing.state_short.state_name}
