@@ -23,6 +23,17 @@ const AD_CANCEL_IMAGE = '@barDataReducer/AD_CANCEL_IMAGE';
 
 const BAR_FETCHED = '@barDataReducer/BAR_FETCHED';
 
+const BAR_SETTLEMENT_REPORT_FETCHED = '@branchDataReducer/BAR_SETTLEMENT_REPORT_FETCHED';
+const BAR_SETTLEMENT_CHANGED = '@branchDataReducer/BAR_SETTLEMENT_CHANGED';
+const BAR_SETTLEMENT_REPORT_COUNT_FETCHED = '@branchDataReducer/BAR_SETTLEMENT_REPORT_COUNT_FETCHED';
+const DAILY_BAR_REPORT_FETCHED = '@branchDataReducer/DAILY_BAR_REPORT_FETCHED';
+const DAILY_BAR_CHANGED = '@branchDataReducer/DAILY_BAR_CHANGED';
+const DAILY_BAR_REPORT_COUNT_FETCHED = '@branchDataReducer/DAILY_BAR_REPORT_COUNT_FETCHED';
+
+const BAR_TRANSACTION_REPORT_FETCHED = '@branchDataReducer/BAR_TRANSACTION_REPORT_FETCHED';
+const BAR_TRANSACTION_CHANGED = '@branchDataReducer/BAR_TRANSACTION_CHANGED';
+const BAR_TRANSACTION_REPORT_COUNT_FETCHED = '@branchDataReducer/BAR_TRANSACTION_REPORT_COUNT_FETCHED';
+
 /* End of it */
 
 /* Action creators */
@@ -205,6 +216,139 @@ const saveBarDetail = () => {
 };
 
 /* End of it */
+const getBarDailyReport = (page, brId ) => {
+  return (dispatch) => {
+    if (brId === '') {
+      alert('HANDLE');
+    }
+    let offset = 0;
+    let limit = 0;
+    // const count = currentProps.count;
+    // limit = (page * 10) > count ? count : ((page) * 10);
+    // limit = ((page) * 10);
+    limit = 10;
+    offset = (page - 1) * 10;
+    const payload2 = {
+      'columns': ['*'],
+      'order_by': '-date',
+      'limit': limit,
+      'offset': offset
+    };
+    payload2.where = {
+      'bar_id': parseInt(brId, 10)
+    };
+
+    let url = Endpoints.db + '/table/' + 'daily_bar_reports' + '/select';
+    let options = {
+      ...genOptions,
+      body: JSON.stringify(payload2),
+    };
+    return dispatch(requestAction(url, options, DAILY_BAR_REPORT_FETCHED)).then( () => {
+      dispatch({'type': DAILY_BAR_CHANGED, 'data': page});
+      const payload3 = {};
+      payload3.where = {
+        'bar_id': parseInt(brId, 10)
+      };
+
+      url = Endpoints.db + '/table/' + 'daily_bar_reports' + '/count';
+      options = {
+        ...genOptions,
+        body: JSON.stringify(payload3),
+      };
+      return dispatch(requestAction(url, options, DAILY_BAR_REPORT_COUNT_FETCHED));
+    });
+  };
+};
+
+const getBarSettlementReport = (page, brId ) => {
+  return (dispatch) => {
+    if (brId === '') {
+      alert('HANDLE');
+    }
+    let offset = 0;
+    let limit = 0;
+    // const count = currentProps.count;
+    // limit = (page * 10) > count ? count : ((page) * 10);
+    // limit = ((page) * 10);
+    limit = 10;
+    offset = (page - 1) * 10;
+    const payload2 = {
+      'columns': ['*'],
+      'order_by': '-date',
+      'limit': limit,
+      'offset': offset
+    };
+    payload2.where = {
+      'bar_id': parseInt(brId, 10)
+    };
+
+    let url = Endpoints.db + '/table/' + 'bar_settlement_report' + '/select';
+    let options = {
+      ...genOptions,
+      body: JSON.stringify(payload2),
+    };
+    return dispatch(requestAction(url, options, BAR_SETTLEMENT_REPORT_FETCHED)).then( () => {
+      dispatch({'type': BAR_SETTLEMENT_CHANGED, 'data': page});
+      const payload3 = {};
+      payload3.where = {
+        'bar_id': parseInt(brId, 10)
+      };
+
+      url = Endpoints.db + '/table/' + 'bar_settlement_report' + '/count';
+      options = {
+        ...genOptions,
+        body: JSON.stringify(payload3),
+      };
+      return dispatch(requestAction(url, options, BAR_SETTLEMENT_REPORT_COUNT_FETCHED));
+    });
+  };
+};
+
+
+const getBarTransactionReport = (page, brId ) => {
+  return (dispatch, getState) => {
+    const devicesId = getState().branch_data.deviceData.devices.map((x) => { return x.id; });
+    if (brId === '') {
+      alert('HANDLE');
+    }
+    let offset = 0;
+    let limit = 0;
+    // const count = currentProps.count;
+    // limit = (page * 10) > count ? count : ((page) * 10);
+    // limit = ((page) * 10);
+    limit = 10;
+    offset = (page - 1) * 10;
+    const payload2 = {
+      'columns': ['*'],
+      'order_by': '-created_at',
+      'limit': limit,
+      'offset': offset
+    };
+    payload2.where = {
+      'retailer_pos_id': {'$in': devicesId}
+    };
+
+    let url = Endpoints.db + '/table/' + 'retailer_transactions' + '/select';
+    let options = {
+      ...genOptions,
+      body: JSON.stringify(payload2),
+    };
+    return dispatch(requestAction(url, options, BAR_TRANSACTION_REPORT_FETCHED)).then( () => {
+      dispatch({'type': BAR_TRANSACTION_CHANGED, 'data': page});
+      const payload3 = {};
+      payload3.where = {
+        'retailer_pos_id': {'$in': devicesId}
+      };
+
+      url = Endpoints.db + '/table/' + 'retailer_transactions' + '/count';
+      options = {
+        ...genOptions,
+        body: JSON.stringify(payload3),
+      };
+      return dispatch(requestAction(url, options, BAR_TRANSACTION_REPORT_COUNT_FETCHED));
+    });
+  };
+};
 
 /* Get Bar Details */
 
@@ -456,6 +600,24 @@ const barDataReducer = ( state = { organisationData: [], barDetail: {}, barConta
       return { ...state, barDetail: { ...state.barDetail, adImage: ''}};
     case AD_CANCEL_IMAGE:
       return { ...state, barDetail: { ...state.barDetail, adImage: ''}};
+    case BAR_SETTLEMENT_REPORT_FETCHED:
+      return { ...state, barSettlementReport: action.data};
+    case BAR_SETTLEMENT_REPORT_COUNT_FETCHED:
+      return { ...state, barSettlementReportCount: action.data.count};
+    case BAR_SETTLEMENT_CHANGED:
+      return { ...state, barSettlementReportPage: action.data};
+    case BAR_TRANSACTION_REPORT_FETCHED:
+      return { ...state, barTransactionReport: action.data};
+    case BAR_TRANSACTION_REPORT_COUNT_FETCHED:
+      return { ...state, barTransactionReportCount: action.data.count};
+    case BAR_TRANSACTION_CHANGED:
+      return { ...state, barTransactionReportPage: action.data};
+    case DAILY_BAR_REPORT_FETCHED:
+      return { ...state, dailyBarReport: action.data};
+    case DAILY_BAR_REPORT_COUNT_FETCHED:
+      return { ...state, dailyBarReportCount: action.data.count};
+    case DAILY_BAR_CHANGED:
+      return { ...state, dailyBarReportPage: action.data};
     case RESET_BAR:
       return { barDetail: {}, barContact: {}, barAccountRegistered: {}, organisationData: []};
     case BAR_FETCHED:
@@ -510,6 +672,9 @@ export {
   BAR_CONTACT_CHANGED,
   BAR_INPUT_CHANGED,
   BAR_ACCOUNT_CHANGED,
+  getBarDailyReport,
+  getBarSettlementReport,
+  getBarTransactionReport,
   saveBarDetail,
   updateBarDetail,
   IMAGE_UPLOAD_SUCCESS,

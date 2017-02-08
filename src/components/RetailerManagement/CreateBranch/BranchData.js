@@ -22,10 +22,13 @@ const BRANCH_FETCHED = '@branchDataReducer/BRANCH_FETCHED';
 const RETAILER_SETTLEMENT_REPORT_FETCHED = '@branchDataReducer/RETAILER_SETTLEMENT_REPORT_FETCHED';
 const RETAILER_SETTLEMENT_CHANGED = '@branchDataReducer/RETAILER_SETTLEMENT_CHANGED';
 const RETAILER_SETTLEMENT_REPORT_COUNT_FETCHED = '@branchDataReducer/RETAILER_SETTLEMENT_REPORT_COUNT_FETCHED';
-const DAILY_RETAILER_SETTLEMENT_REPORT_FETCHED = '@branchDataReducer/DAILY_RETAILER_REPORT_FETCHED';
-const DAILY_RETAILER_SETTLEMENT_CHANGED = '@branchDataReducer/DAILY_RETAILER_CHANGED';
-const DAILY_RETAILER_SETTLEMENT_REPORT_COUNT_FETCHED = '@branchDataReducer/DAILY_RETAILER_REPORT_COUNT_FETCHED';
+const DAILY_RETAILER_REPORT_FETCHED = '@branchDataReducer/DAILY_RETAILER_REPORT_FETCHED';
+const DAILY_RETAILER_CHANGED = '@branchDataReducer/DAILY_RETAILER_CHANGED';
+const DAILY_RETAILER_REPORT_COUNT_FETCHED = '@branchDataReducer/DAILY_RETAILER_REPORT_COUNT_FETCHED';
 
+const RETAILER_TRANSACTION_REPORT_FETCHED = '@branchDataReducer/RETAILER_TRANSACTION_REPORT_FETCHED';
+const RETAILER_TRANSACTION_CHANGED = '@branchDataReducer/RETAILER_TRANSACTION_CHANGED';
+const RETAILER_TRANSACTION_REPORT_COUNT_FETCHED = '@branchDataReducer/RETAILER_TRANSACTION_REPORT_COUNT_FETCHED';
 /* End of it */
 
 /* Action creators */
@@ -438,8 +441,8 @@ const getRetailerDailyReport = (page, brId ) => {
       ...genOptions,
       body: JSON.stringify(payload2),
     };
-    return dispatch(requestAction(url, options, DAILY_RETAILER_SETTLEMENT_REPORT_FETCHED)).then( () => {
-      dispatch({'type': DAILY_RETAILER_SETTLEMENT_CHANGED, 'data': page});
+    return dispatch(requestAction(url, options, DAILY_RETAILER_REPORT_FETCHED)).then( () => {
+      dispatch({'type': DAILY_RETAILER_CHANGED, 'data': page});
       const payload3 = {};
       payload3.where = {
         'retailer_id': parseInt(brId, 10)
@@ -450,12 +453,57 @@ const getRetailerDailyReport = (page, brId ) => {
         ...genOptions,
         body: JSON.stringify(payload3),
       };
-      return dispatch(requestAction(url, options, DAILY_RETAILER_SETTLEMENT_REPORT_COUNT_FETCHED));
+      return dispatch(requestAction(url, options, DAILY_RETAILER_REPORT_COUNT_FETCHED));
     });
   };
 };
 
 const getRetailerSettlementReport = (page, brId ) => {
+  return (dispatch) => {
+    if (brId === '') {
+      alert('HANDLE');
+    }
+    let offset = 0;
+    let limit = 0;
+    // const count = currentProps.count;
+    // limit = (page * 10) > count ? count : ((page) * 10);
+    // limit = ((page) * 10);
+    limit = 10;
+    offset = (page - 1) * 10;
+    const payload2 = {
+      'columns': ['*'],
+      'order_by': '-date',
+      'limit': limit,
+      'offset': offset
+    };
+    payload2.where = {
+      'retailer_id': parseInt(brId, 10)
+    };
+
+    let url = Endpoints.db + '/table/' + 'retailer_settlement_report' + '/select';
+    let options = {
+      ...genOptions,
+      body: JSON.stringify(payload2),
+    };
+    return dispatch(requestAction(url, options, RETAILER_SETTLEMENT_REPORT_FETCHED)).then( () => {
+      dispatch({'type': RETAILER_SETTLEMENT_CHANGED, 'data': page});
+      const payload3 = {};
+      payload3.where = {
+        'retailer_id': parseInt(brId, 10)
+      };
+
+      url = Endpoints.db + '/table/' + 'retailer_settlement_report' + '/count';
+      options = {
+        ...genOptions,
+        body: JSON.stringify(payload3),
+      };
+      return dispatch(requestAction(url, options, RETAILER_SETTLEMENT_REPORT_COUNT_FETCHED));
+    });
+  };
+};
+
+
+const getRetailerTransactionReport = (page, brId ) => {
   return (dispatch, getState) => {
     const devicesId = getState().branch_data.deviceData.devices.map((x) => { return x.id; });
     if (brId === '') {
@@ -483,8 +531,8 @@ const getRetailerSettlementReport = (page, brId ) => {
       ...genOptions,
       body: JSON.stringify(payload2),
     };
-    return dispatch(requestAction(url, options, RETAILER_SETTLEMENT_REPORT_FETCHED)).then( () => {
-      dispatch({'type': RETAILER_SETTLEMENT_CHANGED, 'data': page});
+    return dispatch(requestAction(url, options, RETAILER_TRANSACTION_REPORT_FETCHED)).then( () => {
+      dispatch({'type': RETAILER_TRANSACTION_CHANGED, 'data': page});
       const payload3 = {};
       payload3.where = {
         'retailer_pos_id': {'$in': devicesId}
@@ -495,7 +543,7 @@ const getRetailerSettlementReport = (page, brId ) => {
         ...genOptions,
         body: JSON.stringify(payload3),
       };
-      return dispatch(requestAction(url, options, RETAILER_SETTLEMENT_REPORT_COUNT_FETCHED));
+      return dispatch(requestAction(url, options, RETAILER_TRANSACTION_REPORT_COUNT_FETCHED));
     });
   };
 };
@@ -705,11 +753,17 @@ const branchDataReducer = ( state = { organisationData: [], branchDetail: {}, br
       return { ...state, retailerSettlementReportCount: action.data.count};
     case RETAILER_SETTLEMENT_CHANGED:
       return { ...state, retailerSettlementReportPage: action.data};
-    case DAILY_RETAILER_SETTLEMENT_REPORT_FETCHED:
+    case RETAILER_TRANSACTION_REPORT_FETCHED:
+      return { ...state, retailerTransactionReport: action.data};
+    case RETAILER_TRANSACTION_REPORT_COUNT_FETCHED:
+      return { ...state, retailerTransactionReportCount: action.data.count};
+    case RETAILER_TRANSACTION_CHANGED:
+      return { ...state, retailerTransactionReportPage: action.data};
+    case DAILY_RETAILER_REPORT_FETCHED:
       return { ...state, dailyRetailerReport: action.data};
-    case DAILY_RETAILER_SETTLEMENT_REPORT_COUNT_FETCHED:
+    case DAILY_RETAILER_REPORT_COUNT_FETCHED:
       return { ...state, dailyRetailerReportCount: action.data.count};
-    case DAILY_RETAILER_SETTLEMENT_CHANGED:
+    case DAILY_RETAILER_CHANGED:
       return { ...state, dailyRetailerReportPage: action.data};
     case IMAGE_UPLOAD_ERROR:
       return { ...state, branchAccountRegistered: { ...state.branchAccountRegistered, canceled_cheque_image: ''}};
@@ -769,6 +823,7 @@ export {
   BRANCH_ACCOUNT_CHANGED,
   getRetailerDailyReport,
   getRetailerSettlementReport,
+  getRetailerTransactionReport,
   saveBranchDetail,
   updateBranchDetail,
   IMAGE_UPLOAD_SUCCESS,

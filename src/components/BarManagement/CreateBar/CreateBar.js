@@ -9,6 +9,9 @@ import commonDecorator from '../../Common/CommonDecorator';
 
 import { fetchStateCity } from '../../Common/Actions/StateCityData';
 
+import Lister from '../../RetailerManagement/CreateBranch/Lister';
+import SearchWrapper from '../../RetailerManagement/CreateBranch/SearchWrapper';
+
 import {
   MAKE_REQUEST,
   REQUEST_COMPLETED
@@ -19,7 +22,10 @@ import {
   saveBarDetail,
   updateBarDetail,
   getBarData,
-  RESET_BAR
+  RESET_BAR,
+  getBarSettlementReport,
+  getBarTransactionReport,
+  getBarDailyReport,
 } from './BarData';
 
 import {
@@ -76,6 +82,9 @@ class CreateBar extends Component { // eslint-disable-line no-unused-vars
       )
     ])
     .then( () => {
+      this.props.dispatch( getBarSettlementReport(1, brId) );
+      this.props.dispatch( getBarDailyReport(1, brId) );
+      this.props.dispatch( getBarTransactionReport(1, brId) );
       this.props.dispatch( { type: REQUEST_COMPLETED });
     })
     .catch( () => {
@@ -87,6 +96,51 @@ class CreateBar extends Component { // eslint-disable-line no-unused-vars
       this.props.dispatch({ type: RESET_BAR }),
       this.props.dispatch({ type: RESET_DEVICE })
     ]);
+  }
+  onClickHandle(e) {
+    e.preventDefault();
+    const currentPage = parseInt(e.target.outerText, 10);
+    const brId = this.props.params.brId;
+    console.log(e.target.outerText);
+    if (currentPage) {
+      Promise.all([
+        this.props.dispatch({ type: MAKE_REQUEST }),
+        this.props.dispatch(getBarTransactionReport(currentPage, ( brId ? brId : '') ))
+      ])
+      .then( () => {
+        this.props.dispatch({ type: REQUEST_COMPLETED });
+      });
+    }
+  }
+  onClickHandleDailyReport(e) {
+    e.preventDefault();
+    const currentPage = parseInt(e.target.outerText, 10);
+    const brId = this.props.params.brId;
+    console.log(e.target.outerText);
+    if (currentPage) {
+      Promise.all([
+        this.props.dispatch({ type: MAKE_REQUEST }),
+        this.props.dispatch(getBarDailyReport(currentPage, ( brId ? brId : '') ))
+      ])
+      .then( () => {
+        this.props.dispatch({ type: REQUEST_COMPLETED });
+      });
+    }
+  }
+  onClickHandleSettlementReport(e) {
+    e.preventDefault();
+    const currentPage = parseInt(e.target.outerText, 10);
+    const brId = this.props.params.brId;
+    console.log(e.target.outerText);
+    if (currentPage) {
+      Promise.all([
+        this.props.dispatch({ type: MAKE_REQUEST }),
+        this.props.dispatch(getBarSettlementReport(currentPage, ( brId ? brId : '') ))
+      ])
+      .then( () => {
+        this.props.dispatch({ type: REQUEST_COMPLETED });
+      });
+    }
   }
   emailSmsDeviceCreation( id, templateName ) {
     this.props.dispatch( emailSmsDeviceCreation(id, templateName ) );
@@ -162,6 +216,15 @@ class CreateBar extends Component { // eslint-disable-line no-unused-vars
       , barContact
       , barAccountRegistered
       , barDetail
+      , barSettlementReportCount
+      , barSettlementReport
+      , barSettlementReportPage
+      , barTransactionReportCount
+      , barTransactionReport
+      , barTransactionReportPage
+      , dailyBarReportCount
+      , dailyBarReport
+      , dailyBarReportPage
       , isBrEdit
     } = barData;
 
@@ -207,6 +270,14 @@ class CreateBar extends Component { // eslint-disable-line no-unused-vars
           />
           </div>
           { actionButton }
+        </div>
+        <div className= { !this.props.params.brId ? 'hide' : '' }>
+          <SearchWrapper title = { 'Bar Transactions' } body = { ['created_at', 'order_id', 'amount', 'brand_name', 'sku_volume', 'itemtype', 'status', 'cancelled_by'] } head = { ['Date', 'Order Id', 'Amount', 'Brand Name', 'Sku Volume', 'Item Type', 'Status', 'Cancelled By'] } data={barTransactionReport} />
+          <Lister limit="10" onClickHandler={this.onClickHandle.bind(this)} currentPage={barTransactionReportPage} showMax="5" count={barTransactionReportCount} />
+          <SearchWrapper title = { 'Daily Bar Report' } body = { ['date', 'opening_balance', 'closing_balance', 'net_amount', 'net_payable_amount', 'settlement_for_the_day'] } head = { ['Date', 'Opening Balance', 'Closing Balance', 'Net Amount', 'Net Payable Amount', 'Settlement For The Day'] } data={dailyBarReport} />
+          <Lister limit="10" onClickHandler={this.onClickHandleDailyReport.bind(this)} currentPage={dailyBarReportPage} showMax="5" count={dailyBarReportCount} />
+          <SearchWrapper title = { 'Bar Settlement Report' } body = { ['date', 'consumer_amount', 'bar_discount', 'manual_credits', 'manual_debits', 'pay_by_wallet', 'service_tax', 'service_charge', 'net_amount', 'account_number', 'bank_name', 'cashback_amount'] } head = { ['Date', 'Consumer Amount', 'Bar Discount', 'Manual Credits', 'Manual Debits', 'Pay By Wallet', 'Service Tax', 'Service Charge', 'Net Amount', 'Account Number', 'Bank', 'Cashback Amount'] } data={barSettlementReport} />
+          <Lister limit="10" onClickHandler={this.onClickHandleSettlementReport.bind(this)} currentPage={barSettlementReportPage} showMax="5" count={barSettlementReportCount} />
         </div>
       </div>);
   }

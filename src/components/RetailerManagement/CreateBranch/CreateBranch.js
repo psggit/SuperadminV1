@@ -22,6 +22,7 @@ import {
   getOrganisation,
   saveBranchDetail,
   getRetailerSettlementReport,
+  getRetailerTransactionReport,
   getRetailerDailyReport,
   updateBranchDetail,
   getBranchData,
@@ -101,6 +102,7 @@ class CreateBrand extends Component { // eslint-disable-line no-unused-vars
     .then( () => {
       this.props.dispatch( getRetailerSettlementReport(1, brId) );
       this.props.dispatch( getRetailerDailyReport(1, brId) );
+      this.props.dispatch( getRetailerTransactionReport(1, brId) );
       this.props.dispatch( { type: REQUEST_COMPLETED });
     })
     .catch( () => {
@@ -122,7 +124,7 @@ class CreateBrand extends Component { // eslint-disable-line no-unused-vars
     if (currentPage) {
       Promise.all([
         this.props.dispatch({ type: MAKE_REQUEST }),
-        this.props.dispatch(getRetailerSettlementReport(currentPage, ( brId ? brId : '') ))
+        this.props.dispatch(getRetailerTransactionReport(currentPage, ( brId ? brId : '') ))
       ])
       .then( () => {
         this.props.dispatch({ type: REQUEST_COMPLETED });
@@ -138,6 +140,21 @@ class CreateBrand extends Component { // eslint-disable-line no-unused-vars
       Promise.all([
         this.props.dispatch({ type: MAKE_REQUEST }),
         this.props.dispatch(getRetailerDailyReport(currentPage, ( brId ? brId : '') ))
+      ])
+      .then( () => {
+        this.props.dispatch({ type: REQUEST_COMPLETED });
+      });
+    }
+  }
+  onClickHandleSettlementReport(e) {
+    e.preventDefault();
+    const currentPage = parseInt(e.target.outerText, 10);
+    const brId = this.props.params.brId;
+    console.log(e.target.outerText);
+    if (currentPage) {
+      Promise.all([
+        this.props.dispatch({ type: MAKE_REQUEST }),
+        this.props.dispatch(getRetailerSettlementReport(currentPage, ( brId ? brId : '') ))
       ])
       .then( () => {
         this.props.dispatch({ type: REQUEST_COMPLETED });
@@ -272,6 +289,9 @@ class CreateBrand extends Component { // eslint-disable-line no-unused-vars
       , retailerSettlementReportCount
       , retailerSettlementReport
       , retailerSettlementReportPage
+      , retailerTransactionReportCount
+      , retailerTransactionReport
+      , retailerTransactionReportPage
       , dailyRetailerReportCount
       , dailyRetailerReport
       , dailyRetailerReportPage
@@ -353,10 +373,12 @@ class CreateBrand extends Component { // eslint-disable-line no-unused-vars
           { actionButton }
         </div>
         <div className= { !this.props.params.brId ? 'hide' : '' }>
-          <SearchWrapper title = { 'Retailer Transactions' } body = { ['created_at', 'order_id', 'amount', 'brand_name', 'sku_volume', 'itemtype', 'status', 'cancelled_by'] } head = { ['Date', 'Order Id', 'Amount', 'Brand Name', 'Sku Volume', 'Item Type', 'Status', 'Cancelled By'] } data={retailerSettlementReport} />
-          <Lister limit="10" onClickHandler={this.onClickHandle.bind(this)} currentPage={retailerSettlementReportPage} showMax="5" count={retailerSettlementReportCount} />
+          <SearchWrapper title = { 'Retailer Transactions' } body = { ['created_at', 'order_id', 'amount', 'brand_name', 'sku_volume', 'itemtype', 'status', 'cancelled_by'] } head = { ['Date', 'Order Id', 'Amount', 'Brand Name', 'Sku Volume', 'Item Type', 'Status', 'Cancelled By'] } data={retailerTransactionReport} />
+          <Lister limit="10" onClickHandler={this.onClickHandle.bind(this)} currentPage={retailerTransactionReportPage} showMax="5" count={retailerTransactionReportCount} />
           <SearchWrapper title = { 'Daily Retailer Report' } body = { ['date', 'opening_balance', 'closing_balance', 'net_amount', 'net_payable_amount', 'settlement_for_the_day'] } head = { ['Date', 'Opening Balance', 'Closing Balance', 'Net Amount', 'Net Payable Amount', 'Settlement For The Day'] } data={dailyRetailerReport} />
           <Lister limit="10" onClickHandler={this.onClickHandleDailyReport.bind(this)} currentPage={dailyRetailerReportPage} showMax="5" count={dailyRetailerReportCount} />
+          <SearchWrapper title = { 'Retailer Settlement Report' } body = { ['date', 'consumer_amount', 'retailer_discount', 'manual_credits', 'manual_debits', 'pay_by_wallet', 'service_tax', 'service_charge', 'net_amount', 'account_number', 'bank_name', 'cashback_amount'] } head = { ['Date', 'Consumer Amount', 'Retailer Discount', 'Manual Credits', 'Manual Debits', 'Pay By Wallet', 'Service Tax', 'Service Charge', 'Net Amount', 'Account Number', 'Bank', 'Cashback Amount'] } data={retailerSettlementReport} />
+          <Lister limit="10" onClickHandler={this.onClickHandleSettlementReport.bind(this)} currentPage={retailerSettlementReportPage} showMax="5" count={retailerSettlementReportCount} />
         </div>
       </div>);
   }
