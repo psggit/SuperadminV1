@@ -307,7 +307,7 @@ const getBarSettlementReport = (page, brId ) => {
 
 const getBarTransactionReport = (page, brId ) => {
   return (dispatch, getState) => {
-    const devicesId = getState().branch_data.deviceData.devices.map((x) => { return x.id; });
+    const devicesId = getState().bar_data.deviceData.devices.map((x) => { return x.id; });
     if (brId === '') {
       alert('HANDLE');
     }
