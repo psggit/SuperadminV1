@@ -9,6 +9,7 @@ import { MAKE_REQUEST,
   REQUEST_COMPLETED,
   REQUEST_ERROR} from '../../Common/Actions/Actions';
 import { routeActions } from 'redux-simple-router';
+import { convertStrToPosgresDateStr } from '../../../utils/data';
 
 // import commonReducer from '../Common/Actions/CommonReducer';
 
@@ -218,8 +219,8 @@ const insertAdData = (bmId, imgUrl, adInfo) => {
     adInfo.updated_at = new Date().toISOString();
     adInfo.brand_manager_id = parseInt(bmId, 10);
     adInfo.sku_id = parseInt(adInfo.sku_id, 10);
-    adInfo.active_from = new Date(adInfo.active_from).toISOString();
-    adInfo.active_to = new Date(adInfo.active_to).toISOString();
+    adInfo.active_from = convertStrToPosgresDateStr(adInfo.active_from);
+    adInfo.active_to = convertStrToPosgresDateStr(adInfo.active_to);
     delete adInfo.brand;
     console.log(adInfo);
     const adData = {};
