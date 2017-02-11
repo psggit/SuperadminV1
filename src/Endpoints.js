@@ -25,7 +25,7 @@ if (window.location.href.split(':')[1] === '//localhost') {
   console.log('I am in Endpoints');
   console.log(window.location.href);
   scheme = window.location.href.split(':')[0];
-  baseHost = window.__env.baseDomain;
+  baseHost = window.location.hostname.match(/.*?(\..*)/)[1];
   dataUrl = scheme + '://data' + baseHost;
   reportUrl = scheme + '://reports' + baseHost;
   authUrl = scheme + '://auth' + baseHost;
