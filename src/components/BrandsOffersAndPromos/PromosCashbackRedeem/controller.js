@@ -25,7 +25,7 @@ import {
 import { email as emailValidate,
   isEmpty, isNumber } from '../../../utils/validation';
 
-import { convertStrToISODate, convertStrToPosgresDateStr } from '../../../utils/data';
+import { convertStrToISODate } from '../../../utils/data';
 
 // initial state
 const fetchData = (dispatch) => {
@@ -406,7 +406,7 @@ const mapDispatchToProps = (dispatch) => {
           }
         }
         if (proceed === false) {
-          alert('OH FUCK');
+          alert('OH');
           return;
         }
 
@@ -417,8 +417,8 @@ const mapDispatchToProps = (dispatch) => {
         const insertCampaignQuery = insertCampaignAndPromos.insertCampaign({
           name: values.campaignName,
           status: values.campaignStatus,
-          active_from: convertStrToPosgresDateStr(values.activeFrom),
-          active_to: convertStrToPosgresDateStr(values.activeTo),
+          active_from: values.activeFrom + '.000000+05:30',
+          active_to: values.activeTo + '.000000+05:30',
           brand_manager_id: values.brandManagerIdMap[values.brandEmail],
           budgeted_amount: parseFloat(values.budgetedAmount),
           funds_credited: parseFloat(values.fundsCredited)

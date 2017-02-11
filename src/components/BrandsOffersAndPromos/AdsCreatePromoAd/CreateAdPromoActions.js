@@ -184,8 +184,8 @@ const insertAdData = (imgUrl, adInfo, bminfo) => {
     adInfo.created_at = new Date().toISOString();
     adInfo.updated_at = new Date().toISOString();
     adInfo.cash_back_offer_sku_id = parseInt(adInfo.cash_back_offer_sku_id, 10);
-    adInfo.active_from = new Date(adInfo.active_from).toISOString();
-    adInfo.active_to = new Date(adInfo.active_to).toISOString();
+    adInfo.active_from = adInfo.active_from + ':00.000000+05:30';
+    adInfo.active_to = adInfo.active_to + ':00.000000+05:30';
     delete adInfo.campaign;
     const adData = {};
     adData.objects = [adInfo];

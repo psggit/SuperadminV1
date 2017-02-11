@@ -134,11 +134,11 @@ const insertAdData = (barId, imgUrl, adInfo) => {
     delete adInfo.city;
     delete adInfo.bar;
     adInfo.image_url = imgUrl;
-    adInfo.created_at = convertStrToPosgresDateStr(new Date().toISOString());
-    adInfo.updated_at = convertStrToPosgresDateStr(new Date().toISOString());
+    adInfo.created_at = convertStrToPosgresDateStr(new Date());
+    adInfo.updated_at = convertStrToPosgresDateStr(new Date());
     adInfo.bar_id = parseInt(barId, 10);
-    adInfo.active_from = convertStrToPosgresDateStr(adInfo.active_from);
-    adInfo.active_to = convertStrToPosgresDateStr(adInfo.active_to);
+    adInfo.active_from = adInfo.active_from + ':00.000000+05:30';
+    adInfo.active_to = adInfo.active_to + ':00.000000+05:30';
     console.log(adInfo);
     const adData = {};
     adData.objects = [adInfo];
