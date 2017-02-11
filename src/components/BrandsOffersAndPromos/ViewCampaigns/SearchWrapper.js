@@ -88,12 +88,12 @@ const SearchWrapper = ( {data, onToggle } ) => {
     return (
           <tr key={index}>
             <td>
-              <button className={styles.edit_btn} data-campaign-status={dat.status} data-campaign-id={dat.id} data-campaign-type="status" data-campaign-brand-id={ dat.cashback_promos.length > 0 ? dat.cashback_promos[0].skus[0].sku_pricing.sku.brand.id : 0 } onClick={(dat.status !== 'cancelled') ? onToggle : null}>
+              <button className={styles.edit_btn} data-campaign-status={dat.status} data-campaign-id={dat.id} data-campaign-type="status" data-campaign-brand-id={ (dat.cashback_promos.length > 0 && dat.cashback_promos[0].skus && dat.cashback_promos[0].skus.length > 0) ? dat.cashback_promos[0].skus[0].sku_pricing.sku.brand.id : 0 } onClick={(dat.status !== 'cancelled') ? onToggle : null}>
                 { (dat.status === 'active') ? 'Disable' : 'Enable' }
               </button>
             </td>
             <td>
-              <button className={styles.edit_btn} data-campaign-status={dat.status} data-campaign-id={dat.id} data-campaign-type="disable" data-campaign-brand-id={ dat.cashback_promos.length > 0 ? dat.cashback_promos[0].skus[0].sku_pricing.sku.brand.id : 0 } onClick={(dat.status !== 'cancelled') ? onToggle : null}>
+              <button className={styles.edit_btn} data-campaign-status={dat.status} data-campaign-id={dat.id} data-campaign-type="disable" data-campaign-brand-id={ (dat.cashback_promos.length > 0 && dat.cashback_promos[0].skus && dat.cashback_promos[0].skus.length > 0) ? dat.cashback_promos[0].skus[0].sku_pricing.sku.brand.id : 0 } onClick={(dat.status !== 'cancelled') ? onToggle : null}>
                 { (dat.status !== 'cancelled') ? 'Cancel' : 'Cancelled' }
               </button>
             { 'Items reserved: ' + reservationCount()}
@@ -104,10 +104,10 @@ const SearchWrapper = ( {data, onToggle } ) => {
             <td> { dat.brand_manager ? dat.brand_manager.email : 'N/A' } </td>
             <td> { dat.status } </td>
             <td>
-              { dat.cashback_promos.length > 0 ? dat.cashback_promos[0].skus[0].sku_pricing.sku.brand.brand_name : 'N/A' }
+              { (dat.cashback_promos.length > 0 && dat.cashback_promos[0].skus && dat.cashback_promos[0].skus.length > 0) ? dat.cashback_promos[0].skus[0].sku_pricing.sku.brand.brand_name : 'N/A' }
             </td>
             <td>
-              { dat.cashback_promos.length > 0 ? dat.cashback_promos[0].skus[0].sku_pricing.sku.volume : 'N/A' }
+              { (dat.cashback_promos.length > 0 && dat.cashback_promos[0].skus && dat.cashback_promos[0].skus.length > 0) ? dat.cashback_promos[0].skus[0].sku_pricing.sku.volume : 'N/A' }
             </td>
             <td>
               Rs { dat.budgeted_amount }
