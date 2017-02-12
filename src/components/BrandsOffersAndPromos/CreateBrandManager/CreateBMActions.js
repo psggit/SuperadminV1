@@ -27,7 +27,7 @@ const BRAND_MANAGER_INFO_CHANGE = 'BM_MANAGEMENT/BRAND_MANAGER_INFO_CHANGE';
 /* ****** Action Creators ******** */
 
 const fetchBrands = (companyId) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/brand/select';
     const queryObj = {};
@@ -36,7 +36,7 @@ const fetchBrands = (companyId) => {
     queryObj.where = {'company_id': companyId, 'regions': {'id': {'$gt': 0}}};
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -51,7 +51,7 @@ const fetchBrands = (companyId) => {
 };
 
 const fetchCompany = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/company/select';
     const queryObj = {};
@@ -61,7 +61,7 @@ const fetchCompany = () => {
     queryObj.where = {'brands': { 'id': {'$gt': 0 }}};
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -75,7 +75,7 @@ const fetchCompany = () => {
 };
 
 const insertBrand = (brandObj) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     const url = Endpoints.db + '/table/brand/insert';
     const insertObj = {};
 
@@ -84,7 +84,7 @@ const insertBrand = (brandObj) => {
 
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(insertObj)
     };
@@ -149,7 +149,7 @@ const setViewCities = (region) => {
 //   });
 //   const brOptions = {
 //     method: 'POST',
-//     headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+//     headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
 //     credentials: globalCookiePolicy,
 //     body: JSON.stringify(brData),
 //   };
@@ -167,7 +167,7 @@ const setViewCities = (region) => {
 //   bmData.returning = ['id'];
 //   const options = {
 //     method: 'POST',
-//     headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+//     headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
 //     credentials: globalCookiePolicy,
 //     body: JSON.stringify(bmData),
 //   };
@@ -175,7 +175,7 @@ const setViewCities = (region) => {
 // };
 
 const createBM = (bmInfo, sbList) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     const bmUrl = Endpoints.backendUrl + '/hadmin/brand-manager/create';
     const insertObj = {username: bmInfo.name,
       password: bmInfo.password,
@@ -202,7 +202,7 @@ const createBM = (bmInfo, sbList) => {
     });
     const brOptions = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(insertObj),
     };
@@ -257,7 +257,7 @@ const createBrandManager = (bmInfo, sbList) => {
 /* Action Creators for Brand Management Listing */
 
 const getBrandCount = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: MAKE_REQUEST});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -268,7 +268,7 @@ const getBrandCount = () => {
     const url = Endpoints.db + '/table/' + 'brand' + '/count';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -297,7 +297,7 @@ const getBrandCount = () => {
 };
 
 const getBrandData = (page, limit) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: MAKE_REQUEST});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -331,7 +331,7 @@ const getBrandData = (page, limit) => {
     const url = Endpoints.db + '/table/' + 'brand' + '/select';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };

@@ -147,7 +147,7 @@ const fetchCities = () => {
     const url = Endpoints.bulk;
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -192,7 +192,7 @@ const createNewArticle = (dataObject) => {
     const url = Endpoints.bulk;
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };

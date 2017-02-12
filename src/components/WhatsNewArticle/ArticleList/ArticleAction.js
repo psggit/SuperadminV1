@@ -15,7 +15,7 @@ const BRAND_FETCHED = 'Brand/BRAND_FETCHED';
 /* ****** Action Creators ******** */
 
 const getArticleCount = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: MAKE_REQUEST});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -26,7 +26,7 @@ const getArticleCount = () => {
     const url = Endpoints.db + '/table/' + 'whats_new_article' + '/count';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -56,7 +56,7 @@ const getArticleCount = () => {
 };
 
 const getArticleData = (page, limit) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: MAKE_REQUEST});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -82,7 +82,7 @@ const getArticleData = (page, limit) => {
     const url = Endpoints.db + '/table/' + 'whats_new_article' + '/select';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -112,12 +112,12 @@ const getArticleData = (page, limit) => {
 };
 
 const changeArticleStatus = (dataObject) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: MAKE_REQUEST});
     const url = Endpoints.bulk;
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
       credentials: globalCookiePolicy,
       body: JSON.stringify(dataObject),
     };

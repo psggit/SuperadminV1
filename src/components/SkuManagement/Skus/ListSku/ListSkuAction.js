@@ -12,18 +12,18 @@ import { MAKE_REQUEST,
 // import { routeActions } from 'redux-simple-router';
 // import commonReducer from '../Common/Actions/CommonReducer';
 
-const genOptions = {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
-  credentials: globalCookiePolicy
-};
-
 import beginFilter from '../../../Common/SearchComponentGen/GenerateFilter';
 
 /* Action Creators for ListSku Management Listing */
 
 const getSkuCount = ( filterObj, isSearched ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
+
     dispatch({ type: MAKE_REQUEST});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -66,7 +66,13 @@ const getSkuCount = ( filterObj, isSearched ) => {
 };
 
 const getSkuData = (page, limit, filterObj, isSearched ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
+
     dispatch({ type: MAKE_REQUEST});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/

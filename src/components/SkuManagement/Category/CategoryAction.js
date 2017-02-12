@@ -38,7 +38,7 @@ const fetchCategory = ( categoryId ) => {
     };
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin'},
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -58,7 +58,7 @@ const fetchGenre = () => {
     ];
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin'},
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -93,7 +93,7 @@ const insertCategory = () => {
 
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin'},
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
       credentials: globalCookiePolicy,
       body: JSON.stringify(insertObj)
     };
@@ -140,7 +140,7 @@ const updateCategory = () => {
 
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin'},
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
       credentials: globalCookiePolicy,
       body: JSON.stringify(updateObj)
     };

@@ -62,7 +62,7 @@ const saveState = () => {
       insertObj.returning = ['id', 'short_name'];
       const options = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin'},
+        headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
         credentials: globalCookiePolicy,
         body: JSON.stringify(insertObj),
       };
@@ -119,7 +119,7 @@ const fetchState = (stateId) => {
     const url = Endpoints.db + '/table/' + 'state' + '/select';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin'},
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -146,7 +146,7 @@ const saveCity = (id, name, gps, stateId) => {
       };
       const options = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin'},
+        headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
         credentials: globalCookiePolicy,
         body: JSON.stringify(updateObj),
       };
@@ -188,7 +188,7 @@ const updateStateSaveCity = () => {
       updateObj.returning = ['id', 'short_name'];
       const options = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin'},
+        headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
         credentials: globalCookiePolicy,
         body: JSON.stringify(updateObj),
       };
@@ -251,7 +251,7 @@ const deleteCity = (cityId, name, stateId) => {
     deleteObj.returning = ['id'];
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin'},
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
       credentials: globalCookiePolicy,
       body: JSON.stringify(deleteObj),
     };

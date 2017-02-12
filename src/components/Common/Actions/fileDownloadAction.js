@@ -5,16 +5,8 @@ const requestAction = (url, options, SUCCESS, ERROR) => {
   if (!(options.credentials)) {
     options.credentials = 'include';
   }
-  return (dispatch, getState) => {
+  return (dispatch) => {
     dispatch({type: MAKE_REQUEST});
-    console.log('a');
-    const roles = getState().loginState.credentials.hasura_roles;
-    const priority = {'admin': 3, 'support': 2, 'user': 1};
-    let highestRole = 'user';
-    roles.forEach((indiv) => { highestRole = (priority[highestRole] <= priority[indiv]) ? indiv : highestRole; });
-    if (options.headers.hasOwnProperty('x-hasura-role')) {
-      options.headers['x-hasura-role'] = highestRole;
-    }
     const p1 = new Promise( (resolve, reject) => {
       fetch( url, options).then(
         (response) => {
@@ -24,6 +16,15 @@ const requestAction = (url, options, SUCCESS, ERROR) => {
               // completeReq(dispatch);
               if (SUCCESS) {
                 dispatch({type: SUCCESS, data: results});
+                const blob = new Blob([results], {type: 'text/csv'});
+                const csvURL = window.URL.createObjectURL(blob);
+                const tempLink = document.createElement('a');
+                tempLink.href = csvURL;
+                tempLink.setAttribute('download', 'report.csv');
+                tempLink.setAttribute('target', '_blank');
+                document.body.appendChild(tempLink);
+                tempLink.click();
+                document.body.removeChild(tempLink);
               }
               resolve(results);
             });
