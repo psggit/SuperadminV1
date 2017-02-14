@@ -175,7 +175,8 @@ const insertCampaignAndPromos = {
             // better to make bulk inserts in one query TODO: fix this later
             price: promo.type === 'amount' ? (promo.price * promo.quantity) : ((((promo.price / 100)) * promo.pricing.price) * promo.quantity),
             offer_id: offers[index].returning[0].id,
-            quantity: (promo.quantity ? parseInt(promo.quantity, 10) : 0)
+            quantity: (promo.quantity ? parseInt(promo.quantity, 10) : 0),
+            quantity_left: (promo.quantity ? parseInt(promo.quantity, 10) : 0)
           }]
         }
       };
