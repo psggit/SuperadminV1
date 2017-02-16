@@ -407,8 +407,10 @@ const barSkuDataReducer = ( state = defaultBarSkuState, action ) => {
       const inventoryItems = {};
 
       action.data[0].inventories.forEach( ( sku ) => {
-        pricingIds.push(sku.sku_pricing_id);
-        inventoryItems[sku.sku_pricing_id] = sku;
+      // pricingIds.push(sku.sku_pricing_id);
+      // inventoryItems[sku.sku_pricing_id] = sku;
+        pricingIds.push(sku.id);
+        inventoryItems[sku.id] = sku;
       });
 
       return { ...state, barData: action.data, barCity: action.data[0].city_id, barCityInfo: action.data[0].city, addedInventory: [ ...pricingIds ], inventoryMap: { ...inventoryItems }};
