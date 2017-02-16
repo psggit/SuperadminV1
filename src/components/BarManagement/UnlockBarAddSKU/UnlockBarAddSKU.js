@@ -170,7 +170,7 @@ class UnlockBarAddSKU extends Component {
               { invent.is_active ? 'Active' : 'InActive' }
             </div>
             <div className={styles.unlock_view} onClick={ () => {
-              return this.viewSku.call(this, invent.sku_pricing_id );
+              return this.viewSku.call(this, invent.id );
             } }>
               View
             </div>
