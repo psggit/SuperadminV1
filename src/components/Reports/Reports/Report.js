@@ -21,7 +21,7 @@ const sendRequest = (e) => {
   insertObj = {
     method: 'POST',
     body: JSON.stringify(queryObj),
-    headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin'},
+    headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
     credentials: globalCookiePolicy
   };
   requestAction(url, insertObj, REQUEST_SUCCESS, REQUEST_ERROR);

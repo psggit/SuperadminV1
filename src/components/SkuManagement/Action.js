@@ -97,7 +97,7 @@ const loadCredentials = () => {
 };
 
 const getStateCount = ( filterObj, isSearched ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
     const payload = {
@@ -110,7 +110,7 @@ const getStateCount = ( filterObj, isSearched ) => {
     const url = Endpoints.db + '/table/' + 'state' + '/count';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -140,7 +140,7 @@ const getStateCount = ( filterObj, isSearched ) => {
 };
 
 const getStateData = ( page, filterObj, isSearched ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
     let offset = 0;
@@ -166,7 +166,7 @@ const getStateData = ( page, filterObj, isSearched ) => {
     const url = Endpoints.db + '/table/' + 'state' + '/select';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -179,7 +179,7 @@ const getStateData = ( page, filterObj, isSearched ) => {
 * Post insert loads the StateManagement.js
 * */
 const insertState = (stateObj) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: MAKE_REQUEST});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -192,7 +192,7 @@ const insertState = (stateObj) => {
     const url = Endpoints.db + '/table/' + 'state' + '/insert';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -226,7 +226,7 @@ const insertState = (stateObj) => {
 };
 
 const fetchState = (stateId) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: MAKE_REQUEST});
     //
     const payload = {
@@ -237,7 +237,7 @@ const fetchState = (stateId) => {
     const url = Endpoints.db + '/table/' + 'state' + '/select';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -279,7 +279,7 @@ const resetState = () => {
 };
 
 const updateState = (updateObj, stateId) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: MAKE_REQUEST});
     //
     const payload = updateObj;
@@ -290,7 +290,7 @@ const updateState = (updateObj, stateId) => {
     const url = Endpoints.db + '/table/' + 'state' + '/update';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -351,7 +351,7 @@ const getAllStateData = (page) => {
 /* Genre Actions */
 
 const getGenreCount = ( filterObj, isSearched ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: MAKE_REQUEST});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -365,7 +365,7 @@ const getGenreCount = ( filterObj, isSearched ) => {
     const url = Endpoints.db + '/table/' + 'genre' + '/count';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -395,7 +395,7 @@ const getGenreCount = ( filterObj, isSearched ) => {
 };
 
 const getGenreData = (page, limit, filterObj, isSearched) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: MAKE_REQUEST});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -422,7 +422,7 @@ const getGenreData = (page, limit, filterObj, isSearched) => {
     const url = Endpoints.db + '/table/' + 'genre' + '/select';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -621,7 +621,7 @@ const getAllGenreData = (page, limit) => {
 /* Category Actions */
 
 const getCategoryCount = ( filterObj, isSearched ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: MAKE_REQUEST});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -636,7 +636,7 @@ const getCategoryCount = ( filterObj, isSearched ) => {
     const url = Endpoints.db + '/table/' + 'category' + '/count';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin'},
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -666,7 +666,7 @@ const getCategoryCount = ( filterObj, isSearched ) => {
 };
 
 const getCategoryData = (page, limit, filterObj, isSearched) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: MAKE_REQUEST});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -693,7 +693,7 @@ const getCategoryData = (page, limit, filterObj, isSearched) => {
     const url = Endpoints.db + '/table/' + 'category' + '/select';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin'},
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -898,7 +898,7 @@ const getAllCategoryData = (page, limit) => {
 
 /* Get Companies */
 const getCompanyCount = ( filterObj, isSearched ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: MAKE_REQUEST});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -913,7 +913,7 @@ const getCompanyCount = ( filterObj, isSearched ) => {
     const url = Endpoints.db + '/table/' + 'company' + '/count';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -943,7 +943,7 @@ const getCompanyCount = ( filterObj, isSearched ) => {
 };
 
 const getCompanyData = (page, limit, filterObj, isSearched ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: MAKE_REQUEST});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -970,7 +970,7 @@ const getCompanyData = (page, limit, filterObj, isSearched ) => {
     const url = Endpoints.db + '/table/' + 'company' + '/select';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };

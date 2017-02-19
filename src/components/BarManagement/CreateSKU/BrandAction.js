@@ -32,7 +32,7 @@ const fetchCompany = () => {
     ];
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -54,7 +54,7 @@ const fetchBrand = () => {
     };
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -72,7 +72,7 @@ const fetchSkus = () => {
     ];
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };

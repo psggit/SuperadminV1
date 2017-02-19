@@ -13,18 +13,18 @@ import { indexSku } from '../../SkuManagement/Brand/BrandAction';
 // import { routeActions } from 'redux-simple-router';
 // import commonReducer from '../Common/Actions/CommonReducer';
 
-const genOptions = {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
-  credentials: globalCookiePolicy
-};
-
 import beginFilter from '../../Common/SearchComponentGen/GenerateFilter';
 
 /* Action Creators for ListSku Management Listing */
 
 const getCampaignsCount = ( filterObj, isSearched ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
+
     dispatch({ type: MAKE_REQUEST});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -67,7 +67,12 @@ const getCampaignsCount = ( filterObj, isSearched ) => {
 };
 
 const getCampaignData = (page, limit, filterObj, isSearched ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     dispatch({ type: MAKE_REQUEST});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -157,7 +162,7 @@ const getAllCampaignsData = (page, limit) => {
   const gotPage = page;
   const gotLimit = limit;
   /* Dispatching first one */
-  return (dispatch, getState ) => {
+  return (dispatch, getState) => {
     const filterData = getState().gen_filter_data;
     const filterObj = { ...beginFilter(getState) };
     dispatch(getCampaignsCount( filterObj, filterData.isSearched ))
@@ -171,13 +176,13 @@ const getAllCampaignsData = (page, limit) => {
 };
 
 const cancelCampaign = (campaignId) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     const url = Endpoints.blogicUrl + '/admin/cancel/cashback';
     const payload = { 'itemId': [campaignId]};
 
     const options = {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload)
     };
@@ -187,7 +192,12 @@ const cancelCampaign = (campaignId) => {
 };
 
 const toggleStatus = (campaignId, campaignStatus, brandId, disableCampaign = false) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const url = Endpoints.dataUrl + '/v1/query';
     let _status;
     if (disableCampaign) {

@@ -56,7 +56,7 @@ import beginFilter from '../../Common/SearchComponentGen/GenerateFilter';
 /* ****** Action Creators ******** */
 
 const fetchCategory = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/category/select';
     const queryObj = {};
@@ -68,7 +68,7 @@ const fetchCategory = () => {
     };
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -78,7 +78,7 @@ const fetchCategory = () => {
 };
 
 const fetchGenre = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/genre/select';
     const queryObj = {};
@@ -90,7 +90,7 @@ const fetchGenre = () => {
     };
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -99,7 +99,7 @@ const fetchGenre = () => {
 };
 
 const fetchCompany = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/company/select';
     const queryObj = {};
@@ -108,7 +108,7 @@ const fetchCompany = () => {
     ];
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -119,7 +119,7 @@ const fetchCompany = () => {
 };
 
 const fetchOrigin = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/origin/select';
     const queryObj = {};
@@ -128,7 +128,7 @@ const fetchOrigin = () => {
     ];
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -139,7 +139,7 @@ const fetchOrigin = () => {
 };
 
 const fetchState = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/state/select';
     const queryObj = {};
@@ -161,7 +161,7 @@ const fetchState = () => {
     };
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -172,7 +172,7 @@ const fetchState = () => {
 };
 
 const fetchBrand = (Id) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/brand/select';
     const queryObj = {};
@@ -207,7 +207,7 @@ const fetchBrand = (Id) => {
     };
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -223,7 +223,7 @@ const viewState = (stateId) => {
 /* Indexing Brand */
 
 const indexSku = ( brandIds ) => {
-  return ( dispatch ) => {
+  return (dispatch, getState) => {
     const brandSkuIndex = Endpoints.blogicUrl + '/admin/update_index/index/brand';
 
     /* This will never happen */
@@ -237,7 +237,7 @@ const indexSku = ( brandIds ) => {
 
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(skuIndexObj)
     };
@@ -289,7 +289,7 @@ const insertBrand = () => {
 
       let options = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+        headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
         credentials: globalCookiePolicy,
         body: JSON.stringify(insertObj)
       };
@@ -326,7 +326,7 @@ const insertBrand = () => {
             });
             options = {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+              headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
               credentials: globalCookiePolicy,
               body: JSON.stringify(regionObjs)
             };
@@ -368,7 +368,7 @@ const insertBrand = () => {
 
           options = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+            headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
             credentials: globalCookiePolicy,
             body: JSON.stringify(regionCityObjs)
           };
@@ -438,7 +438,7 @@ const updateBrand = () => {
 
       let options = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+        headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
         credentials: globalCookiePolicy,
         body: JSON.stringify(updateObj)
       };
@@ -484,7 +484,7 @@ const updateBrand = () => {
             }
             options = {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
+              headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
               credentials: globalCookiePolicy,
               body: JSON.stringify(regionObjs)
             };
@@ -520,7 +520,7 @@ const updateBrand = () => {
 
           options = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
+            headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
             credentials: globalCookiePolicy,
             body: JSON.stringify(regionCityObjs)
           };
@@ -589,7 +589,7 @@ const updateRegion = () => {
       };
       options = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
+        headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
         credentials: globalCookiePolicy,
         body: JSON.stringify(regionUpdateObj)
       };
@@ -611,7 +611,7 @@ const updateRegion = () => {
         });
         options = {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
+          headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
           credentials: globalCookiePolicy,
           body: JSON.stringify(regionUpdateObjs)
         };
@@ -635,7 +635,7 @@ const updateRegion = () => {
         });
         options = {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
+          headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
           credentials: globalCookiePolicy,
           body: JSON.stringify(regionUpdateDObjs)
         };
@@ -661,7 +661,7 @@ const updateRegion = () => {
 /* Action Creators for Brand Management Listing */
 
 const getBrandCount = ( filterObj, isSearched ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: MAKE_REQUEST});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -676,7 +676,7 @@ const getBrandCount = ( filterObj, isSearched ) => {
     const url = Endpoints.db + '/table/' + 'brand' + '/count';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -706,7 +706,7 @@ const getBrandCount = ( filterObj, isSearched ) => {
 };
 
 const getBrandData = (page, limit, filterObj, isSearched ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: MAKE_REQUEST});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -745,7 +745,7 @@ const getBrandData = (page, limit, filterObj, isSearched ) => {
     const url = Endpoints.db + '/table/' + 'brand' + '/select';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -806,7 +806,7 @@ const deleteRegionFromServer = () => {
 
     let options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
       credentials: globalCookiePolicy,
       body: JSON.stringify(deleteObj)
     };

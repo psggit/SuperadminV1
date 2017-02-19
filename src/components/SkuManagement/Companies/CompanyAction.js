@@ -40,7 +40,7 @@ const fetchCompany = ( companyId) => {
     };
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -63,7 +63,7 @@ const fetchCity = () => {
     ];
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -86,7 +86,7 @@ const fetchState = () => {
     ];
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -121,7 +121,7 @@ const insertCompany = () => {
     insertObj.returning = ['id'];
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(insertObj)
     };
@@ -167,7 +167,7 @@ const updateCompany = () => {
 
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
       credentials: globalCookiePolicy,
       body: JSON.stringify(updateObj)
     };
