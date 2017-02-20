@@ -57,14 +57,14 @@ const getSecondaryData = (data, key) => {
   };
 };
 
-const genOptions = {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
-  credentials: globalCookiePolicy
-};
 
 const getUserData = ( f ) => {
-  return ( dispatch ) => {
+  return ( dispatch, getState ) => {
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const bulkQueryObj = {
       'type': 'bulk',
       'args': [
@@ -137,7 +137,12 @@ const getUserData = ( f ) => {
 };
 
 const getUserStatus = ( f ) => {
-  return ( dispatch ) => {
+  return ( dispatch, getState ) => {
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const authUrl = Endpoints.authUrl + '/admin/user/' + f;
     const options = {
       ...genOptions,
@@ -148,8 +153,13 @@ const getUserStatus = ( f ) => {
 };
 
 const getCartData = (f) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     //
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     console.log(f);
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
     const payload = {
@@ -169,7 +179,12 @@ const getCartData = (f) => {
 
 
 const getDeviceData = (f) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     //
     console.log(f);
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -250,7 +265,12 @@ const getRechargeData = (f) => {
 };
 
 const resetPin = (customerId) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const updateValues = {};
     updateValues.encrypted_pin = null;
     updateValues.salt = null;
@@ -308,7 +328,12 @@ const resetPin = (customerId) => {
 };
 
 const resetPassword = (email, dob) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const updateValues = {};
     updateValues.encrypted_pin = null;
     updateValues.salt = null;

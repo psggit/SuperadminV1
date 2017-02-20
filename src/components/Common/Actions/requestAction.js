@@ -9,7 +9,7 @@ const requestAction = (url, options, SUCCESS, ERROR) => {
     dispatch({type: MAKE_REQUEST});
     console.log('a');
     const roles = getState().loginState.credentials.hasura_roles;
-    const priority = {'admin': 3, 'support': 2, 'user': 1};
+    const priority = {'admin': 3, 'support_read_only': 2, 'user': 1};
     let highestRole = 'user';
     roles.forEach((indiv) => { highestRole = (priority[highestRole] <= priority[indiv]) ? indiv : highestRole; });
     if (options.headers.hasOwnProperty('x-hasura-role')) {

@@ -8,7 +8,7 @@ import { MAKE_REQUEST,
 import beginFilter from '../../../Common/SearchComponentGen/GenerateFilter';
 
 const getConsumerCount = ( filterObj, isSearched ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: MAKE_REQUEST});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -23,7 +23,7 @@ const getConsumerCount = ( filterObj, isSearched ) => {
     const url = Endpoints.db + '/table/' + 'consumer' + '/count';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -53,7 +53,7 @@ const getConsumerCount = ( filterObj, isSearched ) => {
 };
 
 const getConsumerData = ( page, limit, filterObj, isSearched ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: MAKE_REQUEST});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -83,7 +83,7 @@ const getConsumerData = ( page, limit, filterObj, isSearched ) => {
     const url = Endpoints.db + '/table/' + 'consumer' + '/select';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
