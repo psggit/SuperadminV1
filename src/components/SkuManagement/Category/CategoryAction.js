@@ -26,7 +26,7 @@ const INPUT_VALUE_CHANGED = '@category/INPUT_VALUE_CHANGED';
 /* ****** Action Creators ******** */
 
 const fetchCategory = ( categoryId ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/category/select';
     const queryObj = {};
@@ -38,7 +38,7 @@ const fetchCategory = ( categoryId ) => {
     };
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -49,7 +49,7 @@ const fetchCategory = ( categoryId ) => {
 };
 
 const fetchGenre = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/genre/select';
     const queryObj = {};
@@ -58,7 +58,7 @@ const fetchGenre = () => {
     ];
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -93,7 +93,7 @@ const insertCategory = () => {
 
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
       credentials: globalCookiePolicy,
       body: JSON.stringify(insertObj)
     };
@@ -140,7 +140,7 @@ const updateCategory = () => {
 
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
       credentials: globalCookiePolicy,
       body: JSON.stringify(updateObj)
     };

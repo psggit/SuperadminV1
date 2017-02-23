@@ -26,7 +26,7 @@ const RESET = 'AD_CREATE_PROMO/RESET';
 /* ****** Action Creators ******** */
 
 const fetchCampaigns = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/campaign/select';
     const queryObj = {};
@@ -46,7 +46,7 @@ const fetchCampaigns = () => {
     queryObj.where = {'$and': [{'status': 'active'}, {'active_to': {'$gt': now}}]};
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -60,14 +60,14 @@ const fetchCampaigns = () => {
 };
 
 const fetchStates = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/state/select';
     const queryObj = {};
     queryObj.columns = ['*', {'name': 'cities', 'columns': ['*']}];
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -160,7 +160,7 @@ const insertCityMap = (adId) => {
     data.returning = ['id'];
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': state().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(data)
     };
@@ -174,7 +174,7 @@ const insertCityMap = (adId) => {
 };
 
 const insertAdData = (imgUrl, adInfo, bminfo) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     // I need Image url.
     // I will return Ad Id, if success.
     // I will return Error message, if error.
@@ -192,7 +192,7 @@ const insertAdData = (imgUrl, adInfo, bminfo) => {
     adData.returning = ['id'];
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(adData),
     };

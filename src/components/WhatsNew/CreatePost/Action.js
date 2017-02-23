@@ -56,14 +56,14 @@ const requestFailed = (data) => ({type: REQUEST_ERROR, data: data});
 
 
 const fetchStates = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/state/select';
     const queryObj = {};
     queryObj.columns = ['*', {'name': 'cities', 'columns': ['*']}];
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -134,7 +134,7 @@ const unCheckCity = (cityObj) => {
 
 
 const fetchCities = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     const payload = {
       'type': 'select',
       'args': {
@@ -147,7 +147,7 @@ const fetchCities = () => {
     const url = Endpoints.bulk;
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -180,7 +180,7 @@ const fetchCities = () => {
 };
 
 const createNewArticle = (dataObject) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     console.log(dataObject);
 
     const insertArticleObj = {'type': 'insert', 'args': {'table': 'whats_new_article', 'objects': [{'is_featured': dataObject.is_featured, 'title': dataObject.title, 'description': dataObject.description, 'content': dataObject.content, 'image': dataObject.image, 'is_active': true}]}};
@@ -192,7 +192,7 @@ const createNewArticle = (dataObject) => {
     const url = Endpoints.bulk;
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };

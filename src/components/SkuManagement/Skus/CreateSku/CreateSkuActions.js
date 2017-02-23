@@ -42,11 +42,6 @@ const POPULATE_SKU_DATA = 'SKU/POPULATE_SKU_DATA';
 
 /* Variable */
 
-const genOptions = {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
-  credentials: globalCookiePolicy
-};
 
 /* Insert Actions */
 
@@ -54,13 +49,18 @@ const SKU_ID_CREATED = 'SKU/SKU_ID_CREATED';
 const SKU_PRICING_ID_CREATED = 'SKU/SKU_PRICING_ID_CREATED';
 
 const fetchBrand = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/brand/select';
     const queryObj = {};
     queryObj.columns = [
       '*'
     ];
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     queryObj.order_by = '+brand_name';
     const options = {
       ...genOptions,
@@ -115,6 +115,11 @@ const hydrateStateObj = () => {
       }
     };
     /* Check for empty thing */
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(skuReqObj)
@@ -135,6 +140,11 @@ const indexSku = ( dispatch, brandIds ) => {
   const skuIndexObj = {
     'ids': [ brandIds ]
   };
+  const genOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
+    credentials: globalCookiePolicy
+  };
 
   const options = {
     ...genOptions,
@@ -146,6 +156,11 @@ const indexSku = ( dispatch, brandIds ) => {
 
 const toggleSkuStatus = ( id, status ) => {
   return ( dispatch, getState ) => {
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const devUrl = Endpoints.db + '/table/inventory/update';
 
     const skuState = getState().create_sku_data;
@@ -189,6 +204,11 @@ const fetchState = () => {
   return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/state/select';
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const queryObj = {};
     queryObj.columns = [
       '*',
@@ -266,6 +286,11 @@ const disableSku = () => {
   return ( dispatch, getState ) => {
     console.log(dispatch);
     console.log('Disabling SKU');
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const skuState = getState().create_sku_data.reservedItems;
 
     const normalUrl = Endpoints.blogicUrl + '/admin/cancel/normal';
@@ -329,13 +354,18 @@ const disableSku = () => {
 };
 
 const getReservedItems = ( Id ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/reserved_items/select';
     const queryObj = {};
     queryObj.columns = ['*'];
     queryObj.where = {
       'sku_id': parseInt(Id, 10)
+    };
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
     };
     const options = {
       ...genOptions,
@@ -358,6 +388,11 @@ const onSave = () => {
     const currState = getState();
     const skuInsertObj = {};
     const skuUrl = Endpoints.db + '/table/sku/insert';
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
 
     const brandListingObjs = {};
     let brandListingObj = {};
@@ -591,6 +626,11 @@ const onUpdate = () => {
     console.log('Function Entered');
     // Validate and Kill
     let kill = false;
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
 
     const currState = getState().create_sku_data;
 

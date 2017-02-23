@@ -125,7 +125,7 @@ const getAllBrandManagerData = (page, limit) => {
 
 // CAUTION : Taking ad type from view field which is of format 'type_ad' and requesting to table 'ad_type'
 export const toggleActivation = (id, type, status) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     let activeTag;
     dispatch({ type: MAKE_REQUEST});
     if (status === 'Active') {
@@ -147,7 +147,7 @@ export const toggleActivation = (id, type, status) => {
     const url = Endpoints.db + '/table/' + table + '/update';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(updateObj),
     };

@@ -25,14 +25,14 @@ const REQUEST_SUCCESS = 'AD_CREATE_IMAGE/REQUEST_SUCCESS';
 const requestFailed = (data) => ({type: REQUEST_ERROR, data: data});
 
 const fetchStates = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/state/select';
     const queryObj = {};
     queryObj.columns = ['*', {'name': 'cities', 'columns': ['*']}];
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -120,7 +120,7 @@ const finalSave = (dataObject) => {
     const url = Endpoints.bulk;
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': state().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -152,7 +152,7 @@ const finalSave = (dataObject) => {
                  const cityUrl = Endpoints.bulk;
                  const cityOptions = {
                    method: 'POST',
-                   headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+                   headers: { 'Content-Type': 'application/json', 'x-hasura-role': state().loginState.highestRole },
                    credentials: globalCookiePolicy,
                    body: JSON.stringify(payloadCity),
                  };

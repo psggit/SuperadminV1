@@ -23,7 +23,7 @@ const RESET_BAR_SKU = 'BAR_SKU/RESET_BAR_SKU';
 /* ****** Action Creators ******** */
 
 const fetchCompany = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/company/select';
     const queryObj = {};
@@ -32,7 +32,7 @@ const fetchCompany = () => {
     ];
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -42,7 +42,7 @@ const fetchCompany = () => {
 };
 
 const fetchBrand = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/brand/select';
     const queryObj = {};
@@ -54,7 +54,7 @@ const fetchBrand = () => {
     };
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -63,7 +63,7 @@ const fetchBrand = () => {
 };
 
 const fetchSkus = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/sku/select';
     const queryObj = {};
@@ -72,7 +72,7 @@ const fetchSkus = () => {
     ];
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };

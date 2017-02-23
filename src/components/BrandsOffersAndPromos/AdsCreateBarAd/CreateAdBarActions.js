@@ -26,7 +26,7 @@ const RESET = 'AD_CREATE_BAR/RESET';
 /* ****** Action Creators ******** */
 
 const fetchCities = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Bar */
     const url = Endpoints.db + '/table/city/select';
     const queryObj = {};
@@ -34,7 +34,7 @@ const fetchCities = () => {
     queryObj.where = {'bars': {'id': {'$ne': null}}};
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -104,14 +104,14 @@ const unCheckCity = (cityObj) => {
 };
 
 const validateBar = (barId) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     const url = Endpoints.db + '/table/bars/select';
     const queryObj = {};
     queryObj.columns = ['id'];
     queryObj.where = {'id': parseInt(barId, 10)};
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -126,7 +126,7 @@ const validateBar = (barId) => {
 };
 
 const insertAdData = (barId, imgUrl, adInfo) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     // I need BrandManager ID, Image url.
     // I will return Ad Id, if success.
     // I will return Error message, if error.
@@ -145,7 +145,7 @@ const insertAdData = (barId, imgUrl, adInfo) => {
     adData.returning = ['id'];
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(adData),
     };

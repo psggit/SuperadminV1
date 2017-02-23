@@ -31,7 +31,7 @@ const RESET = 'AD_CREATE_IMAGE/RESET';
 
 
 const brandManagerFetch = (brandId) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/brand_manager/select';
     const queryObj = {};
@@ -39,7 +39,7 @@ const brandManagerFetch = (brandId) => {
     queryObj.where = {'brands': {'brand_id': parseInt(brandId, 10)}};
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -61,7 +61,7 @@ export const fetchAd = (id) => {
     queryObj.where = {'id': id};
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -77,7 +77,7 @@ export const fetchAd = (id) => {
       queryObj1.where = {'id': parseInt(brandManId, 10)};
       const options1 = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+        headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
         credentials: globalCookiePolicy,
         body: JSON.stringify(queryObj1),
       };
@@ -90,7 +90,7 @@ export const fetchAd = (id) => {
       queryObj2.where = {'id': parseInt(skuId, 10)};
       const options2 = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+        headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
         credentials: globalCookiePolicy,
         body: JSON.stringify(queryObj2),
       };
@@ -100,14 +100,14 @@ export const fetchAd = (id) => {
 };
 
 const fetchBrands = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/brand/select';
     const queryObj = {};
     queryObj.columns = ['*', {'name': 'skus', 'columns': ['*']}];
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -122,14 +122,14 @@ const fetchBrands = () => {
 
 
 const fetchStates = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/state/select';
     const queryObj = {};
     queryObj.columns = ['*', {'name': 'cities', 'columns': ['*']}];
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -199,14 +199,14 @@ const unCheckCity = (cityObj) => {
 };
 
 const validBMId = (bmId) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     const url = Endpoints.db + '/table/brand_manager/select';
     const queryObj = {};
     queryObj.columns = ['id'];
     queryObj.where = {'$and': [{'id': parseInt(bmId, 10)}, {'is_disabled': false}]};
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -244,7 +244,7 @@ const insertCityMap = (adId) => {
     data.returning = ['id'];
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': state().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(data)
     };
@@ -258,7 +258,7 @@ const insertCityMap = (adId) => {
 };
 
 const insertAdData = (bmId, imgUrl, adInfo) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     // I need BrandManager ID, Image url.
     // I will return Ad Id, if success.
     // I will return Error message, if error.
@@ -277,7 +277,7 @@ const insertAdData = (bmId, imgUrl, adInfo) => {
     adData.returning = ['id'];
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(adData),
     };

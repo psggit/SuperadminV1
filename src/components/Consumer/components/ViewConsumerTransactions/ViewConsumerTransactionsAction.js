@@ -8,7 +8,7 @@ import { MAKE_REQUEST,
 import beginFilter from '../../../Common/SearchComponentGen/GenerateFilter';
 
 const getConsumerTransactionsCount = ( consumerId, filterObj, isSearched ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: MAKE_REQUEST});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -26,7 +26,7 @@ const getConsumerTransactionsCount = ( consumerId, filterObj, isSearched ) => {
     const url = Endpoints.db + '/table/' + 'transaction_history_balance' + '/count';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -56,7 +56,7 @@ const getConsumerTransactionsCount = ( consumerId, filterObj, isSearched ) => {
 };
 
 const getConsumerTransactionsData = ( page, limit, consumerId, filterObj, isSearched ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: MAKE_REQUEST});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -84,7 +84,7 @@ const getConsumerTransactionsData = ( page, limit, consumerId, filterObj, isSear
     const url = Endpoints.db + '/table/' + 'transaction_history_balance' + '/select';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };

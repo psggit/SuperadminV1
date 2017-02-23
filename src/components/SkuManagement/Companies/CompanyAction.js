@@ -28,7 +28,7 @@ const RESET = '@company/RESET';
 /* ****** Action Creators ******** */
 
 const fetchCompany = ( companyId) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/company/select';
     const queryObj = {};
@@ -40,7 +40,7 @@ const fetchCompany = ( companyId) => {
     };
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -54,7 +54,7 @@ const fetchCompany = ( companyId) => {
 };
 
 const fetchCity = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/city/select';
     const queryObj = {};
@@ -63,7 +63,7 @@ const fetchCity = () => {
     ];
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -77,7 +77,7 @@ const fetchCity = () => {
 };
 
 const fetchState = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/state/select';
     const queryObj = {};
@@ -86,7 +86,7 @@ const fetchState = () => {
     ];
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -121,7 +121,7 @@ const insertCompany = () => {
     insertObj.returning = ['id'];
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(insertObj)
     };
@@ -167,7 +167,7 @@ const updateCompany = () => {
 
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(updateObj)
     };

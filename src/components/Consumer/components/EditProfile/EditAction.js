@@ -18,16 +18,15 @@ const USER_DATA_FETCH = 'CONSUMER/USER_DATA_FETCH';
 const UPDATE_USER_NAME = 'CONSUMER/UPDATE_USER_NAME';
 const UPDATE_DOB = 'CONSUMER/UPDATE_DOB';
 
-const genOptions = {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
-  credentials: globalCookiePolicy
-};
-
 /* ****** Action Creators ******** */
 
 const getConsumerData = (userId) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     dispatch({ type: MAKE_REQUEST});
     //
 
@@ -88,11 +87,16 @@ const updateUser = (userObj, userId) => {
   userName = userObj.values.full_name;
   console.log(userName);
   listOfValidation.push(validation(userName, 'non_empty_text'));
-  return (dispatch) => {
+  return (dispatch, getState) => {
     Promise.all(listOfValidation
     ).then(() => {
       const url = Endpoints.db + '/table/consumer/update';
 
+      const genOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+        credentials: globalCookiePolicy
+      };
       const options = {
         ...genOptions,
         body: JSON.stringify(userObj)

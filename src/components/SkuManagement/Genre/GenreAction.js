@@ -50,7 +50,7 @@ const insertGenre = () => {
     const url = Endpoints.db + '/table/' + 'genre' + '/insert';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -68,7 +68,7 @@ const insertGenre = () => {
 };
 
 const fetchGenre = (genreId) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     //
     const payload = {
       'where': {'id': genreId},
@@ -78,7 +78,7 @@ const fetchGenre = (genreId) => {
     const url = Endpoints.db + '/table/' + 'genre' + '/select';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -117,7 +117,7 @@ const updateGenre = () => {
     const url = Endpoints.db + '/table/' + 'genre' + '/update';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };

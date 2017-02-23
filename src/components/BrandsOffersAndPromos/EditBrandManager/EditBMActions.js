@@ -28,7 +28,7 @@ const BRAND_MANAGER_FETCH = 'EDIT_BM/BRAND_MANAGER_FETCH';
 /* ****** Action Creators ******** */
 
 const fetchBrands = (companyId) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/brand/select';
     const queryObj = {};
@@ -36,7 +36,7 @@ const fetchBrands = (companyId) => {
     queryObj.where = {'company_id': companyId, 'regions': {'id': {'$gt': 0}}};
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj)
     };
@@ -50,7 +50,7 @@ const fetchBrands = (companyId) => {
 };
 
 const fetchBManager = (bmId) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     const url = Endpoints.db + '/table/brand_manager/select';
     const queryObj = {};
     queryObj.columns = ['*', {
@@ -75,7 +75,7 @@ const fetchBManager = (bmId) => {
     queryObj.where = {'id': bmId};
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -92,7 +92,7 @@ const fetchBManager = (bmId) => {
 };
 
 const fetchCompany = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/company/select';
     const queryObj = {};
@@ -102,7 +102,7 @@ const fetchCompany = () => {
     queryObj.where = {'brands': { 'id': {'$gt': 0 }}};
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
@@ -116,7 +116,7 @@ const fetchCompany = () => {
 };
 
 const insertBrand = (brandObj) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     const url = Endpoints.db + '/table/brand/insert';
     const insertObj = {};
 
@@ -125,7 +125,7 @@ const insertBrand = (brandObj) => {
 
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(insertObj)
     };
@@ -171,7 +171,7 @@ const setViewCities = (region) => {
   };
 };
 
-const sbListToOptions = (sbList, bmId) => {
+const sbListToOptions = (sbList, bmId, highestRole) => {
   const brData = {};
   brData.objects = [];
   sbList.forEach((brand)=> {
@@ -189,14 +189,14 @@ const sbListToOptions = (sbList, bmId) => {
   });
   const brOptions = {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+    headers: { 'Content-Type': 'application/json', 'x-hasura-role': highestRole },
     credentials: globalCookiePolicy,
     body: JSON.stringify(brData),
   };
   return brOptions;
 };
 
-const bmInfoUpdateOptions = (bmInfo) => {
+const bmInfoUpdateOptions = (bmInfo, highestRole) => {
   bmInfo.is_disabled = (bmInfo.is_disabled === 'true') ? true : false;
   bmInfo.updated_at = new Date().toISOString();
   const bmData = {};
@@ -206,14 +206,14 @@ const bmInfoUpdateOptions = (bmInfo) => {
   bmData.returning = ['id'];
   const options = {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+    headers: { 'Content-Type': 'application/json', 'x-hasura-role': highestRole },
     credentials: globalCookiePolicy,
     body: JSON.stringify(bmData),
   };
   return options;
 };
 
-const bmInfoToOptions = (bmInfo) => {
+const bmInfoToOptions = (bmInfo, getState) => {
   bmInfo.is_disabled = (bmInfo.is_disabled === 'true') ? true : false;
   bmInfo.tm_id = 123456789;
   bmInfo.created_at = new Date().toISOString();
@@ -223,7 +223,7 @@ const bmInfoToOptions = (bmInfo) => {
   bmData.returning = ['id'];
   const options = {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+    headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
     credentials: globalCookiePolicy,
     body: JSON.stringify(bmData),
   };
@@ -231,13 +231,13 @@ const bmInfoToOptions = (bmInfo) => {
 };
 
 const createBM = (bmInfo, sbList) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     const bmUrl = Endpoints.db + '/table/brand_manager/insert';
-    const bmOptions = bmInfoToOptions(bmInfo);
+    const bmOptions = bmInfoToOptions(bmInfo, getState);
     return dispatch(requestAction(bmUrl, bmOptions)).then((response) => {
       if (response.returning !== undefined) {
         const brUrl = Endpoints.db + '/table/managers/insert';
-        const brOptions = sbListToOptions(sbList, response.returning[0].id);
+        const brOptions = sbListToOptions(sbList, response.returning[0].id, getState().loginState.highestRole);
         dispatch(requestAction(brUrl, brOptions)).then((resp) => {
           console.log(resp);
           return Promise.all([
@@ -267,9 +267,9 @@ const createBrandManager = (bmInfo, sbList) => {
 };
 
 const updateBM = (mod) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     const bmUrl = Endpoints.db + '/table/brand_manager/update';
-    const bmOptions = bmInfoUpdateOptions({...mod});
+    const bmOptions = bmInfoUpdateOptions({...mod}, getState().loginState.highestRole);
     return dispatch(requestAction(bmUrl, bmOptions)).then((response) => {
       console.log(response);
     });
@@ -285,7 +285,7 @@ const updateBM = (mod) => {
 //     data.returning = ['id'];
 //     const options = {
 //       method: 'POST',
-//       headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+//       headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
 //       credentials: globalCookiePolicy,
 //       body: JSON.stringify(data),
 //     };
@@ -299,7 +299,7 @@ const updateBM = (mod) => {
 // };
 
 const insertRegionsFunc = (srList) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     if (srList.length > 0) {
       const insertRegionUrl = Endpoints.db + '/table/managers/insert';
       const brData = {};
@@ -307,7 +307,7 @@ const insertRegionsFunc = (srList) => {
       brData.returning = ['id'];
       const brOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+        headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
         credentials: globalCookiePolicy,
         body: JSON.stringify(brData),
       };
@@ -399,7 +399,7 @@ const updateBrandManager = () => {
     });
     const brOptions = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(insertObj),
     };
@@ -419,14 +419,14 @@ const updateBrandManager = () => {
 /* Action Creators for Brand Management Listing */
 
 const getBrandCount = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: MAKE_REQUEST});
     // const payload = {'where': {'id': f}, 'columns': ['*']};
     const payload = {'columns': ['*']};
     const url = Endpoints.db + '/table/' + 'brand' + '/count';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
@@ -454,7 +454,7 @@ const getBrandCount = () => {
 };
 
 const getBrandData = (page, limit) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: MAKE_REQUEST});
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
     let offset = 0;
@@ -485,7 +485,7 @@ const getBrandData = (page, limit) => {
     const url = Endpoints.db + '/table/' + 'brand' + '/select';
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
