@@ -5,7 +5,7 @@ const requestAction = (url, options, SUCCESS, ERROR) => {
   if (!(options.credentials)) {
     options.credentials = 'include';
   }
-  return (dispatch, getState) => {
+  return (dispatch) => {
     dispatch({type: MAKE_REQUEST});
     const p1 = new Promise( (resolve, reject) => {
       fetch( url, options).then(

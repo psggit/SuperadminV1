@@ -120,7 +120,7 @@ const finalSave = (dataObject) => {
     const url = Endpoints.bulk;
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin' },  // INTENTIONAL BUG
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'support_read_only' },  // INTENTIONAL BUG
       // headers: { 'Content-Type': 'application/json', 'x-hasura-role': state().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
