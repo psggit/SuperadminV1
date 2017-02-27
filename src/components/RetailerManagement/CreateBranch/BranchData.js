@@ -155,6 +155,8 @@ const saveBranch = () => {
 
     /* Adding address for retailer */
     branchDataObj.org_address = branchState.branchContact.branch_address;
+    console.log('Check this for once');
+    branchDataObj.org_phone = branchState.branchContact.mobile_number;
     /* End of it */
 
     const insertObj = {};
@@ -588,6 +590,8 @@ const updateBranch = () => {
 
     /* Adding address for retailer */
     branchDataObj.org_address = branchState.branchContact.branch_address;
+    console.log('Check this for once');
+    branchDataObj.org_phone = branchState.branchContact.mobile_number;
     branchDataObj.updated_at = new Date().toISOString();
     /* End of it */
 
