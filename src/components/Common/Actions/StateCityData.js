@@ -1,8 +1,6 @@
 import requestAction from '../../Common/Actions/requestAction';
 
-import { genOptions } from '../../Common/Actions/commonFunctions';
-
-import Endpoints from '../../../Endpoints';
+import Endpoints, { globalCookiePolicy } from '../../../Endpoints';
 
 /* Action constants */
 
@@ -13,10 +11,15 @@ const REQUEST_ERROR = '@commonStateReducer/REQUEST_ERROR';
 /* End of it */
 
 const fetchState = () => {
-  return ( dispatch ) => {
+  return ( dispatch, getState ) => {
     const url = Endpoints.db + '/table/state/select';
     const query = {};
     query.columns = ['*'];
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(query)
@@ -27,10 +30,15 @@ const fetchState = () => {
 };
 
 const fetchCity = () => {
-  return ( dispatch ) => {
+  return ( dispatch, getState ) => {
     const url = Endpoints.db + '/table/city/select';
     const query = {};
     query.columns = ['*'];
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(query)
