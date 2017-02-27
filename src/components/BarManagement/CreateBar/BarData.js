@@ -1,9 +1,8 @@
 import requestAction from '../../Common/Actions/requestAction';
 // //
-import { genOptions } from '../../Common/Actions/commonFunctions';
 import { routeActions } from 'redux-simple-router';
 // // //
-import Endpoints from '../../../Endpoints';
+import Endpoints, { globalCookiePolicy } from '../../../Endpoints';
 
 /* Action constants */
 
@@ -39,12 +38,17 @@ const BAR_TRANSACTION_REPORT_COUNT_FETCHED = '@branchDataReducer/BAR_TRANSACTION
 /* Action creators */
 
 const getOrganisation = () => {
-  return ( dispatch ) => {
+  return ( dispatch, getState ) => {
     const orgUrl = Endpoints.db + '/table/organisation/select';
 
     const selectObj = {};
     selectObj.columns = ['id', 'organisation_name'];
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(selectObj)
@@ -111,6 +115,11 @@ const saveBar = () => {
     insertObj.objects = [ { ...barDataObj } ];
     insertObj.returning = ['id'];
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(insertObj)
@@ -143,6 +152,11 @@ const saveBarContact = ( id ) => {
     const insertObj = {};
     insertObj.objects = [ { ...barDataObj } ];
     insertObj.returning = ['id'];
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
 
     const options = {
       ...genOptions,
@@ -177,6 +191,11 @@ const saveAccount = ( id ) => {
     insertObj.objects = [ { ...barDataObj } ];
     insertObj.returning = ['id'];
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(insertObj)
@@ -217,7 +236,7 @@ const saveBarDetail = () => {
 
 /* End of it */
 const getBarDailyReport = (page, brId ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     if (brId === '') {
       alert('HANDLE');
     }
@@ -239,6 +258,11 @@ const getBarDailyReport = (page, brId ) => {
     };
 
     let url = Endpoints.db + '/table/' + 'daily_bar_reports' + '/select';
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     let options = {
       ...genOptions,
       body: JSON.stringify(payload2),
@@ -261,7 +285,7 @@ const getBarDailyReport = (page, brId ) => {
 };
 
 const getBarSettlementReport = (page, brId ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     if (brId === '') {
       alert('HANDLE');
     }
@@ -283,6 +307,11 @@ const getBarSettlementReport = (page, brId ) => {
     };
 
     let url = Endpoints.db + '/table/' + 'bar_settlement_report' + '/select';
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     let options = {
       ...genOptions,
       body: JSON.stringify(payload2),
@@ -329,6 +358,11 @@ const getBarTransactionReport = (page, brId ) => {
     };
 
     let url = Endpoints.db + '/table/' + 'retailer_transactions' + '/select';
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     let options = {
       ...genOptions,
       body: JSON.stringify(payload2),
@@ -353,7 +387,7 @@ const getBarTransactionReport = (page, brId ) => {
 /* Get Bar Details */
 
 const getBarData = ( brId ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -377,6 +411,11 @@ const getBarData = ( brId ) => {
     };
 
     const url = Endpoints.db + '/table/' + 'bars' + '/select';
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(payload),
@@ -445,6 +484,11 @@ const updateBar = () => {
     insertObj.values = { ...barDataObj };
     insertObj.returning = ['id'];
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(insertObj)
@@ -486,6 +530,11 @@ const updateBarContact = ( ) => {
     };
     insertObj.values = { ...barDataObj };
     insertObj.returning = ['id'];
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
 
     const options = {
       ...genOptions,
@@ -528,6 +577,11 @@ const updateAccount = ( ) => {
     insertObj.values = { ...barDataObj };
     insertObj.returning = ['id'];
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(insertObj)

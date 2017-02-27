@@ -1,9 +1,8 @@
 import requestAction from '../../Common/Actions/requestAction';
 // //
-import { genOptions } from '../../Common/Actions/commonFunctions';
 // import { routeActions } from 'redux-simple-router';
 // // //
-import Endpoints from '../../../Endpoints';
+import Endpoints, { globalCookiePolicy } from '../../../Endpoints';
 
 /* Action constants */
 
@@ -29,7 +28,7 @@ const CLEAR_SKU = '@barSkuDataReducer/CLEAR_SKU';
 /* Action creators */
 
 const getSkus = ( cityId ) => {
-  return ( dispatch ) => {
+  return ( dispatch, getState ) => {
     const barUrl = Endpoints.db + '/table/sku_pricing/select';
 
     const selectObj = {};
@@ -53,6 +52,11 @@ const getSkus = ( cityId ) => {
       }
     };
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(selectObj)
@@ -68,7 +72,7 @@ const getSkus = ( cityId ) => {
 };
 
 const getBar = ( barId ) => {
-  return ( dispatch ) => {
+  return ( dispatch, getState ) => {
     const barUrl = Endpoints.db + '/table/bars/select';
 
     const selectObj = {};
@@ -98,6 +102,11 @@ const getBar = ( barId ) => {
       'id': parseInt(barId, 10)
     };
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(selectObj)
@@ -116,13 +125,18 @@ const getBar = ( barId ) => {
 };
 
 const fetchBarReservations = (barId) => {
-  return ( dispatch ) => {
+  return ( dispatch, getState ) => {
     const barUrl = Endpoints.db + '/table/bar_reserved_items/select';
     const filterObj = {
       'columns': ['*'],
       'where': {
         'bar_id': parseInt(barId, 10)
       }
+    };
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
     };
     const options = {
       ...genOptions,
@@ -149,7 +163,7 @@ const fetchInitials = (barId) => {
 /* Reindexing SKUs for bars */
 
 const indexSku = ( barIds ) => {
-  return ( dispatch ) => {
+  return ( dispatch, getState ) => {
     const barSkuIndexUrl = Endpoints.blogicUrl + '/admin/update_index/index/bar';
 
     /*
@@ -162,6 +176,11 @@ const indexSku = ( barIds ) => {
       'ids': [ barIds ]
     };
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(skuIndexObj)
@@ -239,6 +258,11 @@ const saveSku = ( barId ) => {
     }
 
     const postData = { ...barDataObj };
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(postData)
@@ -315,6 +339,11 @@ const updateSku = ( barId ) => {
     // updatedBarDataObj.start_date = new Date(barDataObj.start_date).toISOString();
     // updatedBarDataObj.end_date = new Date(barDataObj.end_date).toISOString();
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       method: 'PUT',
@@ -352,6 +381,11 @@ const disableSku = ( ) => {
       const reservationObjs = {};
       const cancelUrl = Endpoints.blogicUrl + '/admin/cancel/bar';
       reservationObjs.itemId = cancelReservations;
+      const genOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+        credentials: globalCookiePolicy
+      };
       const options = {
         ...genOptions,
         body: JSON.stringify(reservationObjs),

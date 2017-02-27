@@ -13,8 +13,6 @@ import Endpoints, {globalCookiePolicy} from '../../../Endpoints';
 
 import { routeActions } from 'redux-simple-router';
 
-import { genOptions } from '../../Common/Actions/commonFunctions';
-
 import requestAction from '../../Common/Actions/requestAction';
 
 /* Actions */
@@ -34,6 +32,7 @@ const DELETE_CREDIT_AND_UPDATE_DATA = 'CTRecharge/DELETE_CREDIT_AND_UPDATE_DATA'
 const SET_VALID_EMAILS = 'CTRecharge/SET_VALID_EMAILS';
 const UPDATE_VALID_DATA = 'CTRecharge/UPDATE_VALID_DATA';
 const UPDATE_CREDIT_DATA = 'CTRecharge/UPDATE_CREDIT_DATA';
+
 
 // HTML Component defines what state it needs
 // HTML Component should be able to emit actions
@@ -118,7 +117,7 @@ const loadCredentials = () => {
 /* Fetch Cancel Products */
 
 const getCancellationCount = ( consumerId, filterObj, isSearched ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -139,6 +138,11 @@ const getCancellationCount = ( consumerId, filterObj, isSearched ) => {
     if ( isSearched ) {
       payload.where = { ...payload.where, ...filterObj };
     }
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
 
     const url = Endpoints.db + '/table/' + 'transaction_history' + '/count';
     const options = {
@@ -194,6 +198,11 @@ const downloadCancellationCSV = ( consumerId = '') => {
 
     const genUrl = Endpoints.downloadRepUrl + '/generate_csv';
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(requestObj)
@@ -245,7 +254,7 @@ const downloadCancellationCSV = ( consumerId = '') => {
 };
 
 const getCancellationData = ( page, consumerId, filterObj, isSearched ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -279,6 +288,11 @@ const getCancellationData = ( page, consumerId, filterObj, isSearched ) => {
     }
 
     const url = Endpoints.db + '/table/' + 'transaction_history' + '/select';
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(payload),
@@ -313,7 +327,7 @@ const getAllCancellationData = (page, consumerId = '' ) => {
 /* */
 
 const getRechargeCount = ( consumerId, filterObj, isSearched) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -332,6 +346,11 @@ const getRechargeCount = ( consumerId, filterObj, isSearched) => {
     }
 
     const url = Endpoints.db + '/table/' + 'recharge_wallet' + '/count';
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(payload)
@@ -341,7 +360,7 @@ const getRechargeCount = ( consumerId, filterObj, isSearched) => {
 };
 
 const getRechargeData = ( page, consumerId, filterObj, isSearched ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -375,6 +394,11 @@ const getRechargeData = ( page, consumerId, filterObj, isSearched ) => {
     }
 
     const url = Endpoints.db + '/table/' + 'recharge_wallet' + '/select';
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(payload),
@@ -422,6 +446,11 @@ const downloadRechargeCSV = ( consumerId = '') => {
 
     const genUrl = Endpoints.downloadRepUrl + '/generate_csv';
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(requestObj)
@@ -496,7 +525,7 @@ const getAllRechargeData = (page, consumerId = '' ) => {
 };
 
 const getReservationCount = ( consumerId, filterObj, isSearched ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -515,6 +544,11 @@ const getReservationCount = ( consumerId, filterObj, isSearched ) => {
     }
 
     const url = Endpoints.db + '/table/' + 'reservation' + '/count';
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(payload)
@@ -584,6 +618,11 @@ const downloadReservationCSV = ( consumerId = '') => {
 
     const genUrl = Endpoints.downloadRepUrl + '/generate_csv';
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(requestObj)
@@ -635,7 +674,7 @@ const downloadReservationCSV = ( consumerId = '') => {
 };
 
 const getReservationData = ( page, consumerId, filterObj, isSearched ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -685,6 +724,11 @@ const getReservationData = ( page, consumerId, filterObj, isSearched ) => {
     }
 
     const url = Endpoints.db + '/table/' + 'reservation' + '/select';
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(payload)
@@ -694,7 +738,7 @@ const getReservationData = ( page, consumerId, filterObj, isSearched ) => {
 };
 
 const getReservedItems = ( cartId ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -753,6 +797,11 @@ const getReservedItems = ( cartId ) => {
     };
 
     const url = Endpoints.db + '/table/' + 'cart' + '/select';
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(payload)
@@ -762,7 +811,7 @@ const getReservedItems = ( cartId ) => {
 };
 
 const getTransactionCode = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -771,6 +820,11 @@ const getTransactionCode = () => {
     };
 
     const url = Endpoints.db + '/table/' + 'transaction_code/select';
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(payload)
@@ -801,7 +855,7 @@ const getTransactionCode = () => {
 };
 
 const checkValidity = (emailIds, data) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -821,6 +875,11 @@ const checkValidity = (emailIds, data) => {
     };
 
     const url = Endpoints.db + '/table/' + 'consumer/select';
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(payload)
@@ -880,8 +939,13 @@ const setCreditState = (data, emailIds) => {
 */
 
 const sendEMAILSMS = ( objs ) => {
-  return ( dispatch ) => {
+  return ( dispatch, getState ) => {
     const url = Endpoints.blogicUrl + '/admin/transaction/consumer/trigger';
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(objs)
@@ -897,7 +961,7 @@ const sendEMAILSMS = ( objs ) => {
 };
 
 const insertCredits = (creditObjs, batchNumber) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: MAKE_REQUEST});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -909,6 +973,11 @@ const insertCredits = (creditObjs, batchNumber) => {
 
 
     const url = Endpoints.db + '/table/' + 'recharge_hipbar' + '/insert';
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(payload)
@@ -944,7 +1013,7 @@ const insertCredits = (creditObjs, batchNumber) => {
 };
 
 const getTransactionByBatch = (page, batchId) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -967,6 +1036,11 @@ const getTransactionByBatch = (page, batchId) => {
     };
 
     const url = Endpoints.db + '/table/' + 'recharge_hipbar/select';
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(payload)
@@ -997,7 +1071,7 @@ const getTransactionByBatch = (page, batchId) => {
 };
 
 const getTransactionCount = (batchId) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -1009,6 +1083,11 @@ const getTransactionCount = (batchId) => {
     };
 
     const url = Endpoints.db + '/table/' + 'recharge_hipbar' + '/count';
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(payload)
@@ -1086,7 +1165,7 @@ const updatePageData = (page, data) => {
 
 /* Redemption items */
 const getRedemptionCount = ( consumerId, filterObj, isSearched ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -1106,6 +1185,11 @@ const getRedemptionCount = ( consumerId, filterObj, isSearched ) => {
     }
 
     const url = Endpoints.db + '/table/' + 'order' + '/count';
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(payload)
@@ -1166,6 +1250,11 @@ const downloadRedemptionCSV = ( consumerId = '') => {
 
     const genUrl = Endpoints.downloadRepUrl + '/generate_csv';
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(requestObj)
@@ -1217,7 +1306,7 @@ const downloadRedemptionCSV = ( consumerId = '') => {
 };
 
 const getRedemptionData = ( page, consumerId, filterObj, isSearched ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -1273,6 +1362,11 @@ const getRedemptionData = ( page, consumerId, filterObj, isSearched ) => {
     }
 
     const url = Endpoints.db + '/table/' + 'order' + '/select';
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(payload)
@@ -1282,7 +1376,7 @@ const getRedemptionData = ( page, consumerId, filterObj, isSearched ) => {
 };
 
 const getRedeemedItems = ( orderId ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -1391,6 +1485,11 @@ const getRedeemedItems = ( orderId ) => {
     };
 
     const url = Endpoints.db + '/table/' + 'order' + '/select';
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(payload)

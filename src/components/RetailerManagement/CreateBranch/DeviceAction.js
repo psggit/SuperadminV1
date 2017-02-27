@@ -6,9 +6,7 @@ import { addDeviceState, uiState } from './State';
 
 import requestAction from '../../Common/Actions/requestAction';
 
-import Endpoints from '../../../Endpoints';
-
-import { genOptions } from '../../Common/Actions/commonFunctions';
+import Endpoints, { globalCookiePolicy } from '../../../Endpoints';
 
 /* Action Constant */
 
@@ -34,7 +32,7 @@ const RESET_DEVICE = '@organisationDataReducer/RESET_DEVICE';
 /* Action Creators */
 
 const fetchDevice = ( id ) => {
-  return ( dispatch ) => {
+  return ( dispatch, getState ) => {
     const devUrl = Endpoints.db + '/table/retailer_pos/select';
 
     const devObj = {
@@ -45,6 +43,11 @@ const fetchDevice = ( id ) => {
       'retailer_id': parseInt(id, 10)
     };
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(devObj)
@@ -55,7 +58,7 @@ const fetchDevice = ( id ) => {
 };
 
 const activateDevice = ( devId, retailId, option ) => {
-  return ( dispatch) => {
+  return ( dispatch, getState) => {
     const devUrl = Endpoints.db + '/table/retailer_pos/update';
 
     const retailerDataObj = {
@@ -70,6 +73,11 @@ const activateDevice = ( devId, retailId, option ) => {
       'device_id': devId
     };
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(updateObj)
@@ -82,13 +90,18 @@ const activateDevice = ( devId, retailId, option ) => {
 
 /* User methods */
 const activateUser = ( hasuraId ) => {
-  return ( dispatch ) => {
+  return ( dispatch, getState ) => {
     const activateUrl = Endpoints.authUrl + '/admin/user/activate';
 
     const updateObj = {
       'hasura_id': parseInt(hasuraId, 10)
     };
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(updateObj)
@@ -99,7 +112,7 @@ const activateUser = ( hasuraId ) => {
 };
 
 const assignUserRole = ( hasuraId ) => {
-  return ( dispatch ) => {
+  return ( dispatch, getState ) => {
     const activateUrl = Endpoints.authUrl + '/admin/user/assign-role';
 
     const updateObj = {
@@ -107,6 +120,11 @@ const assignUserRole = ( hasuraId ) => {
       'role': 'retailer'
     };
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(updateObj)
@@ -117,7 +135,7 @@ const assignUserRole = ( hasuraId ) => {
 };
 
 const unAssignUserRole = ( hasuraId ) => {
-  return ( dispatch ) => {
+  return ( dispatch, getState ) => {
     const activateUrl = Endpoints.authUrl + '/admin/user/unassign-role';
 
     const updateObj = {
@@ -125,6 +143,11 @@ const unAssignUserRole = ( hasuraId ) => {
       'role': 'user'
     };
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(updateObj)
@@ -135,7 +158,7 @@ const unAssignUserRole = ( hasuraId ) => {
 };
 
 const createRetailerPos = ( id, email, mobileNumber, retailerId, deviceId ) => {
-  return ( dispatch ) => {
+  return ( dispatch, getState ) => {
     const retailerPos = Endpoints.db + '/table/retailer_pos/insert';
 
     const insertObj = {};
@@ -151,6 +174,11 @@ const createRetailerPos = ( id, email, mobileNumber, retailerId, deviceId ) => {
     }];
     insertObj.returning = ['id'];
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(insertObj)
@@ -175,6 +203,11 @@ const createUser = ( deviceId ) => {
       'mobile': currState.mobile_number
     };
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(createObj)
@@ -217,6 +250,11 @@ const updateDevice = () => {
       'id': getState().branch_data.deviceData.editDeviceId
     };
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(updateObj)
@@ -384,8 +422,13 @@ const getSmsCredsCreationObj = ( getState, id, templateName ) => {
 };
 
 const sendEmail = ( emailerObj ) => {
-  return ( dispatch ) => {
+  return ( dispatch, getState ) => {
     const emailUrl = Endpoints.blogicUrl + '/admin/trigger/email';
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(emailerObj)
@@ -402,8 +445,13 @@ const sendEmail = ( emailerObj ) => {
 };
 
 const sendSMS = ( emailerObj ) => {
-  return ( dispatch ) => {
+  return ( dispatch, getState ) => {
     const smsUrl = Endpoints.blogicUrl + '/admin/trigger/sms';
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(emailerObj)
@@ -451,6 +499,11 @@ const deleteDevice = ( id ) => {
       'id': delId
     };
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(deleteObj)
@@ -502,6 +555,11 @@ const createDevice = () => {
     const insertObj = {};
     insertObj.objects = [ { ...deviceDataObj } ];
     insertObj.returning = ['id'];
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(insertObj)

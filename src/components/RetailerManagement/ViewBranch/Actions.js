@@ -1,6 +1,4 @@
-import Endpoints from '../../../Endpoints';
-
-import { genOptions } from '../../Common/Actions/commonFunctions';
+import Endpoints, { globalCookiePolicy } from '../../../Endpoints';
 
 import requestAction from '../../Common/Actions/requestAction';
 
@@ -15,7 +13,7 @@ import beginFilter from '../../Common/SearchComponentGen/GenerateFilter';
 /* Fetch Cancel Products */
 
 const getBranchCount = ( filterObj, isSearched ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -27,6 +25,11 @@ const getBranchCount = ( filterObj, isSearched ) => {
     }
 
     const url = Endpoints.db + '/table/' + 'retailer' + '/count';
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(payload)
@@ -36,7 +39,7 @@ const getBranchCount = ( filterObj, isSearched ) => {
 };
 
 const getBranchData = ( page, filterObj, isSearched) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -65,6 +68,11 @@ const getBranchData = ( page, filterObj, isSearched) => {
     }
 
     const url = Endpoints.db + '/table/' + 'retailer' + '/select';
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(payload),

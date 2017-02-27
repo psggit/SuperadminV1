@@ -1,6 +1,4 @@
-import Endpoints from '../../../Endpoints';
-
-import { genOptions } from '../../Common/Actions/commonFunctions';
+import Endpoints, { globalCookiePolicy } from '../../../Endpoints';
 
 import requestAction from '../../Common/Actions/requestAction';
 
@@ -16,7 +14,7 @@ import beginFilter from '../../Common/SearchComponentGen/GenerateFilter';
 /* Fetch Cancel Products */
 
 const getOrganizationCount = ( filterObj, isSearched ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -29,6 +27,11 @@ const getOrganizationCount = ( filterObj, isSearched ) => {
     }
 
     const url = Endpoints.db + '/table/' + 'organisation' + '/count';
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(payload)
@@ -38,7 +41,7 @@ const getOrganizationCount = ( filterObj, isSearched ) => {
 };
 
 const getOrganizationData = ( page, filterObj, isSearched) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -78,6 +81,12 @@ const getOrganizationData = ( page, filterObj, isSearched) => {
     }
 
     const url = Endpoints.db + '/table/' + 'organisation' + '/select';
+
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(payload),

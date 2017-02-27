@@ -1,6 +1,4 @@
-import Endpoints from '../../../Endpoints';
-
-import { genOptions } from '../../Common/Actions/commonFunctions';
+import Endpoints, { globalCookiePolicy } from '../../../Endpoints';
 
 import requestAction from '../../Common/Actions/requestAction';
 import {indexSku} from '../UnlockBarAddSKU/BarSkuAction';
@@ -22,7 +20,7 @@ import beginFilter from '../../Common/SearchComponentGen/GenerateFilter';
 /* */
 
 const getBarSkusCount = ( filterObj, isSearched ) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -34,6 +32,11 @@ const getBarSkusCount = ( filterObj, isSearched ) => {
     }
 
     const url = Endpoints.db + '/table/' + 'bars_inventory' + '/count';
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(payload)
@@ -43,7 +46,7 @@ const getBarSkusCount = ( filterObj, isSearched ) => {
 };
 
 const getBarSkusData = ( page, filterObj, isSearched) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     // dispatch({ type: MAKE_REQUEST, f});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -82,6 +85,11 @@ const getBarSkusData = ( page, filterObj, isSearched) => {
     }
 
     const url = Endpoints.db + '/table/' + 'bars_inventory' + '/select';
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(payload),
@@ -106,10 +114,15 @@ const getAllBarSkusData = (page ) => {
 
 
 const getBarSkuReservations = () => {
-  return ( dispatch ) => {
+  return ( dispatch, getState ) => {
     const barUrl = Endpoints.db + '/table/bar_reserved_items/select';
     const filterObj = {
       'columns': ['*']
+    };
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
     };
     const options = {
       ...genOptions,
@@ -126,6 +139,11 @@ const getBarSkuReservations = () => {
 const toggleBarSkuStatus = ( id, isActive, currPage, pricingId, barId ) => {
   return ( dispatch, getState ) => {
     const currState = getState().all_bar_skus;
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
 
     const uniqueIdentifier = pricingId + '@' + barId;
 

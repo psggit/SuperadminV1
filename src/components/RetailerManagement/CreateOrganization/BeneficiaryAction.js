@@ -6,9 +6,7 @@ import { addBeneficiaryState, uiState } from './State';
 
 import requestAction from '../../Common/Actions/requestAction';
 
-import Endpoints from '../../../Endpoints';
-
-import { genOptions } from '../../Common/Actions/commonFunctions';
+import Endpoints, { globalCookiePolicy } from '../../../Endpoints';
 
 /* Action Constant */
 
@@ -34,7 +32,7 @@ const RESET_BENEFICIARY = '@organisationDataReducer/RESET_BENEFICIARY';
 /* Action Creators */
 
 const fetchBeneficiaries = (orgId) => {
-  return ( dispatch ) => {
+  return ( dispatch, getState ) => {
     const benUrl = Endpoints.db + '/table/beneficiary/select';
 
     const benObj = {
@@ -45,6 +43,11 @@ const fetchBeneficiaries = (orgId) => {
       'organisation_id': parseInt(orgId, 10)
     };
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(benObj)
@@ -98,6 +101,11 @@ const createBeneficiary = () => {
     insertObj.objects = [ { ...beneficiaryDataObj } ];
     insertObj.returning = ['id'];
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(insertObj)
@@ -143,6 +151,11 @@ const updateBeneficiary = () => {
       'id': getState().organization_data.beneficiaryData.editBeneficiaryId
     };
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(updateObj)
@@ -175,6 +188,11 @@ const deleteBeneficiary = () => {
       'id': getState().organization_data.beneficiaryData.editBeneficiaryId
     };
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(deleteObj)

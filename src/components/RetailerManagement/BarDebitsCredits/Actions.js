@@ -2,9 +2,7 @@
 
 import requestAction from '../../Common/Actions/requestAction';
 
-import { genOptions } from '../../Common/Actions/commonFunctions';
-
-import Endpoints from '../../../Endpoints';
+import Endpoints, { globalCookiePolicy } from '../../../Endpoints';
 
 import { routeActions } from 'redux-simple-router';
 
@@ -36,7 +34,7 @@ const INITIALIZED = '@bardebit/INITIALIZED';
 /* End of it */
 
 const fetchData = ( Id ) => {
-  return ( dispatch ) => {
+  return ( dispatch, getState ) => {
     const txnUrl = Endpoints.db + '/table/' + 'bar_debits_and_credits' + '/select';
     const payload = {
       columns: ['*',
@@ -54,6 +52,11 @@ const fetchData = ( Id ) => {
       'id': parseInt(Id, 10)
     };
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(payload)
@@ -67,7 +70,7 @@ const fetchData = ( Id ) => {
 };
 
 const getInitData = ( Id ) => {
-  return ( dispatch ) => {
+  return ( dispatch, getState ) => {
     const branchUrl = Endpoints.db + '/table/bars/select';
     const debitCodesUrl = Endpoints.db + '/table/bar_credits_and_debit_codes/select';
 
@@ -79,6 +82,11 @@ const getInitData = ( Id ) => {
     const codeSelectObj = {};
     codeSelectObj.columns = [ '*' ];
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const branchOptions = {
       ...genOptions,
       body: JSON.stringify(branchSelectObj)
@@ -139,6 +147,11 @@ const sendEmail = ( getState, insertObj ) => {
     return Promise.reject();
   }
 
+  const genOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+    credentials: globalCookiePolicy
+  };
   const emailerOptions = {
     ...genOptions,
     body: JSON.stringify(emailerObj)
@@ -169,6 +182,11 @@ const sendSMS = ( getState, insertObj ) => {
     return Promise.reject();
   }
 
+  const genOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+    credentials: globalCookiePolicy
+  };
   const smsOptions = {
     ...genOptions,
     body: JSON.stringify(smsObj)
@@ -203,6 +221,11 @@ const saveTransaction = () => {
     const insertTransaction = {};
     insertTransaction.objects = [ insertObj ];
     insertTransaction.returning = ['id'];
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
 
     const options = {
       ...genOptions,
@@ -258,6 +281,11 @@ const updateTransaction = ( Id ) => {
     };
     updateTransactionObj.returning = ['id'];
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(updateTransactionObj)

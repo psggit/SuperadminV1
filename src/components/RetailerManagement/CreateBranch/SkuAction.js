@@ -6,9 +6,8 @@
 
 import requestAction from '../../Common/Actions/requestAction';
 
-import Endpoints from '../../../Endpoints';
+import Endpoints, { globalCookiePolicy } from '../../../Endpoints';
 
-import { genOptions } from '../../Common/Actions/commonFunctions';
 import { indexSku } from '../../SkuManagement/Brand/BrandAction';
 
 /* Action Constant */
@@ -35,7 +34,7 @@ const SKU_CLEAR_LOCAL = '@retailersku/SKU_CLEAR_LOCAL';
 /* Action Creators */
 
 const fetchBrand = ( skuPricingIds ) => {
-  return ( dispatch ) => {
+  return ( dispatch, getState ) => {
     console.log('ello');
     const devUrl = Endpoints.db + '/table/brand/select';
 
@@ -89,6 +88,11 @@ const fetchBrand = ( skuPricingIds ) => {
     }
     */
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(devObj)
@@ -99,7 +103,7 @@ const fetchBrand = ( skuPricingIds ) => {
 };
 
 const fetchSKUs = ( retailerId ) => {
-  return ( dispatch ) => {
+  return ( dispatch, getState ) => {
     const devUrl = Endpoints.db + '/table/inventory/select';
 
     const devObj = {
@@ -118,6 +122,11 @@ const fetchSKUs = ( retailerId ) => {
       'retailer_id': parseInt(retailerId, 10)
     };
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify(devObj)
@@ -160,6 +169,11 @@ const disableSKUs = ( sku ) => {
     insertObj.values = { is_active: false };
     insertObj.returning = ['id'];
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify( insertObj )
@@ -198,6 +212,11 @@ const enableSKUs = ( sku ) => {
     insertObj.values = { is_active: true };
     insertObj.returning = ['id'];
 
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOptions,
       body: JSON.stringify( insertObj )
