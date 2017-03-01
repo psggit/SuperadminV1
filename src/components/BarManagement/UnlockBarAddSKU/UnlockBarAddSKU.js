@@ -163,6 +163,9 @@ class UnlockBarAddSKU extends Component {
             Menu Price: { invent.menuPrice}
           </div>
           <div className={styles.unlock_listing_name}>
+            Negotiated price with tax: { invent.negotiated_sku_price + (invent.negotiated_sku_price * invent.charges_and_tax_percentage / 100) }
+          </div>
+          <div className={styles.unlock_listing_name}>
             Hipbar Price: { invent.hipbarPrice }
           </div>
           <div className={styles.unlock_active_container}>
@@ -250,6 +253,14 @@ class UnlockBarAddSKU extends Component {
             </div>
             <div className = {styles.information_rightpanel}>
               <input type="number" min="0" max="100" data-field-name="charges_and_tax_percentage" data-field-type="float" data-field-value={ newSkuData.charges_and_tax_percentage} value={ newSkuData.charges_and_tax_percentage}/>
+            </div>
+          </div>
+          <div className = {styles.command_wrapper}>
+            <div className = {styles.information_leftpanel}>
+              Hip Bar Price
+            </div>
+            <div className = {styles.information_rightpanel}>
+              <input type="int" data-field-name="hipbar_price" data-field-type="int" data-field-value={ newSkuData.hipbarPrice} value={ newSkuData.hipbarPrice}/>
             </div>
           </div>
           <div className = {styles.command_wrapper}>
