@@ -373,9 +373,6 @@ const updateBrandManager = () => {
     const modSBList = [...state_.selectedBrandsList];
     const modBMInfo = {...state_.brandManagerInfo};
     delete modBMInfo.company;
-    console.log(modBMInfo);
-    console.log(modSBList);
-    console.log('-=-=-=-=-=-=-=-');
     const bmUrl = Endpoints.backendUrl + '/hadmin/brand-manager/update';
     const insertObj = {mobile: modBMInfo.mobile_number,
       is_disabled: (modBMInfo.is_disabled === 'false') ? true : false,
@@ -405,9 +402,14 @@ const updateBrandManager = () => {
     };
     console.log('----------------');
     dispatch(requestAction(bmUrl, brOptions)).then((resp) => {
+      const message = 'ALERT : Creation Successful\n\n';
       console.log(resp);
+      alert(message);
     }).catch((resp) => {
-      console.log(resp);
+      let message = 'ALERT : Update Failed\n\n';
+      message += 'Message : ';
+      message += resp.message;
+      alert(message);
     });
 //    return Promise.all([
 //      dispatch(updateBM(modBMInfo)),
@@ -601,25 +603,21 @@ const getBMInfo = (respArr) => {
 };
 
 const getSBList = (respArr) => {
-  const regionsList = [...respArr[0].brands];
+  const managersList = [...respArr[0].brands];
   const tempObj = {};
-  regionsList.forEach((region) => {
-    const bid = region.brand.id;
+  managersList.forEach((manager) => {
+    const bid = manager.brand.id;
     if (tempObj[bid] === undefined) {
-      tempObj[bid] = {...region.brand};
-      const r = {...region.region};
+      tempObj[bid] = {...manager.brand};
+      const r = {...manager.region};
       r.is_selected = true;
-      r.in_db = true;
-      r.oid = r.id;
-      r.id = region.id;
+      r.id = manager.region_id;
       tempObj[bid].regions = [{...r}];
     } else {
-      delete region.brand;
-      const r = {...region.region};
+      delete manager.brand;
+      const r = {...manager.region};
       r.is_selected = true;
-      r.in_db = true;
-      r.oid = r.id;
-      r.id = region.id;
+      r.id = manager.region_id;
       tempObj[bid].regions.push({...r});
     }
   });
