@@ -11,13 +11,11 @@ const brandHtml = (companyBrands, selectedBrandsList) => {
   selectedBrandsList.forEach((sbl) => {
     sbIds.push(sbl.id);
   });
-  console.log(sbIds);
   companyBrands.forEach((cb) => {
     if (!(cb.id in sbIds)) {
       finalBrands.push(cb);
     }
   });
-  console.log(finalBrands);
   return finalBrands.map((brand, index) => (
     <option key={index} value={brand.id}>{brand.brand_name}</option>
   ));
@@ -32,7 +30,6 @@ const onRegionCheck = (dispatch, sb, e) => {
 };
 
 const regionsHtml = (styles, selectedBrand, dispatch) => {
-  console.log(selectedBrand);
   return (selectedBrand.regions === undefined ) ? (<li></li>) : selectedBrand.regions.map((region) => (
     <li>
       <label title={ ( region.managers.length > 0) ? 'Managed By :' + region.managers[0].brand_manager.name + '\n' + 'Email :' + region.managers[0].brand_manager.email : 'No Managers Assigned'} >
@@ -125,8 +122,6 @@ const BrandContainer = ({props}) => {
       , selectedBrandsList
       , dispatch } = props;
   const styles = require('./CreateBrandManager.scss');
-  console.log('selected brand');
-  console.log(selectedBrand);
   const html = (!showBrandContainer) ? (<div></div>) : (
     <div className={styles.select_brands_container}>
       <div className={styles.heading}>Select Brand</div>
