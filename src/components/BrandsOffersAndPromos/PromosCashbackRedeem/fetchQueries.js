@@ -173,7 +173,7 @@ const insertCampaignAndPromos = {
           objects: [{
             sku_pricing_id: promo.pricing.id,
             // better to make bulk inserts in one query TODO: fix this later
-            price: promo.type === 'amount' ? (promo.price) : (parseInt((((promo.price / 100)) * promo.pricing.price), 10)),
+            price: promo.type === 'amount' ? (parseInt(promo.price, 10)) : (parseInt((((promo.price / 100)) * promo.pricing.price), 10)),
             offer_id: offers[index].returning[0].id,
             quantity: (promo.quantity ? parseInt(promo.quantity, 10) : 0),
             quantity_left: (promo.quantity ? parseInt(promo.quantity, 10) : 0)
