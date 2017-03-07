@@ -10,6 +10,7 @@ import kycuploadviewReducer from './components/KycUpload/KycUploadViewActions';
 import transactionReducer from './components/CustomerTransaction/actions/Action';
 import skuReducer from './components/SkuManagement/Action';
 import brandReducer from './components/SkuManagement/Brand/BrandAction';
+import userReducer from './components/User/components/CreateUser/CreateUserAction';
 
 import defaultReducer from './components/Common/Actions/CommonReducer';
 import notepadReducer from './components/NotepadEntries/NotepadAction';
@@ -85,6 +86,7 @@ const reducer = combineReducers({
   notepad_data: notepadReducer,
   brand_data: brandReducer,
   user_data: userDataReducer,
+  operationUserData: userReducer,
   create_sku_data: createSKUReducer,
   state_data: stateManagementReducer,
   brandmanagerprofile_data: brandManagerProfileReducer,

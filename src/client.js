@@ -15,6 +15,8 @@ import {compose, createStore, applyMiddleware} from 'redux';
 
 import {Login, Home, PageContainer,
   ViewConsumers,
+  ViewUsers,
+  CreateUser,
   FileUpload,
   ViewConsumerProfile,
   Kycfunctions,
@@ -174,6 +176,8 @@ const main = (
         <Route path="tables/add" component={AddTable} />
         <Route path="upload_file" component={FileUpload} />
         <Route path="consumer/profiles" component={ViewConsumers} />
+        <Route path="users/list" component={ViewUsers} />
+        <Route path="user/create" component={CreateUser} />
         <Route path="consumer/kycfunctions" component={Kycfunctions} />
         <Route path="consumer/kycfunctions/verify_kyc" component={VerifyKycs} />
         <Route path="consumer/kycfunctions/upload_kyc" component={UploadKycs} />

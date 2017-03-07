@@ -10,6 +10,8 @@ export Login from './Login/Login';
 export FileUpload from './FileUpload/FileUpload';
 export Home from './Home/Home';
 export ViewConsumers from './Consumer/components/ViewConsumer/ViewConsumer';
+export ViewUsers from './User/components/ListUser/ViewUser';
+export CreateUser from './User/components/CreateUser/CreateUser';
 // export InsertItem from './Consumer/InsertItem';
 // export EditItem from './Bills/EditItem';
 export ViewConsumerProfile from './Consumer/ViewProfile';

@@ -25,6 +25,18 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
           <hr/>
           <br/><br/>
           <ul>
+          	<li><input type="checkbox" id="cb0"/><label htmlFor="cb0">USER MANAGEMENT</label>
+              <ul>
+                <li title = "Create New Users" className={styles.sidebar_list}><label>
+                  <Link to={'/hadmin/user/create'} className={ lastPathname === 'kycfunctions' ? styles.active : '' }> Create User </Link>
+                </label></li>
+                <li title = "Edit Existing Users" className={styles.sidebar_list}><label>
+                  <Link to={'/hadmin/users/list'} className={ lastPathname === 'profiles' ? styles.active : '' }>Mangage User</Link>
+                </label></li>
+              </ul>
+            </li>
+          </ul>
+          <ul>
           	<li><input type="checkbox" id="cb1"/><label htmlFor="cb1">CUSTOMER MANAGEMENT</label>
           		<ul>
               <li className={styles.sidebar_list}><label>

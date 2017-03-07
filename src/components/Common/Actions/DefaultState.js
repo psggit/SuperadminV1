@@ -127,6 +127,11 @@ const defaultConsumerState = {
   userData: []
 };
 
+const defaultUserState = {
+  userData: {roles: [], is_active: true},
+  availableRoles: []
+};
+
 const defaultBrandManagerProfileState = {
   lastSuccess: [{company: {}}]
 };
@@ -410,6 +415,7 @@ export { defaultNotepadState
   , defaultViewBrandManagerState
   , defaultEditBrandManagerState
   , defaultConsumerState
+  , defaultUserState
   , defaultKycState
   , defaultCreateSkuState
   , defaultStateManagementState
