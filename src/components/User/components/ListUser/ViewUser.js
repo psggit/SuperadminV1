@@ -122,14 +122,14 @@ class ViewUser extends Component {
               </Link>
             </div>
             */}
-            <SearchWrapper data={lastSuccess}/>
+            <SearchWrapper props={this.props } data={lastSuccess}/>
             <PaginationWrapper
               {...this.props }
               fetchInitialData = { this.fetchInitialData.bind(this) }
               limit = "10"
               triggerPageChange={ this.triggerPageChange.bind(this) }
               showMax="5"
-              parentUrl="/hadmin/user/profiles"
+              parentUrl="/hadmin/users/list"
             />
           </div>
         );

@@ -1,10 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { deactivateUser } from './ViewUserAction';
 
-const UserSearchWrapper = ( {data} ) => {
+const UserSearchWrapper = ( {data, props} ) => {
   const styles = require('./SearchWrapper.scss');
   let tableBody;
   let objHtml;
+  const deactivate = (e) => {
+    const id = e.target.getAttribute('data-genre-id');
+    props.dispatch(deactivateUser(id));
+  };
 
   tableBody = data.map((dat, index) => {
     let lastLogin = dat.last_login;
@@ -15,23 +19,21 @@ const UserSearchWrapper = ( {data} ) => {
     return (
           <tr key={index}>
             <td>
-              <Link to={'/hadmin/user/profile/' + dat.id}>
-                <button className={styles.edit_btn} data-genre-id={dat.id}>
-                  view/edit
+                <button onClick = { deactivate.bind(this) } className={styles.edit_btn} data-genre-id={dat.id}>
+                  { (dat.is_active) ? 'Deactivate' : 'Activate' }
                 </button>
-              </Link>
             </td>
             <td>
               { dat.id}
             </td>
             <td> { (dat.email ) ? dat.email : '' } </td>
             <td> { (dat.username) ? dat.username : '' } </td>
-            <td> { (dat.roles) ? dat.roles[0] : '' } </td>
-            <td> { (dat.mobile_number) ? dat.mobile_number : '' } </td>
-            <td> { (dat.is_active) ? dat.is_active : '' } </td>
-            <td> { (dat.email_verified) ? dat.email_verified : '' } </td>
-            <td> { (dat.mobile_verified) ? dat.mobile_verified : '' } </td>
-            <td> { (dat.is_admin) ? dat.is_admin : '' } </td>
+            <td> { (dat.roles) ? dat.roles.join(',') : '' } </td>
+            <td> { (dat.mobile) ? dat.mobile : '' } </td>
+            <td> { (dat.is_active) ? 'True' : 'False' } </td>
+            <td> { (dat.email_verified) ? 'True' : 'False' } </td>
+            <td> { (dat.mobile_verified) ? 'True' : 'False' } </td>
+            <td> { (dat.is_admin) ? 'True' : 'False' } </td>
             <td> { (lastLogin) ? lastLogin : '' } </td>
             <td> { (dateJoined) ? dateJoined : '' } </td>
             <td> { (dat.extra_info) ? dat.extra_info : '' } </td>

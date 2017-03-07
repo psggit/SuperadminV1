@@ -6,6 +6,38 @@ import { MAKE_REQUEST,
   REQUEST_ERROR, RESET } from '../../../Common/Actions/Actions';
 
 // import beginFilter from '../../../Common/SearchComponentGen/GenerateFilter';
+const deactivateUser = (id) => {
+  return (dispatch, getState) => {
+    dispatch({ type: MAKE_REQUEST});
+    const url = Endpoints.authUrl + '/admin/user/deactivate';
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy,
+      body: JSON.stringify({'hasura_id': id})
+    };
+    return fetch(url, options)
+           .then(
+             (response) => {
+               if (response.ok) { // 2xx status
+                 response.json().then(
+                   (d) => {
+                     return dispatch({type: REQUEST_SUCCESS, data: d.users});
+                   },
+                   () => {
+                     return dispatch({type: REQUEST_ERROR, data: 'Error.Try again'});
+                   }
+                 );
+               } else {
+                 return dispatch({type: REQUEST_ERROR, data: 'Error.Try again'});
+               }
+             },
+             (error) => {
+               console.log(error);
+               return dispatch({type: REQUEST_ERROR, data: 'Error.Try again'});
+             });
+  };
+};
 
 const getAllUserData = ( page, limit, filterObj, isSearched ) => {
   return (dispatch, getState) => {
@@ -35,7 +67,7 @@ const getAllUserData = ( page, limit, filterObj, isSearched ) => {
                if (response.ok) { // 2xx status
                  response.json().then(
                    (d) => {
-                     dispatch({type: COUNT_FETCHED, data: d.total});
+                     dispatch({type: COUNT_FETCHED, data: {count: d.total}});
                      return dispatch({type: REQUEST_SUCCESS, data: d.users});
                    },
                    () => {
@@ -55,5 +87,6 @@ const getAllUserData = ( page, limit, filterObj, isSearched ) => {
 
 export {
   getAllUserData,
+  deactivateUser,
   RESET
 };
