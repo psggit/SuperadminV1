@@ -607,13 +607,13 @@ const getSBList = (respArr) => {
   const tempObj = {};
   managersList.forEach((manager) => {
     const bid = manager.brand.id;
-    if (tempObj[bid] === undefined) {
+    if (tempObj[bid] === undefined && manager.is_active === true) {
       tempObj[bid] = {...manager.brand};
       const r = {...manager.region};
       r.is_selected = true;
       r.id = manager.region_id;
       tempObj[bid].regions = [{...r}];
-    } else {
+    } else if (manager.is_active === true) {
       delete manager.brand;
       const r = {...manager.region};
       r.is_selected = true;

@@ -445,17 +445,19 @@ const getBMInfo = (respArr) => {
 const getSBList = (respArr) => {
   const regionsList = [...respArr[0].brands];
   const tempObj = {};
-  regionsList.forEach((region) => {
-    const bid = region.brand.id;
-    if (tempObj[bid] === undefined) {
-      tempObj[bid] = {...region.brand};
-      const r = {...region.region};
+  regionsList.forEach((manager) => {
+    const bid = manager.brand.id;
+    if (tempObj[bid] === undefined && manager.is_active === true) {
+      tempObj[bid] = {...manager.brand};
+      const r = {...manager.region};
       r.is_selected = true;
+      r.id = manager.region_id;
       tempObj[bid].regions = [{...r}];
-    } else {
-      delete region.brand;
-      const r = {...region.region};
+    } else if (manager.is_active === true) {
+      delete manager.brand;
+      const r = {...manager.region};
       r.is_selected = true;
+      r.id = manager.region_id;
       tempObj[bid].regions.push({...r});
     }
   });
