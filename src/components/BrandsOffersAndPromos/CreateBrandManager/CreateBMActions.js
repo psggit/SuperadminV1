@@ -99,7 +99,6 @@ const insertBrand = (brandObj) => {
       })
       .catch((resp) => {
         console.log(resp);
-        alert('Something wrong happened while creating a notepad entry');
         return dispatch({type: REQUEST_COMPLETED});
       });
   };
@@ -206,14 +205,12 @@ const createBM = (bmInfo, sbList) => {
       credentials: globalCookiePolicy,
       body: JSON.stringify(insertObj),
     };
-    console.log(insertObj);
-    console.log(bmUrl);
-    console.log(dispatch);
-    console.log('----------------');
     dispatch(requestAction(bmUrl, brOptions)).then((resp) => {
+      const message = 'ALERT : Creation Successful\n\n';
       console.log(resp);
+      alert(message);
     }).catch((resp) => {
-      let message = 'ALERT : Creation Unsuccessfull\n\n';
+      let message = 'ALERT : Creation Failed\n\n';
       message += 'Message : ';
       message += resp.message;
       alert(message);

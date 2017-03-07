@@ -18,11 +18,10 @@ if (window.location.href.split(':')[1] === '//localhost') {
   authUrl = 'https://auth.' + appName + '.hasura-app.io';
   reportUrl = 'https://reports.' + appName + '.hasura-app.io';
   fileUrl = 'https://api2.' + appName + '.hasura-app.io';
-  backendUrl = 'https://apitest.' + appName + '.hasura-app.io';
+  backendUrl = 'https://api1.' + appName + '.hasura-app.io';
   blogicUrl = 'https://api1.' + appName + '.hasura-app.io';
   downloadRepUrl = 'https://downloadrep.' + appName + '.hasura-app.io';
 } else {
-  console.log('I am in Endpoints');
   console.log(window.location.href);
   scheme = window.location.href.split(':')[0];
   baseHost = window.location.hostname.match(/.*?(\..*)/)[1];
