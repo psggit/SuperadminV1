@@ -499,7 +499,7 @@ const updateBar = () => {
   };
 };
 
-const updateBarContact = ( ) => {
+const updateBarContact = () => {
   return ( dispatch, getState ) => {
     const barUrl = Endpoints.db + '/table/retailer_address/update';
 
@@ -592,21 +592,40 @@ const updateAccount = ( ) => {
   };
 };
 
+const indexBar = () => {
+  return (dispatch, getState) => {
+    const payload = {};
+    const barState = getState().bar_data.barData;
+
+    const url = Endpoints.backendUrl + '/admin/update_index/bar';
+
+    payload.bar_id = parseInt(barState.barData.id, 10);
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(payload),
+    };
+    return dispatch(requestAction(url, options));
+  };
+};
+
 const updateBarDetail = () => {
-  return ( dispatch ) => {
+  return (dispatch) => {
     return dispatch(updateBar())
-    .then( ( resp ) => {
-      if ( resp.returning.length > 0 ) {
+    .then( (resp) => {
+      if (resp.returning.length > 0) {
         return Promise.all([
           dispatch(updateBarContact()),
           dispatch(updateAccount()),
+          dispatch(indexBar())
         ]);
       }
       return Promise.reject( { stage: 0 });
     })
     .then( () => {
       alert('Bar Uploaded Successfully');
-      return dispatch( routeActions.push('/hadmin/bar_management/view_bars'));
+      return dispatch(routeActions.push('/hadmin/bar_management/view_bars'));
     })
     .catch( ( resp ) => {
       if ( !resp.stage ) {
