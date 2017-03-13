@@ -14,8 +14,8 @@ const sendRequest = (e) => {
   const option = document.getElementById('option');
   const data = option.options[option.selectedIndex].value;
   url += data;
-  const sIn = new Date(document.getElementById('start_date').value).getTime();
-  const eIn = new Date(document.getElementById('end_date').value).getTime();
+  const sIn = new Date(document.getElementById('start_date').value).getTime() - 19800000;
+  const eIn = new Date(document.getElementById('end_date').value).getTime() - 19800000;
   const queryObj = {'start_date': sIn, 'end_date': eIn};
   let insertObj = {};
   insertObj = {
