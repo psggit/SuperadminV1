@@ -65,6 +65,27 @@ const getOrganisation = () => {
 
 /* Creation */
 
+const indexBar = (bId = undefined) => {
+  return (dispatch, getState) => {
+    const payload = {};
+    let barId;
+    if (bId === undefined) {
+      const barState = getState().bar_data.barData;
+      barId = barState.bardata.id;
+    } else {
+      barId = bId;
+    }
+    const url = Endpoints.backendUrl + '/admin/update_index/bar';
+    payload.bar_id = parseInt(barId, 10);
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(payload),
+    };
+    return dispatch(requestAction(url, options));
+  };
+};
 
 const saveBar = () => {
   return ( dispatch, getState ) => {
@@ -214,7 +235,8 @@ const saveBarDetail = () => {
         const barId = resp.returning[0].id;
         return Promise.all([
           dispatch(saveBarContact(barId)),
-          dispatch(saveAccount(barId))
+          dispatch(saveAccount(barId)),
+          dispatch(indexBar(barId))
         ]);
       }
       return Promise.reject( { stage: 0 });
@@ -589,24 +611,6 @@ const updateAccount = ( ) => {
 
     return dispatch( requestAction( barUrl, options ) );
     // return Promise.resolve();
-  };
-};
-
-const indexBar = () => {
-  return (dispatch, getState) => {
-    const payload = {};
-    const barState = getState().bar_data.barData;
-
-    const url = Endpoints.backendUrl + '/admin/update_index/bar';
-
-    payload.bar_id = parseInt(barState.barData.id, 10);
-    const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(payload),
-    };
-    return dispatch(requestAction(url, options));
   };
 };
 
