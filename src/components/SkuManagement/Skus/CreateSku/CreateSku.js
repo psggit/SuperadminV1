@@ -27,6 +27,7 @@ const CreateSku = ({ brandList
     , reservedItems
     , disableSKUs
     , toggleSkuStatus
+    , toggleState
   }) => { // eslint-disable-line no-unused-vars
   const styles = require('./CreateSku.scss');
   const submitButton = ( page !== 'edit_page' ) ? (
@@ -44,7 +45,7 @@ const CreateSku = ({ brandList
       {
         /* Component to display the list of states and their corresponding prices */
       }
-      <StatesWrapper stateData={stateList} stateCityMapping={stateCityMapping} onStateSelect={onStateSelect} onStatePriceEntered={onStatePriceEntered}/>
+      <StatesWrapper toggleState={toggleState} stateData={stateList} stateCityMapping={stateCityMapping} onStateSelect={onStateSelect} onStatePriceEntered={onStatePriceEntered}/>
       {
         /* Some CSS Gotcha */
       }

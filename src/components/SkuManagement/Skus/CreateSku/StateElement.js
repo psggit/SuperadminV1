@@ -3,7 +3,7 @@ import React from 'react';
 /* Version change */
 /* Changed all the state-id's to state-short-name's */
 
-const StateElement = ({ stateInfo, stateCityMapping, onStateSelect, onStatePriceEntered}) => {
+const StateElement = ({toggleState, stateInfo, stateCityMapping, onStateSelect, onStatePriceEntered}) => {
   const styles = require('./CreateSku.scss');
 
   const serverFetched = ( 'serverValues' in stateCityMapping );
@@ -20,10 +20,10 @@ const StateElement = ({ stateInfo, stateCityMapping, onStateSelect, onStatePrice
             (
               <div className="input_wrapper">
                 <input type="number" data-state-id={ stateInfo.short_name } placeholder="Price" data-field-name="price" data-field-value={ stateCityMapping.price ? stateCityMapping.price : '' } data-field-type="int" value={ stateCityMapping.price ? stateCityMapping.price : '' } onChange={ onStatePriceEntered }/>
+                <button className={styles.save_btn} data-state-id={ stateInfo.short_name } data-current-status={ stateCityMapping.is_active } onClick={toggleState} >{ (stateCityMapping.is_active) ? 'Deactivate' : 'Activate' }</button>
               </div>
 
               //  Default to false, unless explicitly toggled
-              <button className={styles.save_btn} onClick = { toggleRetailerStatus } > Toggle </button>
             ) : ''
         }
       </div>

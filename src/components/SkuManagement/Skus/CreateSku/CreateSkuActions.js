@@ -39,6 +39,7 @@ const STATE_MRP_INFORMATION = 'SKU/STATE_MRP_INFORMATION';
 const UPDATE_COMPONENT_STATE = 'SKU/UPDATE_COMPONENT_STATE';
 const FETCHED_RESERVED_ITEMS = 'SKU/FETCHED_RESERVED_ITEMS';
 const POPULATE_SKU_DATA = 'SKU/POPULATE_SKU_DATA';
+const STATE_TOGGLED = 'SKU/STATE_TOGGLED';
 
 /* Variable */
 
@@ -104,10 +105,7 @@ const hydrateStateObj = () => {
                 },
               ]
             }
-          ],
-          'where': {
-            'is_active': true
-          }
+          ]
         }
       ],
       'where': {
@@ -778,6 +776,7 @@ const onUpdate = () => {
       return Promise.resolve();
     };
 
+
     const removeState = ( skuPricingIds ) => {
       if ( skuPricingIds.length > 0 ) {
         const updateObj = {};
@@ -947,6 +946,39 @@ const onUpdate = () => {
         alert('Error: ' + resp.error);
         // return dispatch(routeActions.push('/hadmin/skus/list_sku'));
       });
+  };
+};
+
+const toggleState = (stateId, currentState) => {
+  return ( dispatch, getState ) => {
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
+    const updateObj = {};
+    const removeUrl = Endpoints.db + '/table/sku_pricing/update';
+    updateObj.values = {
+      'is_active': (currentState === 'true') ? false : true
+    };
+    updateObj.where = {
+      'state_short_name': { '$eq': stateId },
+      'sku_id': { '$eq': getState().create_sku_data.sku_id }
+    };
+    updateObj.returning = ['id', 'state_short_name', 'sku_id', 'is_active'];
+
+    const opt = {
+      ...genOptions,
+      body: JSON.stringify(updateObj)
+    };
+
+    return dispatch( requestAction(removeUrl, opt, STATE_TOGGLED) )
+    .then( ( response ) => {
+      console.log(response);
+      const brandId = getState().create_sku_data.brandSlug[getState().create_sku_data.skuReqObj.brand_id];
+      dispatch(indexSku(dispatch, brandId));
+    });
+    // return Promise.resolve();
   };
 };
 
@@ -1215,6 +1247,12 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
       const skuInfo = {};
       skuInfo[action.data.key] = action.data.value;
       return { ...state, skuReqObj: { ...state.skuReqObj, ...skuInfo }};
+    case STATE_TOGGLED:
+      console.log(action);
+      const currentObj = {};
+      currentObj[action.data.returning[0].state_short_name] = Object.assign( {}, state.stateCityMapping[action.data.returning[0].state_short_name] );
+      currentObj[action.data.returning[0].state_short_name].is_active = action.data.returning[0].is_active;
+      return { ...state, stateCityMapping: { ...state.stateCityMapping, ...currentObj }};
     case STATE_MRP_INFORMATION:
       const currentStateObj = {};
       currentStateObj[action.data.state_id] = Object.assign( {}, state.stateCityMapping[action.data.state_id] );
@@ -1253,6 +1291,7 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
           localStateCityMapping[ sState.state_short_name ].price = sState.price;
           localStateCityMapping[ sState.state_short_name ].is_fetched = true;
           localStateCityMapping[ sState.state_short_name ].is_updated = false;
+          localStateCityMapping[ sState.state_short_name ].is_active = sState.is_active;
           localStateCityMapping[ sState.state_short_name ].serverValues = {
             'price': sState.price
           };
@@ -1307,6 +1346,7 @@ export {
   updateComponentState,
   getReservedItems,
   disableSku,
+  toggleState,
   toggleSkuStatus
 };
 
