@@ -228,10 +228,10 @@ const saveAccount = ( id ) => {
 };
 
 const saveBarDetail = () => {
-  return ( dispatch ) => {
+  return (dispatch) => {
     return dispatch(saveBar())
-    .then( ( resp ) => {
-      if ( resp.returning.length > 0 ) {
+    .then((resp) => {
+      if (resp.returning.length > 0) {
         const barId = resp.returning[0].id;
         return Promise.all([
           dispatch(saveBarContact(barId)),
@@ -239,19 +239,19 @@ const saveBarDetail = () => {
           dispatch(indexBar(barId))
         ]);
       }
-      return Promise.reject( { stage: 0 });
+      return Promise.reject({stage: 0});
     })
-    .then( () => {
+    .then(() => {
       alert('Bar Uploaded Successfully');
-      return dispatch( routeActions.push('/hadmin/bar_management/view_bars'));
+      return dispatch(routeActions.push('/hadmin/bar_management/view_bars'));
     })
-    .catch( ( resp ) => {
-      if ( !resp.stage ) {
+    .catch((resp) => {
+      if (!resp.stage) {
         alert('Error While Uploading');
         return Promise.reject();
       }
       alert('Bar inserted with errors, please edit it to correct the information');
-      return dispatch( routeActions.push('/hadmin/bar_management/view_bars'));
+      return dispatch(routeActions.push('/hadmin/bar_management/view_bars'));
     });
   };
 };
@@ -625,19 +625,19 @@ const updateBarDetail = () => {
           dispatch(indexBar())
         ]);
       }
-      return Promise.reject( { stage: 0 });
+      return Promise.reject({ stage: 0 });
     })
-    .then( () => {
+    .then(() => {
       alert('Bar Uploaded Successfully');
       return dispatch(routeActions.push('/hadmin/bar_management/view_bars'));
     })
-    .catch( ( resp ) => {
-      if ( !resp.stage ) {
+    .catch((resp) => {
+      if (!resp.stage) {
         alert('Error While Uploading');
         return Promise.reject();
       }
       alert('Bar inserted with errors, please edit it to correct the information');
-      return dispatch( routeActions.push('/hadmin/bar_management/view_bars'));
+      return dispatch(routeActions.push('/hadmin/bar_management/view_bars'));
     });
   };
 };
@@ -646,11 +646,11 @@ const updateBarDetail = () => {
 
 /* Reducers */
 
-const barDataReducer = ( state = { organisationData: [], barDetail: {}, barContact: {}, barAccountRegistered: {} }, action ) => {
+const barDataReducer = (state = {organisationData: [], barDetail: {}, barContact: {}, barAccountRegistered: {} }, action) => {
   let barDetail;
   let barContact;
   let barAccountRegistered;
-  switch ( action.type ) {
+  switch (action.type) {
     case ORGANISATION_FETCHED:
       return { ...state, organisationData: action.data };
     case BAR_CONTACT_CHANGED:
