@@ -65,6 +65,27 @@ const getOrganisation = () => {
 
 /* Creation */
 
+const indexBar = (bId = undefined) => {
+  return (dispatch, getState) => {
+    const payload = {};
+    let barId;
+    if (bId === undefined) {
+      const barState = getState().bar_data.barData;
+      barId = barState.bardata.id;
+    } else {
+      barId = bId;
+    }
+    const url = Endpoints.backendUrl + '/admin/update_index/bar';
+    payload.bar_id = parseInt(barId, 10);
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(payload),
+    };
+    return dispatch(requestAction(url, options));
+  };
+};
 
 const saveBar = () => {
   return ( dispatch, getState ) => {
@@ -207,29 +228,30 @@ const saveAccount = ( id ) => {
 };
 
 const saveBarDetail = () => {
-  return ( dispatch ) => {
+  return (dispatch) => {
     return dispatch(saveBar())
-    .then( ( resp ) => {
-      if ( resp.returning.length > 0 ) {
+    .then((resp) => {
+      if (resp.returning.length > 0) {
         const barId = resp.returning[0].id;
         return Promise.all([
           dispatch(saveBarContact(barId)),
-          dispatch(saveAccount(barId))
+          dispatch(saveAccount(barId)),
+          dispatch(indexBar(barId))
         ]);
       }
-      return Promise.reject( { stage: 0 });
+      return Promise.reject({stage: 0});
     })
-    .then( () => {
+    .then(() => {
       alert('Bar Uploaded Successfully');
-      return dispatch( routeActions.push('/hadmin/bar_management/view_bars'));
+      return dispatch(routeActions.push('/hadmin/bar_management/view_bars'));
     })
-    .catch( ( resp ) => {
-      if ( !resp.stage ) {
+    .catch((resp) => {
+      if (!resp.stage) {
         alert('Error While Uploading');
         return Promise.reject();
       }
       alert('Bar inserted with errors, please edit it to correct the information');
-      return dispatch( routeActions.push('/hadmin/bar_management/view_bars'));
+      return dispatch(routeActions.push('/hadmin/bar_management/view_bars'));
     });
   };
 };
@@ -499,7 +521,7 @@ const updateBar = () => {
   };
 };
 
-const updateBarContact = ( ) => {
+const updateBarContact = () => {
   return ( dispatch, getState ) => {
     const barUrl = Endpoints.db + '/table/retailer_address/update';
 
@@ -593,28 +615,29 @@ const updateAccount = ( ) => {
 };
 
 const updateBarDetail = () => {
-  return ( dispatch ) => {
+  return (dispatch) => {
     return dispatch(updateBar())
-    .then( ( resp ) => {
-      if ( resp.returning.length > 0 ) {
+    .then( (resp) => {
+      if (resp.returning.length > 0) {
         return Promise.all([
           dispatch(updateBarContact()),
           dispatch(updateAccount()),
+          dispatch(indexBar())
         ]);
       }
-      return Promise.reject( { stage: 0 });
+      return Promise.reject({ stage: 0 });
     })
-    .then( () => {
+    .then(() => {
       alert('Bar Uploaded Successfully');
-      return dispatch( routeActions.push('/hadmin/bar_management/view_bars'));
+      return dispatch(routeActions.push('/hadmin/bar_management/view_bars'));
     })
-    .catch( ( resp ) => {
-      if ( !resp.stage ) {
+    .catch((resp) => {
+      if (!resp.stage) {
         alert('Error While Uploading');
         return Promise.reject();
       }
       alert('Bar inserted with errors, please edit it to correct the information');
-      return dispatch( routeActions.push('/hadmin/bar_management/view_bars'));
+      return dispatch(routeActions.push('/hadmin/bar_management/view_bars'));
     });
   };
 };
@@ -623,11 +646,11 @@ const updateBarDetail = () => {
 
 /* Reducers */
 
-const barDataReducer = ( state = { organisationData: [], barDetail: {}, barContact: {}, barAccountRegistered: {} }, action ) => {
+const barDataReducer = (state = {organisationData: [], barDetail: {}, barContact: {}, barAccountRegistered: {} }, action) => {
   let barDetail;
   let barContact;
   let barAccountRegistered;
-  switch ( action.type ) {
+  switch (action.type) {
     case ORGANISATION_FETCHED:
       return { ...state, organisationData: action.data };
     case BAR_CONTACT_CHANGED:

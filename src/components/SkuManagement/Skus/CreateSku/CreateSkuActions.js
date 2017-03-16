@@ -671,6 +671,9 @@ const onUpdate = () => {
     console.log('List of all Newly selected States');
     console.log(updateListingObj);
 
+    // TODO: Mark here: Update the request to accommodate is_active flag for sku_pricings
+
+
     const updatePricing = ( pricings ) => {
       if ( pricings.length > 0 ) {
         const updatePricingUrl = Endpoints.dataUrl + '/v1/query';
@@ -1240,9 +1243,9 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
       const localRetailerMapping = { ...state.retailerMapping };
       const skuStatePricingMap = {};
       delete localSkuInfo.pricings;
-      console.log('selectedStates');
-      console.log(selectedStates);
-      selectedStates.forEach( ( sState ) => {
+      // console.log('selectedStates'); Impure shit
+      // console.log(selectedStates);
+      selectedStates.forEach((sState) => {
         /* Check if the retailer exists in the state */
         /* To avoid error data */
         if ( localStateCityMapping[sState.state_short_name ] ) {

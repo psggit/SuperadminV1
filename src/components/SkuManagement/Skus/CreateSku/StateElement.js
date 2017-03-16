@@ -8,6 +8,8 @@ const StateElement = ({ stateInfo, stateCityMapping, onStateSelect, onStatePrice
 
   const serverFetched = ( 'serverValues' in stateCityMapping );
 
+  // TODO: Make another checkbox to set is_active flag for sku_pricing
+
   const stateElement = ( Object.keys(stateInfo).length > 0) ? (
       <div className="state_wrapper">
         <label className={styles.check_box} data-state-id={stateInfo.short_name} >
@@ -19,12 +21,15 @@ const StateElement = ({ stateInfo, stateCityMapping, onStateSelect, onStatePrice
               <div className="input_wrapper">
                 <input type="number" data-state-id={ stateInfo.short_name } placeholder="Price" data-field-name="price" data-field-value={ stateCityMapping.price ? stateCityMapping.price : '' } data-field-type="int" value={ stateCityMapping.price ? stateCityMapping.price : '' } onChange={ onStatePriceEntered }/>
               </div>
+
+              //  Default to false, unless explicitly toggled
+              <button className={styles.save_btn} onClick = { toggleRetailerStatus } > Toggle </button>
             ) : ''
         }
       </div>
     ) : (
       <div className={styles.indiv_element}>
-        Sorry something is wrong
+        Sorry something is wrong  // - Why is this useful?
       </div>
     );
 
