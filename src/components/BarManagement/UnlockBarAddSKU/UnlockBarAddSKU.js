@@ -236,7 +236,7 @@ class UnlockBarAddSKU extends Component {
               Base SKU  Price*
             </div>
             <div className = {styles.information_rightpanel}>
-              <input type="int" data-field-name="base_sku_price" data-field-type="int" data-field-value={ newSkuData.base_sku_price} value={ newSkuData.base_sku_price}/>
+              <input type="number" data-field-name="base_sku_price" data-field-type="int" data-field-value={ newSkuData.base_sku_price} value={ newSkuData.base_sku_price}/>
             </div>
           </div>
           <div className = {styles.command_wrapper}>
@@ -244,7 +244,7 @@ class UnlockBarAddSKU extends Component {
               Negotiated SKU Price*
             </div>
             <div className = {styles.information_rightpanel}>
-              <input type="int" data-field-name="negotiated_sku_price" data-field-type="int" data-field-value={ newSkuData.negotiated_sku_price} value={ newSkuData.negotiated_sku_price}/>
+              <input type="number" data-field-name="negotiated_sku_price" data-field-type="int" data-field-value={ newSkuData.negotiated_sku_price} value={ newSkuData.negotiated_sku_price}/>
             </div>
           </div>
           <div className = {styles.command_wrapper}>
@@ -260,7 +260,7 @@ class UnlockBarAddSKU extends Component {
               Hip Bar Price
             </div>
             <div className = {styles.information_rightpanel}>
-              <input type="int" data-field-name="hipbar_price" data-field-type="int" data-field-value={ newSkuData.hipbarPrice} value={ newSkuData.hipbarPrice}/>
+              <input type="number" data-field-name="hipbar_price" data-field-type="int" data-field-value={ newSkuData.hipbarPrice} value={ newSkuData.hipbarPrice}/>
             </div>
           </div>
           <div className = {styles.command_wrapper}>
