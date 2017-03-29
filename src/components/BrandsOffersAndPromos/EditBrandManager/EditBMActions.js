@@ -375,7 +375,7 @@ const updateBrandManager = () => {
     delete modBMInfo.company;
     const bmUrl = Endpoints.backendUrl + '/hadmin/brand-manager/update';
     const insertObj = {mobile: modBMInfo.mobile_number,
-      is_disabled: (modBMInfo.is_disabled === 'false') ? true : false,
+      is_disabled: (modBMInfo.is_disabled === 'true') ? true : false,
       kyc_status: modBMInfo.kyc_status,
       brand_manager_id: modBMInfo.id,
       brands: []};
