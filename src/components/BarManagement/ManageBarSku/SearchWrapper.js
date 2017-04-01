@@ -22,7 +22,10 @@ const SearchWrapper = ( { data, onClickHandler } ) => {
               { dat.bar.name }
             </td>
             <td>
-              { dat.bar.address }
+              { dat.start_date}
+            </td>
+            <td>
+              { dat.end_date}
             </td>
 
           </tr>
@@ -47,7 +50,8 @@ const SearchWrapper = ( { data, onClickHandler } ) => {
                   <th> Id </th>
                   <th> SKU</th>
                   <th> Bar </th>
-                  <th> Address </th>
+                  <th> Start Date</th>
+                  <th> End Date</th>
                 </tr>
               </thead>
               <tbody>

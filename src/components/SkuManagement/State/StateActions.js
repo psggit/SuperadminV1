@@ -113,7 +113,7 @@ const fetchState = (stateId) => {
     //
     const payload = {
       'where': {'id': stateId},
-      'columns': ['*', { 'name': 'cities', 'columns': ['id', 'name', 'gps'] }]
+      'columns': ['*', { 'name': 'cities', 'columns': ['id', 'name', 'gps', 'is_available'] }]
     };
 
     const url = Endpoints.db + '/table/' + 'state' + '/select';
@@ -124,6 +124,34 @@ const fetchState = (stateId) => {
       body: JSON.stringify(payload),
     };
     return dispatch(requestAction(url, options, FETCH_STATE, REQUEST_ERROR));
+  };
+};
+
+const disableCity = (id, available, stateId) => {
+  return (dispatch, getState) => {
+    const currStateId = stateId;
+    const dataObj = {};
+    const updateObj = {};
+    const url = Endpoints.db + '/table/city/update';
+    dataObj.is_available = available;
+    updateObj.values = dataObj;
+    updateObj.where = {
+      'id': parseInt(id, 10)
+    };
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(updateObj),
+    };
+    return dispatch(requestAction(url, options))
+      .then((cityResp) => {
+        console.log(cityResp);
+        return Promise.all([
+          dispatch({ type: TOGGLE_CITY_COMPONENT}),
+          dispatch(fetchState(currStateId))
+        ]);
+      });
   };
 };
 
@@ -205,6 +233,7 @@ const updateStateSaveCity = () => {
               returnObj.name = currProps.cities[cities[i]].cityInput;
               returnObj.state_short_name = resp.returning[0].short_name;
               returnObj.gps = currProps.cities[cities[i]].cityGPS;
+              returnObj.is_available = true;
               returnObj.created_at = new Date().toISOString();
               returnObj.updated_at = new Date().toISOString();
               cityObjs.push(returnObj);
@@ -317,7 +346,7 @@ const stateReducer = ( state = defaultStateManagementState, action) => {
     case EDIT_CITY:
       return { ...state, cityId: action.data.id, isCityLocal: (action.data.type === 'local' ? true : false ), isCityEdit: true, cityInput: state.cities[action.data.id].cityInput, cityGPS: state.cities[action.data.id].cityGPS, hideCityComponent: false };
     case EDIT_SERVER_CITY:
-      return { ...state, cityId: action.data.id, isCityLocal: (action.data.type === 'local' ? true : false ), isCityEdit: true, cityInput: action.data.name, hideCityComponent: false, cityGPS: action.data.gps };
+      return { ...state, cityId: action.data.id, isCityLocal: (action.data.type === 'local' ? true : false ), isCityEdit: true, isAvailable: action.data.isAvailable, cityInput: action.data.name, hideCityComponent: false, cityGPS: action.data.gps };
     case FETCH_STATE:
       return { ...state, fromDB: action.data, stateInput: action.data[0].state_name, shortName: action.data[0].short_name };
     case CLEAR_CITY:
@@ -342,6 +371,7 @@ export {
   DELETE_CITY_LOCAL,
   saveState,
   saveCity,
+  disableCity,
   fetchState,
   updateStateSaveCity,
   RESET,
