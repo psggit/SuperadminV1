@@ -19,6 +19,9 @@ const GENRE_FETCHED = '@genre/GENRE_FETCHED';
 const RESET = '@genre/RESET';
 
 const INPUT_VALUE_CHANGED = '@genre/INPUT_VALUE_CHANGED';
+const IMAGE_UPLOAD_SUCCESS = '@genre/IMAGE_UPLOAD_SUCCESS';
+const IMAGE_UPLOAD_ERROR = '@genre/IMAGE_UPLOAD_ERROR';
+const CANCEL_IMAGE = '@genre/CANCEL_IMAGE';
 
 /* End of it */
 
@@ -142,6 +145,12 @@ const genreReducer = (state = defaultGenreState, action) => {
       const categoryInfo = {};
       categoryInfo[action.data.key] = action.data.value;
       return { ...state, ...categoryInfo };
+    case IMAGE_UPLOAD_SUCCESS:
+      return { ...state, image: action.data[0]};
+    case IMAGE_UPLOAD_ERROR:
+      return { ...state, image: ''};
+    case CANCEL_IMAGE:
+      return { ...state, image: ''};
     case RESET:
       return { ...defaultGenreState };
     default:
@@ -160,5 +169,8 @@ export {
   updateGenre,
   INPUT_VALUE_CHANGED,
   REQUEST_COMPLETED,
+  IMAGE_UPLOAD_SUCCESS,
+  IMAGE_UPLOAD_ERROR,
+  CANCEL_IMAGE,
   MAKE_REQUEST
 };

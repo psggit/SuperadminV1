@@ -1,8 +1,43 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import Endpoints, {globalCookiePolicy} from '../../Endpoints';
+import requestAction from '../Common/Actions/requestAction';
 
-const PageContainer = ({location, children, dispatch}) => { // eslint-disable-line no-unused-vars
+const PageContainer = ({location, name, role, children, dispatch}) => { // eslint-disable-line no-unused-vars
+  const logout = () => {
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': role},
+      credentials: globalCookiePolicy
+    };
+    const url = Endpoints.authUrl + '/user/logout';
+    const options = {
+      ...genOptions,
+    };
+    dispatch( requestAction( url, options ) );
+  };
+  const UserManagement = ({styles, lastPathname}) => {
+    if ( role === 'admin') {
+      return (
+        <ul>
+        	<li><input type="checkbox" id="cb0"/><label htmlFor="cb0">USER MANAGEMENT</label>
+            <ul>
+              <li title = "Create New Users" className={styles.sidebar_list}><label>
+                <Link to={'/hadmin/user/create'} className={ lastPathname === 'kycfunctions' ? styles.active : '' }> Create User </Link>
+              </label></li>
+              <li title = "Edit Existing Users" className={styles.sidebar_list}><label>
+                <Link to={'/hadmin/users/list'} className={ lastPathname === 'profiles' ? styles.active : '' }>Mangage User</Link>
+              </label></li>
+            </ul>
+          </li>
+        </ul>
+      );
+    }
+    return ( <ul></ul> );
+  };
+
+
   const styles = require('./PageContainer.scss');
 
   let lastPathname = location.pathname.split('/');
@@ -20,22 +55,11 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
       <div className={styles.flexRow}>
         <div className={styles.sidebar + ' col-md-3'}>
           <div className={styles.account}>
-            Logged in: <b>admin</b> <br> Logout </br>
+            Logged in: <b>{name} ({role})</b> <br><span onClick={logout}> Logout </span> </br>
           </div>
           <hr/>
           <br/><br/>
-          <ul>
-          	<li><input type="checkbox" id="cb0"/><label htmlFor="cb0">USER MANAGEMENT</label>
-              <ul>
-                <li title = "Create New Users" className={styles.sidebar_list}><label>
-                  <Link to={'/hadmin/user/create'} className={ lastPathname === 'kycfunctions' ? styles.active : '' }> Create User </Link>
-                </label></li>
-                <li title = "Edit Existing Users" className={styles.sidebar_list}><label>
-                  <Link to={'/hadmin/users/list'} className={ lastPathname === 'profiles' ? styles.active : '' }>Mangage User</Link>
-                </label></li>
-              </ul>
-            </li>
-          </ul>
+            <UserManagement role = {role} styles={styles} lastPathname={lastPathname}/>
           <ul>
           	<li><input type="checkbox" id="cb1"/><label htmlFor="cb1">CUSTOMER MANAGEMENT</label>
           		<ul>
@@ -269,7 +293,9 @@ const PageContainer = ({location, children, dispatch}) => { // eslint-disable-li
 
 const mapStateToProps = (state) => {
   return {
-    location: state.routing.location
+    location: state.routing.location,
+    role: state.loginState.highestRole,
+    name: state.loginState.credentials.username
   };
 };
 

@@ -7,7 +7,12 @@ import { insertGenre
   , INPUT_VALUE_CHANGED
   , REQUEST_COMPLETED
   , MAKE_REQUEST
+  , IMAGE_UPLOAD_SUCCESS
+  , IMAGE_UPLOAD_ERROR
+  , CANCEL_IMAGE
 } from './GenreAction';
+
+import ImageUpload from './ImageUpload';
 
 import commonDecorator from '../../Common/CommonDecorator';
 import BreadCrumb from '../../Common/BreadCrumb';
@@ -114,6 +119,9 @@ class ManageGenre extends React.Component { // eslint-disable-line no-unused-var
               <div className={styles.indiv_form}>
               	<label>Image</label>
               	<textarea value={ image } data-field-name="image" data-field-type="text"></textarea>
+              </div>
+              <div className={ styles.image_container }>
+                  <ImageUpload imageUrl={image ? image : ''} requestSuccess={IMAGE_UPLOAD_SUCCESS} requestError={ IMAGE_UPLOAD_ERROR } cancelImage={ CANCEL_IMAGE }/>
               </div>
               <div className={styles.indiv_form}>
               	<label>Status</label>
