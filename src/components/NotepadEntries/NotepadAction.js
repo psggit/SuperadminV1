@@ -4,7 +4,7 @@
 
 import { defaultNotepadState } from '../Common/Actions/DefaultState';
 import requestAction from '../Common/Actions/requestAction';
-import Endpoints from '../../Endpoints';
+import Endpoints, { globalCookiePolicy } from '../../Endpoints';
 
 import { MAKE_REQUEST,
   REQUEST_SUCCESS,
@@ -14,14 +14,13 @@ import { MAKE_REQUEST,
 import { routeActions } from 'redux-simple-router';
 // import commonReducer from '../Common/Actions/CommonReducer';
 
-import { genOpt } from '../Common/commonConfig';
 
 const NOTEPAD_FETCH_ISSUE_SUCCESS = 'NOTEPAD/NOTEPAD_FETCH_ISSUE_SUCCESS';
 
 /* ****** Action Creators ******** */
 
 const fetchNotepad = (userId) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/notepad/select';
     const queryObj = {};
@@ -36,6 +35,11 @@ const fetchNotepad = (userId) => {
       'consumer_id': userId
     };
     queryObj.order_by = '-created_at';
+    const genOpt = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOpt,
       body: JSON.stringify(queryObj)
@@ -47,13 +51,18 @@ const fetchNotepad = (userId) => {
 };
 
 const fetchIssueTypes = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/issue/select';
     const queryObj = {};
     queryObj.columns = [
       '*'
     ];
+    const genOpt = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOpt,
       body: JSON.stringify(queryObj)
@@ -91,6 +100,11 @@ const insertNotepad = (issueId, description, userId) => {
     ];
     insertObj.returning = ['id'];
 
+    const genOpt = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
+      credentials: globalCookiePolicy
+    };
     const options = {
       ...genOpt,
       body: JSON.stringify(insertObj)
