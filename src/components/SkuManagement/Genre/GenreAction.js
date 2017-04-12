@@ -146,7 +146,7 @@ const genreReducer = (state = defaultGenreState, action) => {
       categoryInfo[action.data.key] = action.data.value;
       return { ...state, ...categoryInfo };
     case IMAGE_UPLOAD_SUCCESS:
-      return { ...state, image: action.data[0]};
+      return { ...state, image: Endpoints.fileUrl + action.data[0]};
     case IMAGE_UPLOAD_ERROR:
       return { ...state, image: ''};
     case CANCEL_IMAGE:
