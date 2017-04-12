@@ -77,7 +77,7 @@ const fetchIssueTypes = () => {
 };
 
 const insertNotepad = (issueId, description, userId) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     const url = Endpoints.db + '/table/notepad/insert';
     const createdBy = new Date().toISOString();
     const updatedBy = new Date().toISOString();
@@ -102,7 +102,7 @@ const insertNotepad = (issueId, description, userId) => {
 
     const genOpt = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
       credentials: globalCookiePolicy
     };
     const options = {
