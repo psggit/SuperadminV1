@@ -9,22 +9,6 @@ class CreateUserDetails extends Component { // eslint-disable-line no-unused-var
     this.props.dispatch(getRolesData());
   }
   onCreateClick() {
- //   const fullName = document.querySelectorAll('[data-field-name="full_name"]')[0].value;
- //   const dob = document.querySelectorAll('[data-field-name="dob"]')[0].value;
- //   const gender = document.querySelectorAll('[data-field-name="gender"] option:checked')[0].value;
- //   const updateObj = {};
- //   let { Id: userId } = this.props.params;
- //   userId = parseInt(userId, 10);
- //   updateObj.values = {
- //     'full_name': fullName,
- //     'dob': dob,
- //     'gender': gender
- //   };
- //   updateObj.where = {
- //     'id': userId
- //   };
- //   updateObj.returning = ['id'];
-
     this.props.dispatch(createUser());
   }
   addRole() {
