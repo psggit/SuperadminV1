@@ -66,6 +66,7 @@ const getOrganisation = () => {
 /* Creation */
 
 const indexBar = (bId = undefined) => {
+  console.log('--------------');
   return (dispatch, getState) => {
     const payload = {};
     let barId;
@@ -523,6 +524,7 @@ const updateBar = () => {
 
 const updateBarContact = () => {
   return ( dispatch, getState ) => {
+    console.log('[LOG]:Updating Bar Contact Information');
     const barUrl = Endpoints.db + '/table/retailer_address/update';
 
     const barState = getState().bar_data.barData;
@@ -563,6 +565,7 @@ const updateBarContact = () => {
       body: JSON.stringify(insertObj)
     };
 
+    console.log('[LOG]:Updated Bar Contact Information');
     return dispatch( requestAction( barUrl, options ) );
     // return Promise.resolve();
   };
@@ -570,6 +573,7 @@ const updateBarContact = () => {
 
 const updateAccount = ( ) => {
   return ( dispatch, getState ) => {
+    console.log('[LOG]:Updating Bar Account Information');
     const barUrl = Endpoints.db + '/table/retailer_bank_details/update';
 
     const barState = getState().bar_data.barData;
@@ -609,20 +613,23 @@ const updateAccount = ( ) => {
       body: JSON.stringify(insertObj)
     };
 
+    console.log('[LOG]:Updated Bar Account Information');
     return dispatch( requestAction( barUrl, options ) );
     // return Promise.resolve();
   };
 };
 
 const updateBarDetail = () => {
+  console.log('[LOG]:Updating Bar Information');
   return (dispatch) => {
     return dispatch(updateBar())
     .then( (resp) => {
       if (resp.returning.length > 0) {
+        const barId = resp.returning[0].id;
         return Promise.all([
           dispatch(updateBarContact()),
           dispatch(updateAccount()),
-          dispatch(indexBar())
+          dispatch(indexBar(barId))
         ]);
       }
       return Promise.reject({ stage: 0 });
