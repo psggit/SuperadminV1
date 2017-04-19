@@ -33,6 +33,7 @@ export default class PromosCashbackRedeem extends Component {
     brandManagerBrandMap: PropTypes.object,
 
     brandEmail: PropTypes.string,
+    highestRole: PropTypes.string,
     campaignName: PropTypes.string,
     budgetedAmount: PropTypes.oneOfType([
       PropTypes.number.isRequired,
@@ -74,7 +75,7 @@ export default class PromosCashbackRedeem extends Component {
 
   render() {
     // state variables.
-    const {brandManagers, brandEmail, campaignName, budgetedAmount, fundsCredited, campaigns,
+    const {brandManagers, highestRole, brandEmail, campaignName, budgetedAmount, fundsCredited, campaigns,
       currentEditingPromo, isPromoSectionShown, onRemovePromo, promos, activeFrom, activeTo,
       brands, campaignStatus, brandManagerCampaignMap, brandManagerBrandMap, companies,
       brandManagerIdMap} = this.props;
@@ -226,6 +227,7 @@ export default class PromosCashbackRedeem extends Component {
             <div className={styles.save_promo_lay}>
               <button onClick={onSubmitData.bind(this, {
                 brandEmail: brandEmail,
+                highestRole: highestRole,
                 campaignName: campaignName,
                 budgetedAmount: budgetedAmount,
                 fundsCredited: fundsCredited,

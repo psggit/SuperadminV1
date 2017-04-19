@@ -14,7 +14,7 @@ import {VALUE_CHANGE, INIT_BRAND_MANAGERS, INIT_COMPANY,
   ADD_PROMO, REMOVE_PROMO, EDIT_PROMO, PROMO_CHANGE, RESET_DATA,
   DO_NOTHING, ON_FAILED, ON_LOADING} from './actions';
 // Request maker
-import {makeRequest, createFetchOption} from '../../../utils/fetch';
+import {makeRequest, createFetchOption, createInsertOption} from '../../../utils/fetch';
 // All queries for the page. NOTE: We can reuse query across pages.
 import {
   selectCompanies,
@@ -28,13 +28,13 @@ import { email as emailValidate,
 import { convertStrToISODate } from '../../../utils/data';
 
 // initial state
-const fetchData = (dispatch) => {
+const fetchData = (dispatch, getState) => {
   const promises = [];
-  promises.push(dispatch(makeRequest(selectCompanies.url, createFetchOption(selectCompanies.query),
+  promises.push(dispatch(makeRequest(selectCompanies.url, createFetchOption(selectCompanies.query, getState().loginState.highestRole),
     INIT_COMPANY, ON_FAILED, ON_LOADING)).then((companies) => {
       const company = companies && companies[0] ? companies[0].name : '';
       const selectBrandManagersQuery = selectBrandManagers(company);
-      return dispatch(makeRequest(selectBrandManagersQuery.url, createFetchOption(selectBrandManagersQuery.query),
+      return dispatch(makeRequest(selectBrandManagersQuery.url, createFetchOption(selectBrandManagersQuery.query, getState().loginState.highestRole),
         INIT_BRAND_MANAGERS, ON_FAILED, ON_LOADING)).then((brandManager) => {
           if (brandManager.length > 0) {
             dispatch({type: VALUE_CHANGE, data: {brandEmail: brandManager[0].email}});
@@ -49,7 +49,7 @@ const fetchBrandManager = (dispatch, getState) => {
   const promises = [];
   const company = getState().promosCashbackRedeemState.company;
   const selectBrandManagersQuery = selectBrandManagers(company);
-  promises.push(dispatch(makeRequest(selectBrandManagersQuery.url, createFetchOption(selectBrandManagersQuery.query),
+  promises.push(dispatch(makeRequest(selectBrandManagersQuery.url, createFetchOption(selectBrandManagersQuery.query, getState().loginState.highestRole),
     INIT_BRAND_MANAGERS, ON_FAILED, ON_LOADING)).then((brandManager) => {
       if (brandManager.length > 0) {
         dispatch({type: VALUE_CHANGE, data: {brandEmail: brandManager[0].email}});
@@ -60,7 +60,7 @@ const fetchBrandManager = (dispatch, getState) => {
 
 // Modal
 const mapStateToProps = (state) => {
-  return {...state.promosCashbackRedeemState};
+  return {...state.promosCashbackRedeemState, ...state.loginState};
 };
 
 /**
@@ -85,8 +85,7 @@ const budgetAmountCalc = (promos) => {
 /**
  * The validation dictionary has a bunch of functions which is used
  * for the validation of the fieldName is used to find the key. And the value & otherValues
- * is passed as a parameter to the function.
- *
+ * is passed as a parametvalues*
  * @type {Dictionary} return type is function.
  *
  * TODO: Composite the function when you get time... Pass success and failure function insted
@@ -424,21 +423,21 @@ const mapDispatchToProps = (dispatch) => {
           funds_credited: parseFloat(values.fundsCredited)
         });
 
-        dispatch(makeRequest(insertCampaignQuery.url, createFetchOption(insertCampaignQuery.query), DO_NOTHING, ON_FAILED, ON_LOADING)).then((campaign) => {
+        dispatch(makeRequest(insertCampaignQuery.url, createInsertOption(insertCampaignQuery.query, values.highestRole), DO_NOTHING, ON_FAILED, ON_LOADING)).then((campaign) => {
           // the array will have a single campaign
           const insertPromosQuery = insertCampaignAndPromos.insertPromos({
             campaign_id: campaign.returning[0].id,
             promos: values.promos
           });
-          dispatch(makeRequest(insertPromosQuery.url, createFetchOption(insertPromosQuery.query), DO_NOTHING, ON_FAILED, ON_LOADING)).then((cashbackOffers) => {
+          dispatch(makeRequest(insertPromosQuery.url, createInsertOption(insertPromosQuery.query, values.highestRole), DO_NOTHING, ON_FAILED, ON_LOADING)).then((cashbackOffers) => {
             const insertPromosSKUsQuery = insertCampaignAndPromos.insertPromosSKUs({
               promos: values.promos,
               offers: cashbackOffers
             });
-            dispatch(makeRequest(insertPromosSKUsQuery.url, createFetchOption(insertPromosSKUsQuery.query), DO_NOTHING, ON_FAILED, ON_LOADING)).then((cashbackOffersSKU) => {
+            dispatch(makeRequest(insertPromosSKUsQuery.url, createInsertOption(insertPromosSKUsQuery.query, values.highestRole), DO_NOTHING, ON_FAILED, ON_LOADING)).then((cashbackOffersSKU) => {
               const brandID = values.brandManagerBrandMap[values.brandEmail][0].brand_id;
               const updateElasticSearchQuery = insertCampaignAndPromos.updateElasticSearch(brandID);
-              dispatch(makeRequest(updateElasticSearchQuery.url, createFetchOption(updateElasticSearchQuery.query), DO_NOTHING, ON_FAILED, ON_LOADING)).then((elasticResponse) =>{
+              dispatch(makeRequest(updateElasticSearchQuery.url, createInsertOption(updateElasticSearchQuery.query, values.highestRole), DO_NOTHING, ON_FAILED, ON_LOADING)).then((elasticResponse) =>{
                 alert('Successful inserted campaign and corresponding skus. Indices will be updated soon....');
                 dispatch({type: RESET_DATA});
                 dispatch(fetchData);

@@ -107,12 +107,40 @@ const makeRequest = (url, options, ON_SUCCESS = null, ON_FAILURE = null, ON_LOAD
  *
  * @return {Object}          the fetch option object.
  */
-const createFetchOption = (jsonBody, includeCredentials = true, methodType = 'POST', isJSON = true) => {
+const createFetchOption = (jsonBody, role, includeCredentials = true, methodType = 'POST', isJSON = true) => {
   const requestBuilder = {};
   requestBuilder.method = methodType;
 
   if (isJSON) {
-    requestBuilder.headers = { 'Content-Type': 'application/json' };
+    requestBuilder.headers = { 'Content-Type': 'application/json', 'x-hasura-role': role };
+  }
+
+  if (includeCredentials) {
+    requestBuilder.credentials = 'include';
+  }
+
+  if (methodType.toUpperCase() !== 'GET' ) {
+    requestBuilder.body = JSON.stringify(jsonBody);
+  }
+  return requestBuilder;
+};
+
+/**
+ * Make a default insert option object.
+ *
+ * @param  {Object} jsonBody the Object which needs to sent as body.
+ * @param  {bool} if true then includes the credentials, else just sends to emailer.
+ * @param  {string} the method of the request.
+ * @param  {bool} if the request content-type is json.
+ *
+ * @return {Object}          the fetch option object.
+ */
+const createInsertOption = (jsonBody, role, includeCredentials = true, methodType = 'POST', isJSON = true) => {
+  const requestBuilder = {};
+  requestBuilder.method = methodType;
+
+  if (isJSON) {
+    requestBuilder.headers = { 'Content-Type': 'application/json', 'x-hasura-role': role };
   }
 
   if (includeCredentials) {
@@ -127,5 +155,6 @@ const createFetchOption = (jsonBody, includeCredentials = true, methodType = 'PO
 
 export {
   makeRequest,
-  createFetchOption
+  createFetchOption,
+  createInsertOption
 };
