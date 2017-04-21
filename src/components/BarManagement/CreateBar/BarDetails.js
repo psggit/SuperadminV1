@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 import formValidator from '../../Common/CommonFormValidator';
 
@@ -60,11 +61,18 @@ const BarDetails = ( { currState, organisationData } ) => { // eslint-disable-li
       <div className={styles.heading + ' ' + styles.wd_100}>Bar Details</div>
       <ul>
         <li>
-          <label>Select Organisation</label>
-          <select data-field-name="organisation_id" data-field-type="int" value={ currState.organisation_id } >
-            <option value="0">Select Organisation </option>
-            { orgObj }
-          </select>
+          <div className={styles.wd_50}>
+            <label>Select Organisation</label>
+            <select data-field-name="organisation_id" data-field-type="int" value={ currState.organisation_id } >
+              <option value="0">Select Organisation </option>
+              { orgObj }
+            </select>
+          </div>
+          <div className={styles.wd_50}>
+            <Link to={'/hadmin/bar/profile/' + currState.id + '/view_notepads'}>
+              <button>Make Notes</button>
+            </Link>
+          </div>
         </li>
         <li>
           <label>Application Number</label>

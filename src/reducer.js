@@ -14,6 +14,8 @@ import userReducer from './components/User/components/CreateUser/CreateUserActio
 
 import defaultReducer from './components/Common/Actions/CommonReducer';
 import notepadReducer from './components/NotepadEntries/NotepadAction';
+import retailerNotepadReducer from './components/RetailerNotepadEntries/NotepadAction';
+import barNotepadReducer from './components/BarNotepadEntries/NotepadAction';
 import userDataReducer from './components/Consumer/components/EditProfile/EditAction';
 
 import createSKUReducer from './components/SkuManagement/Skus/CreateSku/CreateSkuActions';
@@ -84,6 +86,8 @@ const reducer = combineReducers({
   sku_data: skuReducer,
   page_data: defaultReducer,
   notepad_data: notepadReducer,
+  retailer_notepad_data: retailerNotepadReducer,
+  bar_notepad_data: barNotepadReducer,
   brand_data: brandReducer,
   user_data: userDataReducer,
   operationUserData: userReducer,

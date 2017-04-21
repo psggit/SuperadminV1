@@ -848,6 +848,7 @@ const branchDataReducer = ( state = { organisationData: [], branchDetail: {}, br
         'excise_licence_number',
         'org_name',
         'service_charge_percent',
+        'id',
         'discount_percent'
       ];
 

@@ -715,6 +715,7 @@ const barDataReducer = (state = {organisationData: [], barDetail: {}, barContact
         'discount_percent',
         'service_charge_percent',
         'excise_licence_number',
+        'id',
         'adImage',
         'name'
       ];

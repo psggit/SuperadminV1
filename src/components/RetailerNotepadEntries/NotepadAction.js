@@ -15,14 +15,14 @@ import { routeActions } from 'redux-simple-router';
 // import commonReducer from '../Common/Actions/CommonReducer';
 
 
-const NOTEPAD_FETCH_ISSUE_SUCCESS = 'NOTEPAD/NOTEPAD_FETCH_ISSUE_SUCCESS';
+const RETAILER_NOTEPAD_FETCH_ISSUE_SUCCESS = 'RETAILER_NOTEPAD/NOTEPAD_FETCH_ISSUE_SUCCESS';
 
 /* ****** Action Creators ******** */
 
 const fetchNotepad = (userId) => {
   return (dispatch, getState) => {
     /* Url */
-    const url = Endpoints.db + '/table/notepad/select';
+    const url = Endpoints.db + '/table/retailer_notepad/select';
     const queryObj = {};
     queryObj.columns = [
       '*',
@@ -32,7 +32,7 @@ const fetchNotepad = (userId) => {
       }
     ];
     queryObj.where = {
-      'consumer_id': userId
+      'retailer_id': userId
     };
     queryObj.order_by = '-created_at';
     const genOpt = {
@@ -53,7 +53,7 @@ const fetchNotepad = (userId) => {
 const fetchIssueTypes = () => {
   return (dispatch, getState) => {
     /* Url */
-    const url = Endpoints.db + '/table/issue/select';
+    const url = Endpoints.db + '/table/retailer_issue/select';
     const queryObj = {};
     queryObj.columns = [
       '*'
@@ -70,7 +70,7 @@ const fetchIssueTypes = () => {
     /* Make a MAKE_REQUEST action */
     dispatch({type: MAKE_REQUEST});
     return Promise.all([
-      dispatch(requestAction(url, options, NOTEPAD_FETCH_ISSUE_SUCCESS, REQUEST_ERROR)),
+      dispatch(requestAction(url, options, RETAILER_NOTEPAD_FETCH_ISSUE_SUCCESS, REQUEST_ERROR)),
       dispatch({type: REQUEST_COMPLETED})
     ]);
   };
@@ -78,7 +78,7 @@ const fetchIssueTypes = () => {
 
 const insertNotepad = (issueId, description, userId) => {
   return (dispatch, getState) => {
-    const url = Endpoints.db + '/table/notepad/insert';
+    const url = Endpoints.db + '/table/retailer_notepad/insert';
     const createdBy = new Date().toISOString();
     const updatedBy = new Date().toISOString();
     const currentUserId = userId;
@@ -92,8 +92,8 @@ const insertNotepad = (issueId, description, userId) => {
       {
         'issue_id': issueId,
         'description': description,
-        'consumer_id': userId,
-        'created_by': getState().loginState.credentials.hasura_Id,
+        'retailer_id': userId,
+        'created_by': getState().loginState.credentials.hasura_id,
         'created_at': createdBy,
         'updated_at': updatedBy,
       }
@@ -116,7 +116,7 @@ const insertNotepad = (issueId, description, userId) => {
         if (resp.returning.length > 0) {
           console.log(resp);
           alert('Notepad Entry Created');
-          dispatch(routeActions.push('/hadmin/consumer/profile/' + currentUserId + '/view_notepads'));
+          dispatch(routeActions.push('/hadmin/retailer/profile/' + currentUserId + '/view_notepads'));
         }
       })
       .catch((resp) => {
@@ -131,9 +131,9 @@ const insertNotepad = (issueId, description, userId) => {
 
 /* ****************** REDUCER ********************************* */
 
-const notepadReducer = (state = defaultNotepadState, action) => {
+const retailerNotepadReducer = (state = defaultNotepadState, action) => {
   switch (action.type) {
-    case NOTEPAD_FETCH_ISSUE_SUCCESS:
+    case RETAILER_NOTEPAD_FETCH_ISSUE_SUCCESS:
       return {...state, issueTypes: action.data};
     default: return state;
   }
@@ -146,4 +146,4 @@ export {
   fetchIssueTypes,
   insertNotepad
 };
-export default notepadReducer;
+export default retailerNotepadReducer;

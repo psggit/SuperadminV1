@@ -21,12 +21,12 @@ const NotepadEntries = ({data, userId}) => { // eslint-disable-line no-unused-va
             <div className={styles.item_info + ' ' + styles.wd_100}>
               <ul>
                 <li>
-                  <label>Customer ID</label>
-                  <p>{dat.consumer_id}</p>
+                  <label>Bar ID</label>
+                  <p>{dat.bar_id}</p>
                 </li>
                 <li>
-                  <label>Marker ID</label>
-                  <p>dat.created_by</p>
+                  <label>Maker ID</label>
+                  <p>{dat.created_by}</p>
                 </li>
                 <li>
                   <label>Issue Code</label>
@@ -63,7 +63,7 @@ const NotepadEntries = ({data, userId}) => { // eslint-disable-line no-unused-va
   return (
     <div className={styles.container}>
       <div className={styles.notepad_container}>
-        <Link to={'/hadmin/consumer/profile/' + userId + '/create_notepad_entry'}>
+        <Link to={'/hadmin/bar/profile/' + userId + '/create_notepad_entry'}>
           <button className={styles.create_btn}>Create</button>
         </Link>
         {htmlCont}

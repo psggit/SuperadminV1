@@ -26,6 +26,8 @@ import {Login, Home, PageContainer,
   KycViewVerify,
   ViewCart, ViewDevice, RechargeHistory, StateManagement, CustomerTransaction,
   CreateNotepadEntry, Notepad, EditAccountDetails, Skus, Toppicks, AddTopPicks, CreateSku, SkuManagementViewSkus,
+  RetailerCreateNotepadEntry, RetailerNotepad,
+  BarCreateNotepadEntry, BarNotepad,
   TopPicksInWrapper,
   ConsumerRecharge,
   BrandCreate,
@@ -206,6 +208,10 @@ const main = (
         /* Creating and viewing notepads */
         <Route path="/hadmin/consumer/profile/:Id/create_notepad_entry" component={CreateNotepadEntry} />
         <Route path="consumer/profile/:Id/view_notepads" component={Notepad} />
+        <Route path="/hadmin/retailer/profile/:Id/create_notepad_entry" component={RetailerCreateNotepadEntry} />
+        <Route path="retailer/profile/:Id/view_notepads" component={RetailerNotepad} />
+        <Route path="/hadmin/bar/profile/:Id/create_notepad_entry" component={BarCreateNotepadEntry} />
+        <Route path="bar/profile/:Id/view_notepads" component={BarNotepad} />
 
         /* Customer Transactions */
         <Route path="consumer_transactions/history/:userId" component={ViewConsumerTransactions} />
