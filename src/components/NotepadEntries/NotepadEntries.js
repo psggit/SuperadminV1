@@ -26,7 +26,7 @@ const NotepadEntries = ({data, userId}) => { // eslint-disable-line no-unused-va
                 </li>
                 <li>
                   <label>Marker ID</label>
-                  <p>dat.created_by</p>
+                  <p>{dat.created_by}</p>
                 </li>
                 <li>
                   <label>Issue Code</label>

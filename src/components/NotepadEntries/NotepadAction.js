@@ -93,7 +93,7 @@ const insertNotepad = (issueId, description, userId) => {
         'issue_id': issueId,
         'description': description,
         'consumer_id': userId,
-        'created_by': getState().loginState.credentials.hasura_Id,
+        'created_by': getState().loginState.credentials.hasura_id,
         'created_at': createdBy,
         'updated_at': updatedBy,
       }
