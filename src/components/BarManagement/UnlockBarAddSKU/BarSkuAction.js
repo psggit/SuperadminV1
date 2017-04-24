@@ -11,14 +11,17 @@ const RESET_BAR_SKU = '@barSkuDataReducer/RESET_BAR_SKU';
 const BAR_INFO_FETCHED = '@barSkuDataReducer/BAR_INFO_FETCHED';
 const BAR_SKU_FETCHED = '@barSkuDataReducer/BAR_SKU_FETCHED';
 const SKU_FETCHED = '@barSkuDataReducer/SKU_FETCHED';
+const CHANGE_LIST = '@barSkuDataReducer/CHANGE_LIST';
 
 const TOGGLE_SKU_DIV = '@barSkuDataReducer/TOGGLE_SKU_DIV';
+const CONSUMER_INFO_FETCHED = '@barSkuDataReducer/CONSUMER_INFO_FETCHED';
 
 const INPUT_VALUE_CHANGED = '@barSkuDataReducer/INPUT_VALUE_CHANGED';
 
 const VIEW_SKU = '@barSkuDataReducer/VIEW_SKU';
 
 const CANCEL_SKU = '@barSkuDataReducer/CANCEL_SKU';
+const CLOSE_SCREEN = '@barSkuDataReducer/CLOSE_SCREEN';
 
 const CLEAR_SKU = '@barSkuDataReducer/CLEAR_SKU';
 
@@ -101,6 +104,19 @@ const getBar = ( barId ) => {
     selectObj.where = {
       'id': parseInt(barId, 10)
     };
+    const date = new Date;
+    if (getState().bar_sku_create_data.showData === 'current') {
+      selectObj.columns[1].where = {'$and': [{'is_active': true }, {'end_date': {'$gt': date}}]};
+    }
+    if (getState().bar_sku_create_data.showData === 'active') {
+      selectObj.columns[1].where = {'$and': [{'is_active': true }, {'end_date': {'$gt': date}}]};
+    }
+    if (getState().bar_sku_create_data.showData === 'inactive') {
+      selectObj.columns[1].where = {'$and': [{'is_active': false}, {'end_date': {'$gt': date}}]};
+    }
+    if (getState().bar_sku_create_data.showData === 'expired') {
+      selectObj.columns[1].where = { 'end_date': {'$lt': date}};
+    }
 
     const genOptions = {
       method: 'POST',
@@ -121,6 +137,32 @@ const getBar = ( barId ) => {
       return Promise.reject();
     });
     // return Promise.resolve();
+  };
+};
+
+const fetchConsumersWithOpenReservations = (skuPricingId) => {
+  return ( dispatch, getState ) => {
+    const barUrl = Endpoints.db + '/table/reservation_item_bar/select';
+    const filterObj = {
+      'columns': ['id', 'reservation_id', 'created_at', {'name': 'cart', 'columns': [{'name': 'cart', 'columns': [{'name': 'customer', 'columns': ['email', 'full_name', 'mobile_number', 'id']}]}]}],
+      'where': {
+        'id': {'$in': getState().bar_sku_create_data.barSKUs[skuPricingId]}
+      }
+    };
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(filterObj)
+    };
+    return dispatch( requestAction( barUrl, options, CONSUMER_INFO_FETCHED ) )
+    .catch( () => {
+      alert('Error While fetching BAR SKU');
+      return Promise.reject();
+    });
   };
 };
 
@@ -419,10 +461,14 @@ const defaultBarSkuState = {
   barCityInfo: {},
   newSkuData: {},
   addedInventory: [],
+  consumerInfo: [],
   inventoryMap: {},
   inventoryId: 0,
   isEdit: false,
-  barSKUs: {}
+  barSKUs: {},
+  showData: 'current',
+  showScreen: false
+
 };
 
 /* End of it */
@@ -442,19 +488,25 @@ const barSkuDataReducer = ( state = defaultBarSkuState, action ) => {
         inventoryItems[sku.id] = sku;
       });
 
-      return { ...state, barData: action.data, barCity: action.data[0].city_id, barCityInfo: action.data[0].city, addedInventory: [ ...pricingIds ], inventoryMap: { ...inventoryItems }};
+      return { ...state, showScreen: false, barData: action.data, barCity: action.data[0].city_id, barCityInfo: action.data[0].city, addedInventory: [ ...pricingIds ], inventoryMap: { ...inventoryItems }};
     case SKU_FETCHED:
       return { ...state, skuData: action.data };
     case VIEW_SKU:
-      return { ...state, newSkuData: { ...state.inventoryMap[action.data], status: state.inventoryMap[action.data].is_active }, isEdit: true, inventoryId: state.inventoryMap[action.data].id, showSku: true };
+      return { ...state, showScreen: false, newSkuData: { ...state.inventoryMap[action.data], status: state.inventoryMap[action.data].is_active }, isEdit: true, inventoryId: state.inventoryMap[action.data].id, showSku: true };
     case TOGGLE_SKU_DIV:
       return { ...state, showSku: !state.showSku };
+    case CONSUMER_INFO_FETCHED:
+      return { ...state, consumerInfo: action.data, showScreen: true, showSku: false };
+    case CLOSE_SCREEN:
+      return { ...state, showScreen: false};
     case INPUT_VALUE_CHANGED:
       const brandSKUINFO = {};
       brandSKUINFO[action.data.key] = action.data.value;
       return { ...state, newSkuData: { ...state.newSkuData, ...brandSKUINFO}};
     case CLEAR_SKU:
       return { ...state, newSkuData: {} };
+    case CHANGE_LIST:
+      return { ...state, showData: action.data };
     case CANCEL_SKU:
       return { ...state, newSkuData: {}, showSku: false, inventoryId: 0, isEdit: false };
     case RESET_BAR_SKU:
@@ -482,10 +534,13 @@ export {
   fetchInitials,
   TOGGLE_SKU_DIV,
   INPUT_VALUE_CHANGED,
+  fetchConsumersWithOpenReservations,
   saveSku,
   updateSku,
   VIEW_SKU,
+  CHANGE_LIST,
   CANCEL_SKU,
+  CLOSE_SCREEN,
   indexSku,
   disableSku
 };

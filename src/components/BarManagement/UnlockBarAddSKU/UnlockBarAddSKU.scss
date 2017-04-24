@@ -13,8 +13,10 @@
 	text-transform: uppercase;
 	margin-bottom: 10px;
 	text-align: left;
-	color: #9F9E9E;
-	font-weight: 500;
+	color: #E67c24;
+    padding: 19px;
+    background: #e6e6e6;
+	font-weight: 800;
 	margin-left: 45px;
   margin-top: 125px;
 }
@@ -44,11 +46,41 @@
 	}
 	.unlock_listing
 	{
-		border-bottom: 1px solid #999;
+        margin-bottom: 30px;
+        box-shadow: #b2b2b2 4px 8px 15px 1px;
+        position: relative;
 		.unlock_listing_name
 		{
 			padding-left: 15px;
+			padding-top: 10px;
+            .unlock_head
+            {
+                color: #999;
+            }
+		}
+        .listing_order
+        {
+            position:absolute;
+            top: 0;
+            right: 0;
+            font-size:10px;
+            width: 20px;
+            padding: 4px;
+            background: #eee;
+        }
+		.expiry
+		{
+			padding-left: 15px;
 			padding-top: 15px;
+            font-size: 10px;
+            color: green;
+		}
+		.expired
+		{
+			padding-left: 15px;
+			padding-top: 15px;
+            font-size: 10px;
+            color: red;
 		}
 		.unlock_listing_date_container
 		{
@@ -65,15 +97,27 @@
 				padding-left: 20px;
 			}
 		}
+		.unlock_view
+		{
+			display: inline-block;
+			color: #FF7400;
+			text-align: right;
+            cursor: pointer;
+		}
 		.unlock_active_container
 		{
-			padding-left: 15px;
-			padding-top: 15px;
-			padding-bottom: 15px;
+            padding: 15px;
 			.unlock_active
 			{
 				display: inline-block;
 				width: 50%;
+                color: green;
+			}
+			.unlock_inactive
+			{
+				display: inline-block;
+				width: 50%;
+                color: red;
 			}
 			.unlock_view
 			{
@@ -85,6 +129,36 @@
 			}
 		}
 	}
+}
+.options
+{
+  padding-left: 45px;
+  ul
+  {
+    display: inline-block;
+    padding-left: 0px;
+  }
+  .optionLabel
+  {
+    display: inline-block;
+  }
+  li
+  {
+    display: inline-block;
+    padding: 6px 15px;
+    background: #dedede;
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 10px;
+  }
+  li:hover
+  {
+    background: #fc9658;
+  }
+  .selected
+  {
+    background: #ff670b !important;
+  }
 }
 .add_sku_wrapper
 {
