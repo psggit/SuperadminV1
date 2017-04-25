@@ -35,6 +35,7 @@ const CANCEL_IMAGE = 'SKU/CANCEL_IMAGE';
 const SKU_INFORMATION_CHANGE = 'SKU/SKU_INFORMATION_CHANGE';
 
 const STATE_MRP_INFORMATION = 'SKU/STATE_MRP_INFORMATION';
+const TOGGLE_CONSUMER_LIST = 'SKU/TOGGLE_CONSUMER_LIST';
 
 const UPDATE_COMPONENT_STATE = 'SKU/UPDATE_COMPONENT_STATE';
 const FETCHED_RESERVED_ITEMS = 'SKU/FETCHED_RESERVED_ITEMS';
@@ -1318,6 +1319,8 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
       return { ...state, skuReqObj: { ...localSkuInfo, 'brand_id': state.brandIdMap[localSkuInfo.brand_id], status: localSkuInfo.is_active }, stateCityMapping: { ...localStateCityMapping }, cityRetailerMapping: { ...localCityRetailerMapping }, retailerMapping: { ...localRetailerMapping }, skuImageUrl: (localSkuInfo.image ? localSkuInfo.image : ''), skuStatePricingMap: { ...skuStatePricingMap }};
     case FETCHED_RESERVED_ITEMS:
       return { ...state, reservedItems: action.data };
+    case TOGGLE_CONSUMER_LIST:
+      return { ...state, showConsumer: !state.showConsumer };
     default: return state;
   }
 };
@@ -1341,6 +1344,7 @@ export {
   CANCEL_IMAGE,
   SKU_INFORMATION_CHANGE,
   STATE_MRP_INFORMATION,
+  TOGGLE_CONSUMER_LIST,
   onSave,
   onUpdate,
   updateComponentState,

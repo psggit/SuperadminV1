@@ -10,7 +10,9 @@ import SkuInfo from './SkuInfo';
 const CreateSku = ({ brandList
     , stateList
     , stateCityMapping
+    , showConsumer
     , cityRetailerMapping
+    , toggleConsumerInfo
     , onStateSelect
     , onStatePriceEntered
     , onStateView
@@ -41,7 +43,7 @@ const CreateSku = ({ brandList
       {
         /* Shows entry form for entering sku infomation */
       }
-      <SkuInfo dispatch={ dispatch } brandList={brandList} skuReqObj = { skuReqObj } reservedItems = { reservedItems } page = { page } disableSKUs = { disableSKUs }/>
+      <SkuInfo toggleConsumerInfo = {toggleConsumerInfo} showConsumer = {showConsumer} dispatch={ dispatch } brandList={brandList} skuReqObj = { skuReqObj } reservedItems = { reservedItems } page = { page } disableSKUs = { disableSKUs }/>
       {
         /* Component to display the list of states and their corresponding prices */
       }

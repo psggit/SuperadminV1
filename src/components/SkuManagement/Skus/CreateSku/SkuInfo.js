@@ -15,8 +15,30 @@ import { SKU_INFORMATION_CHANGE } from './CreateSkuActions';
 const returnValue = (obj, key) => {
   return ( obj[key] ? obj[key] : '' );
 };
-const SkuInfo = ({ brandList, skuReqObj, disableSKUs, reservedItems, page }) => {
+const SkuInfo = ({ brandList, showConsumer, toggleConsumerInfo, skuReqObj, disableSKUs, reservedItems, page }) => {
   const styles = require('./CreateSku.scss');
+  const customerInfo = reservedItems.map((indiv, index) => {
+    return (
+      <div>
+        -------------------------------------------
+        <div>
+        {index + 1})<span className={styles.label}> ID: </span>{indiv.consumer_id}
+        </div>
+        <div>
+        <span className={styles.label}> Name: </span>{indiv.name}
+        </div>
+        <div>
+        <span className={styles.label}> Email: </span>{indiv.email}
+        </div>
+        <div>
+        <span className={styles.label}> Mobile: </span>{indiv.mobile_number}
+        </div>
+        <div>
+        <span className={styles.label}> Price: </span>{indiv.price}
+        </div>
+      </div>
+    );
+  });
   return (
         <div className={styles.create_sku_wrapper}>
           <div className={ ( page === 'edit_page' ) ? styles.indiv_element : 'hide' }>Edit Sku</div>
@@ -38,13 +60,21 @@ const SkuInfo = ({ brandList, skuReqObj, disableSKUs, reservedItems, page }) => 
               </select>
               <button className={ !skuReqObj.is_active && !skuReqObj.status && ( page === 'edit_page' ) ? '' : 'hide' } onClick={ disableSKUs }>Disable</button>
             </div>
+            <div onClick={toggleConsumerInfo} className={ styles.warning_block + ' ' + ((( page === 'edit_page' ) && (showConsumer === false)) ? '' : 'hide' ) }>
+              * Open Reservations: { reservedItems ? reservedItems.length + ' (Show Consumers)' : 0 }
+            </div>
+            <div onClick={toggleConsumerInfo} className={ styles.warning_block + ' ' + ((( page === 'edit_page' ) && (showConsumer === true)) ? '' : 'hide' ) }>
+              * Open Reservations: { reservedItems ? reservedItems.length + ' (Close)' : 0 }
+            </div>
             <div className={ styles.warning_block + ' ' + ( !skuReqObj.is_active && !skuReqObj.status && ( page === 'edit_page' ) ? '' : 'hide' ) }>
               * Click on Disable button to cancel { reservedItems ? reservedItems.length : 0 } open reservations
             </div>
             <div className={ styles.warning_block + ' ' + ( !skuReqObj.is_active && skuReqObj.status && ( page === 'edit_page' ) ? '' : ' hide ' ) }>
               * Click on Update to Deactivate an SKU
             </div>
-
+          </div>
+          <div className={(showConsumer) ? '' : 'hide'}>
+          {customerInfo}
           </div>
         </div>
       );

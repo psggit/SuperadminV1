@@ -17,6 +17,7 @@ import { fetchBrand
   , viewState
   , viewCity
   , STATE_MRP_INFORMATION
+  , TOGGLE_CONSUMER_LIST
   , onSave
   , onUpdate
   , updateComponentState
@@ -175,6 +176,9 @@ class SkuWrapper extends Component {
   onSkuInfoChange(e) {
     console.log(e.target);
   }
+  toggleConsumerInfo() {
+    this.props.dispatch({ type: TOGGLE_CONSUMER_LIST});
+  }
 
   disableSKUs() {
     console.log('clicked');
@@ -190,6 +194,7 @@ class SkuWrapper extends Component {
               onStateSelect={this.onStateSelect.bind(this)}
               onStatePriceEntered={this.onStatePriceEntered.bind(this)}
               onStateView={this.onStateView.bind(this)}
+              toggleConsumerInfo={this.toggleConsumerInfo.bind(this)}
               onCityCheck={this.onCityCheck.bind(this)}
               onCityView={this.onCityView.bind(this)}
               onRetailerCheck={this.onRetailerCheck.bind(this)}
