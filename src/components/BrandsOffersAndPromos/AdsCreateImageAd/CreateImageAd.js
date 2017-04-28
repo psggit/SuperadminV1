@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchStates, fetchBrands, citiesViewHandler, IMAGE_UPLOAD_SUCCESS, IMAGE_UPLOAD_ERROR, IMAGE_CANCEL} from './CreateAdImageActions';
 import { checkState, unCheckState } from './CreateAdImageActions';
-import { checkCity, unCheckCity, finalSave } from './CreateAdImageActions';
+import { updateList, checkCity, unCheckCity, finalSave } from './CreateAdImageActions';
 import uploadFile from '../../Common/Actions/upload';
 import Endpoints from '../../../Endpoints';
 import { RESET } from './CreateAdImageActions';
@@ -78,6 +78,11 @@ class CreateImageAd extends Component { // eslint-disable-line no-unused-vars
       ]);
     }
   }
+  onChangeCityOrder(city, e) {
+    Promise.all([
+      this.props.dispatch(updateList(city, e.target.value))
+    ]);
+  }
   onClickSave() {
     Promise.all([
       this.props.dispatch(finalSave())
@@ -110,6 +115,7 @@ class CreateImageAd extends Component { // eslint-disable-line no-unused-vars
           <label>
             <input type="checkbox" checked={(selectedCities.hasOwnProperty(city.id)) ? 'checked' : ''} onChange={this.onChangeCityCheck.bind(this, city)}/> {city.name}
           </label>
+            <input type="number" className = {(selectedCities.hasOwnProperty(city.id)) ? '' : 'hide'} onChange={this.onChangeCityOrder.bind(this, city)} value={city.listing_order}/>
         </li>
       );
     });

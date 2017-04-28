@@ -38,6 +38,10 @@ const AdInfo = ({dispatch, cities, selectedCity}) => {
               <input data-field-name="ad_title" data-field-type="string" type="text" />
             </li>
             <li>
+              <label>Listing Order</label>
+              <input data-field-name="listing_order" data-field-type="int" type="int" />
+            </li>
+            <li>
               <label>Ad Location</label>
               <select data-field-name="ad_location" data-field-type="string">
                 <option>Select</option>

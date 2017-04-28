@@ -55,6 +55,10 @@ const AdInfo = ({dispatch, campaigns, skl, bmi}) => {
               <input data-field-name="budgeted_amount" data-field-type="int" type="text"/>
             </li>
             <li>
+              <label>Lisitng Order</label>
+              <input data-field-name="listing_order" data-field-type="int" type="int"/>
+            </li>
+            <li>
               <label>Funds Credited</label>
               <input data-field-name="funds_credited" data-field-type="int" type="text"/>
             </li>

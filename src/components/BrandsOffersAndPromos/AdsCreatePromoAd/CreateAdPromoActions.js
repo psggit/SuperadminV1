@@ -125,6 +125,17 @@ const checkCity = (cityObj) => {
   };
 };
 
+const updateList = (cityObj, listingOrder) => {
+  return (dispatch, state) => {
+    const lstate = state().createImageAd_data;
+    const lCities = {...lstate.selectedCities};
+    lCities[cityObj.id].listing_order = (isNaN(parseInt(listingOrder, 10))) ? '' : parseInt(listingOrder, 10);
+    return Promise.all([
+      dispatch({type: UPDATED_CITIES_SELECTION, data: {...lCities}})
+    ]);
+  };
+};
+
 const unCheckCity = (cityObj) => {
   return (dispatch, state) => {
     const lstate = state().createPromoAd_data;
@@ -152,6 +163,7 @@ const insertCityMap = (adId) => {
       obj.city_id = parseInt(cityId, 10);
       obj.created_at = new Date().toISOString();
       obj.updated_at = new Date().toISOString();
+      obj.listing_order = (lCities[cityId].listing_order === '') ? 0 : lCities[cityId].listing_order;
       adsData.push(obj);
     });
     const adImageUrl = Endpoints.db + '/table/ad_promo_city/insert';
@@ -187,6 +199,7 @@ const insertAdData = (imgUrl, adInfo, bminfo) => {
     adInfo.active_from = adInfo.active_from + ':00.000000+05:30';
     adInfo.active_to = adInfo.active_to + ':00.000000+05:30';
     delete adInfo.campaign;
+    delete adInfo.listing_order;
     const adData = {};
     adData.objects = [adInfo];
     adData.returning = ['id'];
@@ -268,6 +281,11 @@ const adsCreatePromoReducer = (state = defaultcreatePromoAdData, action) => {
     case CAMPAIGNS_FETCH:
       return {...state, campaignsAll: action.data};
     case STATES_FETCH:
+      action.data.forEach((s) => {
+        s.cities.forEach((city) => {
+          city.listing_order = 1;
+        });
+      });
       return {...state, statesAll: action.data};
     case IMAGE_UPLOAD_SUCCESS:
       return {...state, imageUrl: action.data[0]};
@@ -299,6 +317,7 @@ export {
   IMAGE_UPLOAD_SUCCESS,
   IMAGE_UPLOAD_ERROR,
   IMAGE_CANCEL,
+  updateList,
   checkState,
   unCheckState,
   checkCity,

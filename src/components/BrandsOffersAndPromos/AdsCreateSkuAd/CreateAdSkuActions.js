@@ -135,6 +135,17 @@ const checkCity = (cityObj) => {
   };
 };
 
+const updateList = (cityObj, listingOrder) => {
+  return (dispatch, state) => {
+    const lstate = state().createImageAd_data;
+    const lCities = {...lstate.selectedCities};
+    lCities[cityObj.id].listing_order = (isNaN(parseInt(listingOrder, 10))) ? '' : parseInt(listingOrder, 10);
+    return Promise.all([
+      dispatch({type: UPDATED_CITIES_SELECTION, data: {...lCities}})
+    ]);
+  };
+};
+
 const unCheckCity = (cityObj) => {
   return (dispatch, state) => {
     const lstate = state().createSkuAd_data;
@@ -183,6 +194,7 @@ const insertCityMap = (adId) => {
       obj.ad_id = parseInt(adId, 10);
       obj.city_id = parseInt(cityId, 10);
       obj.created_at = new Date().toISOString();
+      obj.listing_order = (lCities[cityId].listing_order === '') ? 0 : lCities[cityId].listing_order;
       obj.updated_at = new Date().toISOString();
       adsData.push(obj);
     });
@@ -219,6 +231,7 @@ const insertAdData = (imgUrl, adInfo) => {
     adInfo.active_from = adInfo.active_from + ':00.000000+05:30';
     adInfo.active_to = adInfo.active_to + ':00.000000+05:30';
     delete adInfo.brand;
+    delete adInfo.listing_order;
     console.log(adInfo);
     const adData = {};
     adData.objects = [adInfo];
@@ -300,6 +313,11 @@ const adsCreateSkuReducer = (state = defaultcreateSkuAdData, action) => {
     case BRAND_MANAGERS_FETCH:
       return {...state, brandManagers: action.data};
     case STATES_FETCH:
+      action.data.forEach((s) => {
+        s.cities.forEach((city) => {
+          city.listing_order = 1;
+        });
+      });
       return {...state, statesAll: action.data};
     case IMAGE_UPLOAD_SUCCESS:
       return {...state, imageUrl: action.data[0]};
@@ -333,6 +351,7 @@ export {
   IMAGE_CANCEL,
   checkState,
   unCheckState,
+  updateList,
   checkCity,
   unCheckCity,
   finalSave,
