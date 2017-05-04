@@ -14,6 +14,7 @@ import { routeActions } from 'redux-simple-router';
 
 /* Action Constants */
 const BRAND_FETCH = 'SKU/BRAND_FETCH';
+const SPECIFIC_BRAND_FETCH = 'SKU/SPECIFIC_BRAND_FETCH';
 const RESET = 'SKU/RESET';
 const STATE_FETCH_AND_COMPUTE_MAPPINGS = 'SKU/STATE_FETCH_AND_COMPUTE_MAPPINGS';
 const MARK_STATE_SELECTED = 'SKU/MARK_STATE_SELECTED';
@@ -75,6 +76,40 @@ const fetchBrand = () => {
     ]);
   };
 };
+
+const fetchSpecificBrand = (id) => {
+  return (dispatch, getState) => {
+    /* Url */
+    const url = Endpoints.db + '/table/sku/select';
+    const queryObj = {};
+    queryObj.columns = [
+      {
+        'name': 'brand',
+        'columns': [
+          '*'
+        ]
+      }
+    ];
+    queryObj.where = {
+      'id': parseInt(id, 10)
+    };
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(queryObj)
+    };
+    /* Make a MAKE_REQUEST action */
+    // dispatch({type: MAKE_REQUEST});
+    return Promise.all([
+      dispatch(requestAction(url, options, SPECIFIC_BRAND_FETCH, REQUEST_ERROR))
+    ]);
+  };
+};
+
 
 const hydrateStateObj = () => {
   return ( dispatch, getState) => {
@@ -219,7 +254,8 @@ const fetchState = () => {
             'name': 'retailers',
             'columns': [
               '*'
-            ]
+            ],
+            'order_by': '+org_name',
           }
         ],
         'where': {
@@ -242,7 +278,7 @@ const fetchState = () => {
         }
       }
     ];
-    queryObj.order_by = '-state_name';
+    queryObj.order_by = '+state_name';
     queryObj.where = {
       'cities': {
         '$or': [
@@ -1038,8 +1074,8 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
   let retailersObj;
   switch (action.type) {
     case BRAND_FETCH:
-      const brandSlugMap = {};
-      const brandIdMap = {};
+      let brandSlugMap = {};
+      let brandIdMap = {};
       action.data.forEach( ( brand ) => {
         brandSlugMap[ brand.short_name ] = brand.id;
       });
@@ -1047,6 +1083,12 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
         brandIdMap[ brand.id ] = brand.short_name;
       });
       return {...state, brandList: action.data, brandIdMap: { ...brandIdMap}, brandSlug: { ...brandSlugMap }};
+    case SPECIFIC_BRAND_FETCH:
+      brandSlugMap = {};
+      brandIdMap = {};
+      brandSlugMap[ action.data[0].brand.short_name ] = action.data[0].brand.id;
+      brandIdMap[ action.data[0].brand.id ] = action.data[0].brand.short_name;
+      return {...state, brandList: [action.data[0].brand], brandIdMap: { ...brandIdMap}, brandSlug: { ...brandSlugMap }};
     case MARK_STATE_SELECTED:
       const currState = {};
       currState[action.data] = Object.assign({}, state.stateCityMapping[action.data]);
@@ -1329,6 +1371,7 @@ const createSKUReducer = (state = defaultCreateSkuState, action) => {
 
 export {
   fetchBrand,
+  fetchSpecificBrand,
   fetchState,
   RESET,
   markStateSelected,

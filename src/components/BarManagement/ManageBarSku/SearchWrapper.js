@@ -18,7 +18,7 @@ const SearchWrapper = ( { data, onClickHandler } ) => {
               { dat.id }
             </td>
             <td> { dat.sku_pricing.sku.brand.brand_name } - { dat.sku_pricing.sku.volume } ML </td>
-            <td> { dat.bar.hipbarPrice}</td>
+            <td> { dat.hipbarPrice }</td>
             <td>
               { dat.bar.name }
             </td>

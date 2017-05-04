@@ -7,6 +7,7 @@ import CreateSku from './CreateSku';
 
 /* Action creator imports */
 import { fetchBrand
+  , fetchSpecificBrand
   , fetchState
   , markStateSelected
   , unMarkStateSelected
@@ -60,7 +61,7 @@ class SkuWrapper extends Component {
       Promise.all([
         this.props.dispatch({ type: MAKE_REQUEST }),
 
-        this.props.dispatch(fetchBrand()),
+        this.props.dispatch(fetchSpecificBrand(Id)),
         this.props.dispatch(fetchState()),
         this.props.dispatch(updateComponentState('edit_page', parseInt(Id, 10))),
         this.props.dispatch(getReservedItems(Id))

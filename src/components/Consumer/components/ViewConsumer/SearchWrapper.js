@@ -32,7 +32,6 @@ const ConsumerSearchWrapper = ( {data} ) => {
             <td> { (dat.level_id ) ? dat.level_id : '' } </td>
             <td> { (dat.device) ? dat.device.device_num : '' } </td>
             <td> { createdAt } </td>
-            <td> { updatedAt } </td>
           </tr>
         );
   });
@@ -60,8 +59,7 @@ const ConsumerSearchWrapper = ( {data} ) => {
                   <th> DOB </th>
                   <th> Level </th>
                   <th> IMEI </th>
-                  <th> Updated At </th>
-                  <th> CreatedAt </th>
+                  <th> Created At </th>
                 </tr>
               </thead>
               <tbody>

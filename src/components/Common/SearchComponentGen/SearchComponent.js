@@ -63,9 +63,9 @@ class SearchComponent extends Component {
     return (
       <div className={styles.search_wrapper + ' ' + styles.wd_100}>
       	<p>Search</p>
-        { selectedFilters }
         <SearchFields id = { currentFilter } monitorChanges={ this.trackChanges.bind(this) } onTabOut={ this.onTabOut.bind(this) } isDisabled="0" values={ this.props.currFilter.filters[currentFilter] ? this.props.currFilter.filters[currentFilter] : {} } selectedFilters={ selectedFields } clearFilter={ this.onClose.bind(this) } configuredFields={ configuredFields } fieldOperatorMap={ fieldOperatorMap } fieldTypeMap={ fieldTypeMap } />
         { this.props.children }
+        { selectedFilters }
       </div>
     );
   }
