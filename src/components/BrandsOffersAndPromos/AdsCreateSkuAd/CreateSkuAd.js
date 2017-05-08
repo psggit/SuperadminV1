@@ -115,7 +115,7 @@ class CreateSkuAd extends Component { // eslint-disable-line no-unused-vars
           <label>
             <input type="checkbox" checked={(selectedCities.hasOwnProperty(city.id)) ? 'checked' : ''} onChange={this.onChangeCityCheck.bind(this, city)}/> {city.name}
           </label>
-            <input type="number" className = {(selectedCities.hasOwnProperty(city.id)) ? '' : 'hide'} onChange={this.onChangeCityOrder.bind(this, city)} value={city.listing_order}/>
+            <input type="number" placeholder="Display Order" className = {(selectedCities.hasOwnProperty(city.id)) ? '' : 'hide'} onChange={this.onChangeCityOrder.bind(this, city)} value={city.listing_order}/>
         </li>
       );
     });
