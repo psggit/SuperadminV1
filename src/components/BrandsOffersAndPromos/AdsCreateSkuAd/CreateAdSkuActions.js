@@ -137,7 +137,7 @@ const checkCity = (cityObj) => {
 
 const updateList = (cityObj, listingOrder) => {
   return (dispatch, state) => {
-    const lstate = state().createImageAd_data;
+    const lstate = state().createSkuAd_data;
     const lCities = {...lstate.selectedCities};
     lCities[cityObj.id].listing_order = (isNaN(parseInt(listingOrder, 10))) ? '' : parseInt(listingOrder, 10);
     return Promise.all([
