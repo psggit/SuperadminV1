@@ -77,6 +77,8 @@ export HomepageManagementSelectAds from './HomepageManagement/SelectAds';
 export BrandManagerProfile from './BrandsOffersAndPromos/BrandManagerProfile/BrandManagerProfile';
 export CreateBrandManager from './BrandsOffersAndPromos/CreateBrandManager/CreateBrandManager';
 export BrandPromos from './BrandsOffersAndPromos/BrandPromos/BrandPromos';
+export WelcomeDrinksView from './BrandsOffersAndPromos/WelcomeDrinksView/WelcomeDrinksView';
+export WelcomeDrinksCreate from './BrandsOffersAndPromos/WelcomeDrinksCreate/WelcomeDrinksCreate';
 export CreatePromos from './BrandsOffersAndPromos/CreatePromos/CreatePromos';
 export PromosCashbackRedeem from './BrandsOffersAndPromos/PromosCashbackRedeem/PromosCashbackRedeem';
 export PromosOnPack from './BrandsOffersAndPromos/PromosOnPack/PromosOnPack';
