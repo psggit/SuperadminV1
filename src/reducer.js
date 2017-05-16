@@ -47,6 +47,8 @@ import genreReducer from './components/SkuManagement/Genre/GenreAction';
 
 // Reducer for PromosInstantCashback
 import PromosCashbackRedeem from './components/BrandsOffersAndPromos/PromosCashbackRedeem/actions';
+// Reducer for Promos ON Pack
+import PromosOnPack from './components/BrandsOffersAndPromos/PromosOnPack/actions';
 // import whatsNewReducer from './components/WhatsNew/CreatePost/Action';
 import whatsNewReducer from './components/WhatsNewArticle/CreateArticle/CreateArticleAction';
 
@@ -75,6 +77,7 @@ import invitationReducer from './components/Invites/reducer';
 const reducer = combineReducers({
   // The promos Side-menu states
   promosCashbackRedeemState: PromosCashbackRedeem,
+  promosOnPackRedeemState: PromosOnPack,
   // Everything else.
   loginState: loginReducer,
   routing: routeReducer,

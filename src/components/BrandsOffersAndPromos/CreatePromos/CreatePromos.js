@@ -37,7 +37,7 @@ const CreatePromos = () => { // eslint-disable-line no-unused-vars
               <div className={styles.squarecontent}>
                   <div>
                       <span>
-                          <a onClick={unAvailableAlert.bind(this)}>Onpack Promo</a>
+                        <Link to={'/hadmin/brands_offers_and_promos/promos/on_pack'}>On Pack</Link>
                       </span>
                   </div>
               </div>

@@ -79,6 +79,7 @@ export CreateBrandManager from './BrandsOffersAndPromos/CreateBrandManager/Creat
 export BrandPromos from './BrandsOffersAndPromos/BrandPromos/BrandPromos';
 export CreatePromos from './BrandsOffersAndPromos/CreatePromos/CreatePromos';
 export PromosCashbackRedeem from './BrandsOffersAndPromos/PromosCashbackRedeem/PromosCashbackRedeem';
+export PromosOnPack from './BrandsOffersAndPromos/PromosOnPack/PromosOnPack';
 export RetailerManagementCreate from './RetailerManagement/CreateBranch/CreateBranch';
 
 export RetailerManagementBarCreate from './BarManagement/CreateBar/CreateBar';
