@@ -116,7 +116,7 @@ class WelcomeDrinksView extends React.Component { // eslint-disable-line no-unus
           </SearchComponent>
 
           <div className={styles.create_layout + ' ' + styles.wd_100}>
-            <Link to={'/hadmin/brands_offers_and_promos/ll'}>
+            <Link to={'/hadmin/brands_offers_and_promos/welcome_drinks_create'}>
               <button className={styles.common_btn}>Create WD Campaign</button>
             </Link>
           </div>

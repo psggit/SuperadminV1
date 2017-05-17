@@ -158,6 +158,11 @@ const PageContainer = ({location, name, role, children, dispatch}) => { // eslin
                     Ads
                 </Link>
               </label></li>
+              <li className={styles.sidebar_list}><label>
+                <Link to={'/hadmin/brands_offers_and_promos/welcome_drinks_view'} className={ lastPathname === 'consumer_transactions' ? styles.active : '' }>
+                    Welcome Drinks
+                </Link>
+              </label></li>
               </ul>
             </li>
           </ul>
