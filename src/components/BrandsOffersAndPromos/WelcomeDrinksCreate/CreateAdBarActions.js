@@ -2,25 +2,27 @@
  * Will receive default state from Common
  */
 
-import { defaultcreateBarAdData} from '../../Common/Actions/DefaultState';
+import { defaultwelcomeCreateData} from '../../Common/Actions/DefaultState';
 import requestAction from '../../Common/Actions/requestAction';
 import Endpoints, { globalCookiePolicy } from '../../../Endpoints';
 import { MAKE_REQUEST,
   REQUEST_COMPLETED,
   REQUEST_ERROR} from '../../Common/Actions/Actions';
-import { routeActions } from 'redux-simple-router';
 
 // import commonReducer from '../Common/Actions/CommonReducer';
 
-const CITIES_FETCH = 'AD_CREATE_BAR/CITIES_FETCH';
-const CITY_SELECT = 'AD_CREATE_BAR/CITY_SELECT';
-const AD_INFO = 'AD_CREATE_BAR/AD_INFO';
-const CITIES_VIEW = 'AD_CREATE_BAR/CITIES_VIEW';
-const IMAGE_UPLOAD_SUCCESS = 'AD_CREATE_BAR/IMAGE_UPLOAD_SUCCESS';
-const IMAGE_UPLOAD_ERROR = 'AD_CREATE_BAR/IMAGE_UPLOAD_SUCCESS';
-const IMAGE_CANCEL = 'AD_CREATE_BAR/IMAGE_CANCEL';
-const UPDATED_CITIES_SELECTION = 'AD_CREATE_BAR/UPDATED_CITIES_SELECTION';
-const RESET = 'AD_CREATE_BAR/RESET';
+const CITIES_FETCH = 'WELCOME_DRINKS/CITIES_FETCH';
+const BRANDS_FETCH = 'WELCOME_DRINKS/BRANDS_FETCH';
+const SKU_FETCH = 'WELCOME_DRINKS/SKU_FETCH';
+const PRODUCTS_FETCH = 'WELCOME_DRINKS/PRODUCTS_FETCH';
+const CITY_SELECT = 'WELCOME_DRINKS/CITY_SELECT';
+const AD_INFO = 'WELCOME_DRINKS/AD_INFO';
+const CITIES_VIEW = 'WELCOME_DRINKS/CITIES_VIEW';
+const IMAGE_UPLOAD_SUCCESS = 'WELCOME_DRINKS/IMAGE_UPLOAD_SUCCESS';
+const IMAGE_UPLOAD_ERROR = 'WELCOME_DRINKS/IMAGE_UPLOAD_SUCCESS';
+const IMAGE_CANCEL = 'WELCOME_DRINKS/IMAGE_CANCEL';
+const UPDATED_CITIES_SELECTION = 'WELCOME_DRINKS/UPDATED_CITIES_SELECTION';
+const RESET = 'WELCOME_DRINKS/RESET';
 
 /* ****** Action Creators ******** */
 
@@ -45,6 +47,74 @@ const fetchStates = () => {
   };
 };
 
+const fetchBrands = () => {
+  return (dispatch, getState) => {
+    /* Bar */
+    const url = Endpoints.db + '/table/brand/select';
+    const queryObj = {};
+    queryObj.columns = ['*'];
+    queryObj.order_by = '+brand_name';
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(queryObj),
+    };
+    /* Make a MAKE_REQUEST action */
+    dispatch({type: MAKE_REQUEST});
+    return Promise.all([
+      dispatch(requestAction(url, options, BRANDS_FETCH, REQUEST_ERROR)),
+      dispatch({type: REQUEST_COMPLETED})
+    ]);
+  };
+};
+
+const fetchSKU = (id) => {
+  return (dispatch, getState) => {
+    /* Bar */
+    const url = Endpoints.db + '/table/sku/select';
+    const queryObj = {};
+    queryObj.columns = ['volume', 'is_active', 'id'];
+    queryObj.where = {'brand_id': parseInt(id, 10)};
+    queryObj.order_by = '+volume';
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(queryObj),
+    };
+    /* Make a MAKE_REQUEST action */
+    dispatch({type: MAKE_REQUEST});
+    return Promise.all([
+      dispatch(requestAction(url, options, SKU_FETCH, REQUEST_ERROR)),
+      dispatch({type: REQUEST_COMPLETED})
+    ]);
+  };
+};
+
+const fetchProducts = (id) => {
+  return (dispatch, getState) => {
+    /* Bar */
+    const url = Endpoints.db + '/table/sku_pricing/select';
+    const queryObj = {};
+    queryObj.columns = ['id', 'price', 'state_short_name', 'is_active'];
+    queryObj.where = {'sku_id': parseInt(id, 10)};
+    queryObj.order_by = '+state_short_name';
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(queryObj),
+    };
+    /* Make a MAKE_REQUEST action */
+    dispatch({type: MAKE_REQUEST});
+    return Promise.all([
+      dispatch(requestAction(url, options, PRODUCTS_FETCH, REQUEST_ERROR)),
+      dispatch({type: REQUEST_COMPLETED})
+    ]);
+  };
+};
+
 const citiesViewHandler = (stateObj) => {
   return (dispatch) => {
     return Promise.all([
@@ -55,7 +125,7 @@ const citiesViewHandler = (stateObj) => {
 
 const checkState = (stateObj) => {
   return (dispatch, state) => {
-    const lstate = state().createBarAd_data;
+    const lstate = state().welcomeDrinksState;
     const lCities = {...lstate.selectedCities};
     stateObj.cities.forEach((c) => {
       lCities[c.id] = c;
@@ -68,7 +138,7 @@ const checkState = (stateObj) => {
 
 const unCheckState = (stateObj) => {
   return (dispatch, state) => {
-    const lstate = state().createBarAd_data;
+    const lstate = state().welcomeDrinksState;
     const lCities = {...lstate.selectedCities};
     stateObj.cities.forEach((c) => {
       delete lCities[c.id];
@@ -81,7 +151,7 @@ const unCheckState = (stateObj) => {
 
 const checkCity = (cityObj) => {
   return (dispatch, state) => {
-    const lstate = state().createBarAd_data;
+    const lstate = state().welcomeDrinksState;
     const lCities = {...lstate.selectedCities};
     lCities[cityObj.id] = cityObj;
     return Promise.all([
@@ -92,7 +162,7 @@ const checkCity = (cityObj) => {
 
 const unCheckCity = (cityObj) => {
   return (dispatch, state) => {
-    const lstate = state().createBarAd_data;
+    const lstate = state().welcomeDrinksState;
     const lCities = {...lstate.selectedCities};
     delete lCities[cityObj.id];
     return Promise.all([
@@ -101,48 +171,23 @@ const unCheckCity = (cityObj) => {
   };
 };
 
-const validateBar = (barId) => {
-  return (dispatch, getState) => {
-    const url = Endpoints.db + '/table/bars/select';
-    const queryObj = {};
-    queryObj.columns = ['id'];
-    queryObj.where = {'id': parseInt(barId, 10)};
-    const options = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(queryObj),
-    };
-    return Promise.all([
-      dispatch(requestAction(url, options)).then((res) => {
-        return (res);
-      }).catch((err) => {
-        return (err);
-      })
-    ]);
-  };
-};
-
-const insertAdData = (barId, adInfo) => {
-  return (dispatch, getState) => {
-    // I need BrandManager ID, Image url.
-    // I will return Ad Id, if success.
-    // I will return Error message, if error.
+const finalSave = () => {
+  return (dispatch, state) => {
+    const lstate = state().welcomeDrinksState;
+    const lCamDetails = {...lstate.campaignDetails};
     const adUrl = Endpoints.db + '/table/welcome_drinks/insert';
-    // delete adInfo.bar;
-    adInfo.active_from = adInfo.active_from + ':00.000000+05:30';
-    adInfo.active_to = adInfo.active_to + ':00.000000+05:30';
-    console.log(adInfo);
+    lCamDetails.active_from = lCamDetails.active_from + ':00.000000+05:30';
+    lCamDetails.active_to = lCamDetails.active_to + ':00.000000+05:30';
+    lCamDetails.is_active = (parseInt(lCamDetails.is_active, 10) === 0) ? true : false;
     const adData = {};
-    adData.objects = [adInfo];
+    adData.objects = [lCamDetails];
     adData.returning = ['id'];
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': state().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(adData),
     };
-
     return dispatch(requestAction(adUrl, options)).then((resp) => {
       return resp;
     }).catch((err) => {
@@ -151,57 +196,18 @@ const insertAdData = (barId, adInfo) => {
   };
 };
 
-const checkBarValid = () => {
-  return (dispatch, state) => {
-    const lstate = state().createBarAd_data;
-    const lCamDetails = {...lstate.campaignDetails};
-    const imgUrl = lstate.imageUrl;
-    const imgRe = /^.*?\:\/\/\/.*?\/\d+\/\w+\/.*$/;
-    if (!imgRe.test(imgUrl)) {
-      return Promise.all([
-        alert('Please upload an image')
-      ]);
-    }
-    return Promise.all([
-      dispatch(validateBar(lCamDetails.bar)).then((res) => {
-        if (res[0].length > 0) {
-          // Bar Exists! Yippie!
-          // Assume that the result is always 1. Should always be 1.
-          // Time to insert data
-          return Promise.all([
-            // insert Ad Data (including Image)
-            dispatch(insertAdData(res[0][0].id, imgUrl, lCamDetails)).then((insertRes) => {
-              console.log('This is AdData:');
-              console.log(insertRes);
-              alert('Hurray!! Ad Created!');
-              return dispatch(routeActions.push('/hadmin/brands_offers_and_promos/view_all_ads'));
-            }).catch((err) => {
-              alert(err);
-            })
-          ]);
-        }
-        alert('Bar is not in DB: ' + lCamDetails.email);
-      }).catch((err) => {
-        alert('Error: ' + err);
-      })
-    ]);
-  };
-};
-
-const finalSave = () => {
-  return (dispatch) => {
-    return Promise.all([
-      dispatch(checkBarValid())
-    ]);
-  };
-};
-
-const welcomeDrinksReducer = (state = defaultcreateBarAdData, action) => {
+const welcomeDrinksReducer = (state = defaultwelcomeCreateData, action) => {
   switch (action.type) {
     case CITIES_FETCH:
       return {...state, citiesAll: action.data};
+    case BRANDS_FETCH:
+      return {...state, brandsAll: action.data};
     case CITY_SELECT:
       return {...state, selectedCity: { ...state.citiesAll[parseInt(action.data, 10)]} };
+    case SKU_FETCH:
+      return {...state, availableSkus: action.data };
+    case PRODUCTS_FETCH:
+      return {...state, availableProducts: action.data };
     case IMAGE_UPLOAD_SUCCESS:
       return {...state, imageUrl: action.data[0]};
     case IMAGE_UPLOAD_ERROR:
@@ -213,7 +219,7 @@ const welcomeDrinksReducer = (state = defaultcreateBarAdData, action) => {
       camInfo[action.data.key] = action.data.value;
       return { ...state, campaignDetails: { ...state.campaignDetails, ...camInfo}};
     case RESET:
-      return {...defaultcreateBarAdData};
+      return {...defaultwelcomeCreateData};
     default:
       return state;
   }
@@ -223,6 +229,9 @@ const welcomeDrinksReducer = (state = defaultcreateBarAdData, action) => {
 
 export {
   fetchStates,
+  fetchBrands,
+  fetchSKU,
+  fetchProducts,
   AD_INFO,
   citiesViewHandler,
   IMAGE_UPLOAD_SUCCESS,

@@ -407,12 +407,27 @@ const defaultcreateBarAdData = {
   selectedCity: { bars: [] },
   imageUrl: ''
 };
+const defaultwelcomeCreateData = {
+  type: 'create',
+  campaignDetails: {},
+  brandsAll: [],
+  skusAll: [],
+  productsAll: [],
+  availableProducts: [],
+  availableSkus: [],
+  citiesAll: [{
+    bars: [{}]
+  }],
+  selectedCity: { bars: [] },
+  imageUrl: ''
+};
 
 export default defaultState;
 export { defaultNotepadState
   , defaultBrandState
   , defaultBrandManagerProfileState
   , defaultCreateBrandManagerState
+  , defaultwelcomeCreateData
   , defaultViewBrandManagerState
   , defaultEditBrandManagerState
   , defaultConsumerState

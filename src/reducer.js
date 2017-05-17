@@ -60,7 +60,7 @@ import adsCreateSkuReducer from './components/BrandsOffersAndPromos/AdsCreateSku
 import adsViewSkuReducer from './components/BrandsOffersAndPromos/AdsViewSkuAd/CreateAdImageActions';
 import adsCreatePromoReducer from './components/BrandsOffersAndPromos/AdsCreatePromoAd/CreateAdPromoActions';
 import adsCreateBarReducer from './components/BrandsOffersAndPromos/AdsCreateBarAd/CreateAdBarActions';
-import welcomeDrinksReducer from './components/BrandsOffersAndPromos/AdsCreateBarAd/CreateAdBarActions';
+import welcomeDrinksReducer from './components/BrandsOffersAndPromos/WelcomeDrinksCreate/CreateAdBarActions';
 // import adsViewImageReducer from './components/BrandsOffersAndPromos/AdsViewImageAd/ViewAdImageActions';
 import adsCreateUrlReducer from './components/BrandsOffersAndPromos/AdsCreateUrlAd/CreateAdUrlActions';
 
