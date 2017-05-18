@@ -53,7 +53,6 @@ const SearchWrapper = ( {data, onToggle } ) => {
                   <th> Price </th>
                   <th> Active From </th>
                   <th> Active To </th>
-                  <th> Store Type </th>
                   <th> State Short Name </th>
                 </tr>
               </thead>

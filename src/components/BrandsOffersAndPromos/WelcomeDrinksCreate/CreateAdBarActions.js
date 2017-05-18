@@ -4,6 +4,7 @@
 
 import { defaultwelcomeCreateData} from '../../Common/Actions/DefaultState';
 import requestAction from '../../Common/Actions/requestAction';
+import { routeActions } from 'redux-simple-router';
 import Endpoints, { globalCookiePolicy } from '../../../Endpoints';
 import { MAKE_REQUEST,
   REQUEST_COMPLETED,
@@ -47,13 +48,13 @@ const fetchStates = () => {
   };
 };
 
-const fetchBrands = () => {
+const fetchBrands = (state) => {
   return (dispatch, getState) => {
     /* Bar */
-    const url = Endpoints.db + '/table/brand/select';
+    const url = Endpoints.db + '/table/sku_pricing_detail/select';
     const queryObj = {};
-    queryObj.columns = ['*'];
-    queryObj.order_by = '+brand_name';
+    queryObj.columns = ['brand_name', 'brand_id'];
+    queryObj.where = {'state': state};
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
@@ -98,8 +99,7 @@ const fetchProducts = (id) => {
     const url = Endpoints.db + '/table/sku_pricing/select';
     const queryObj = {};
     queryObj.columns = ['id', 'price', 'state_short_name', 'is_active'];
-    queryObj.where = {'sku_id': parseInt(id, 10)};
-    queryObj.order_by = '+state_short_name';
+    queryObj.where = {'$and': [{'sku_id': {'$eq': parseInt(id, 10)}}, {'state_short_name': {'$eq': getState().welcomeDrinksState.campaignDetails.state_short_name }}]};
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
@@ -175,10 +175,11 @@ const finalSave = () => {
   return (dispatch, state) => {
     const lstate = state().welcomeDrinksState;
     const lCamDetails = {...lstate.campaignDetails};
-    const adUrl = Endpoints.db + '/table/welcome_drinks/insert';
+    const adUrl = Endpoints.db + '/table/welcome_drink/insert';
     lCamDetails.active_from = lCamDetails.active_from + ':00.000000+05:30';
     lCamDetails.active_to = lCamDetails.active_to + ':00.000000+05:30';
     lCamDetails.is_active = (parseInt(lCamDetails.is_active, 10) === 0) ? true : false;
+    delete lCamDetails.state_short_name;
     const adData = {};
     adData.objects = [lCamDetails];
     adData.returning = ['id'];
@@ -188,9 +189,11 @@ const finalSave = () => {
       credentials: globalCookiePolicy,
       body: JSON.stringify(adData),
     };
-    return dispatch(requestAction(adUrl, options)).then((resp) => {
-      return resp;
+    return dispatch(requestAction(adUrl, options)).then(() => {
+      alert('Success');
+      return dispatch(routeActions.push('/hadmin/brands_offers_and_promos/welcome_drinks_view'));
     }).catch((err) => {
+      alert('Failed');
       return err;
     });
   };

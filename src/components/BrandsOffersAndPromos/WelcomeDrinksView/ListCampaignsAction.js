@@ -107,7 +107,7 @@ const getCampaignData = (page, limit, filterObj, isSearched ) => {
       payload.where = { ...payload.where, ...filterObj };
     }
 
-    const url = Endpoints.db + '/table/' + 'welcome_drinks' + '/select';
+    const url = Endpoints.db + '/table/' + 'welcome_drink' + '/select';
     const options = {
       ...genOptions,
       body: JSON.stringify(payload)

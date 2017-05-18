@@ -21,20 +21,19 @@ class CreateWelcomeDrink extends Component { // eslint-disable-line no-unused-va
     /* Data required for the bread component to render correctly */
     this.breadCrumbs = [];
     this.breadCrumbs.push({
-      title: 'Ads Management',
+      title: 'Welcome Drinks',
       sequence: 1,
       link: '#' // TODO
     });
     this.breadCrumbs.push({
-      title: 'Create Bar Ad',
+      title: 'Create',
       sequence: 2,
       link: '#' // TODO
     });
   }
   componentWillMount() {
     Promise.all([
-      this.props.dispatch(fetchStates()),
-      this.props.dispatch(fetchBrands())
+      this.props.dispatch(fetchStates())
     ]);
   }
   componentWillUnmount() {
@@ -62,6 +61,9 @@ class CreateWelcomeDrink extends Component { // eslint-disable-line no-unused-va
   onBrandChange(e) {
     this.props.dispatch(fetchSKU(e.target.value));
   }
+  onStateChange(e) {
+    this.props.dispatch(fetchBrands(e.target.value));
+  }
   onSkuChange(e) {
     this.props.dispatch(fetchProducts(e.target.value));
   }
@@ -78,7 +80,7 @@ class CreateWelcomeDrink extends Component { // eslint-disable-line no-unused-va
       <div className={styles.container}>
         <BreadCrumb breadCrumbs={this.breadCrumbs} />
         <div className={styles.brand_wrapper}>
-          <AdInfo dispatch={this.props.dispatch} brandSelect={this.onBrandChange.bind(this)} skuSelect={this.onSkuChange.bind(this)} skus={this.props.availableSkus} products={this.props.availableProducts} brands={this.props.brandsAll} cities={this.props.citiesAll} selectedCity={this.props.selectedCity} />
+          <AdInfo dispatch={this.props.dispatch} stateSelect={this.onStateChange.bind(this)} campaignDetails={this.props.campaignDetails} brandSelect={this.onBrandChange.bind(this)} skuSelect={this.onSkuChange.bind(this)} skus={this.props.availableSkus} products={this.props.availableProducts} brands={this.props.brandsAll} cities={this.props.citiesAll} selectedCity={this.props.selectedCity} />
           <div className="clearfix"></div>
           <div className="clearfix"></div>
           <button className={styles.edit_brand_btn} onClick={this.onClickSave.bind(this)}>
@@ -94,6 +96,7 @@ CreateWelcomeDrink.propTypes = {
   citiesAll: PropTypes.array.isRequired,
   brandsAll: PropTypes.array.isRequired,
   availableSkus: PropTypes.array.isRequired,
+  campaignDetails: PropTypes.array.isRequired,
   availableProducts: PropTypes.array.isRequired,
   selectedCity: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
