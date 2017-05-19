@@ -171,7 +171,7 @@ const toggleStatus = (campaignId, campaignStatus) => {
     const payload = {};
     payload.type = 'update';
     payload.args = {
-      'table': 'welcome_drinks',
+      'table': 'welcome_drink',
       '$set': {'is_active': _status },
       'where': {'id': parseInt(campaignId, 10) }
     };
