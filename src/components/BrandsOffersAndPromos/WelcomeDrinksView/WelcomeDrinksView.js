@@ -117,7 +117,7 @@ class WelcomeDrinksView extends React.Component { // eslint-disable-line no-unus
 
           <div className={styles.create_layout + ' ' + styles.wd_100}>
             <Link to={'/hadmin/brands_offers_and_promos/welcome_drinks_create'}>
-              <button className={styles.common_btn}>Create WD Campaign</button>
+              <button className={styles.common_btn}>Create</button>
             </Link>
           </div>
           <SearchWrapper data={lastSuccess} onToggle={this.toggleCampaignStatus.bind(this)}/>

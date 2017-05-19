@@ -51,12 +51,12 @@ const AdInfo = ({ cities, brands, skus, products, stateSelect, brandSelect, skuS
               </select>
             </li>
             <li>
-              <label>Active To</label>
-              <input data-field-name="active_to" data-field-type="time" type="datetime-local"/>
-            </li>
-            <li>
               <label>Active From</label>
               <input data-field-name="active_from" data-field-type="time" type="datetime-local"/>
+            </li>
+            <li>
+              <label>Active To</label>
+              <input data-field-name="active_to" data-field-type="time" type="datetime-local"/>
             </li>
             <li>
               <label>Ad Status</label>
