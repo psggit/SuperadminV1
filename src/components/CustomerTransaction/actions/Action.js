@@ -773,6 +773,9 @@ const getReservedItems = ( cartId ) => {
                 'columns': ['*']
               }]
             }]
+          }, {
+            'name': 'offer',
+            'columns': ['is_on_pack']
           }]
         }]
       }, {
@@ -1326,7 +1329,25 @@ const getRedemptionData = ( page, consumerId, filterObj, isSearched ) => {
         'columns': ['*']
       }, {
         'name': 'cashback_redemptions',
-        'columns': ['*']
+        'columns': ['*',
+          {
+            'name': 'item',
+            'columns': ['*',
+              {
+                'name': 'cart',
+                'columns': ['*', {
+                  'name': 'product',
+                  'columns': ['*',
+                    {
+                      'name': 'offer',
+                      'columns': ['is_on_pack']
+                    }
+                  ]
+                }]
+              }
+          ]
+          }
+        ]
       }, {
         'name': 'bar_redemptions',
         'columns': ['*']

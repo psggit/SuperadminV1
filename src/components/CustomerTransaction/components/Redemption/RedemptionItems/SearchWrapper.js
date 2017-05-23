@@ -12,8 +12,13 @@ const SearchWrapper = ( {data} ) => {
       const it = { ...item, 'type': 'bar'};
       return it;
     }), ...data[0].cashback_redemptions.map( ( item ) => {
-      const it = { ...item, 'type': 'cashback'};
-      return it;
+      let cIt;
+      if ( item.product.offer.is_on_pack ) {
+        cIt = { ...item, 'type': 'on pack'};
+      } else {
+        cIt = { ...item, 'type': 'cashback'};
+      }
+      return cIt;
     }), ...data[0].normal_redemptions.map( ( item ) => {
       const it = { ...item, 'type': 'normal'};
       return it;
