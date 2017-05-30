@@ -1324,49 +1324,7 @@ const getRedemptionData = ( page, consumerId, filterObj, isSearched ) => {
     offset = (page - 1) * 10;
 
     const payload = {
-      'columns': [ '*', {
-        'name': 'normal_redemptions',
-        'columns': ['*']
-      }, {
-        'name': 'cashback_redemptions',
-        'columns': ['*',
-          {
-            'name': 'item',
-            'columns': ['*',
-              {
-                'name': 'cart',
-                'columns': ['*', {
-                  'name': 'product',
-                  'columns': ['*',
-                    {
-                      'name': 'offer',
-                      'columns': ['is_on_pack']
-                    }
-                  ]
-                }]
-              }
-          ]
-          }
-        ]
-      }, {
-        'name': 'bar_redemptions',
-        'columns': ['*']
-      }, {
-        'name': 'retailer_pos',
-        'columns': [{
-          'name': 'retailer',
-          'columns': [
-            'org_name',
-            'id'
-          ]
-        }, {
-          'name': 'bar',
-          'columns': [
-            'name',
-            'id'
-          ]}
-        ]
-      }],
+      'columns': [ '*'],
       'limit': limit,
       'offset': offset
     };
