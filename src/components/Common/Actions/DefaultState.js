@@ -422,12 +422,17 @@ const defaultwelcomeCreateData = {
   imageUrl: ''
 };
 
+const defaultmiscItem = {
+  detail: []
+};
+
 export default defaultState;
 export { defaultNotepadState
   , defaultBrandState
   , defaultBrandManagerProfileState
   , defaultCreateBrandManagerState
   , defaultwelcomeCreateData
+  , defaultmiscItem
   , defaultViewBrandManagerState
   , defaultEditBrandManagerState
   , defaultConsumerState

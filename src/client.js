@@ -52,6 +52,7 @@ import {Login, Home, PageContainer,
   BrandManagerProfile,
   CreateBrandManager,
   CompaniesManagement,
+  MiscellaneousItem,
   /* 'BrandAds' was removed from the below list of imports, not sure if I messed something up during merge*/
   ManageCompanies, BrandPromos, WelcomeDrinksView, WelcomeDrinksCreate, PromosCashbackRedeem, PromosOnPack, RetailerManagementCreate, RetailerManagementBarCreate, RetailerManagementViewBar,
   RetailerManagementSettlementDetails, RetailerManagementDeviceDetail, RetailerManagementDisableDevice,
@@ -288,6 +289,12 @@ const main = (
         {/* Welcome Drinks Page*/}
         <Route path="brands_offers_and_promos/welcome_drinks_view" component={WelcomeDrinksView} />
         <Route path="brands_offers_and_promos/welcome_drinks_create" component={WelcomeDrinksCreate} />
+        {/* Miscellaneous Page*/}
+        <Route path="miscellaneous_item/create" component={MiscellaneousItem} />
+        <Route path="miscellaneous_item/update/:Mid" component={MiscellaneousItem} />
+        <Route path="bar/:id/miscellaneous_item/create" component={MiscellaneousItem} />
+        <Route path="miscellaneous_item/:Mid/map" component={MiscellaneousItem} />
+        <Route path="bar/:id/miscellaneous_item/:Mid/map" component={MiscellaneousItem} />
         {/* Promo choose menu*/}
         <Route path="brands_offers_and_promos/promos/all" component={CreatePromos} />
         {/* Promo Cashback redeem*/}

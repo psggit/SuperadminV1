@@ -61,6 +61,7 @@ import adsViewSkuReducer from './components/BrandsOffersAndPromos/AdsViewSkuAd/C
 import adsCreatePromoReducer from './components/BrandsOffersAndPromos/AdsCreatePromoAd/CreateAdPromoActions';
 import adsCreateBarReducer from './components/BrandsOffersAndPromos/AdsCreateBarAd/CreateAdBarActions';
 import welcomeDrinksReducer from './components/BrandsOffersAndPromos/WelcomeDrinksCreate/CreateAdBarActions';
+import miscellaneousItemReducer from './components/MiscellaneousItem/MiscellaneousItemActions';
 // import adsViewImageReducer from './components/BrandsOffersAndPromos/AdsViewImageAd/ViewAdImageActions';
 import adsCreateUrlReducer from './components/BrandsOffersAndPromos/AdsCreateUrlAd/CreateAdUrlActions';
 
@@ -80,6 +81,7 @@ const reducer = combineReducers({
   promosCashbackRedeemState: PromosCashbackRedeem,
   promosOnPackRedeemState: PromosOnPack,
   welcomeDrinksState: welcomeDrinksReducer,
+  miscellaneousItemState: miscellaneousItemReducer,
   // Everything else.
   loginState: loginReducer,
   routing: routeReducer,
