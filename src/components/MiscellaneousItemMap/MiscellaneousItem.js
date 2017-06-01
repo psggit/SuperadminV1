@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { definePage, fetchSKU, fetchProducts, fetchBrands, citiesViewHandler, IMAGE_CANCEL} from './MiscellaneousItemActions';
-import { checkState, unCheckState, finalSave } from './MiscellaneousItemActions';
+import { definePage, fetchSKU, fetchProducts, fetchMisc, fetchBrands, citiesViewHandler, IMAGE_CANCEL} from './MiscellaneousItemActions';
+import { selectCitySpecificBar, checkState, unCheckState, finalSave } from './MiscellaneousItemActions';
 import { RESET } from './MiscellaneousItemActions';
 /*
   Decorator which adds couple of use ful features like
@@ -10,20 +10,22 @@ import { RESET } from './MiscellaneousItemActions';
 */
 import commonDecorator from '../Common/CommonDecorator';
 import BreadCrumb from '../Common/BreadCrumb';
-import SearchWrapper from '../../RetailerManagement/CreateBranch/SearchWrapper';
+import SearchWrapper from '../RetailerManagement/CreateBranch/SearchWrapper';
+import Lister from '../RetailerManagement/CreateBranch/Lister';
 
 /* Components */
-import AdInfo from './MiscInfo';
+import MiscInfo from './MiscInfo';
+import BarInfo from './BarInfo';
 
 class CreateWelcomeDrink extends Component { // eslint-disable-line no-unused-vars
   constructor(props) {
     super();
-    const barId = props.params.id;
+    const barId = props.params.Bid;
     const miscId = props.params.Mid;
     this.breadCrumbs = [];
     if (barId !== undefined) {
       this.breadCrumbs.push({
-        title: 'Bar',
+        title: 'Map Bar',
         sequence: 1,
         link: '#' // TODO
       });
@@ -35,7 +37,7 @@ class CreateWelcomeDrink extends Component { // eslint-disable-line no-unused-va
     }
     if (miscId !== undefined) {
       this.breadCrumbs.push({
-        title: 'Update',
+        title: 'Map',
         sequence: 3,
         link: '#' // TODO
       });
@@ -48,24 +50,14 @@ class CreateWelcomeDrink extends Component { // eslint-disable-line no-unused-va
         title: miscId,
         sequence: 5
       });
-    } else {
-      this.breadCrumbs.push({
-        title: 'Create',
-        sequence: 3,
-        link: '#' // TODO
-      });
-      this.breadCrumbs.push({
-        title: 'Miscellaneous Item',
-        sequence: 4,
-        link: '#' // TODO
-      });
     }
   }
   componentWillMount() {
     const barId = this.props.params.id;
     const miscId = this.props.params.Mid;
     Promise.all([
-      this.props.dispatch(definePage(barId, miscId))
+      this.props.dispatch(definePage(barId, miscId)),
+      this.props.dispatch(fetchMisc(1))
     ]);
   }
   componentWillUnmount() {
@@ -75,6 +67,17 @@ class CreateWelcomeDrink extends Component { // eslint-disable-line no-unused-va
     Promise.all([
       this.props.dispatch(citiesViewHandler(stateObj))
     ]);
+  }
+  onClickHandleIventoryListing(e) {
+    e.preventDefault();
+    const currentPage = parseInt(e.target.outerText, 10);
+    // const brId = this.props.params.brId;
+    console.log(e.target.outerText);
+    if (currentPage) {
+      Promise.all([
+        this.props.dispatch(fetchMisc(currentPage))
+      ]);
+    }
   }
   onCancelClick() {
     this.props.dispatch({ type: IMAGE_CANCEL});
@@ -96,6 +99,9 @@ class CreateWelcomeDrink extends Component { // eslint-disable-line no-unused-va
   onStateChange(e) {
     this.props.dispatch(fetchBrands(e.target.value));
   }
+  onCityChange(e) {
+    this.props.dispatch(selectCitySpecificBar(e.target.value));
+  }
   onSkuChange(e) {
     this.props.dispatch(fetchProducts(e.target.value));
   }
@@ -112,15 +118,16 @@ class CreateWelcomeDrink extends Component { // eslint-disable-line no-unused-va
       <div className={styles.container}>
         <BreadCrumb breadCrumbs={this.breadCrumbs} />
         <div className={styles.brand_wrapper}>
-          <AdInfo type={this.props.page} data={this.props.detail} dispatch={this.props.dispatch}/>
+          <MiscInfo miscAll={this.props.miscAll} type={this.props.page} data={this.props.misc_detail} dispatch={this.props.dispatch}/>
+          <BarInfo onCityChange={this.onCityChange.bind(this)} barsAll={this.props.barsAll} citiesAll={this.props.citiesAll} type={this.props.page} data={this.props.misc_detail} dispatch={this.props.dispatch}/>
           <div className="clearfix"></div>
           <div className="clearfix"></div>
           <button className={styles.edit_brand_btn} onClick={this.onClickSave.bind(this)}>
             Save
           </button>
         </div>
-        <SearchWrapper title = { 'Miscellaneous Mappings' } body = { ['date', 'consumer_amount', 'bar_discount', 'manual_credits', 'manual_debits', 'pay_by_wallet', 'service_tax', 'service_charge', 'net_amount', 'account_number', 'bank_name', 'cashback_amount'] } head = { ['Date', 'Consumer Amount', 'Bar Discount', 'Manual Credits', 'Manual Debits', 'Pay By Wallet', 'Service Tax', 'Service Charge', 'Net Amount', 'Account Number', 'Bank', 'Cashback Amount'] } data={barSettlementReport} />
-        <Lister limit="10" onClickHandler={this.onClickHandleSettlementReport.bind(this)} currentPage={barSettlementReportPage} showMax="5" count={barSettlementReportCount} />
+        <SearchWrapper title = { 'Miscellaneous Mappings' } body = { ['bar_name', 'hipbar_price', 'menu_price', 'start_date', 'end_date', 'charge_and_tax_percentage'] } head = { ['Bar Name', 'Hipbar Price', 'Menu Price', 'ActiveFrom', 'ActiveTo', 'Charge and tax percentage'] } data={this.props.miscellaneousInformation} />
+        <Lister limit="10" onClickHandler={this.onClickHandleIventoryListing.bind(this)} currentPage={this.props.miscellaneousInformationPage} showMax="5" count={this.props.miscellaneousInformationCount} />
       </div>
     );
   }
@@ -128,14 +135,20 @@ class CreateWelcomeDrink extends Component { // eslint-disable-line no-unused-va
 
 CreateWelcomeDrink.propTypes = {
   params: PropTypes.object.isRequired,
-  detail: PropTypes.object.isRequired,
+  misc_detail: PropTypes.object.isRequired,
   page: PropTypes.string.isRequired,
+  miscellaneousInformationPage: PropTypes.array.isRequired,
+  miscellaneousInformationCount: PropTypes.array.isRequired,
+  miscellaneousInformation: PropTypes.array.isRequired,
+  miscAll: PropTypes.array.isRequired,
+  citiesAll: PropTypes.array.isRequired,
+  barsAll: PropTypes.array.isRequired,
   selectedCity: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => {
-  return {...state.page_data, ...state.miscellaneousItemState};
+  return {...state.page_data, ...state.miscellaneousItemMapState};
 };
 
 const decoratedConnectedComponent = commonDecorator(CreateWelcomeDrink);// connect(mapStateToProps)(CommonDecorator);

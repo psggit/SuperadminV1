@@ -62,6 +62,7 @@ import adsCreatePromoReducer from './components/BrandsOffersAndPromos/AdsCreateP
 import adsCreateBarReducer from './components/BrandsOffersAndPromos/AdsCreateBarAd/CreateAdBarActions';
 import welcomeDrinksReducer from './components/BrandsOffersAndPromos/WelcomeDrinksCreate/CreateAdBarActions';
 import miscellaneousItemReducer from './components/MiscellaneousItem/MiscellaneousItemActions';
+import miscellaneousItemMapReducer from './components/MiscellaneousItemMap/MiscellaneousItemActions';
 // import adsViewImageReducer from './components/BrandsOffersAndPromos/AdsViewImageAd/ViewAdImageActions';
 import adsCreateUrlReducer from './components/BrandsOffersAndPromos/AdsCreateUrlAd/CreateAdUrlActions';
 
@@ -82,6 +83,7 @@ const reducer = combineReducers({
   promosOnPackRedeemState: PromosOnPack,
   welcomeDrinksState: welcomeDrinksReducer,
   miscellaneousItemState: miscellaneousItemReducer,
+  miscellaneousItemMapState: miscellaneousItemMapReducer,
   // Everything else.
   loginState: loginReducer,
   routing: routeReducer,

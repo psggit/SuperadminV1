@@ -423,6 +423,14 @@ const defaultwelcomeCreateData = {
 };
 
 const defaultmiscItem = {
+  misc_info_detail: [],
+  miscAll: [],
+  citiesAll: [],
+  barsAll: [],
+  miscellaneousInformation: [],
+  miscellaneousInformationCount: 0,
+  miscellaneousInformationPage: 0,
+  misc_detail: {},
   detail: []
 };
 

@@ -25,12 +25,16 @@ const IMAGE_CANCEL = 'WELCOME_DRINKS/IMAGE_CANCEL';
 const UPDATED_CITIES_SELECTION = 'WELCOME_DRINKS/UPDATED_CITIES_SELECTION';
 const RESET = 'WELCOME_DRINKS/RESET';
 const DEFINE_CREATE_PAGE = 'MISCELLANEOUS_ITEM/CREATE';
-const DEFINE_UPDATE_PAGE = 'MISCELLANEOUS_ITEM/UPDATE';
+const DEFINE_MAP_BAR_PAGE = 'MAP_MISCELLANEOUS_ITEM_TO_BAR/UPDATE';
+const DEFINE_PURE_MAP_PAGE = 'MISCELLANEOUS_ITEM/PURE_MAP_PAGE';
 const DEFINE_CREATE_PAGE_FOR_BAR = 'MISCELLANEOUS_ITEM/CREATE_PAGE_FOR_BAR';
 const MISCELLANEOUS_INSERTED = 'MISCELLANEOUS_ITEM/INSERT';
 const MISCELLANEOUS_UPDATED = 'MISCELLANEOUS_ITEM/UPDATE';
-const MISCELLANEOUS_FETCH = 'MISCELLANEOUS_ITEM/FETCH';
+const MISCELLANEOUS_FETCH = 'MISCELLANEOUS_INFO_ITEM/FETCH';
+const MISCELLANEOUS_ITEM_FETCH = 'MISCELLANEOUS_ITEM/FETCH';
+const ALL_MISCELLANEOUS_ITEM_FETCH = 'ALL_MISCELLANEOUS_ITEM/FETCH';
 const BARS_FETCH = 'MISCELLANEOUS_ITEM/BARS_FETCH';
+const CITY_SPECIFIC_BARS_FETCH = 'MISCELLANEOUS_ITEM/BARS_FETCH';
 
 /* ****** Action Creators ******** */
 
@@ -55,11 +59,107 @@ const fetchBar = (id) => {
   };
 };
 
-const fetchMisc = (id) => {
+const fetchStates = () => {
+  return (dispatch, getState) => {
+    /* Bar */
+    const url = Endpoints.db + '/table/city/select';
+    const queryObj = {};
+    queryObj.columns = ['*'];
+    queryObj.where = {'is_available': true};
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(queryObj),
+    };
+    /* Make a MAKE_REQUEST action */
+    dispatch({type: MAKE_REQUEST});
+    return Promise.all([
+      dispatch(requestAction(url, options, CITIES_FETCH, REQUEST_ERROR)),
+      dispatch({type: REQUEST_COMPLETED})
+    ]);
+  };
+};
+
+
+const fetchAllMisc = () => {
+  return (dispatch, getState) => {
+    const url = Endpoints.db + '/table/miscellaneous_item/select';
+    const queryObj = {'columns': ['name', 'id']};
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(queryObj)
+    };
+    /* Make a MAKE_REQUEST action */
+    dispatch({type: MAKE_REQUEST});
+    return Promise.all([
+      dispatch(requestAction(url, options, ALL_MISCELLANEOUS_ITEM_FETCH, REQUEST_ERROR)),
+      dispatch({type: REQUEST_COMPLETED})
+    ]);
+  };
+};
+
+const selectCitySpecificBar = (id) => {
+  return (dispatch, getState) => {
+    const url = Endpoints.db + '/table/bars/select';
+    const queryObj = {columns: ['*']};
+    queryObj.where = {'city_id': parseInt(id, 10)};
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(queryObj),
+    };
+    /* Make a MAKE_REQUEST action */
+    dispatch({type: MAKE_REQUEST});
+    return Promise.all([
+      dispatch(requestAction(url, options, CITY_SPECIFIC_BARS_FETCH, REQUEST_ERROR)),
+      dispatch({type: REQUEST_COMPLETED})
+    ]);
+  };
+};
+
+const fetchMiscItem = (id) => {
   return (dispatch, getState) => {
     /* Bar */
     const url = Endpoints.db + '/table/miscellaneous_item/select';
     const queryObj = {columns: ['*']};
+    queryObj.where = {'id': parseInt(id, 10)};
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(queryObj),
+    };
+    /* Make a MAKE_REQUEST action */
+    dispatch({type: MAKE_REQUEST});
+    return Promise.all([
+      dispatch(requestAction(url, options, MISCELLANEOUS_ITEM_FETCH, REQUEST_ERROR)),
+      dispatch({type: REQUEST_COMPLETED})
+    ]);
+  };
+};
+
+
+const fetchMisc = (id, page) => {
+  return (dispatch, getState) => {
+    /* Bar */
+    /* Bar */
+    let offset = 0;
+    let limit = 0;
+    // const count = currentProps.count;
+    // limit = (page * 10) > count ? count : ((page) * 10);
+    // limit = ((page) * 10);
+    limit = 10;
+    offset = (page - 1) * 10;
+    const url = Endpoints.db + '/table/miscellaneous_information/select';
+    const queryObj = {
+      'columns': ['name', 'id'],
+      'limit': limit,
+      'offset': offset
+    };
     queryObj.where = {'id': parseInt(id, 10)};
     const options = {
       method: 'POST',
@@ -80,8 +180,14 @@ const fetchMisc = (id) => {
 const definePage = (barId, miscId) => {
   return (dispatch) => {
     if (barId === undefined && miscId === undefined) {
-      // Create
-      dispatch({type: DEFINE_CREATE_PAGE, data: {barId: barId, miscId: miscId}});
+      // Able to map any misc to any bar
+      dispatch({type: DEFINE_PURE_MAP_PAGE, data: {barId: barId, miscId: miscId}});
+      dispatch({type: MAKE_REQUEST});
+      return Promise.all([
+        dispatch(fetchAllMisc()),
+        dispatch(fetchStates()),
+        dispatch({type: REQUEST_COMPLETED})
+      ]);
     }
     if (barId !== undefined && miscId === undefined) {
       // Create For Bar
@@ -92,12 +198,13 @@ const definePage = (barId, miscId) => {
         dispatch({type: REQUEST_COMPLETED})
       ]);
     }
+    // Define The Mapping Misc to Bar Page.
     if (barId === undefined && miscId !== undefined) {
-      // Update
-      dispatch({type: DEFINE_UPDATE_PAGE, data: {barId: barId, miscId: miscId}});
+      dispatch({type: DEFINE_MAP_BAR_PAGE, data: {barId: barId, miscId: miscId}});
       dispatch({type: MAKE_REQUEST});
       return Promise.all([
-        dispatch(fetchMisc(miscId)),
+        dispatch(fetchMiscItem(miscId)),
+        dispatch(fetchStates()),
         dispatch({type: REQUEST_COMPLETED})
       ]);
     }
@@ -123,10 +230,10 @@ const proceed = () => {
 };
 
 
-const insertMiscellaneous = () => {
+const insertMiscellaneousInventory = () => {
   return (dispatch, getState) => {
     const miscState = getState().miscellaneousItemState.detail;
-    const url = Endpoints.db + '/table/miscellaneous_item/insert';
+    const url = Endpoints.db + '/table/miscellaneous_inventory/insert';
     const queryObj = {objects: [miscState]};
     queryObj.returning = ['id'];
     const options = {
@@ -146,10 +253,11 @@ const insertMiscellaneous = () => {
   };
 };
 
+
 const updateMiscellaneous = () => {
   return (dispatch, getState) => {
     const miscState = getState().miscellaneousItemState.detail;
-    const url = Endpoints.db + '/table/miscellaneous_item/update';
+    const url = Endpoints.db + '/table/miscellaneous_inventory/update';
     const queryObj = {'$set': miscState};
     queryObj.where = {'id': parseInt(miscState.id, 10)};
     queryObj.returning = ['id'];
@@ -299,7 +407,7 @@ const finalSave = () => {
     const lstate = state().miscellaneousItemState;
     if (lstate.page === 'create') {
       return Promise.all([
-        dispatch(insertMiscellaneous())
+        dispatch(insertMiscellaneousInventory())
       ]);
     } else if (lstate.page === 'update') {
       return Promise.all([
@@ -307,7 +415,7 @@ const finalSave = () => {
       ]);
     } else if (lstate.page === 'create for bar') {
       return Promise.all([
-        dispatch(insertMiscellaneous())
+        dispatch(insertMiscellaneousInventory())
       ]);
     }
 //    lCamDetails.active_from = lCamDetails.active_from + ':00.000000+05:30';
@@ -319,18 +427,24 @@ const welcomeDrinksReducer = (state = defaultmiscItem, action) => {
   switch (action.type) {
     case DEFINE_CREATE_PAGE:
       return {...state, page: 'create', miscId: action.data.miscId, barId: action.data.barId};
-    case DEFINE_UPDATE_PAGE:
-      return {...state, page: 'update', miscId: action.data.miscId, barId: action.data.barId};
+    case DEFINE_MAP_BAR_PAGE:
+      return {...state, page: 'map misc to bar', miscId: action.data.miscId, barId: action.data.barId};
     case DEFINE_CREATE_PAGE_FOR_BAR:
-      return {...state, page: 'create for bar', miscId: action.data.miscId, barId: action.data.barId};
+      return {...state, page: 'update', miscId: action.data.miscId, barId: action.data.barId};
     case MISCELLANEOUS_INSERTED:
       return {...state, proceed: true, id: action.data.returning[0].id};
     case MISCELLANEOUS_UPDATED:
       return {...state, proceed: true, id: action.data.returning[0].id};
     case MISCELLANEOUS_FETCH:
-      return {...state, detail: action.data[0]};
+      return {...state, misc_info_detail: action.data[0]};
+    case MISCELLANEOUS_ITEM_FETCH:
+      return {...state, misc_detail: action.data[0]};
+    case ALL_MISCELLANEOUS_ITEM_FETCH:
+      return {...state, miscAll: action.data};
     case CITIES_FETCH:
       return {...state, citiesAll: action.data};
+    case CITY_SPECIFIC_BARS_FETCH:
+      return {...state, barsAll: action.data};
     case BRANDS_FETCH:
       return {...state, brandsAll: action.data};
     case CITY_SELECT:
@@ -361,9 +475,11 @@ const welcomeDrinksReducer = (state = defaultmiscItem, action) => {
 export {
   fetchBar,
   fetchMisc,
+  fetchAllMisc,
   fetchBrands,
+  selectCitySpecificBar,
   fetchSKU,
-  insertMiscellaneous,
+  insertMiscellaneousInventory,
   updateMiscellaneous,
   fetchProducts,
   AD_INFO,
