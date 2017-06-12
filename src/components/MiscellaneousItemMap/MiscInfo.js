@@ -3,7 +3,7 @@ import formValidator from '../Common/CommonFormValidator';
 
 import {AD_INFO} from './MiscellaneousItemActions';
 
-const MiscInfo = ({type, miscAll}) => {
+const MiscInfo = ({type, miscAll, onMiscChange}) => {
   const styles = require('./CreateBarAd.scss');
   const miscDropdownHtml = miscAll.map((misc) => {
     return (<option value={misc.id}> {misc.name} </option>);
@@ -14,7 +14,7 @@ const MiscInfo = ({type, miscAll}) => {
           <ul>
             <li>
               <label>Miscellaneous Item:</label>
-              <select data-field-name="misc" data-field-type="string">
+              <select onChange={onMiscChange} data-field-name="misc" data-field-type="string">
                 <option>Select</option>
                 {miscDropdownHtml}
               </select>

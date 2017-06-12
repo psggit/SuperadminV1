@@ -16,7 +16,7 @@ const BarInfo = ({data, barsAll, citiesAll, type, onCityChange}) => {
         <div className={styles.heading + ' ' + styles.wd_100}>{type} MISCELLANEOUS ITEM:</div>
           <ul>
             <li>
-              <label>Miscellaneous Item:</label>
+              <label>City:</label>
               <select data-field-name="city" data-field-type="string" onChange={onCityChange}>
                 <option>Select</option>
                 {citiesDropdownHtml}

@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { definePage, fetchSKU, fetchProducts, fetchMisc, fetchBrands, citiesViewHandler, IMAGE_CANCEL} from './MiscellaneousItemActions';
+import { definePage, fetchMiscellaneousInventory, fetchSKU, fetchProducts, fetchMisc, fetchBrands, citiesViewHandler, IMAGE_CANCEL} from './MiscellaneousItemActions';
 import { selectCitySpecificBar, checkState, unCheckState, finalSave } from './MiscellaneousItemActions';
 import { RESET } from './MiscellaneousItemActions';
 /*
@@ -105,6 +105,9 @@ class CreateWelcomeDrink extends Component { // eslint-disable-line no-unused-va
   onSkuChange(e) {
     this.props.dispatch(fetchProducts(e.target.value));
   }
+  onMiscChange(e) {
+    this.props.dispatch(fetchMiscellaneousInventory(e.target.value));
+  }
 
   onClickSave() {
     Promise.all([
@@ -118,7 +121,7 @@ class CreateWelcomeDrink extends Component { // eslint-disable-line no-unused-va
       <div className={styles.container}>
         <BreadCrumb breadCrumbs={this.breadCrumbs} />
         <div className={styles.brand_wrapper}>
-          <MiscInfo miscAll={this.props.miscAll} type={this.props.page} data={this.props.misc_detail} dispatch={this.props.dispatch}/>
+          <MiscInfo onMiscChange={this.onMiscChange.bind(this)} miscAll={this.props.miscAll} type={this.props.page} data={this.props.misc_detail} dispatch={this.props.dispatch}/>
           <BarInfo onCityChange={this.onCityChange.bind(this)} barsAll={this.props.barsAll} citiesAll={this.props.citiesAll} type={this.props.page} data={this.props.misc_detail} dispatch={this.props.dispatch}/>
           <div className="clearfix"></div>
           <div className="clearfix"></div>
@@ -126,7 +129,7 @@ class CreateWelcomeDrink extends Component { // eslint-disable-line no-unused-va
             Save
           </button>
         </div>
-        <SearchWrapper title = { 'Miscellaneous Mappings' } body = { ['bar_name', 'hipbar_price', 'menu_price', 'start_date', 'end_date', 'charge_and_tax_percentage'] } head = { ['Bar Name', 'Hipbar Price', 'Menu Price', 'ActiveFrom', 'ActiveTo', 'Charge and tax percentage'] } data={this.props.miscellaneousInformation} />
+        <SearchWrapper title = { 'Miscellaneous Mappings' } body = { ['bar_name', 'hipbarPrice', 'menuPrice', 'start_date', 'end_date', 'charge_and_tax_percentage'] } head = { ['Bar Name', 'Hipbar Price', 'Menu Price', 'ActiveFrom', 'ActiveTo', 'Charge and tax percentage'] } data={this.props.miscellaneousInformation} />
         <Lister limit="10" onClickHandler={this.onClickHandleIventoryListing.bind(this)} currentPage={this.props.miscellaneousInformationPage} showMax="5" count={this.props.miscellaneousInformationCount} />
       </div>
     );

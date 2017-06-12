@@ -28,6 +28,7 @@ const DEFINE_CREATE_PAGE = 'MISCELLANEOUS_ITEM/CREATE';
 const DEFINE_MAP_BAR_PAGE = 'MAP_MISCELLANEOUS_ITEM_TO_BAR/UPDATE';
 const DEFINE_PURE_MAP_PAGE = 'MISCELLANEOUS_ITEM/PURE_MAP_PAGE';
 const DEFINE_CREATE_PAGE_FOR_BAR = 'MISCELLANEOUS_ITEM/CREATE_PAGE_FOR_BAR';
+const MISCELLANEOUS_INVENTORY_FETCHED = 'MISCELLANEOUS_MAP_ITEM/FETCH';
 const MISCELLANEOUS_INSERTED = 'MISCELLANEOUS_ITEM/INSERT';
 const MISCELLANEOUS_UPDATED = 'MISCELLANEOUS_ITEM/UPDATE';
 const MISCELLANEOUS_FETCH = 'MISCELLANEOUS_INFO_ITEM/FETCH';
@@ -229,6 +230,27 @@ const proceed = () => {
   };
 };
 
+const fetchMiscellaneousInventory = (id) => {
+  return (dispatch, getState) => {
+    const url = Endpoints.db + '/table/miscellaneous_inventory/select';
+    const queryObj = {where: {'miscellaneous_id': parseInt(id, 10)}};
+    queryObj.columns = ['*'];
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(queryObj),
+    };
+    /* Make a MAKE_REQUEST action */
+    dispatch({type: MAKE_REQUEST});
+    return Promise.all([
+      dispatch(requestAction(url, options, MISCELLANEOUS_INVENTORY_FETCHED, REQUEST_ERROR)),
+      dispatch({type: REQUEST_COMPLETED})
+    ]).then([
+      dispatch(proceed())
+    ]);
+  };
+};
 
 const insertMiscellaneousInventory = () => {
   return (dispatch, getState) => {
@@ -437,6 +459,8 @@ const welcomeDrinksReducer = (state = defaultmiscItem, action) => {
       return {...state, proceed: true, id: action.data.returning[0].id};
     case MISCELLANEOUS_FETCH:
       return {...state, misc_info_detail: action.data[0]};
+    case MISCELLANEOUS_INVENTORY_FETCHED:
+      return {...state, miscellaneousInformation: action.data};
     case MISCELLANEOUS_ITEM_FETCH:
       return {...state, misc_detail: action.data[0]};
     case ALL_MISCELLANEOUS_ITEM_FETCH:
@@ -485,6 +509,7 @@ export {
   AD_INFO,
   citiesViewHandler,
   IMAGE_UPLOAD_SUCCESS,
+  fetchMiscellaneousInventory,
   definePage,
   IMAGE_UPLOAD_ERROR,
   IMAGE_CANCEL,
