@@ -29,6 +29,12 @@ const defaultCustomerSupportState = {
   }
 };
 
+const defaultbrandListingData = {
+  allState: [],
+  allList: [],
+  allGenre: []
+};
+
 const defaultGenreState = {
   genreName: '',
   displayName: '',
@@ -428,6 +434,7 @@ export { defaultNotepadState
   , defaultBrandManagerProfileState
   , defaultCreateBrandManagerState
   , defaultwelcomeCreateData
+  , defaultbrandListingData
   , defaultViewBrandManagerState
   , defaultEditBrandManagerState
   , defaultConsumerState

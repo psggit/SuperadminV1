@@ -52,6 +52,7 @@ import PromosOnPack from './components/BrandsOffersAndPromos/PromosOnPack/action
 // import whatsNewReducer from './components/WhatsNew/CreatePost/Action';
 import whatsNewReducer from './components/WhatsNewArticle/CreateArticle/CreateArticleAction';
 
+import brandListingReducer from './components/BrandListing/BrandListingActions';
 // Ads
 import adsListReducer from './components/BrandsOffersAndPromos/AdsListing/AdsListActions';
 import adsCreateImageReducer from './components/BrandsOffersAndPromos/AdsCreateImageAd/CreateAdImageActions';
@@ -80,6 +81,7 @@ const reducer = combineReducers({
   promosCashbackRedeemState: PromosCashbackRedeem,
   promosOnPackRedeemState: PromosOnPack,
   welcomeDrinksState: welcomeDrinksReducer,
+  brandListingState: brandListingReducer,
   // Everything else.
   loginState: loginReducer,
   routing: routeReducer,

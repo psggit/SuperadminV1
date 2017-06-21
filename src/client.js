@@ -32,6 +32,7 @@ import {Login, Home, PageContainer,
   ConsumerRecharge,
   BrandCreate,
   BrandEdit,
+  BrandListing,
   BrandManagement,
   ConsumerReservation,
   ConsumerRedemption,
@@ -53,6 +54,7 @@ import {Login, Home, PageContainer,
   CreateBrandManager,
   CompaniesManagement,
   /* 'BrandAds' was removed from the below list of imports, not sure if I messed something up during merge*/
+  /* If you know something is messed up then fix it, you modern age neanderthal*/
   ManageCompanies, BrandPromos, WelcomeDrinksView, WelcomeDrinksCreate, PromosCashbackRedeem, PromosOnPack, RetailerManagementCreate, RetailerManagementBarCreate, RetailerManagementViewBar,
   RetailerManagementSettlementDetails, RetailerManagementDeviceDetail, RetailerManagementDisableDevice,
   RetailerManagementTransactions, RetailerManagementCreateOrganization, CustomerSupportCustomerProfile,
@@ -105,7 +107,6 @@ import {Login, Home, PageContainer,
   ViewConsumerTransactions
 } from './components'; // eslint-disable-line no-unused-vars
 
-// ^== next level of importing
 import {CreatePromos} from './components';
 
 import {AddTable} from './components';
@@ -238,6 +239,7 @@ const main = (
         <Route path="state_management" component={StateManagement} />
         <Route path="state_management/edit/:Id" component={ManageState} />
         <Route path="state_management/create" component={ManageState} />
+        <Route path="brand_listing" component={BrandListing} />
         <Route path="genre_management" component={GenreManagement} />
         <Route path="genre_management/edit/:Id" component={ManageGenre} />
         <Route path="genre_management/create" component={ManageGenre} />
