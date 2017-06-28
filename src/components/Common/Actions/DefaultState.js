@@ -35,6 +35,13 @@ const defaultbrandListingData = {
   allGenre: []
 };
 
+const defaultadListingData = {
+  adType: null,
+  allCity: [],
+  allList: [],
+  allBar: []
+};
+
 const defaultGenreState = {
   genreName: '',
   displayName: '',
@@ -435,6 +442,7 @@ export { defaultNotepadState
   , defaultCreateBrandManagerState
   , defaultwelcomeCreateData
   , defaultbrandListingData
+  , defaultadListingData
   , defaultViewBrandManagerState
   , defaultEditBrandManagerState
   , defaultConsumerState

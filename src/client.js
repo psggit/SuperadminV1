@@ -33,6 +33,7 @@ import {Login, Home, PageContainer,
   BrandCreate,
   BrandEdit,
   BrandListing,
+  AdListing,
   BrandManagement,
   ConsumerReservation,
   ConsumerRedemption,
@@ -240,6 +241,7 @@ const main = (
         <Route path="state_management/edit/:Id" component={ManageState} />
         <Route path="state_management/create" component={ManageState} />
         <Route path="brand_listing" component={BrandListing} />
+        <Route path="ad_listing" component={AdListing} />
         <Route path="genre_management" component={GenreManagement} />
         <Route path="genre_management/edit/:Id" component={ManageGenre} />
         <Route path="genre_management/create" component={ManageGenre} />

@@ -78,6 +78,7 @@ export BrandManagerProfile from './BrandsOffersAndPromos/BrandManagerProfile/Bra
 export CreateBrandManager from './BrandsOffersAndPromos/CreateBrandManager/CreateBrandManager';
 export BrandPromos from './BrandsOffersAndPromos/BrandPromos/BrandPromos';
 export BrandListing from './BrandListing/BrandListing';
+export AdListing from './AdListing/AdListing';
 export WelcomeDrinksView from './BrandsOffersAndPromos/WelcomeDrinksView/WelcomeDrinksView';
 export WelcomeDrinksCreate from './BrandsOffersAndPromos/WelcomeDrinksCreate/WelcomeDrinksCreate';
 export CreatePromos from './BrandsOffersAndPromos/CreatePromos/CreatePromos';
