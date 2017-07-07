@@ -1,9 +1,9 @@
 import React from 'react';
 import formValidator from '../Common/CommonFormValidator';
 
-import {AD_INFO} from './MiscellaneousItemActions';
+import {MISC_INFO} from './MiscellaneousItemActions';
 
-const MiscInfo = ({type, miscAll, onMiscChange}) => {
+const MiscInfo = ({type, miscAll, onMiscChange, data}) => {
   const styles = require('./CreateBarAd.scss');
   const miscDropdownHtml = miscAll.map((misc) => {
     return (<option value={misc.id}> {misc.name} </option>);
@@ -14,10 +14,17 @@ const MiscInfo = ({type, miscAll, onMiscChange}) => {
           <ul>
             <li>
               <label>Miscellaneous Item:</label>
+              {(!data.id)
+              ?
               <select onChange={onMiscChange} data-field-name="misc" data-field-type="string">
                 <option>Select</option>
                 {miscDropdownHtml}
               </select>
+              :
+              <select onChange={onMiscChange} data-field-name="misc" data-field-type="string">
+                <option value={data.id}>{data.name}</option>
+              </select>
+              }
             </li>
           </ul>
     </div>
@@ -26,5 +33,5 @@ const MiscInfo = ({type, miscAll, onMiscChange}) => {
 
 // Format
 // formValidator( Component, Form Attribute for Models)
-export default formValidator(MiscInfo, 'data-field-name', 'data-field-type', AD_INFO);
+export default formValidator(MiscInfo, 'data-field-name', 'data-field-type', MISC_INFO);
 // Change emitter is the function

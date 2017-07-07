@@ -73,6 +73,7 @@ import retailerDebitCreditRedicer from './components/RetailerManagement/DebitsCr
 import barDebitCreditRedicer from './components/RetailerManagement/BarDebitsCredits/Actions';
 
 import barAllSkuReducer from './components/BarManagement/ManageBarSku/Actions';
+import miscellaneousItemListReducer from './components/MiscellaneousItemList/Actions';
 
 // Invite
 import invitationReducer from './components/Invites/reducer';
@@ -134,6 +135,7 @@ const reducer = combineReducers({
   retailer_debit_credit: retailerDebitCreditRedicer,
   bar_debit_credit: barDebitCreditRedicer,
   all_bar_skus: barAllSkuReducer,
+  miscellaneous_item_list: miscellaneousItemListReducer,
   invite_data: invitationReducer,
   gen_filter_data: filterGenReducer
 

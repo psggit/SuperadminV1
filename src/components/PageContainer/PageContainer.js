@@ -136,6 +136,16 @@ const PageContainer = ({location, name, role, children, dispatch}) => { // eslin
                 </li>
                 <li className={styles.sidebar_list}>
                   <label>
+                    <Link to={'/hadmin/miscellaneous_item/create'}>Create Miscellaneous</Link>
+                  </label>
+                </li>
+                <li className={styles.sidebar_list}>
+                  <label>
+                    <Link to={'/hadmin/miscellaneous_item/list'}>Manage Miscellaneous</Link>
+                  </label>
+                </li>
+                <li className={styles.sidebar_list}>
+                  <label>
                     <Link to={'/hadmin/companies_management'}>Manage Companies</Link>
                   </label>
                 </li>

@@ -17,25 +17,25 @@ const BRANDS_FETCH = 'WELCOME_DRINKS/BRANDS_FETCH';
 const SKU_FETCH = 'WELCOME_DRINKS/SKU_FETCH';
 const PRODUCTS_FETCH = 'WELCOME_DRINKS/PRODUCTS_FETCH';
 const CITY_SELECT = 'WELCOME_DRINKS/CITY_SELECT';
-const AD_INFO = 'WELCOME_DRINKS/AD_INFO';
+const MISC_INFO = 'MISCELLANEOUS_ITEM_MAP/MISC_INFO';
 const CITIES_VIEW = 'WELCOME_DRINKS/CITIES_VIEW';
 const IMAGE_UPLOAD_SUCCESS = 'WELCOME_DRINKS/IMAGE_UPLOAD_SUCCESS';
 const IMAGE_UPLOAD_ERROR = 'WELCOME_DRINKS/IMAGE_UPLOAD_SUCCESS';
 const IMAGE_CANCEL = 'WELCOME_DRINKS/IMAGE_CANCEL';
 const UPDATED_CITIES_SELECTION = 'WELCOME_DRINKS/UPDATED_CITIES_SELECTION';
 const RESET = 'WELCOME_DRINKS/RESET';
-const DEFINE_CREATE_PAGE = 'MISCELLANEOUS_ITEM/CREATE';
+const DEFINE_CREATE_PAGE = 'MISCELLANEOUS_ITEM_MAP/CREATE';
 const DEFINE_MAP_BAR_PAGE = 'MAP_MISCELLANEOUS_ITEM_TO_BAR/UPDATE';
-const DEFINE_PURE_MAP_PAGE = 'MISCELLANEOUS_ITEM/PURE_MAP_PAGE';
-const DEFINE_CREATE_PAGE_FOR_BAR = 'MISCELLANEOUS_ITEM/CREATE_PAGE_FOR_BAR';
+const DEFINE_PURE_MAP_PAGE = 'MISCELLANEOUS_ITEM_MAP/PURE_MAP_PAGE';
+const DEFINE_CREATE_PAGE_FOR_BAR = 'MISCELLANEOUS_ITEM_MAP/CREATE_PAGE_FOR_BAR';
 const MISCELLANEOUS_INVENTORY_FETCHED = 'MISCELLANEOUS_MAP_ITEM/FETCH';
-const MISCELLANEOUS_INSERTED = 'MISCELLANEOUS_ITEM/INSERT';
-const MISCELLANEOUS_UPDATED = 'MISCELLANEOUS_ITEM/UPDATE';
+const MISCELLANEOUS_INSERTED = 'MISCELLANEOUS_ITEM_MAP/INSERT';
+const MISCELLANEOUS_UPDATED = 'MISCELLANEOUS_ITEM_MAP/UPDATE';
 const MISCELLANEOUS_FETCH = 'MISCELLANEOUS_INFO_ITEM/FETCH';
-const MISCELLANEOUS_ITEM_FETCH = 'MISCELLANEOUS_ITEM/FETCH';
-const ALL_MISCELLANEOUS_ITEM_FETCH = 'ALL_MISCELLANEOUS_ITEM/FETCH';
-const BARS_FETCH = 'MISCELLANEOUS_ITEM/BARS_FETCH';
-const CITY_SPECIFIC_BARS_FETCH = 'MISCELLANEOUS_ITEM/BARS_FETCH';
+const MISCELLANEOUS_ITEM_FETCH = 'MISCELLANEOUS_ITEM_MAP/FETCH';
+const ALL_MISCELLANEOUS_ITEM_FETCH = 'ALL_MISCELLANEOUS_ITEM_MAP/FETCH';
+const BARS_FETCH = 'MISCELLANEOUS_ITEM_MAP/BARS_FETCH';
+const CITY_SPECIFIC_BARS_FETCH = 'MISCELLANEOUS_ITEM_MAP/BARS_FETCH';
 
 /* ****** Action Creators ******** */
 
@@ -157,7 +157,7 @@ const fetchMisc = (id, page) => {
     offset = (page - 1) * 10;
     const url = Endpoints.db + '/table/miscellaneous_information/select';
     const queryObj = {
-      'columns': ['name', 'id'],
+      'columns': ['*'],
       'limit': limit,
       'offset': offset
     };
@@ -180,8 +180,9 @@ const fetchMisc = (id, page) => {
 // Define Page(Update, Create (or) Create For Bar)
 const definePage = (barId, miscId) => {
   return (dispatch) => {
+    console.log('Page Definition');
+    // Able to map any misc to any bar
     if (barId === undefined && miscId === undefined) {
-      // Able to map any misc to any bar
       dispatch({type: DEFINE_PURE_MAP_PAGE, data: {barId: barId, miscId: miscId}});
       dispatch({type: MAKE_REQUEST});
       return Promise.all([
@@ -195,16 +196,19 @@ const definePage = (barId, miscId) => {
       dispatch({type: DEFINE_CREATE_PAGE_FOR_BAR, data: {barId: barId, miscId: miscId}});
       dispatch({type: MAKE_REQUEST});
       return Promise.all([
-        dispatch(fetchBar(barId)),
+        dispatch(fetchAllMisc()),
+        dispatch(fetchBar(parseInt(barId, 10))),
         dispatch({type: REQUEST_COMPLETED})
       ]);
     }
     // Define The Mapping Misc to Bar Page.
     if (barId === undefined && miscId !== undefined) {
+      // Define Page as 'map misc to bar'
+      // Fetch Misc info from table 'Miscellaneous_item'
       dispatch({type: DEFINE_MAP_BAR_PAGE, data: {barId: barId, miscId: miscId}});
       dispatch({type: MAKE_REQUEST});
       return Promise.all([
-        dispatch(fetchMiscItem(miscId)),
+        dispatch(fetchMiscItem(parseInt(miscId, 10))),
         dispatch(fetchStates()),
         dispatch({type: REQUEST_COMPLETED})
       ]);
@@ -215,9 +219,9 @@ const definePage = (barId, miscId) => {
 // Reacts to how to divert page on success
 const proceed = () => {
   return (dispatch, getState) => {
-    const state = getState().miscellaneousItemState.page;
-    const mid = getState().miscellaneousItemState.id;
-    const proceedVal = getState().miscellaneousItemState.proceed;
+    const state = getState().miscellaneousItemMapState.page;
+    const mid = getState().miscellaneousItemMapState.id;
+    const proceedVal = getState().miscellaneousItemMapState.proceed;
     if (proceedVal && (state === 'create')) {
       return dispatch(routeActions.push('/hadmin/miscellaneous_item/' + mid + '/update'));
     }
@@ -254,20 +258,51 @@ const fetchMiscellaneousInventory = (id) => {
 
 const insertMiscellaneousInventory = () => {
   return (dispatch, getState) => {
-    const miscState = getState().miscellaneousItemState.detail;
+    console.log('Insert into Miscellaneous Inventory');
+    const miscState = getState().miscellaneousItemMapState.detail;
+    const reportState = {};
+    // UGLY
+    reportState.base_sku_price = miscState.base_sku_price;
+    reportState.charges_and_tax_percentage = miscState.charges_and_tax_percentage;
+    reportState.negotiated_sku_price = miscState.negotiated_sku_price;
+    miscState.id = 6;
+    delete(miscState.base_sku_price);
+    delete(miscState.city);
+    delete(miscState.charges_and_tax_percentage);
+    delete(miscState.negotiated_sku_price);
+    reportState.hipbarPrice = miscState.hipbarPrice;
+    reportState.menuPrice = miscState.menuPrice;
     const url = Endpoints.db + '/table/miscellaneous_inventory/insert';
+    const reportUrl = Endpoints.db + '/table/miscellaneous_item_report/insert';
     const queryObj = {objects: [miscState]};
-    queryObj.returning = ['id'];
+    const reportQueryObj = {objects: [reportState]};
+    queryObj.returning = ['id', 'hipbarPrice', 'menuPrice'];
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
+    const reportOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(reportQueryObj),
+    };
     /* Make a MAKE_REQUEST action */
     dispatch({type: MAKE_REQUEST});
+    dispatch(requestAction(url, options, MISCELLANEOUS_INSERTED, REQUEST_ERROR)).then(() => {
+      dispatch(requestAction(reportUrl, reportOptions)).then((response) => {
+        console.log(response);
+      }).catch( (error) => {
+        console.log(error);
+      });
+    }).catch( (error) => {
+      alert('Error: Check Logs');
+      console.log(error);
+    });
     return Promise.all([
-      dispatch(requestAction(url, options, MISCELLANEOUS_INSERTED, REQUEST_ERROR)),
+    // dispatch(requestAction(url, options, MISCELLANEOUS_INSERTED, REQUEST_ERROR)),
       dispatch({type: REQUEST_COMPLETED})
     ]).then([
       dispatch(proceed())
@@ -278,7 +313,7 @@ const insertMiscellaneousInventory = () => {
 
 const updateMiscellaneous = () => {
   return (dispatch, getState) => {
-    const miscState = getState().miscellaneousItemState.detail;
+    const miscState = getState().miscellaneousItemMapState.detail;
     const url = Endpoints.db + '/table/miscellaneous_inventory/update';
     const queryObj = {'$set': miscState};
     queryObj.where = {'id': parseInt(miscState.id, 10)};
@@ -426,16 +461,24 @@ const unCheckCity = (cityObj) => {
 
 const finalSave = () => {
   return (dispatch, state) => {
-    const lstate = state().miscellaneousItemState;
+    const lstate = state().miscellaneousItemMapState;
+    console.log('Making request to DB');
     if (lstate.page === 'create') {
+      console.log('create');
       return Promise.all([
         dispatch(insertMiscellaneousInventory())
       ]);
     } else if (lstate.page === 'update') {
+      console.log('update');
       return Promise.all([
         dispatch(updateMiscellaneous())
       ]);
     } else if (lstate.page === 'create for bar') {
+      console.log('create for bar');
+      return Promise.all([
+        dispatch(insertMiscellaneousInventory())
+      ]);
+    } else if (lstate.page === 'map misc to bar') {
       return Promise.all([
         dispatch(insertMiscellaneousInventory())
       ]);
@@ -483,7 +526,7 @@ const welcomeDrinksReducer = (state = defaultmiscItem, action) => {
       return {...state, imageUrl: ''};
     case IMAGE_CANCEL:
       return {...state, imageUrl: ''};
-    case AD_INFO:
+    case MISC_INFO:
       const camInfo = {};
       camInfo[action.data.key] = action.data.value;
       return { ...state, detail: { ...state.detail, ...camInfo}};
@@ -506,7 +549,7 @@ export {
   insertMiscellaneousInventory,
   updateMiscellaneous,
   fetchProducts,
-  AD_INFO,
+  MISC_INFO,
   citiesViewHandler,
   IMAGE_UPLOAD_SUCCESS,
   fetchMiscellaneousInventory,

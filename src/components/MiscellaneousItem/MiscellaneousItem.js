@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { definePage, fetchSKU, fetchProducts, fetchBrands, citiesViewHandler, IMAGE_CANCEL} from './MiscellaneousItemActions';
-import { checkState, unCheckState, finalSave } from './MiscellaneousItemActions';
+import { checkState, unCheckState, finalSave, IMAGE_UPLOAD_SUCCESS, IMAGE_UPLOAD_ERROR} from './MiscellaneousItemActions';
 import { RESET } from './MiscellaneousItemActions';
 /*
   Decorator which adds couple of use ful features like
@@ -10,6 +10,8 @@ import { RESET } from './MiscellaneousItemActions';
 */
 import commonDecorator from '../Common/CommonDecorator';
 import BreadCrumb from '../Common/BreadCrumb';
+
+import ImageUpload from './ImageUpload';
 
 /* Components */
 import AdInfo from './MiscInfo';
@@ -112,6 +114,7 @@ class CreateWelcomeDrink extends Component { // eslint-disable-line no-unused-va
         <BreadCrumb breadCrumbs={this.breadCrumbs} />
         <div className={styles.brand_wrapper}>
           <AdInfo type={this.props.page} data={this.props.detail} dispatch={this.props.dispatch}/>
+          <ImageUpload name = "Upload Listing Image" imageUrl={this.props.detail.listing_image ? this.props.detail.listing_image : ''} requestSuccess={IMAGE_UPLOAD_SUCCESS} requestError={ IMAGE_UPLOAD_ERROR } cancelImage={ IMAGE_CANCEL }/>
           <div className="clearfix"></div>
           <div className="clearfix"></div>
           <button className={styles.edit_brand_btn} onClick={this.onClickSave.bind(this)}>
@@ -125,6 +128,7 @@ class CreateWelcomeDrink extends Component { // eslint-disable-line no-unused-va
 
 CreateWelcomeDrink.propTypes = {
   params: PropTypes.object.isRequired,
+  image: PropTypes.string.isRequired,
   detail: PropTypes.object.isRequired,
   page: PropTypes.string.isRequired,
   selectedCity: PropTypes.object.isRequired,

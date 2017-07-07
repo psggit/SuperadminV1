@@ -53,11 +53,13 @@ class CreateWelcomeDrink extends Component { // eslint-disable-line no-unused-va
     }
   }
   componentWillMount() {
-    const barId = this.props.params.id;
+    const barId = this.props.params.Bid;
     const miscId = this.props.params.Mid;
+    console.log('ON Mount');
     Promise.all([
       this.props.dispatch(definePage(barId, miscId)),
-      this.props.dispatch(fetchMisc(1))
+      this.props.dispatch(fetchMisc(miscId)),
+      this.props.dispatch(fetchMiscellaneousInventory(miscId))
     ]);
   }
   componentWillUnmount() {
@@ -122,7 +124,7 @@ class CreateWelcomeDrink extends Component { // eslint-disable-line no-unused-va
         <BreadCrumb breadCrumbs={this.breadCrumbs} />
         <div className={styles.brand_wrapper}>
           <MiscInfo onMiscChange={this.onMiscChange.bind(this)} miscAll={this.props.miscAll} type={this.props.page} data={this.props.misc_detail} dispatch={this.props.dispatch}/>
-          <BarInfo onCityChange={this.onCityChange.bind(this)} barsAll={this.props.barsAll} citiesAll={this.props.citiesAll} type={this.props.page} data={this.props.misc_detail} dispatch={this.props.dispatch}/>
+          <BarInfo onCityChange={this.onCityChange.bind(this)} barsAll={this.props.barsAll} citiesAll={this.props.citiesAll} type={this.props.page} data={this.props.detail} dispatch={this.props.dispatch}/>
           <div className="clearfix"></div>
           <div className="clearfix"></div>
           <button className={styles.edit_brand_btn} onClick={this.onClickSave.bind(this)}>
@@ -139,6 +141,7 @@ class CreateWelcomeDrink extends Component { // eslint-disable-line no-unused-va
 CreateWelcomeDrink.propTypes = {
   params: PropTypes.object.isRequired,
   misc_detail: PropTypes.object.isRequired,
+  detail: PropTypes.object.isRequired,
   page: PropTypes.string.isRequired,
   miscellaneousInformationPage: PropTypes.array.isRequired,
   miscellaneousInformationCount: PropTypes.array.isRequired,

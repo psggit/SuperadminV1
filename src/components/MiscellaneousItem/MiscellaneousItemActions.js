@@ -19,16 +19,18 @@ const PRODUCTS_FETCH = 'WELCOME_DRINKS/PRODUCTS_FETCH';
 const CITY_SELECT = 'WELCOME_DRINKS/CITY_SELECT';
 const AD_INFO = 'WELCOME_DRINKS/AD_INFO';
 const CITIES_VIEW = 'WELCOME_DRINKS/CITIES_VIEW';
-const IMAGE_UPLOAD_SUCCESS = 'WELCOME_DRINKS/IMAGE_UPLOAD_SUCCESS';
-const IMAGE_UPLOAD_ERROR = 'WELCOME_DRINKS/IMAGE_UPLOAD_SUCCESS';
-const IMAGE_CANCEL = 'WELCOME_DRINKS/IMAGE_CANCEL';
+
+const IMAGE_UPLOAD_SUCCESS = 'MISCELLANEOUS_ITEM/IMAGE_UPLOAD_SUCCESS';
+const IMAGE_UPLOAD_ERROR = 'MISCELLANEOUS_ITEM/IMAGE_UPLOAD_SUCCESS';
+const IMAGE_CANCEL = 'MISCELLANEOUS_ITEM/IMAGE_CANCEL';
+
 const UPDATED_CITIES_SELECTION = 'WELCOME_DRINKS/UPDATED_CITIES_SELECTION';
 const RESET = 'WELCOME_DRINKS/RESET';
 const DEFINE_CREATE_PAGE = 'MISCELLANEOUS_ITEM/CREATE';
 const DEFINE_UPDATE_PAGE = 'MISCELLANEOUS_ITEM/UPDATE';
 const DEFINE_CREATE_PAGE_FOR_BAR = 'MISCELLANEOUS_ITEM/CREATE_PAGE_FOR_BAR';
-const MISCELLANEOUS_INSERTED = 'MISCELLANEOUS_ITEM/INSERT';
-const MISCELLANEOUS_UPDATED = 'MISCELLANEOUS_ITEM/UPDATE';
+const MISCELLANEOUS_INSERTED = 'MISCELLANEOUS_ITEM/INSERTED';
+const MISCELLANEOUS_UPDATED = 'MISCELANEOUS_ITEM/UPDATED';
 const MISCELLANEOUS_FETCH = 'MISCELLANEOUS_ITEM/FETCH';
 const BARS_FETCH = 'MISCELLANEOUS_ITEM/BARS_FETCH';
 
@@ -111,7 +113,8 @@ const proceed = () => {
     const mid = getState().miscellaneousItemState.id;
     const proceedVal = getState().miscellaneousItemState.proceed;
     if (proceedVal && (state === 'create')) {
-      return dispatch(routeActions.push('/hadmin/miscellaneous_item/' + mid + '/update'));
+    //  return dispatch(routeActions.push('/hadmin/miscellaneous_item/' + mid + '/update'));
+      return dispatch(routeActions.push('/hadmin/miscellaneous_item/list'));
     }
     if (proceedVal && (state === 'update')) {
       return dispatch(routeActions.push('/hadmin/miscellaneous_item/' + mid + '/update'));
@@ -126,6 +129,7 @@ const proceed = () => {
 const insertMiscellaneous = () => {
   return (dispatch, getState) => {
     const miscState = getState().miscellaneousItemState.detail;
+    miscState.is_deleted = false;
     const url = Endpoints.db + '/table/miscellaneous_item/insert';
     const queryObj = {objects: [miscState]};
     queryObj.returning = ['id'];
@@ -141,6 +145,7 @@ const insertMiscellaneous = () => {
       dispatch(requestAction(url, options, MISCELLANEOUS_INSERTED, REQUEST_ERROR)),
       dispatch({type: REQUEST_COMPLETED})
     ]).then([
+      alert('Miscellaneous Item Inserted'),
       dispatch(proceed())
     ]);
   };
@@ -166,6 +171,7 @@ const updateMiscellaneous = () => {
       dispatch(requestAction(url, options, MISCELLANEOUS_UPDATED, REQUEST_ERROR)),
       dispatch({type: REQUEST_COMPLETED})
     ]).then([
+      alert('Miscellaneous Item Updated'),
       dispatch(proceed())
     ]);
   };
@@ -340,11 +346,11 @@ const welcomeDrinksReducer = (state = defaultmiscItem, action) => {
     case PRODUCTS_FETCH:
       return {...state, availableProducts: action.data };
     case IMAGE_UPLOAD_SUCCESS:
-      return {...state, imageUrl: action.data[0]};
+      return {...state, detail: { ...state.detail, listing_image: Endpoints.file_get + action.data[0]}};
     case IMAGE_UPLOAD_ERROR:
-      return {...state, imageUrl: ''};
+      return {...state, detail: { ...state.detail, listing_image: ''}};
     case IMAGE_CANCEL:
-      return {...state, imageUrl: ''};
+      return {...state, detail: { ...state.detail, listing_image: ''}};
     case AD_INFO:
       const camInfo = {};
       camInfo[action.data.key] = action.data.value;

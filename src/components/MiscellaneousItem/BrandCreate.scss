@@ -1,0 +1,543 @@
+.container
+{
+	width: 100%;
+	float: left;
+}
+
+.image_container {
+  float: left;
+  margin-left: 30px;
+  .upload_container
+  {
+  	float: left;
+  	width: 250px;
+  	margin-top: 20px;
+  	.upload_images
+  	{
+  		width: 100%;
+  		float: left;
+  	}
+  	.upload_lab
+  	{
+  		color: rgba(0,0,0,0.54);
+  		font-weight: 500;
+  		font-size: 14px;
+  		padding-bottom: 15px;
+  	}
+  	.upload_id
+  	{
+  		color: rgba(0,0,0,0.54);
+  		font-size: 13px;
+  		font-weight: 500;
+  		padding: 10px 15px;
+  		background: #DFDFDF;
+  	}
+  	.upload_img
+  	{
+  		max-width: 100%;
+  		max-height: 100%;
+      margin: auto;
+      padding: 10px;
+  	}
+  	.file_upload
+  	{
+  		width: 100%;
+      position: relative;
+  		float: left;
+  		height: 200px;
+  		background: #FFF;
+  		display: flex;
+  		align-items: center;
+  
+      .img_wrapper {
+        text-align: center;
+        width: 100%;
+        float: left;
+        margin: 10px;
+        border: 1px solid #DDD;
+        height: 180px;
+        p {
+          position: absolute;
+          top: 2px;
+          right: 0px;
+          width: 20px;
+          height: 20px;
+          border-radius: 100%;
+          background: #353535;
+          color: #FFF;
+          font-size: 14px;
+          text-align: center;
+          cursor: pointer;
+          margin: 0;
+  
+        }
+      }
+  	}
+  	input[type="file"]
+  	{
+  		width: 80% !important;
+  		padding: 4px !important;
+  		background: #FFF;
+  		border-radius: 3px;
+  		border: 1px solid #CCC;
+  		margin: auto;
+  		&:focus
+  		{
+  			outline: none;
+  			border: 1px solid #FF7400;
+  		}
+  	}
+  	.upload_btn_layout
+  	{
+  		background: #DFDFDF;
+  		width: 100%;
+  		float: left;
+	    .upload_btn
+	    {
+        width: 50%;
+        height: 30px;
+        color: rgba(255, 116, 0, 0.8);
+        border: 1px solid #FF7400;
+        border-radius: 4px;
+        background: #FFF;
+        cursor: pointer;
+        font-weight: 400;
+        display: block;
+        padding: 5px;
+        margin: 0 auto;
+        font-size: 13px;
+        letter-spacing: 0.5px;
+	      &:focus
+	      {
+	      	outline: none;
+	      }
+	      &:hover
+	      {
+	      	color: rgba(255, 116, 0 , 1);
+	      }
+	    }
+  	}
+  }
+}
+
+.wd_100
+{
+	width: 100%;
+	float: left;
+}
+.heading
+{
+	color: rgba(0,0,0,0.54);
+	font-weight: 500;
+	margin-bottom: 10px;
+	font-size: 14px; 
+	letter-spacing: 0.3px;
+	text-transform: uppercase;
+}
+.create_brand_container
+{
+	background: #FFF;
+  float: left;
+	padding: 20px 15px;
+	display: inline-block;
+	vertical-align: top;
+	margin: 20px 45px;
+	ul
+	{
+		padding: 0;
+		margin: 0;
+		font-weight: 400;
+		list-style: none;
+	}
+	li
+	{
+		margin-bottom: 15px;
+		label
+		{
+			width: 170px;
+			font-weight: 400;
+			color: rgba(0,0,0,0.54);
+			font-size: 13px;
+			letter-spacing: 0.3px;
+		}
+		input, select
+		{
+			border: 1px solid #CCC;
+			border-radius: 3px;
+			padding: 5px 10px;
+			transition: all 0.2s;
+			background: #FFF;
+			font-size: 13px;
+			height: 30px;
+			color: rgba(0,0,0,0.9);
+			width: 170px;
+			&:focus
+			{
+				outline: none;
+				border: 1px solid #FF7400;
+			}
+			option
+			{
+				color: rgba(0,0,0,0.54);
+			}
+		}
+	}
+}
+.region_wrapper
+{
+	width: 100%;
+	float: left;
+	padding: 0 45px;
+}
+.states_container
+{
+	background: #FFF;
+	padding: 20px 15px;
+	display: inline-block;
+	vertical-align: top;
+	margin: 20px 0;
+	width: 300px;
+	overflow: auto;
+	height: 600px;
+	ul
+	{
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		width: 100%;
+		float: left;
+	}
+	li
+	{
+		margin-bottom: 5px;
+		label
+		{
+			font-weight: 400;
+			font-size: 13px;
+			letter-spacing: 0.3px;
+			color: rgba(0,0,0,0.54);
+		}
+		input[type="checkbox"]
+		{
+			margin-right: 8px;
+			&:focus
+			{
+				outline: none;
+			}
+		}
+	}
+}
+.edit_brand_btn
+{
+	width: 130px;
+    height: 30px;
+    color: rgba(255, 116, 0, 0.8);
+    border: 1px solid #FF7400;
+    border-radius: 4px;
+    background: #FFF;
+    cursor: pointer;
+    font-weight: 400;
+    margin: auto;
+    margin-top: 20px;
+    display: block;
+    padding: 5px;
+    text-align: center;
+    font-size: 13px;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+    &:focus
+    {
+    	outline: none;
+    }
+    &:hover
+    {
+    	color: rgba(255, 116, 0 , 1);
+    }
+}
+.regions_container
+{
+	background: #FFF;
+	padding: 15px 15px;
+	width: 30%;
+	float: left;
+	margin-right: 2%;
+	.heading
+	{
+		color: rgba(0,0,0,0.54);
+		font-weight: 500;
+		margin-bottom: 10px;
+		font-size: 13px; 
+		letter-spacing: 0.3px;
+		text-transform: uppercase;
+	}
+	.add_lab
+	{
+		color: #FF7400;
+		font-size: 13px;
+		letter-spacing: 0.3px;
+		float: left;
+		cursor: pointer;
+	}
+	ul
+	{
+		padding: 0;
+		margin: 0;
+		font-weight: 400;
+		width: 100%;
+		float: left;
+		list-style: none;
+		height: 560px;
+		overflow: auto;
+	}
+	li
+	{
+		margin-top: 15px;
+		label
+		{
+			width: 70%;
+			font-weight: 400;
+			color: rgba(0,0,0,0.54);
+			font-size: 13px;
+			letter-spacing: 0.3px;
+			float: left;
+		}
+		p
+		{
+			width: 30%;
+			float: left;
+			color: #FF7400;
+			font-size: 13px;
+			text-align: right;
+      cursor: pointer;
+		}
+	}	
+}
+.add_regions_container
+{
+	background: #FFF;
+	padding: 15px 15px;
+	width: 66%;
+	float: left;
+	margin-left: 2%;
+	.heading
+	{
+		color: rgba(0,0,0,0.54);
+		font-weight: 500;
+		margin-bottom: 10px;
+		font-size: 13px; 
+		letter-spacing: 0.3px;
+		text-transform: uppercase;
+	}
+	.region_lab
+	{
+		color: rgba(0,0,0,0.54);
+		font-size: 13px;
+		letter-spacing: 0.3px;
+		width: 100px;
+		font-weight: 400;
+		display: inline-block;
+		vertical-align: middle;
+	}
+	.select_city
+	{
+		padding-top: 15px;
+		padding-bottom: 10px;
+	}
+	.cites_lab
+	{
+		color: rgba(0,0,0,0.54);
+		float: left;
+		font-size: 13px;
+		font-weight: 500;
+		.selected
+		{
+			padding-left: 15px;
+			font-weight: 400;
+		}		
+	}
+	input[type="text"]
+	{
+		border: 1px solid #CCC;
+		border-radius: 3px;
+		padding: 5px 10px;
+		transition: all 0.2s;
+		background: #FFF;
+		font-size: 13px;
+		height: 30px;
+		color: rgba(0,0,0,0.9);
+		width: 170px;
+		&:focus
+		{
+			outline: none;
+			border: 1px solid #FF7400;
+		}
+		option
+		{
+			color: rgba(0,0,0,0.54);
+		}
+	}
+}
+.available_states_container
+{
+	width: 56%;
+	float: left;
+	margin-right: 2%;
+	padding: 15px 10px;
+	background: #FFF;
+	border: 1px solid #DDD;
+	.heading
+	{
+		color: rgba(0,0,0,0.4);
+		margin-bottom: 15px;
+		font-size: 13px; 
+		width: 100%;
+		float: left;
+		letter-spacing: 0.3px;
+		text-transform: uppercase;
+		label
+		{
+			display: inline-block;
+			vertical-align: top;
+			font-weight: 500;
+			margin-bottom: 0;
+		}
+		p
+		{
+			text-transform: none;
+			color: rgba(0,0,0,0.54);
+			font-weight: 400;
+			margin: 0;
+			font-weight: 500;
+			display: inline-block;
+			vertical-align: top;
+			float: right;
+			text-align: right;
+		}
+	}
+	ul
+	{
+		padding: 0;
+		margin: 0;
+		font-weight: 400;
+		width: 100%;
+		float: left;
+		list-style: none;
+		height: 374px;
+		overflow: auto;
+	}
+	li
+	{
+		margin-bottom: 10px;
+    width: 100%;
+    float: left;
+		label
+		{
+			width: 50%;
+			font-weight: 400;
+			color: rgba(0,0,0,0.54);
+			font-size: 13px;
+			letter-spacing: 0.3px;
+			float: left;
+		}
+		p
+		{
+			width: 50%;
+			float: left;
+			color: #FF7400;
+			font-size: 13px;
+			text-align: right;
+			margin-bottom: 0;
+      cursor: pointer;
+		}
+	}	
+}
+.cities_in_container
+{
+	width: 40%;
+	float: left;
+	margin-left: 2%;
+	padding: 15px 10px;
+	background: #FFF;
+	border: 1px solid #DDD;
+	.heading
+	{
+		color: rgba(0,0,0,0.4);
+		margin-bottom: 15px;
+		font-size: 13px; 
+		width: 100%;
+		float: left;
+		letter-spacing: 0.3px;
+		text-transform: uppercase;
+		.states
+		{
+			text-transform: none;
+			font-weight: 400;
+			padding-left: 15px;
+		}
+	}
+	ul
+	{
+		padding: 0;
+		margin: 0;
+		font-weight: 400;
+		width: 100%;
+		float: left;
+		list-style: none;
+		height: 374px;
+		overflow: auto;
+	}
+	li
+	{
+		margin-bottom: 10px;
+    float: left;
+    width: 100%;
+		label
+		{
+			font-weight: 400;
+			color: rgba(0,0,0,0.54);
+			font-size: 13px;
+			display: inline-block;
+			letter-spacing: 0.3px;
+			float: left;
+		}
+		input[type="checkbox"]
+		{
+			margin-right: 5px;
+		}
+	}
+}
+.user_actions
+{
+	width: 100%;
+	float: left;
+	text-align: center;
+	padding-top: 10px;
+	button
+	{
+		width: 130px;
+	    height: 30px;
+	    color: rgba(255, 116, 0, 0.8);
+	    border: 1px solid #FF7400;
+	    border-radius: 4px;
+	    background: #FFF;
+	    cursor: pointer;
+	    font-weight: 400;
+	    margin: auto;
+	    margin-top: 10px;
+	    display: inline-block;
+	    padding: 5px;
+	    text-align: center;
+	    font-size: 13px;
+	    margin-bottom: 10px;
+	    letter-spacing: 0.5px;
+	    margin-right: 10px;
+	    &:focus
+	    {
+	    	outline: none;
+	    }
+	    &:hover
+	    {
+	    	color: rgba(255, 116, 0 , 1);
+	    }
+	}
+}
