@@ -21,7 +21,7 @@ const sendRequest = (e) => {
   insertObj = {
     method: 'POST',
     body: JSON.stringify(queryObj),
-    headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
+    headers: { 'Content-Type': 'application/json', 'X-HASURA-ROLE': 'admin'},
     credentials: globalCookiePolicy
   };
   requestAction(url, insertObj, REQUEST_SUCCESS, REQUEST_ERROR);
@@ -71,6 +71,8 @@ const Report = ({stateData}) => { // eslint-disable-line no-unused-vars
                       <option value = "consumer_manual_credits_and_debits_view">Consumer Manual Credit and Debit View</option>
                       <option value = "bars_redeem_and_cancellation_report">Bars Redeem and Cancellation Report</option>
                       <option value = "loading_cash_into_wallet">Loading Cash Into Wallet</option>
+                      <option value = "consumer_list">Consumer List</option>
+                      <option value = "customer_outstanding_in_ppi">Consumer Outstanding In PPI</option>
                   </select>
                   <input name = "start_date" onChange = {convertStartDate} id = "sstart_date" type="date"></input>
                   <input name = "end_date" onChange = {convertEndDate} id = "eend_date" type="date"></input>
