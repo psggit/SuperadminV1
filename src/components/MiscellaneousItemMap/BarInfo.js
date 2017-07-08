@@ -47,7 +47,7 @@ const BarInfo = ({data, barsAll, citiesAll, type, onCityChange}) => {
             </li>
             <li>
               <label>Base SKU Price</label>
-              <input value={data.base_sku_price} data-field-name="base_sku_price" data-field-type="number"/>
+              <input value={data.base_sku_price} data-field-name="base_sku_price" data-field-type="int"/>
             </li>
             <li>
               <label>Start Date</label>
@@ -74,7 +74,7 @@ const BarInfo = ({data, barsAll, citiesAll, type, onCityChange}) => {
             </li>
             <li>
               <label>Is Experience?</label>
-              <select value={data.is_experience} data-field-name="is_experience" data-field-type="boolean">
+              <select value={(data.is_experience) ? 'true' : 'false'} data-field-name="is_experience" data-field-type="text">
                 <option value="true">True</option>
                 <option value="false">False</option>
               </select>

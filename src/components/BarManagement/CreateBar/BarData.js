@@ -19,6 +19,9 @@ const CANCEL_IMAGE = '@barDataReducer/CANCEL_IMAGE';
 const AD_IMAGE_UPLOAD_SUCCESS = '@barDataReducer/AD_IMAGE_UPLOAD_SUCCESS';
 const AD_IMAGE_UPLOAD_ERROR = '@barDataReducer/AD_IMAGE_UPLOAD_ERROR';
 const AD_CANCEL_IMAGE = '@barDataReducer/AD_CANCEL_IMAGE';
+const LISTING_IMAGE_UPLOAD_SUCCESS = '@barDataReducer/LISTING_IMAGE_UPLOAD_SUCCESS';
+const LISTING_IMAGE_UPLOAD_ERROR = '@barDataReducer/LISTING_IMAGE_UPLOAD_ERROR';
+const LISTING_CANCEL_IMAGE = '@barDataReducer/LISTING_CANCEL_IMAGE';
 
 const BAR_FETCHED = '@barDataReducer/BAR_FETCHED';
 
@@ -678,6 +681,14 @@ const barDataReducer = (state = {organisationData: [], barDetail: {}, barContact
       return { ...state, barAccountRegistered: { ...state.barAccountRegistered, canceled_cheque_image: ''}};
     case CANCEL_IMAGE:
       return { ...state, barAccountRegistered: { ...state.barAccountRegistered, canceled_cheque_image: ''}};
+
+    case LISTING_IMAGE_UPLOAD_SUCCESS:
+      return { ...state, barDetail: { ...state.barDetail, listing_image: action.data[0]}};
+    case LISTING_IMAGE_UPLOAD_ERROR:
+      return { ...state, barDetail: { ...state.barDetail, listing_image: ''}};
+    case LISTING_CANCEL_IMAGE:
+      return { ...state, barDetail: { ...state.barDetail, listing_image: ''}};
+
     case AD_IMAGE_UPLOAD_SUCCESS:
       return { ...state, barDetail: { ...state.barDetail, adImage: action.data[0]}};
     case AD_IMAGE_UPLOAD_ERROR:
@@ -717,6 +728,7 @@ const barDataReducer = (state = {organisationData: [], barDetail: {}, barContact
         'excise_licence_number',
         'id',
         'adImage',
+        'listing_image',
         'name'
       ];
 
@@ -768,5 +780,8 @@ export {
   AD_IMAGE_UPLOAD_SUCCESS,
   AD_IMAGE_UPLOAD_ERROR,
   AD_CANCEL_IMAGE,
+  LISTING_IMAGE_UPLOAD_SUCCESS,
+  LISTING_IMAGE_UPLOAD_ERROR,
+  LISTING_CANCEL_IMAGE,
   getBarData,
 };

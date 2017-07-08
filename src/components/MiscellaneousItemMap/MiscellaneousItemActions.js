@@ -223,13 +223,13 @@ const proceed = () => {
     const mid = getState().miscellaneousItemMapState.id;
     const proceedVal = getState().miscellaneousItemMapState.proceed;
     if (proceedVal && (state === 'create')) {
-      return dispatch(routeActions.push('/hadmin/miscellaneous_item/' + mid + '/update'));
+      return dispatch(routeActions.push('/hadmin/miscellaneous_item/' + mid + '/map'));
     }
     if (proceedVal && (state === 'update')) {
-      return dispatch(routeActions.push('/hadmin/miscellaneous_item/' + mid + '/update'));
+      return dispatch(routeActions.push('/hadmin/miscellaneous_item/' + mid + '/map'));
     }
     if (proceedVal && (state === 'create for bar')) {
-      return dispatch(routeActions.push('/hadmin/miscellaneous_item/' + mid + '/update/bar'));
+      return dispatch(routeActions.push('/hadmin/miscellaneous_item/' + mid + '/map'));
     }
   };
 };
@@ -261,15 +261,15 @@ const insertMiscellaneousInventory = () => {
     console.log('Insert into Miscellaneous Inventory');
     const miscState = getState().miscellaneousItemMapState.detail;
     const reportState = {};
-    // UGLY
     reportState.base_sku_price = miscState.base_sku_price;
     reportState.charges_and_tax_percentage = miscState.charges_and_tax_percentage;
     reportState.negotiated_sku_price = miscState.negotiated_sku_price;
-    miscState.id = 6;
     delete(miscState.base_sku_price);
     delete(miscState.city);
     delete(miscState.charges_and_tax_percentage);
     delete(miscState.negotiated_sku_price);
+    miscState.start_date = miscState.start_date + ':00.000000+05:30';
+    miscState.end_date = miscState.end_date + ':00.000000+05:30';
     reportState.hipbarPrice = miscState.hipbarPrice;
     reportState.menuPrice = miscState.menuPrice;
     const url = Endpoints.db + '/table/miscellaneous_inventory/insert';
@@ -283,18 +283,21 @@ const insertMiscellaneousInventory = () => {
       credentials: globalCookiePolicy,
       body: JSON.stringify(queryObj),
     };
-    const reportOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
-      credentials: globalCookiePolicy,
-      body: JSON.stringify(reportQueryObj),
-    };
     /* Make a MAKE_REQUEST action */
     dispatch({type: MAKE_REQUEST});
-    dispatch(requestAction(url, options, MISCELLANEOUS_INSERTED, REQUEST_ERROR)).then(() => {
+    dispatch(requestAction(url, options, MISCELLANEOUS_INSERTED, REQUEST_ERROR)).then((res) => {
+      console.log('respose');
+      reportQueryObj.objects[0].id = res.returning[0].id;
+      const reportOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
+        credentials: globalCookiePolicy,
+        body: JSON.stringify(reportQueryObj),
+      };
       dispatch(requestAction(reportUrl, reportOptions)).then((response) => {
         console.log(response);
       }).catch( (error) => {
+        alert('Error:  Reports');
         console.log(error);
       });
     }).catch( (error) => {
@@ -493,7 +496,7 @@ const welcomeDrinksReducer = (state = defaultmiscItem, action) => {
     case DEFINE_CREATE_PAGE:
       return {...state, page: 'create', miscId: action.data.miscId, barId: action.data.barId};
     case DEFINE_MAP_BAR_PAGE:
-      return {...state, page: 'map misc to bar', miscId: action.data.miscId, barId: action.data.barId};
+      return {...state, page: 'map misc to bar', detail: {...state.detail, miscellaneous_id: parseInt(action.data.miscId, 10), is_experience: false, status: 'active'}, miscId: action.data.miscId, barId: action.data.barId};
     case DEFINE_CREATE_PAGE_FOR_BAR:
       return {...state, page: 'update', miscId: action.data.miscId, barId: action.data.barId};
     case MISCELLANEOUS_INSERTED:
@@ -528,7 +531,11 @@ const welcomeDrinksReducer = (state = defaultmiscItem, action) => {
       return {...state, imageUrl: ''};
     case MISC_INFO:
       const camInfo = {};
-      camInfo[action.data.key] = action.data.value;
+      if (action.data.key === 'is_experience') {
+        camInfo[action.data.key] = (action.data.value === 'true' ? true : false);
+      } else {
+        camInfo[action.data.key] = action.data.value;
+      }
       return { ...state, detail: { ...state.detail, ...camInfo}};
     case RESET:
       return {...defaultmiscItem};

@@ -9,6 +9,9 @@ import {
   AD_IMAGE_UPLOAD_SUCCESS,
   AD_IMAGE_UPLOAD_ERROR,
   AD_CANCEL_IMAGE,
+  LISTING_IMAGE_UPLOAD_SUCCESS,
+  LISTING_IMAGE_UPLOAD_ERROR,
+  LISTING_CANCEL_IMAGE,
   BAR_INPUT_CHANGED
 } from './BarData';
 
@@ -118,11 +121,17 @@ const BarDetails = ( { currState, organisationData } ) => { // eslint-disable-li
         </li>
         <li>
           <div className={styles.wd_50}>
-            <AdImageUpload imageUrl={currState.adImage ? currState.adImage : ''} requestSuccess={AD_IMAGE_UPLOAD_SUCCESS} requestError={ AD_IMAGE_UPLOAD_ERROR } cancelImage={ AD_CANCEL_IMAGE }/>
+            <AdImageUpload name={'Ad Image'} imageUrl={currState.adImage ? currState.adImage : ''} requestSuccess={AD_IMAGE_UPLOAD_SUCCESS} requestError={ AD_IMAGE_UPLOAD_ERROR } cancelImage={ AD_CANCEL_IMAGE }/>
           </div>
           <div className={styles.wd_50}>
             <label>House Rules</label>
             <textarea type="text" data-field-name="house_rules" data-field-type="text" value={ currState.house_rules } />
+          </div>
+        </li>
+        <li>
+          <label>Bar Listing Image</label>
+          <div className={styles.wd_50}>
+            <AdImageUpload name={'Listing Image'} imageUrl={currState.listing_image ? currState.listing_image : ''} requestSuccess={LISTING_IMAGE_UPLOAD_SUCCESS} requestError={ LISTING_IMAGE_UPLOAD_ERROR } cancelImage={ LISTING_CANCEL_IMAGE }/>
           </div>
         </li>
       </ul>
