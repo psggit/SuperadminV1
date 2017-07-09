@@ -77,10 +77,14 @@ import miscellaneousItemListReducer from './components/MiscellaneousItemList/Act
 
 // Invite
 import invitationReducer from './components/Invites/reducer';
+import convenienceFeeReducer from './components/ConvenienceFee/ConvenienceFeeActions';
+import convenienceFeeListReducer from './components/ConvenienceFeeList/ConvenienceFeeActions';
 
 const reducer = combineReducers({
   // The promos Side-menu states
   promosCashbackRedeemState: PromosCashbackRedeem,
+  convenienceFeeState: convenienceFeeReducer,
+  convenienceFeeListState: convenienceFeeListReducer,
   promosOnPackRedeemState: PromosOnPack,
   welcomeDrinksState: welcomeDrinksReducer,
   miscellaneousItemState: miscellaneousItemReducer,

@@ -7,6 +7,11 @@ const defaultState = {
   count: 1
 };
 
+const defaultConvenienceFeeItem = {
+  detail: {},
+  statesAll: []
+};
+
 const defaultNotepadState = {
   issueTypes: []
 };
@@ -437,6 +442,7 @@ const defaultmiscItem = {
 export default defaultState;
 export { defaultNotepadState
   , defaultBrandState
+  , defaultConvenienceFeeItem
   , defaultBrandManagerProfileState
   , defaultCreateBrandManagerState
   , defaultwelcomeCreateData

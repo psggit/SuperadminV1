@@ -15,6 +15,8 @@ export CreateUser from './User/components/CreateUser/CreateUser';
 // export InsertItem from './Consumer/InsertItem';
 // export EditItem from './Bills/EditItem';
 export ViewConsumerProfile from './Consumer/ViewProfile';
+export CreateConvenienceFee from './ConvenienceFee/ConvenienceFee';
+export ConvenienceFeeList from './ConvenienceFeeList/ConvenienceFeeList';
 export ViewCart from './Consumer/components/Cart/Cart';
 export RechargeHistory from './Consumer/components/Recharge/Recharge';
 export ViewDevice from './Consumer/components/Device/Device';

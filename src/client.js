@@ -33,6 +33,8 @@ import {Login, Home, PageContainer,
   BrandCreate,
   BrandEdit,
   BrandManagement,
+  CreateConvenienceFee,
+  ConvenienceFeeList,
   ConsumerReservation,
   ConsumerRedemption,
   ConsumerCancellation,
@@ -248,6 +250,8 @@ const main = (
         <Route path="category_management/edit/:Id" component={ManageCategory} />
         <Route path="category_management/create" component={ManageCategory} />
         <Route path="brand_management" component={BrandManagement} />
+        <Route path="convenience_fee/create" component={CreateConvenienceFee} />
+        <Route path="convenience_fee/list" component={ConvenienceFeeList} />
         <Route path="brand_management/create" component={BrandCreate} />
         <Route path="brand_management/edit/:Id" component={BrandEdit} />
         <Route path="companies_management" component={CompaniesManagement} />
