@@ -23,6 +23,9 @@ const CITIES_VIEW = 'WELCOME_DRINKS/CITIES_VIEW';
 const IMAGE_UPLOAD_SUCCESS = 'MISCELLANEOUS_ITEM/IMAGE_UPLOAD_SUCCESS';
 const IMAGE_UPLOAD_ERROR = 'MISCELLANEOUS_ITEM/IMAGE_UPLOAD_SUCCESS';
 const IMAGE_CANCEL = 'MISCELLANEOUS_ITEM/IMAGE_CANCEL';
+const MISCELLANEOUS_IMAGE_UPLOAD_SUCCESS = 'MISCELLANEOUS_ITEM/MISCELLANEOUS_IMAGE_UPLOAD_SUCCESS';
+const MISCELLANEOUS_IMAGE_UPLOAD_ERROR = 'MISCELLANEOUS_ITEM/MISCELLANEOUS_IMAGE_UPLOAD_SUCCESS';
+const MISCELLANEOUS_IMAGE_CANCEL = 'MISCELLANEOUS_ITEM/MISCELLANEOUS_IMAGE_CANCEL';
 
 const UPDATED_CITIES_SELECTION = 'WELCOME_DRINKS/UPDATED_CITIES_SELECTION';
 const RESET = 'WELCOME_DRINKS/RESET';
@@ -30,6 +33,7 @@ const DEFINE_CREATE_PAGE = 'MISCELLANEOUS_ITEM/CREATE';
 const DEFINE_UPDATE_PAGE = 'MISCELLANEOUS_ITEM/UPDATE';
 const DEFINE_CREATE_PAGE_FOR_BAR = 'MISCELLANEOUS_ITEM/CREATE_PAGE_FOR_BAR';
 const MISCELLANEOUS_INSERTED = 'MISCELLANEOUS_ITEM/INSERTED';
+const BANNER_MISCELLANEOUS_INSERTED = 'MISCELLANEOUS_ITEM/BANNER_INSERTED';
 const MISCELLANEOUS_UPDATED = 'MISCELANEOUS_ITEM/UPDATED';
 const MISCELLANEOUS_FETCH = 'MISCELLANEOUS_ITEM/FETCH';
 const BARS_FETCH = 'MISCELLANEOUS_ITEM/BARS_FETCH';
@@ -129,10 +133,14 @@ const proceed = () => {
 const insertMiscellaneous = () => {
   return (dispatch, getState) => {
     const miscState = getState().miscellaneousItemState.detail;
+    const bannerImage = getState().miscellaneousItemState.banner_image;
     miscState.is_deleted = false;
     const url = Endpoints.db + '/table/miscellaneous_item/insert';
+    const url2 = Endpoints.db + '/table/miscellaneous_banner_image/insert';
     const queryObj = {objects: [miscState]};
+    const queryObj2 = {objects: [bannerImage]};
     queryObj.returning = ['id'];
+    queryObj2.returning = ['id'];
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
@@ -142,7 +150,16 @@ const insertMiscellaneous = () => {
     /* Make a MAKE_REQUEST action */
     dispatch({type: MAKE_REQUEST});
     return Promise.all([
-      dispatch(requestAction(url, options, MISCELLANEOUS_INSERTED, REQUEST_ERROR)),
+      dispatch(requestAction(url, options, MISCELLANEOUS_INSERTED, REQUEST_ERROR)).then((resp) => {
+        queryObj2.objects.miscellaneous_id = resp.returning[0].id;
+        const options2 = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
+          credentials: globalCookiePolicy,
+          body: JSON.stringify(queryObj2),
+        };
+        dispatch(requestAction(url2, options2, BANNER_MISCELLANEOUS_INSERTED, REQUEST_ERROR));
+      }),
       dispatch({type: REQUEST_COMPLETED})
     ]).then([
       alert('Miscellaneous Item Inserted'),
@@ -346,11 +363,17 @@ const welcomeDrinksReducer = (state = defaultmiscItem, action) => {
     case PRODUCTS_FETCH:
       return {...state, availableProducts: action.data };
     case IMAGE_UPLOAD_SUCCESS:
-      return {...state, detail: { ...state.detail, listing_image: Endpoints.file_get + action.data[0]}};
+      return {...state, detail: { ...state.detail, listing_image: action.data[0]}};
     case IMAGE_UPLOAD_ERROR:
       return {...state, detail: { ...state.detail, listing_image: ''}};
     case IMAGE_CANCEL:
       return {...state, detail: { ...state.detail, listing_image: ''}};
+    case MISCELLANEOUS_IMAGE_UPLOAD_SUCCESS:
+      return {...state, banner_image: { banner_image: action.data[0], is_active: true}};
+    case MISCELLANEOUS_IMAGE_UPLOAD_ERROR:
+      return {...state, banner_image: ''};
+    case MISCELLANEOUS_IMAGE_CANCEL:
+      return {...state, banner_image: ''};
     case AD_INFO:
       const camInfo = {};
       camInfo[action.data.key] = action.data.value;
@@ -378,6 +401,9 @@ export {
   definePage,
   IMAGE_UPLOAD_ERROR,
   IMAGE_CANCEL,
+  MISCELLANEOUS_IMAGE_UPLOAD_SUCCESS,
+  MISCELLANEOUS_IMAGE_UPLOAD_ERROR,
+  MISCELLANEOUS_IMAGE_CANCEL,
   checkState,
   unCheckState,
   checkCity,

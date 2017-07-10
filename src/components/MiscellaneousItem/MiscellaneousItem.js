@@ -1,8 +1,9 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { definePage, fetchSKU, fetchProducts, fetchBrands, citiesViewHandler, IMAGE_CANCEL} from './MiscellaneousItemActions';
-import { checkState, unCheckState, finalSave, IMAGE_UPLOAD_SUCCESS, IMAGE_UPLOAD_ERROR} from './MiscellaneousItemActions';
+import { checkState, unCheckState, finalSave, MISCELLANEOUS_IMAGE_UPLOAD_SUCCESS, MISCELLANEOUS_IMAGE_UPLOAD_ERROR, MISCELLANEOUS_IMAGE_CANCEL, IMAGE_UPLOAD_SUCCESS, IMAGE_UPLOAD_ERROR} from './MiscellaneousItemActions';
 import { RESET } from './MiscellaneousItemActions';
+import Endpoints from '../../Endpoints';
 /*
   Decorator which adds couple of use ful features like
   1. Clearing the state on component unmount
@@ -114,7 +115,8 @@ class CreateWelcomeDrink extends Component { // eslint-disable-line no-unused-va
         <BreadCrumb breadCrumbs={this.breadCrumbs} />
         <div className={styles.brand_wrapper}>
           <AdInfo type={this.props.page} data={this.props.detail} dispatch={this.props.dispatch}/>
-          <ImageUpload name = "Upload Listing Image" imageUrl={this.props.detail.listing_image ? this.props.detail.listing_image : ''} requestSuccess={IMAGE_UPLOAD_SUCCESS} requestError={ IMAGE_UPLOAD_ERROR } cancelImage={ IMAGE_CANCEL }/>
+          <ImageUpload name = "Upload Listing Image" imageUrl={this.props.detail.listing_image ? Endpoints.file_get + this.props.detail.listing_image : ''} requestSuccess={IMAGE_UPLOAD_SUCCESS} requestError={ IMAGE_UPLOAD_ERROR } cancelImage={ IMAGE_CANCEL }/>
+          <ImageUpload name = "Upload Miscellaneous Banner Image" imageUrl={this.props.banner_image.banner_image ? Endpoints.file_get + this.props.banner_image.banner_image : ''} requestSuccess={MISCELLANEOUS_IMAGE_UPLOAD_SUCCESS} requestError={ MISCELLANEOUS_IMAGE_UPLOAD_ERROR } cancelImage={ MISCELLANEOUS_IMAGE_CANCEL }/>
           <div className="clearfix"></div>
           <div className="clearfix"></div>
           <button className={styles.edit_brand_btn} onClick={this.onClickSave.bind(this)}>
@@ -130,6 +132,7 @@ CreateWelcomeDrink.propTypes = {
   params: PropTypes.object.isRequired,
   image: PropTypes.string.isRequired,
   detail: PropTypes.object.isRequired,
+  banner_image: PropTypes.object.isRequired,
   page: PropTypes.string.isRequired,
   selectedCity: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired

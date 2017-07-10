@@ -436,7 +436,8 @@ const defaultmiscItem = {
   miscellaneousInformationCount: 0,
   miscellaneousInformationPage: 0,
   misc_detail: {},
-  detail: []
+  detail: {},
+  banner_image: {}
 };
 
 export default defaultState;
