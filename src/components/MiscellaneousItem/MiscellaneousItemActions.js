@@ -151,14 +151,16 @@ const insertMiscellaneous = () => {
     dispatch({type: MAKE_REQUEST});
     return Promise.all([
       dispatch(requestAction(url, options, MISCELLANEOUS_INSERTED, REQUEST_ERROR)).then((resp) => {
-        queryObj2.objects.miscellaneous_id = resp.returning[0].id;
-        const options2 = {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
-          credentials: globalCookiePolicy,
-          body: JSON.stringify(queryObj2),
-        };
-        dispatch(requestAction(url2, options2, BANNER_MISCELLANEOUS_INSERTED, REQUEST_ERROR));
+        if (( bannerImage.banner_image !== undefined) && (bannerImage.banner_image !== '')) {
+          queryObj2.objects[0].miscellaneous_id = resp.returning[0].id;
+          const options2 = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
+            credentials: globalCookiePolicy,
+            body: JSON.stringify(queryObj2),
+          };
+          dispatch(requestAction(url2, options2, BANNER_MISCELLANEOUS_INSERTED, REQUEST_ERROR));
+        }
       }),
       dispatch({type: REQUEST_COMPLETED})
     ]).then([
