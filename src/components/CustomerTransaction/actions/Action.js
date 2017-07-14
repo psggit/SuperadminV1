@@ -1324,7 +1324,7 @@ const getRedemptionData = ( page, consumerId, filterObj, isSearched ) => {
     offset = (page - 1) * 10;
 
     const payload = {
-      'columns': [ '*'],
+      'columns': [{'name': 'retailer_pos', 'columns': [{'name': 'retailer', 'columns': ['*']}, {'name': 'bar', 'columns': ['*']}, '*']}, '*'],
       'limit': limit,
       'offset': offset
     };
