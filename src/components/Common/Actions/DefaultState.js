@@ -7,6 +7,11 @@ const defaultState = {
   count: 1
 };
 
+const defaultConvenienceFeeItem = {
+  detail: {},
+  statesAll: []
+};
+
 const defaultNotepadState = {
   issueTypes: []
 };
@@ -435,14 +440,29 @@ const defaultwelcomeCreateData = {
   imageUrl: ''
 };
 
+const defaultmiscItem = {
+  misc_info_detail: [],
+  miscAll: [],
+  citiesAll: [],
+  barsAll: [],
+  miscellaneousInformation: [],
+  miscellaneousInformationCount: 0,
+  miscellaneousInformationPage: 0,
+  misc_detail: {},
+  detail: {},
+  banner_image: {}
+};
+
 export default defaultState;
 export { defaultNotepadState
   , defaultBrandState
+  , defaultConvenienceFeeItem
   , defaultBrandManagerProfileState
   , defaultCreateBrandManagerState
   , defaultwelcomeCreateData
   , defaultbrandListingData
   , defaultadListingData
+  , defaultmiscItem
   , defaultViewBrandManagerState
   , defaultEditBrandManagerState
   , defaultConsumerState

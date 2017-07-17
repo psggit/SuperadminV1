@@ -35,6 +35,8 @@ import {Login, Home, PageContainer,
   BrandListing,
   AdListing,
   BrandManagement,
+  CreateConvenienceFee,
+  ConvenienceFeeList,
   ConsumerReservation,
   ConsumerRedemption,
   ConsumerCancellation,
@@ -54,6 +56,9 @@ import {Login, Home, PageContainer,
   BrandManagerProfile,
   CreateBrandManager,
   CompaniesManagement,
+  MiscellaneousItem,
+  MiscellaneousItemList,
+  MiscellaneousItemMap,
   /* 'BrandAds' was removed from the below list of imports, not sure if I messed something up during merge*/
   /* If you know something is messed up then fix it, you modern age neanderthal*/
   ManageCompanies, BrandPromos, WelcomeDrinksView, WelcomeDrinksCreate, PromosCashbackRedeem, PromosOnPack, RetailerManagementCreate, RetailerManagementBarCreate, RetailerManagementViewBar,
@@ -249,6 +254,8 @@ const main = (
         <Route path="category_management/edit/:Id" component={ManageCategory} />
         <Route path="category_management/create" component={ManageCategory} />
         <Route path="brand_management" component={BrandManagement} />
+        <Route path="convenience_fee/create" component={CreateConvenienceFee} />
+        <Route path="convenience_fee/list" component={ConvenienceFeeList} />
         <Route path="brand_management/create" component={BrandCreate} />
         <Route path="brand_management/edit/:Id" component={BrandEdit} />
         <Route path="companies_management" component={CompaniesManagement} />
@@ -292,6 +299,20 @@ const main = (
         {/* Welcome Drinks Page*/}
         <Route path="brands_offers_and_promos/welcome_drinks_view" component={WelcomeDrinksView} />
         <Route path="brands_offers_and_promos/welcome_drinks_create" component={WelcomeDrinksCreate} />
+        {/* Miscellaneous Page*/}
+        <Route path="miscellaneous_item/create" component={MiscellaneousItem} />
+        <Route path="miscellaneous_item/update/:Mid" component={MiscellaneousItem} />
+        <Route path="bar/:id/miscellaneous_item/create" component={MiscellaneousItem} />
+        <Route path="miscellaneous_item/list" component={MiscellaneousItemList} />
+        // Map Misc to Bar
+        // Mapping Specific Miscellaneous Item to Any Bar
+        <Route path="miscellaneous_item/:Mid/map" component={MiscellaneousItemMap} />
+        // Mapping Specific Miscellaneous Item to Specific Bar
+        <Route path="miscellaneous_item/:Mid/map/:Bid" component={MiscellaneousItemMap} />
+        // Map Miscellaneous Item to Specific Bar
+        <Route path="miscellaneous_item/map/:Bid" component={MiscellaneousItemMap} />
+        // Map Miscellaneous Item to Bar
+        <Route path="miscellaneous_item/map" component={MiscellaneousItemMap} />
         {/* Promo choose menu*/}
         <Route path="brands_offers_and_promos/promos/all" component={CreatePromos} />
         {/* Promo Cashback redeem*/}

@@ -63,6 +63,8 @@ import adsViewSkuReducer from './components/BrandsOffersAndPromos/AdsViewSkuAd/C
 import adsCreatePromoReducer from './components/BrandsOffersAndPromos/AdsCreatePromoAd/CreateAdPromoActions';
 import adsCreateBarReducer from './components/BrandsOffersAndPromos/AdsCreateBarAd/CreateAdBarActions';
 import welcomeDrinksReducer from './components/BrandsOffersAndPromos/WelcomeDrinksCreate/CreateAdBarActions';
+import miscellaneousItemReducer from './components/MiscellaneousItem/MiscellaneousItemActions';
+import miscellaneousItemMapReducer from './components/MiscellaneousItemMap/MiscellaneousItemActions';
 // import adsViewImageReducer from './components/BrandsOffersAndPromos/AdsViewImageAd/ViewAdImageActions';
 import adsCreateUrlReducer from './components/BrandsOffersAndPromos/AdsCreateUrlAd/CreateAdUrlActions';
 
@@ -73,17 +75,24 @@ import retailerDebitCreditRedicer from './components/RetailerManagement/DebitsCr
 import barDebitCreditRedicer from './components/RetailerManagement/BarDebitsCredits/Actions';
 
 import barAllSkuReducer from './components/BarManagement/ManageBarSku/Actions';
+import miscellaneousItemListReducer from './components/MiscellaneousItemList/Actions';
 
 // Invite
 import invitationReducer from './components/Invites/reducer';
+import convenienceFeeReducer from './components/ConvenienceFee/ConvenienceFeeActions';
+import convenienceFeeListReducer from './components/ConvenienceFeeList/ConvenienceFeeActions';
 
 const reducer = combineReducers({
   // The promos Side-menu states
   promosCashbackRedeemState: PromosCashbackRedeem,
+  convenienceFeeState: convenienceFeeReducer,
+  convenienceFeeListState: convenienceFeeListReducer,
   promosOnPackRedeemState: PromosOnPack,
   welcomeDrinksState: welcomeDrinksReducer,
   brandListingState: brandListingReducer,
   adListingState: adListingReducer,
+  miscellaneousItemState: miscellaneousItemReducer,
+  miscellaneousItemMapState: miscellaneousItemMapReducer,
   // Everything else.
   loginState: loginReducer,
   routing: routeReducer,
@@ -134,6 +143,7 @@ const reducer = combineReducers({
   retailer_debit_credit: retailerDebitCreditRedicer,
   bar_debit_credit: barDebitCreditRedicer,
   all_bar_skus: barAllSkuReducer,
+  miscellaneous_item_list: miscellaneousItemListReducer,
   invite_data: invitationReducer,
   gen_filter_data: filterGenReducer
 

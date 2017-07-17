@@ -19,13 +19,13 @@ class AdImageUpload extends Component {
   }
   render() {
     const styles = require('./CreateBar.scss');
-    const { imageUrl } = this.props;
+    const { imageUrl, name } = this.props;
     const imgUr = Endpoints.file_get + imageUrl;
     return (
         <div className={styles.cheque_upload_container}>
           <div className={ styles.check_upload }>
             <div className={styles.check_lab}>
-                Ad Image
+               {name}
             </div>
             <div className={styles.upload_container}>
               {/* http://130.211.246.199 */}
@@ -60,6 +60,7 @@ AdImageUpload.propTypes = {
   requestError: PropTypes.string.isRequired,
   cancelImage: PropTypes.string.isRequired,
   imageUrl: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,
   ongoingRequest: PropTypes.bool.isRequired
 };
