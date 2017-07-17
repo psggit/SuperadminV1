@@ -10,7 +10,7 @@ const AdType = ({displayOption}) => {
         <div className={styles.heading + ' ' + styles.wd_100}>Brand Ordering</div>
           <ul>
             <li>
-              <label>Select State</label>
+              <label>Select Ad Type</label>
               <select data-field-name="ad_type" id="ad_type" data-field-type="string" onChange={displayOption}>
                 <option value={null}>Select</option>
                 <option value="ad_bar"> Bar Ad </option>

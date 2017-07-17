@@ -126,7 +126,7 @@ const finalUpdate = () => {
     };
     return dispatch(requestAction(query.url, options)).then(() => {
       alert('Success');
-      return dispatch(routeActions.push('/hadmin/brand_listing'));
+      return dispatch(routeActions.push('/hadmin'));
     }).catch((err) => {
       alert('Failure');
       return err;
@@ -143,7 +143,7 @@ const brandListingReducer = (state = defaultbrandListingData, action) => {
     case LISTING_FETCH:
       return {...state, allList: action.data };
     case UPDATE_LIST:
-      return {...state, updateList: {...action.data}};
+      return {...state, updateList: {...state.updateList, ...action.data}};
     case AD_INFO:
       const camInfo = {};
       camInfo[action.data.key] = action.data.value;

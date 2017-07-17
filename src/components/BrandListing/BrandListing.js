@@ -2,7 +2,6 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchStates, fetchGenres, fetchListing, fetchSKU, fetchProducts, fetchBrands, citiesViewHandler, finalUpdate, IMAGE_CANCEL, UPDATE_LIST} from './BrandListingActions';
 import { checkState, unCheckState } from './BrandListingActions';
-import { RESET } from './BrandListingActions';
 /*
   Decorator which adds couple of use ful features like
   1. Clearing the state on component unmount
@@ -38,7 +37,7 @@ class BrandListing extends Component { // eslint-disable-line no-unused-vars
     ]);
   }
   componentWillUnmount() {
-    this.props.dispatch({ type: RESET });
+   // this.props.dispatch({ type: RESET });
   }
   onClickCitiesView(stateObj) {
     Promise.all([

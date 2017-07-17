@@ -1,8 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchBars, fetchCities, fetchListing, fetchSKU, fetchProducts, fetchBrands, citiesViewHandler, finalUpdate, UPDATE_AD_TYPE, IMAGE_CANCEL, UPDATE_LIST} from './AdListingActions';
-import { checkState, unCheckState } from './AdListingActions';
-import { RESET } from './AdListingActions';
+import { RESET, checkState, unCheckState } from './AdListingActions';
 /*
   Decorator which adds couple of use ful features like
   1. Clearing the state on component unmount

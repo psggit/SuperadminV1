@@ -8,10 +8,12 @@ import { MAKE_REQUEST,
 
 const CITY_FETCH = 'ADLISTING/CITY_FETCH';
 const BAR_FETCH = 'ADLISTING/BAR_FETCH';
-const LISTING_FETCH = 'BRANDLISTING/LISTING_FETCH';
-const AD_INFO = 'BRANDLISTING/UPDATE';
-const UPDATE_LIST = 'BRANDLISTING/UPDATE_LIST';
+const LISTING_FETCH = 'ADLISTING/LISTING_FETCH';
+const AD_INFO = 'ADLISTING/UPDATE';
+const UPDATE_LIST = 'ADLISTING/UPDATE_LIST';
+const UPDATE_CITY = 'ADLISTING/UPDATE_CITY';
 const UPDATE_AD_TYPE = 'ADLISTING/UPDATE_AD_TYPE';
+const RESET = 'ADLISTING/RESET';
 
 
 /* ****** Action Creators ******** */
@@ -73,6 +75,7 @@ const fetchListing = (city, type, bar) => {
     } else {
       queryBar = null;
     }
+    dispatch({type: UPDATE_CITY, data: {cityId: queryCity ? parseInt(queryCity, 10) : null}});
     if ((city !== undefined) && (type !== undefined)) {
       const url = Endpoints.db + '/table/detailed_ad_listing/select';
       const queryObj = {};
@@ -110,24 +113,48 @@ const storeUpdatedList = (id, displayOrder) => {
 const finalUpdate = () => {
   return (dispatch, state) => {
     const lstate = state().adListingState;
+    const city = state().adListingState.cityId;
     const table = state().adListingState.adType;
     const updateList = {...lstate.updateList};
     // const adUrl = Endpoints.db + '/table/brand_listing/update';
     // Make Bulk reqquest
     const bulkInsert = [];
-    Object.keys(updateList).forEach((key) => {
-      bulkInsert.push({
-        type: 'update',
-        args: {
-          table: table,
-          returning: ['id'],
-          'where': {'id': parseInt(key, 10)},
-          $set: {
-            all_display_order: parseInt(updateList[key], 10),
-          }
-        },
+    if (table === 'ad_bar') {
+      Object.keys(updateList).forEach((key) => {
+        bulkInsert.push({
+          type: 'update',
+          args: {
+            table: table,
+            returning: ['id'],
+            'where': {'id': parseInt(key, 10)},
+            $set: {
+              listing_order: parseInt(updateList[key], 10),
+            }
+          },
+        });
       });
-    });
+    } else {
+      Object.keys(updateList).forEach((key) => {
+        bulkInsert.push({
+          type: 'update',
+          args: {
+            table: table + '_city',
+            returning: ['id'],
+            'where': {
+              'id': {
+                '$eq': parseInt(key, 10)
+              },
+              'city_id': {
+                '$eq': city
+              }
+            },
+            $set: {
+              listing_order: parseInt(updateList[key], 10),
+            }
+          }
+        });
+      });
+    }
     const query = {
       url: dataUrl + '/v1/query',
       query: {
@@ -143,7 +170,7 @@ const finalUpdate = () => {
     };
     return dispatch(requestAction(query.url, options)).then(() => {
       alert('Success');
-      return dispatch(routeActions.push('/hadmin/brand_listing'));
+      return dispatch(routeActions.push('/hadmin'));
     }).catch((err) => {
       alert('Failure');
       return err;
@@ -160,9 +187,13 @@ const adListingReducer = (state = defaultadListingData, action) => {
     case LISTING_FETCH:
       return {...state, allList: action.data};
     case UPDATE_LIST:
-      return {...state, updateList: {...action.data}};
+      return {...state, updateList: {...state.updateList, ...action.data}};
+    case UPDATE_CITY:
+      return {...state, cityId: action.data.cityId};
     case UPDATE_AD_TYPE:
       return {...state, adType: action.data};
+    case RESET:
+      return {...state, updateList: {}, cityId: null, adType: null, allBar: null, allCity: null, allList: null};
     case AD_INFO:
       const camInfo = {};
       camInfo[action.data.key] = action.data.value;
@@ -178,6 +209,7 @@ export {
   fetchBars,
   fetchCities,
   fetchListing,
+  RESET,
   finalUpdate,
   storeUpdatedList,
   UPDATE_LIST,

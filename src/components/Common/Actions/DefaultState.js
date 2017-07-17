@@ -36,7 +36,7 @@ const defaultbrandListingData = {
 };
 
 const defaultadListingData = {
-  adType: null,
+  adType: '',
   allCity: [],
   allList: [],
   allBar: []
