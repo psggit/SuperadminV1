@@ -15,6 +15,7 @@ const commonDecorator = ( Component ) => {
       console.log('Decorator Mounted');
     }
     componentWillUnmount() {
+      console.log('Decorator UnMounted');
       this.props.dispatch( { type: RESET } );
     }
     render() {

@@ -1,12 +1,12 @@
 import React from 'react';
 
-const Order = ({allList, orderChange}) => {
+const Order = ({allList, orderChange, adType}) => {
   const styles = require('./CreateBarAd.scss');
   const allListHtml = allList.map((list) => {
     return (
       <li>
-        <label>{list.title} Order:{list.listing_order}</label>
-        <input id={list.id} onChange={orderChange}/>
+        <label>[{list.table}] {list.title} (Order:{list.listing_order}) ({list.ad_location})</label>
+        <input className={(adType === list.table ? '' : 'hide')} id={list.id} onChange={orderChange}/>
       </li>
     );
   });

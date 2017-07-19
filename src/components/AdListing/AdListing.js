@@ -111,7 +111,7 @@ class AdListing extends Component { // eslint-disable-line no-unused-vars
           <AdInfo adType={this.props.adType} allCity={this.props.allCity} allBar={this.props.allBar} displayList={this.displayList.bind(this)} dispatch={this.props.dispatch} />
           <div className="clearfix"></div>
           <div className="clearfix"></div>
-          <Order orderChange={this.orderChange.bind(this)} allList={this.props.allList}/>
+          <Order adType={this.props.adType} orderChange={this.orderChange.bind(this)} allList={this.props.allList}/>
         </div>
         <button className={styles.edit_brand_btn} displayList={this.displayList.bind(this)} onClick={this.onClickSave.bind(this)}>
           Save

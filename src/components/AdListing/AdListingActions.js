@@ -85,7 +85,7 @@ const fetchListing = (city, type, bar) => {
         '$and': [
         {'city_id': {'$eq': queryCity ? parseInt(queryCity, 10) : null}},
         {'bar_id': {'$eq': queryBar ? parseInt(queryBar, 10) : null}},
-        { 'table': { '$eq': type}}
+        { 'status': { '$eq': 'Active'}}
         ]
       };
       const options = {

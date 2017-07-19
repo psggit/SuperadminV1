@@ -2,7 +2,7 @@
 
 import { defaultConvenienceFeeItem } from '../Common/Actions/DefaultState';
 import requestAction from '../Common/Actions/requestAction';
-// import { routeActions } from 'redux-simple-router';
+import { routeActions } from 'redux-simple-router';
 import Endpoints, { globalCookiePolicy } from '../../Endpoints';
 
 import { MAKE_REQUEST,
@@ -60,6 +60,7 @@ const insertConvenienceFee = () => {
     return Promise.all([
       dispatch(requestAction(url, options)).then((response) => {
         console.log(response);
+        return dispatch(routeActions.push('/hadmin/convenience_fee/list'));
         // Reroute
       }).catch((err) => {
         console.log(err);
@@ -89,6 +90,7 @@ const convenienceFeeReducer = (state = defaultConvenienceFeeItem, action) => {
 export {
   fetchState,
   insertConvenienceFee,
+  MAKE_REQUEST,
   CONVENIENCE_INFO
 };
 
