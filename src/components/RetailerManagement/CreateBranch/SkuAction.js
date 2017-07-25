@@ -181,7 +181,7 @@ const disableSKUs = ( sku ) => {
 
     return dispatch( requestAction( devUrl, options ) )
     .then( () => {
-      dispatch(indexSku(brandId));
+      dispatch(indexSku([brandId]));
       alert('Sku Deleted');
       return dispatch( fetchSKUs(brId) );
     });
@@ -224,7 +224,7 @@ const enableSKUs = ( sku ) => {
 
     return dispatch( requestAction( devUrl, options ) )
     .then( () => {
-      dispatch(indexSku(brandId));
+      dispatch(indexSku([brandId]));
       alert('Sku Activated');
       return dispatch( fetchSKUs(brId) );
     });

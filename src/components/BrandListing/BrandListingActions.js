@@ -5,12 +5,16 @@ import Endpoints, { globalCookiePolicy, dataUrl } from '../../Endpoints';
 import { MAKE_REQUEST,
   REQUEST_COMPLETED,
   REQUEST_ERROR} from '../Common/Actions/Actions';
+import {indexSku} from '../SkuManagement/Brand/BrandAction';
+
 
 const STATE_FETCH = 'BRANDLISTING/STATES_FETCH';
 const GENRE_FETCH = 'BRANDLISTING/GENRES_FETCH';
 const LISTING_FETCH = 'BRANDLISTING/LISTING_FETCH';
 const AD_INFO = 'BRANDLISTING/UPDATE';
 const UPDATE_LIST = 'BRANDLISTING/UPDATE_LIST';
+const UPDATE_INDEX = 'BRANDLISTING/UPDATE_INDEX';
+const RESET = 'BRANDLISTING/RESET';
 
 
 /* ****** Action Creators ******** */
@@ -126,7 +130,10 @@ const finalUpdate = () => {
     };
     return dispatch(requestAction(query.url, options)).then(() => {
       alert('Success');
-      return dispatch(routeActions.push('/hadmin'));
+      return Promise.all([
+        dispatch(indexSku(lstate.updateIndex)),
+        dispatch(routeActions.push('/hadmin')),
+      ]);
     }).catch((err) => {
       alert('Failure');
       return err;
@@ -144,10 +151,18 @@ const brandListingReducer = (state = defaultbrandListingData, action) => {
       return {...state, allList: action.data };
     case UPDATE_LIST:
       return {...state, updateList: {...state.updateList, ...action.data}};
+    case UPDATE_INDEX:
+      state.updateIndex.push(action.indexData);
+      state.updateIndex = state.updateIndex.filter((item, pos) => {
+        return state.updateIndex.indexOf(item) === pos;
+      });
+      return {...state};
     case AD_INFO:
       const camInfo = {};
       camInfo[action.data.key] = action.data.value;
       return { ...state, campaignDetails: { ...state.campaignDetails, ...camInfo}};
+    case RESET:
+      return defaultbrandListingData;
     default:
       return state;
   }
@@ -162,6 +177,8 @@ export {
   finalUpdate,
   storeUpdatedList,
   UPDATE_LIST,
+  UPDATE_INDEX,
+  RESET,
   AD_INFO
 //  finalSave,
 };

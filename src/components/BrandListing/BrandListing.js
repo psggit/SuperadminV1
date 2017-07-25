@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchStates, fetchGenres, fetchListing, fetchSKU, fetchProducts, fetchBrands, citiesViewHandler, finalUpdate, IMAGE_CANCEL, UPDATE_LIST} from './BrandListingActions';
-import { checkState, unCheckState } from './BrandListingActions';
+import { fetchStates, fetchGenres, fetchListing, fetchSKU, fetchProducts, fetchBrands, citiesViewHandler, finalUpdate, IMAGE_CANCEL, UPDATE_LIST, UPDATE_INDEX} from './BrandListingActions';
+import { checkState, unCheckState, RESET } from './BrandListingActions';
 /*
   Decorator which adds couple of use ful features like
   1. Clearing the state on component unmount
@@ -37,7 +37,7 @@ class BrandListing extends Component { // eslint-disable-line no-unused-vars
     ]);
   }
   componentWillUnmount() {
-   // this.props.dispatch({ type: RESET });
+    this.props.dispatch({ type: RESET });
   }
   onClickCitiesView(stateObj) {
     Promise.all([
@@ -78,7 +78,10 @@ class BrandListing extends Component { // eslint-disable-line no-unused-vars
     const displayOrder = e.target.value;
     const data = {};
     data[id] = displayOrder;
+    console.log('Enter Here');
+    const indexData = parseInt(e.target.dataset.value, 10);
     this.props.dispatch({type: UPDATE_LIST, data});
+    this.props.dispatch({type: UPDATE_INDEX, indexData});
   }
   displayList() {
     const state = document.getElementById('state_short').value;

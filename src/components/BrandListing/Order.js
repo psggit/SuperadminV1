@@ -6,7 +6,7 @@ const Order = ({allList, orderChange}) => {
     return (
       <li>
         <label>{list.brand_name} Order:{list.all_display_order}</label>
-        <input id={list.id} onChange={orderChange}/>
+        <input type="number" data-value={list.brand_id} id={list.id} onChange={orderChange}/>
       </li>
     );
   });

@@ -232,7 +232,7 @@ const indexSku = ( brandIds ) => {
     // }
 
     const skuIndexObj = {
-      'ids': [ brandIds ]
+      'ids': brandIds
     };
 
     const options = {
@@ -378,7 +378,7 @@ const insertBrand = () => {
           alert('brand Created Successfully');
           return Promise.all([
             dispatch(routeActions.push('/hadmin/brand_management')),
-            dispatch(indexSku(brandId))
+            dispatch(indexSku([brandId]))
           ]);
           // }
           // if ( resp.returning.length > 0) {
@@ -478,7 +478,7 @@ const updateBrand = () => {
               alert('Brand Successfully Updated');
               return Promise.all([
                 Promise.reject( { 'intended': true } ),
-                dispatch(indexSku(brandId)),
+                dispatch(indexSku([brandId])),
                 dispatch(fetchBrand(brandId))
               ]);
             }
@@ -530,7 +530,7 @@ const updateBrand = () => {
           if ( resp.returning.length > 0) {
             alert('brand Created Successfully');
             return Promise.all([
-              dispatch(indexSku(brandId)),
+              dispatch(indexSku([brandId])),
               dispatch(routeActions.push('/hadmin/brand_management'))
             ]);
           }

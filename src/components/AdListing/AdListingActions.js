@@ -193,7 +193,7 @@ const adListingReducer = (state = defaultadListingData, action) => {
     case UPDATE_AD_TYPE:
       return {...state, adType: action.data};
     case RESET:
-      return {...state, updateList: {}, cityId: null, adType: null, allBar: null, allCity: null, allList: null};
+      return state;
     case AD_INFO:
       const camInfo = {};
       camInfo[action.data.key] = action.data.value;

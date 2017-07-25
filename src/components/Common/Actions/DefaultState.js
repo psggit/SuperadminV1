@@ -37,6 +37,7 @@ const defaultCustomerSupportState = {
 const defaultbrandListingData = {
   allState: [],
   allList: [],
+  updateIndex: [],
   allGenre: []
 };
 
