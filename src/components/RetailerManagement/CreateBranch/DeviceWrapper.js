@@ -30,6 +30,7 @@ class DeviceWrapper extends Component { // eslint-disable-line no-unused-vars
       deviceData,
       dispatch,
       createDevice,
+      toggleDevice,
       updateDevice,
       deleteDevice,
       createDeviceLocal,
@@ -50,6 +51,7 @@ class DeviceWrapper extends Component { // eslint-disable-line no-unused-vars
       toggleDeviceDetail={ this.toggleDeviceDetail.bind(this) }
       devices = { devices }
       localDevs = { localDevs }
+      toggleDevice = { toggleDevice }
       loadDevice ={ this.loadDevice.bind(this) }
       loadLocalDevice = { this.loadLocalDevice.bind(this) }
       emailSmsDeviceCreation = { emailSmsDeviceCreation }
@@ -83,6 +85,7 @@ DeviceWrapper.propTypes = {
   deviceData: PropTypes.object.isRequired,
   branchData: PropTypes.object.isRequired,
   createDevice: PropTypes.func.isRequired,
+  toggleDevice: PropTypes.func.isRequired,
   updateDevice: PropTypes.func.isRequired,
   deleteDevice: PropTypes.func.isRequired,
   createDeviceLocal: PropTypes.func.isRequired,

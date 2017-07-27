@@ -87,6 +87,37 @@ const activateDevice = ( devId, retailId, option ) => {
     });
   };
 };
+
+const toggleDevice = ( devId, option ) => {
+  return ( dispatch, getState) => {
+    const devUrl = Endpoints.db + '/table/retailer_pos/update';
+
+    const retailerDataObj = {
+      'is_active': ((option === 'true') || (option === true)) ? false : true,
+    };
+
+    const updateObj = {};
+    updateObj.values = { ...retailerDataObj };
+    updateObj.returning = ['id'];
+    updateObj.where = {
+      'id': devId
+    };
+
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(updateObj)
+    };
+    return dispatch( requestAction( devUrl, options) ).then(() => {
+      dispatch( fetchDevice( getState().bar_data.barData.barData.id ));
+      alert('Device Activated/Deactivated');
+    });
+  };
+};
 /* User methods */
 const activateUser = ( hasuraId ) => {
   return ( dispatch, getState ) => {
@@ -733,6 +764,7 @@ export {
   LOAD_DEVICE,
   LOAD_LOCAL_DEVICE,
   updateDevice,
+  toggleDevice,
   deleteDevice,
   createDevice,
   createDeviceLocal,

@@ -9,6 +9,7 @@ const DeviceComponent = ( {
   localDevs,
   loadLocalDevice,
   loadDevice,
+  toggleDevice,
   emailSmsDeviceCreation,
   emailSmsCredsCreation
 } ) => { // eslint-disable-line no-unused-vars
@@ -43,7 +44,7 @@ const DeviceComponent = ( {
             Operator
           </div>
           <div className={styles.table_th + ' ' + 'col-md-4'}>
-            Is Active
+            Is Active <span className={styles.toggle} data-option={ devices[device].is_active } id={ devices[device].id } onClick={ toggleDevice }> (Toggle)</span>
           </div>
         </div>
         <div className={styles.custom_table_td + ' ' + 'row'}>

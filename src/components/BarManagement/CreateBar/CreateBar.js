@@ -35,6 +35,7 @@ import {
   createDeviceLocal,
   updateDeviceLocal,
   deleteDeviceLocal,
+  toggleDevice,
   RESET_DEVICE,
   fetchDevice,
   emailSmsDeviceCreation,
@@ -191,7 +192,10 @@ class CreateBar extends Component { // eslint-disable-line no-unused-vars
   updateDevice() {
     this.props.dispatch(updateDevice());
   }
-
+  toggleDevice(e) {
+    console.log(e);
+    this.props.dispatch(toggleDevice(parseInt(e.target.id, 10), e.target.dataset.option ));
+  }
   createDeviceLocal() {
     this.props.dispatch(createDeviceLocal());
   }
@@ -261,6 +265,7 @@ class CreateBar extends Component { // eslint-disable-line no-unused-vars
         { ...this.props }
         createDevice={ this.createDevice.bind(this) }
         updateDevice={ this.updateDevice.bind(this) }
+        toggleDevice={ this.toggleDevice.bind(this) }
         deleteDevice={ this.deleteDevice.bind(this) }
         createDeviceLocal = { this.createDeviceLocal.bind(this) }
         updateDeviceLocal = { this.updateDeviceLocal.bind(this) }

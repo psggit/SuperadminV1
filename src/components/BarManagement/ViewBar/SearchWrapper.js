@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-const SearchWrapper = ( {data} ) => {
+const SearchWrapper = ( {data, onClickHandler} ) => {
   const styles = require('./SearchWrapper.scss');
   let tableBody;
   let objHtml;
@@ -21,6 +21,11 @@ const SearchWrapper = ( {data} ) => {
                   View
                 </button>
               </Link>
+            </td>
+            <td>
+              <button className={styles.edit_btn} data-bar-id={dat.id} onClick={ () => { return onClickHandler(dat.id, dat.bar_status); }}>
+                { dat.bar_status === 'true' ? 'Disable' : 'Enable' }
+              </button>
             </td>
             <td>
               { dat.id }
@@ -50,6 +55,7 @@ const SearchWrapper = ( {data} ) => {
             <table className={'table table-striped'}>
               <thead>
                 <tr>
+                  <th> </th>
                   <th> </th>
                   <th> ID </th>
                   <th> Bar Name </th>

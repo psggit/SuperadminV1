@@ -51,6 +51,7 @@ import {
   createDevice,
   createDeviceLocal,
   updateDeviceLocal,
+  toggleDevice,
   deleteDeviceLocal,
   RESET_DEVICE,
   fetchDevice,
@@ -240,6 +241,11 @@ class CreateBrand extends Component { // eslint-disable-line no-unused-vars
     this.props.dispatch( disableSKUs(id) );
   }
 
+  toggleDevice(e) {
+    console.log(e);
+    this.props.dispatch(toggleDevice(parseInt(e.target.id, 10), e.target.dataset.option ));
+  }
+
   enableSKUs( id ) {
     this.props.dispatch( enableSKUs(id) );
   }
@@ -364,6 +370,7 @@ class CreateBrand extends Component { // eslint-disable-line no-unused-vars
         updateDevice={ this.updateDevice.bind(this) }
         deleteDevice={ this.deleteDevice.bind(this) }
         createDeviceLocal = { this.createDeviceLocal.bind(this) }
+        toggleDevice={ this.toggleDevice.bind(this) }
         updateDeviceLocal = { this.updateDeviceLocal.bind(this) }
         deleteDeviceLocal = { this.deleteDeviceLocal.bind(this) }
         emailSmsDeviceCreation = { this.emailSmsDeviceCreation.bind(this) }

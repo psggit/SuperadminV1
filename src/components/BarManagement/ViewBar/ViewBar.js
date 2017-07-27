@@ -6,7 +6,8 @@ import {connect} from 'react-redux';
 
 // import {getRechargeData, getRechargeCount} from '../../actions/Action';
 import {
-  getAllBarData
+  getAllBarData,
+  toggleBarStatus
 } from './Actions';
 
 import {
@@ -60,6 +61,20 @@ class Bar extends Component {
     Promise.all([
       this.props.dispatch({ type: RESET_FILTER })
     ]);
+  }
+  onToggleStatus( id, isActive ) {
+    const {query} = this.props.location;
+    const currentPage = (Object.keys(query).length > 0) ? parseInt(query.p, 10) : 1;
+    Promise.all([
+      this.props.dispatch({ type: MAKE_REQUEST }),
+      this.props.dispatch(toggleBarStatus(id, isActive, currentPage ))
+    ])
+    .then( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED });
+    })
+    .catch( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED });
+    });
   }
   onClickHandle(e) {
     // e.preventDefault();
@@ -120,7 +135,7 @@ class Bar extends Component {
                 Search
               </button>
             </SearchComponent>
-            <BarSearchWrapper data={lastSuccess}/>
+            <BarSearchWrapper onClickHandler={ this.onToggleStatus.bind(this) } data={lastSuccess}/>
             <PaginationContainer limit="10" onClickHandler={this.onClickHandle.bind(this)} currentPage={page} showMax="5" count={count} parentUrl={ paginationUrl } />
           </div>
         );

@@ -6,7 +6,8 @@ import {connect} from 'react-redux';
 
 // import {getRechargeData, getRechargeCount} from '../../actions/Action';
 import {
-  getAllBranchData
+  getAllBranchData,
+  toggleRetailerStatus
 } from './Actions';
 
 import {
@@ -57,6 +58,20 @@ class Branch extends Component {
     Promise.all([
       this.props.dispatch({ type: RESET_FILTER })
     ]);
+  }
+  onToggleStatus( id, isActive ) {
+    const {query} = this.props.location;
+    const currentPage = (Object.keys(query).length > 0) ? parseInt(query.p, 10) : 1;
+    Promise.all([
+      this.props.dispatch({ type: MAKE_REQUEST }),
+      this.props.dispatch(toggleRetailerStatus(id, isActive, currentPage ))
+    ])
+    .then( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED });
+    })
+    .catch( () => {
+      this.props.dispatch({ type: REQUEST_COMPLETED });
+    });
   }
   onClickHandle(e) {
     // e.preventDefault();
@@ -114,7 +129,7 @@ class Branch extends Component {
                 Search
               </button>
             </SearchComponent>
-            <BranchSearchWrapper data={lastSuccess}/>
+            <BranchSearchWrapper onClickHandler={ this.onToggleStatus.bind(this) } data={lastSuccess}/>
             <PaginationContainer limit="10" onClickHandler={this.onClickHandle.bind(this)} currentPage={page} showMax="5" count={count} parentUrl={ paginationUrl } />
           </div>
         );

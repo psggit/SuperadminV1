@@ -81,6 +81,41 @@ const getBranchData = ( page, filterObj, isSearched) => {
   };
 };
 
+const toggleRetailerStatus = ( id, isActive, currPage) => {
+  return ( dispatch, getState ) => {
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
+    const invUrl = Endpoints.db + '/table/retailer/update';
+    const insertObj = {};
+    insertObj.values = { 'branch_status': ((isActive === 'true') ? 'false' : 'true')};
+
+    insertObj.returning = ['id'];
+    insertObj.where = {
+      'id': parseInt(id, 10)
+    };
+
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(insertObj)
+    };
+
+    return dispatch( requestAction( invUrl, options ) )
+    .then( ( resp ) => {
+      console.log(resp);
+      const filterData = getState().gen_filter_data;
+      const filterObj = { ...beginFilter(getState) };
+      dispatch(getBranchData(currPage, filterObj, filterData.isSearched));
+      alert('Updated');
+    }).catch( (err) => {
+      console.log(err);
+      alert('Failed');
+    });
+  };
+};
+
 const getAllBranchData = (page ) => {
   const gotPage = page;
   /* Dispatching first one */
@@ -95,5 +130,6 @@ const getAllBranchData = (page ) => {
 };
 
 export {
+  toggleRetailerStatus,
   getAllBranchData
 };
