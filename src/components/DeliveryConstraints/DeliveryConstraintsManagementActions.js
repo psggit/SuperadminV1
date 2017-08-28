@@ -144,7 +144,7 @@ const updateConstraints = () => {
     const url = Endpoints.db + '/table/delivery_constraints/update';
     const updateObj = {};
     const currState = getState().deliveryConstraintsManagmentState;
-    updateObj.value = currState.constraints;
+    updateObj.values = currState.constraints;
     updateObj.where = {id: currState.constraints.id};
 
     const options = {
@@ -183,9 +183,9 @@ const deliveryConstraintsManagementReducer = (state = defaultState, action) => {
       cUnit[action.data.key] = action.data.value;
       return { ...state, constraints: {...state.constraints, ...cUnit}};
     case UPDATE_TIME:
-      const temp = state.workTime;
+      const temp = Object.assign(state.workTime);
       temp[parseInt(action.data.index, 10)][action.data.type] = action.data.value;
-      return { ...state, workTime: temp };
+      return { ...state, workTime: [...temp] };
     case CONSTRAINTS_FETCHED:
       return { ...state, constraints: action.data[0] };
     case CITY_FETCHED:
