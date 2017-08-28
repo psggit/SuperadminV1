@@ -20,6 +20,7 @@ import {
   fetchState,
   saveCity,
   disableCity,
+  enableCityDelivery,
   updateStateSaveCity,
   RESET,
   deleteCity,
@@ -100,6 +101,9 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
   toggleCityToServer() {
     this.props.dispatch(disableCity(this.props.cityId, !(this.props.isAvailable), this.props.fromDB[0].id));
   }
+  toggleDeliveryToServer() {
+    this.props.dispatch(enableCityDelivery(this.props.cityId, !(this.props.isDeliverable), this.props.fromDB[0].id));
+  }
   updateCityToServer() {
     /* Check for no Data */
     this.props.dispatch(saveCity(this.props.cityId, this.props.cityInput, this.props.cityGPS, this.props.fromDB[0].id));
@@ -117,10 +121,12 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
     }});
   }
   editServerCity(e) {
+    console.log('AAAAH');
     this.props.dispatch({ type: EDIT_SERVER_CITY, data: {
       'type': e.target.getAttribute('data-type'),
       'id': e.target.getAttribute('data-city-id'),
       'isAvailable': (e.target.getAttribute('data-is-available') === 'true' ? true : false),
+      'isDeliverable': (e.target.getAttribute('data-is-deliverable') === 'true' ? true : false),
       'name': e.target.getAttribute('data-city-name'),
       'gps': e.target.getAttribute('data-city-gps')
     }});
@@ -148,6 +154,7 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
       , cityInput
       , cityGPS
       , isAvailable
+      , isDeliverable
       , isCityEdit
       , isCityLocal
       , stateInput
@@ -178,7 +185,7 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
           return (
                 <li key={ sCity.id } data-city-id={ sCity.id} type="server">
                   <label data-city-id={ sCity.id} data-type="server"> { sCity.name } </label>
-                  <p data-city-name={ sCity.name } data-is-available={ sCity.is_available } data-city-id={ sCity.id } data-city-gps={ sCity.gps } data-type="server" onClick={ this.editServerCity.bind(this) }>Edit</p>
+                  <p data-city-name={ sCity.name } data-is-deliverable={ sCity.deliverable_city } data-is-available={ sCity.is_available } data-city-id={ sCity.id } data-city-gps={ sCity.gps } data-type="server" onClick={ this.editServerCity.bind(this) }>Edit</p>
                   <p> ({(sCity.is_available) ? 'Available' : 'Unavailable'})</p>
                   {/*
                   <p>3 Cities</p>
@@ -250,6 +257,7 @@ class ManageState extends React.Component { // eslint-disable-line no-unused-var
                     <button data-city-local= { isCityLocal } className={styles.cancel_btn + ' ' + styles.common_btn} onClick={ isCityLocal ? this.deleteCityLocal.bind(this) : this.deleteCityServer.bind(this) } >Delete</button>
                     <button data-city-local= { isCityLocal } className={styles.save_btn + ' ' + styles.common_btn} onClick={ isCityLocal ? this.updateCityToLocal.bind(this) : this.updateCityToServer.bind(this) } >Update</button>
                   <button data-availability = { isAvailable } className={styles.save_btn + ' ' + styles.common_btn} onClick={ this.toggleCityToServer.bind(this) } >Toggle Status</button>
+                  <button data-deliverability = { isDeliverable } className={styles.save_btn + ' ' + styles.common_btn} onClick={ this.toggleDeliveryToServer.bind(this) } > {(isDeliverable === true ? 'Disable Delivery' : 'Enable Delivery')}</button>
                   </div>
                 ))
               }
@@ -356,6 +364,7 @@ ManageState.propTypes = {
   shortName: PropTypes.string.isRequired,
   cityId: PropTypes.string.isRequired,
   isAvailable: PropTypes.string.isRequired,
+  isDeliverable: PropTypes.string.isRequired,
   isCityEdit: PropTypes.bool.isRequired,
   isCityLocal: PropTypes.bool.isRequired,
   ongoingRequest: PropTypes.bool.isRequired,

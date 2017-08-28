@@ -1,0 +1,135 @@
+.delivery_container {
+  width: 100%;
+  float: left;
+  table
+  {
+  	background: #FFF;
+    border: 1px solid;
+    margin-top: 150px;
+    margin-left: 47px;
+  	thead th
+  	{
+      background: #eee;
+  		font-weight: 500;
+  		border-bottom: 1px;
+  		padding: 12px 40px;
+  		letter-spacing: 0.3px;
+  		font-size: 13px;
+  	}
+  	button
+  	{
+  		background: #FFF;
+  		height: 20px;
+  		text-align: center;
+  		padding: 0 13px;
+  		border: 1px solid #999;
+  		border-radius: 4px;
+  		font-size: 11px;
+  		letter-spacing: 0.3px;
+  		color: rgba(0,0,0,0.55);
+  		&:hover
+  		{
+  			color: rgba(0,0,0,77);
+  		}
+  		&:focus
+  		{
+  			outline: none;
+  		}
+  	}
+  	tbody tr td
+  	{
+  		font-size: 13px;
+  		letter-spacing: 0.3px;
+      text-align: center;
+      border: 1px solid #999;
+  		padding: 10px 8px;
+  	}
+  	.id
+  	{
+  		font-weight: 500;
+  	}
+  	.edit_btn
+  	{
+  		background: #FFF;
+  		height: 20px;
+  		text-align: center;
+  		padding: 0 13px;
+  		border: 1px solid #CCCCCC;
+  		border-radius: 4px;
+  		font-size: 11px;
+  		letter-spacing: 0.3px;
+  		color: rgba(0,0,0,0.44);
+  		&:hover
+  		{
+  			color: rgba(0,0,0,0.54);
+  		}
+  		&:focus
+  		{
+  			outline: none;
+  		}
+  	}
+  }
+}
+a {
+  color: rgba(0,0,0,0.54);
+  text-decoration: none;
+  display: inline-block;
+}
+a:active {
+  color: #FF7400;
+}
+a:hover {
+  color: rgba(0,0,0,0.87);
+  text-decoration: none;
+}
+a:visited{
+  text-decoration: none;
+}
+.common_btn
+{
+	width: 130px;
+	height: 30px;
+	color: rgba(255, 116, 0, 0.8);
+	border: 1px solid #FF7400;
+	border-radius: 4px;
+	background: #FFF;
+	cursor: pointer;
+	font-weight: 400;
+	text-align: center;
+	font-size: 13px;
+	letter-spacing: 0.5px;
+	transition: all 0.2s linear;
+	&:hover
+	{
+		color: rgba(255, 116, 0, 1); 
+	}
+	&:focus
+	{
+		outline: none;
+	}
+}
+.create_btn
+{
+    margin-top: 25px;
+    margin-left: 45px;        
+	width: 130px;
+	height: 30px;
+	color: rgba(255, 116, 0, 0.8);
+	border: 1px solid #FF7400;
+	border-radius: 4px;
+	background: #FFF;
+	cursor: pointer;
+	font-weight: 400;
+	text-align: center;
+	font-size: 13px;
+	letter-spacing: 0.5px;
+	transition: all 0.2s linear;
+	&:hover
+	{
+		color: rgba(255, 116, 0, 1); 
+	}
+	&:focus
+	{
+		outline: none;
+	}
+}

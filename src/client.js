@@ -37,6 +37,12 @@ import {Login, Home, PageContainer,
   BrandManagement,
   CreateConvenienceFee,
   ConvenienceFeeList,
+  DeliveryConstraints,
+  DeliveryPersonList,
+  DeliveryPersonCreate,
+  ConfigureWorkTimes,
+  AddHolidays,
+  DeliveryConstraintsManagement,
   ConsumerReservation,
   ConsumerRedemption,
   ConsumerCancellation,
@@ -256,6 +262,12 @@ const main = (
         <Route path="brand_management" component={BrandManagement} />
         <Route path="convenience_fee/create" component={CreateConvenienceFee} />
         <Route path="convenience_fee/list" component={ConvenienceFeeList} />
+        <Route path="configure_delivery_constraints" component={DeliveryConstraints} />
+        <Route path="delivery_persons_list" component={DeliveryPersonList} />
+        <Route path="delivery_person/create" component={DeliveryPersonCreate} />
+        <Route path="work_times/edit/:Id" component={ConfigureWorkTimes} />
+        <Route path="holidays/edit/:Id" component={AddHolidays} />
+        <Route path="delivery_constraints/edit/:Id" component={DeliveryConstraintsManagement} />
         <Route path="brand_management/create" component={BrandCreate} />
         <Route path="brand_management/edit/:Id" component={BrandEdit} />
         <Route path="companies_management" component={CompaniesManagement} />

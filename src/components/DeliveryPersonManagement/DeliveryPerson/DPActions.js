@@ -1,0 +1,250 @@
+/* Action, Action Creators, Reducer for State Management */
+/* State
+
+{
+  ongoingRequest : false, //true if request is:w going on
+  lastError : null OR <string>
+  lastSuccess: null OR <string>
+}
+
+*/
+
+import requestAction from '../../Common/Actions/requestAction';
+import Endpoints, { globalCookiePolicy } from '../../../Endpoints';
+
+import { MAKE_REQUEST, REQUEST_COMPLETED, REQUEST_ERROR } from '../../Common/Actions/Actions';
+
+// import { routeActions } from 'redux-simple-router';
+
+import beginFilter from '../../Common/SearchComponentGen/GenerateFilter';
+
+/* Action Constants */
+// Action Maker
+const REQUEST_SUCCESS = '@dp_mgt/REQUEST_SUCCESS';
+
+const requestFailed = (data) => ({type: REQUEST_ERROR, data: data});
+
+const TOGGLE_CITY_COMPONENT = '@dp_mgt/TOGGLE_CITY_COMPONENT';
+const CITY_INPUT_CHANGED = '@dp_mgt/CITY_INPUT_CHANGED';
+const STATE_INPUT_CHANGED = '@dp_mgt/STATE_INPUT_CHANGED';
+const STORE_CITY_LOCAL = '@dp_mgt/STORE_CITY_LOCAL';
+const EDIT_CITY = '@dp_mgt/EDIT_CITY';
+const EDIT_SERVER_CITY = '@dp_mgt/EDIT_SERVER_CITY';
+const UPDATE_CITY_LOCAL = '@dp_mgt/UPDATE_CITY_LOCAL';
+const DELETE_CITY_LOCAL = '@dp_mgt/DELETE_CITY_LOCAL';
+const FETCH_CITY = '@dp_mgt/FETCH_CITY';
+const CLEAR_CITY = '@dp_mgt/CLEAR_CITY';
+const RESET = '@dp_mgt/RESET';
+const COUNT_FETCHED = '@dp_mgt/COUNT';
+const FETCH_ORGANISATION = '@dp_mgt/FETCH_ORGANISATION';
+const FETCH_RETAILERS = '@dp_mgt/FETCH_ORGANISATION';
+const FETCH_ALL_RETAILERS = '@dp_mgt/FETCH_ORGANISATION';
+
+/* Action creators */
+
+const getDPData = ( page, filterObj, isSearched ) => {
+  return (dispatch, getState) => {
+    let offset = 0;
+    let limit = 0;
+    limit = 10;
+    offset = (page - 1) * 10;
+
+    const payload = {
+      columns: ['*'],
+      limit: limit,
+      offset: offset,
+      order_by: '+id'
+    };
+
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
+
+    const url = Endpoints.db + '/table/' + 'complete_dp_details' + '/select';
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(payload),
+    };
+    return dispatch( requestAction(url, options, REQUEST_SUCCESS, REQUEST_ERROR));
+  };
+};
+
+const getDPCount = ( filterObj, isSearched ) => {
+  return (dispatch, getState) => {
+    const payload = {
+      'columns': ['*']
+    };
+    if ( isSearched ) {
+      payload.where = { ...payload.where, ...filterObj };
+    }
+
+    const url = Endpoints.db + '/table/' + 'complete_dp_details' + '/count';
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(payload),
+    };
+    return fetch(url, options)
+           .then(
+             (response) => {
+               if (response.ok) { // 2xx status
+                 response.json().then(
+                   (d) => {
+                     return dispatch({type: COUNT_FETCHED, data: d});
+                   },
+                   () => {
+                     return dispatch(requestFailed('Error. Try again!'));
+                   }
+                 );
+               } else {
+                 return dispatch(requestFailed('Error. Try again!'));
+               }
+             },
+             (error) => {
+               console.log(error);
+               return dispatch(requestFailed(error.text));
+             });
+  };
+};
+
+const getAllDPData = (page) => {
+  return ( dispatch, getState ) => {
+    const gotPage = page;
+
+    const filterData = getState().gen_filter_data;
+    const filterObj = { ...beginFilter(getState) };
+    /* Dispatching first one */
+    return Promise.all([
+      dispatch(getDPCount( filterObj, filterData.isSearched )),
+      dispatch(getDPData(gotPage, filterObj, filterData.isSearched ))
+    ]);
+  };
+};
+
+const fetchCities = () => {
+  return (dispatch, getState) => {
+    const payload = {
+      'columns': ['name', 'id']
+    };
+
+    const url = Endpoints.db + '/table/' + 'city' + '/select';
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(payload),
+    };
+    return dispatch(requestAction(url, options, FETCH_CITY, REQUEST_ERROR));
+  };
+};
+
+const fetchOrganisations = () => {
+  return (dispatch, getState) => {
+    const payload = {
+      'columns': ['organisation_name', 'id'],
+      'where': {'status': 'true'}
+    };
+
+    const url = Endpoints.db + '/table/' + 'organisation' + '/select';
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(payload),
+    };
+    return dispatch(requestAction(url, options, FETCH_ORGANISATION, REQUEST_ERROR));
+  };
+};
+
+const fetchRetailer = (orgId) => {
+  return (dispatch, getState) => {
+    const payload = {
+      'columns': ['name', 'id'],
+      'where': {'organisation_id': orgId}
+    };
+
+    const url = Endpoints.db + '/table/' + 'retailer' + '/select';
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(payload),
+    };
+    return dispatch(requestAction(url, options, FETCH_RETAILERS, REQUEST_ERROR));
+  };
+};
+
+const fetchAllRetailer = () => {
+  return (dispatch, getState) => {
+    const payload = {
+      'columns': ['org_name', 'id']
+    };
+
+    const url = Endpoints.db + '/table/' + 'retailer' + '/select';
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(payload),
+    };
+    return dispatch(requestAction(url, options, FETCH_ALL_RETAILERS, REQUEST_ERROR));
+  };
+};
+
+
+/* End of Action creators */
+
+/* Reducer for State Management */
+
+const defaultState = {
+  cities: [],
+  retailers: [],
+  allRetailers: [],
+  organisations: []
+};
+
+const deliveryPersonReducer = ( state = defaultState, action) => {
+  switch ( action.type ) {
+    case FETCH_CITY:
+      return { ...state, cities: action.data};
+    case FETCH_RETAILERS:
+      return { ...state, retailers: action.data};
+    case FETCH_ALL_RETAILERS:
+      return { ...state, allRetailers: action.data};
+    case FETCH_ORGANISATION:
+      return { ...state, organisations: action.data};
+    case CLEAR_CITY:
+      return { ...state, cities: {}};
+    case RESET:
+      return { ...defaultState};
+    default:
+      return { ...state };
+  }
+};
+
+/* End of reducer */
+
+export {
+  TOGGLE_CITY_COMPONENT,
+  CITY_INPUT_CHANGED,
+  STATE_INPUT_CHANGED,
+  STORE_CITY_LOCAL,
+  EDIT_CITY,
+  EDIT_SERVER_CITY,
+  UPDATE_CITY_LOCAL,
+  DELETE_CITY_LOCAL,
+  getDPData,
+  getAllDPData,
+  RESET,
+  fetchCities,
+  fetchOrganisations,
+  fetchRetailer,
+  fetchAllRetailer,
+  MAKE_REQUEST,
+  REQUEST_COMPLETED
+};
+
+export default deliveryPersonReducer;

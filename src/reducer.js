@@ -81,12 +81,18 @@ import miscellaneousItemListReducer from './components/MiscellaneousItemList/Act
 import invitationReducer from './components/Invites/reducer';
 import convenienceFeeReducer from './components/ConvenienceFee/ConvenienceFeeActions';
 import convenienceFeeListReducer from './components/ConvenienceFeeList/ConvenienceFeeActions';
+import deliveryConstraintsReducer from './components/DeliveryConstraints/DeliveryConstraintsActions';
+import deliveryConstraintsManagementReducer from './components/DeliveryConstraints/DeliveryConstraintsManagementActions';
+import deliveryPersonReducer from './components/DeliveryPersonManagement/DeliveryPerson/DPActions';
 
 const reducer = combineReducers({
   // The promos Side-menu states
   promosCashbackRedeemState: PromosCashbackRedeem,
   convenienceFeeState: convenienceFeeReducer,
   convenienceFeeListState: convenienceFeeListReducer,
+  deliveryConstraintsState: deliveryConstraintsReducer,
+  deliveryConstraintsManagmentState: deliveryConstraintsManagementReducer,
+  deliveryPersonState: deliveryPersonReducer,
   promosOnPackRedeemState: PromosOnPack,
   welcomeDrinksState: welcomeDrinksReducer,
   brandListingState: brandListingReducer,

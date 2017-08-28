@@ -306,6 +306,22 @@ const PageContainer = ({location, name, role, children, dispatch}) => { // eslin
               </ul>
             </li>
           </ul>
+          <ul>
+            <li><input type="checkbox" id="cb10"/><label htmlFor="cb10">DELIVERY MANAGEMENT</label>
+              <ul>
+                <li className={styles.sidebar_list}>
+                  <label>
+                    <Link to={'/hadmin/delivery_persons_list'}>Add Delivery Person</Link>
+                  </label>
+                </li>
+                <li className={styles.sidebar_list}>
+                  <label>
+                    <Link to={'/hadmin/configure_delivery_constraints'}>Configure Constraints</Link>
+                  </label>
+                </li>
+              </ul>
+            </li>
+          </ul>
         </div>
         <div className={styles.main + ' col-md-9'}>
           <div className={styles.right_wrapper}>

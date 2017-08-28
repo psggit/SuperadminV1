@@ -11,6 +11,7 @@
 
 import { defaultStateManagementState } from '../../Common/Actions/DefaultState';
 import { validation } from '../../Common/Actions/Validator';
+import { deliveryConstraints } from './fetchQueries';
 import crypto from 'crypto';
 import requestAction from '../../Common/Actions/requestAction';
 import Endpoints, { globalCookiePolicy } from '../../../Endpoints';
@@ -113,7 +114,7 @@ const fetchState = (stateId) => {
     //
     const payload = {
       'where': {'id': stateId},
-      'columns': ['*', { 'name': 'cities', 'columns': ['id', 'name', 'gps', 'is_available'] }]
+      'columns': ['*', { 'name': 'cities', 'columns': ['id', 'name', 'gps', 'is_available', 'deliverable_city'] }]
     };
 
     const url = Endpoints.db + '/table/' + 'state' + '/select';
@@ -271,8 +272,8 @@ const updateStateSaveCity = () => {
 
 const deleteCity = (cityId, name, stateId) => {
   return (dispatch, getState) => {
-    const currState = stateId;
     const deleteObj = {};
+    const currState = stateId;
     const url = Endpoints.db + '/table/city/delete';
     deleteObj.where = {
       'id': parseInt(cityId, 10)
@@ -293,6 +294,95 @@ const deleteCity = (cityId, name, stateId) => {
           ]);
         }
         alert('sorry something went wrong while deleting city');
+      })
+      .catch((error) => {
+        console.log('error');
+        console.log(error);
+      });
+  };
+};
+
+const addDeliveryConstraint = (cityId) => {
+  return (dispatch, getState) => {
+    const currProps = getState().state_data;
+    const attr = deliveryConstraints.insertConstraints(cityId);
+    const url = attr.url;
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(attr.query),
+    };
+    return dispatch(requestAction(url, options))
+      .then(() => {
+        return Promise.all([
+          dispatch(fetchState(currProps.fromDB[0].id)),
+          alert('City is Now Made Deliverable. Please Move to the cofiguration Page'),
+          dispatch({ type: CLEAR_CITY}),
+          dispatch(routeActions.push('/hadmin/state_management'))
+        ]);
+      })
+      .catch((error) => {
+        console.log('error');
+        console.log(error);
+      });
+  };
+};
+
+const makeDeliverable = (cityId, deliveryStatus) => {
+  return (dispatch, getState) => {
+    const currProps = getState().state_data;
+    const attr = deliveryConstraints.updateCity(cityId, deliveryStatus);
+    const url = attr.url;
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(attr.query)
+    };
+    return dispatch(requestAction(url, options))
+      .then(() => {
+        return Promise.all([
+          dispatch(fetchState(currProps.fromDB[0].id)),
+          alert('Delivery Status is Toggled.'),
+          dispatch({ type: CLEAR_CITY}),
+          dispatch(routeActions.push('/hadmin/state_management'))
+        ]);
+      })
+      .catch((error) => {
+        console.log('error');
+        console.log(error);
+      });
+  };
+};
+
+const enableCityDelivery = (cityId, deliveryStatus) => {
+  return (dispatch, getState) => {
+    // const currState = stateId;
+    const constraintObj = {};
+    const url = Endpoints.db + '/table/delivery_constraints/select';
+    constraintObj.columns = ['*'];
+    constraintObj.where = {
+      'city_id': parseInt(cityId, 10)
+    };
+    constraintObj.returning = ['city_id', 'id'];
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(constraintObj),
+    };
+    return dispatch(requestAction(url, options))
+      .then((cityResponse) => {
+        if ( cityResponse.length === 0 ) {
+          // Create All Constraints and Day constraints
+          return Promise.all([
+            dispatch(addDeliveryConstraint(parseInt(cityId, 10))),
+          ]);
+        }
+        return Promise.all([
+          dispatch(makeDeliverable(parseInt(cityId, 10), deliveryStatus)),
+        ]);
       })
       .catch((error) => {
         console.log('error');
@@ -346,7 +436,7 @@ const stateReducer = ( state = defaultStateManagementState, action) => {
     case EDIT_CITY:
       return { ...state, cityId: action.data.id, isCityLocal: (action.data.type === 'local' ? true : false ), isCityEdit: true, cityInput: state.cities[action.data.id].cityInput, cityGPS: state.cities[action.data.id].cityGPS, hideCityComponent: false };
     case EDIT_SERVER_CITY:
-      return { ...state, cityId: action.data.id, isCityLocal: (action.data.type === 'local' ? true : false ), isCityEdit: true, isAvailable: action.data.isAvailable, cityInput: action.data.name, hideCityComponent: false, cityGPS: action.data.gps };
+      return { ...state, cityId: action.data.id, isCityLocal: (action.data.type === 'local' ? true : false ), isCityEdit: true, isDeliverable: action.data.isDeliverable, isAvailable: action.data.isAvailable, cityInput: action.data.name, hideCityComponent: false, cityGPS: action.data.gps };
     case FETCH_STATE:
       return { ...state, fromDB: action.data, stateInput: action.data[0].state_name, shortName: action.data[0].short_name };
     case CLEAR_CITY:
@@ -374,6 +464,7 @@ export {
   disableCity,
   fetchState,
   updateStateSaveCity,
+  enableCityDelivery,
   RESET,
   deleteCity,
   MAKE_REQUEST,
