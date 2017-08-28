@@ -311,7 +311,7 @@ const PageContainer = ({location, name, role, children, dispatch}) => { // eslin
               <ul>
                 <li className={styles.sidebar_list}>
                   <label>
-                    <Link to={'/hadmin/delivery_persons_list'}>Add Delivery Person</Link>
+                    <Link to={'/hadmin/delivery_person/create'}>Add Delivery Person</Link>
                   </label>
                 </li>
                 <li className={styles.sidebar_list}>
