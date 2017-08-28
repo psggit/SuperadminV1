@@ -146,6 +146,7 @@ const updateConstraints = () => {
     const currState = getState().deliveryConstraintsManagmentState;
     updateObj.values = currState.constraints;
     updateObj.where = {id: currState.constraints.id};
+    updateObj.returning = ['id'];
 
     const options = {
       method: 'POST',
