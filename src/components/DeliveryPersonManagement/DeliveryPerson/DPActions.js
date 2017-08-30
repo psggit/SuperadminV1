@@ -14,7 +14,7 @@ import Endpoints, { globalCookiePolicy } from '../../../Endpoints';
 
 import { MAKE_REQUEST, REQUEST_COMPLETED, REQUEST_ERROR } from '../../Common/Actions/Actions';
 
-// import { routeActions } from 'redux-simple-router';
+import { routeActions } from 'redux-simple-router';
 
 import beginFilter from '../../Common/SearchComponentGen/GenerateFilter';
 
@@ -211,7 +211,17 @@ export const createDeliveryPerson = () => {
       credentials: globalCookiePolicy,
       body: JSON.stringify(payload),
     };
-    return dispatch(requestAction(url, options, DP_INSERTED, REQUEST_ERROR));
+    return Promise.all([
+      dispatch(requestAction(url, options, DP_INSERTED, REQUEST_ERROR)).then((response) => {
+        console.log(response);
+        return dispatch(routeActions.push('/hadmin/convenience_fee/list'));
+        // Reroute
+      }).catch((err) => {
+        console.log(err);
+        alert('Please Try Again.');
+      }),
+      dispatch({type: REQUEST_COMPLETED})
+    ]);
   };
 };
 

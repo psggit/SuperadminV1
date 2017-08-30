@@ -98,7 +98,7 @@ class ManageDP extends React.Component { // eslint-disable-line no-unused-vars
       return (<option value={city.id}> {city.name} </option>);
     });
     const retailersDropdownHtml = retailers.map((indiv) => {
-      return (<option value={indiv.id}> {indiv.organisation_name} </option>);
+      return (<option value={indiv.id}> {indiv.org_name} </option>);
     });
     const allRetailersDropdownHtml = allRetailers.map((indiv) => {
       return (<option value={indiv.id}> {indiv.org_name} </option>);
