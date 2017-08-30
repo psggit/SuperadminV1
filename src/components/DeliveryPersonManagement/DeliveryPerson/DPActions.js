@@ -35,10 +35,17 @@ const DELETE_CITY_LOCAL = '@dp_mgt/DELETE_CITY_LOCAL';
 const FETCH_CITY = '@dp_mgt/FETCH_CITY';
 const CLEAR_CITY = '@dp_mgt/CLEAR_CITY';
 const RESET = '@dp_mgt/RESET';
+const DP_INSERTED = '@dp_mgt/DP_INSERTED';
 const COUNT_FETCHED = '@dp_mgt/COUNT';
 const FETCH_ORGANISATION = '@dp_mgt/FETCH_ORGANISATION';
-const FETCH_RETAILERS = '@dp_mgt/FETCH_ORGANISATION';
-const FETCH_ALL_RETAILERS = '@dp_mgt/FETCH_ORGANISATION';
+const FETCH_RETAILERS = '@dp_mgt/FETCH_RETAILERS';
+const FETCH_ALL_RETAILERS = '@dp_mgt/FETCH_ALL_RETAILERS';
+const LICENSE_COPY_UPLOADED = '@dp_mgt/LICENSE_UPLOADED';
+const LICENSE_COPY_CANCELLED = '@dp_mgt/LICENSE_CANCELLED';
+const LICENSE_COPY_ERROR = '@dp_mgt/LICENSE_ERROR';
+const PROOF_COPY_UPLOADED = '@dp_mgt/PROOF_UPLOADED';
+const PROOF_COPY_CANCELLED = '@dp_mgt/PROOF_CANCELLED';
+const PROOF_COPY_ERROR = '@dp_mgt/PROOF_ERROR';
 
 /* Action creators */
 
@@ -162,7 +169,7 @@ const fetchOrganisations = () => {
 const fetchRetailer = (orgId) => {
   return (dispatch, getState) => {
     const payload = {
-      'columns': ['name', 'id'],
+      'columns': ['org_name', 'id'],
       'where': {'organisation_id': orgId}
     };
 
@@ -194,6 +201,20 @@ const fetchAllRetailer = () => {
   };
 };
 
+export const createDeliveryPerson = () => {
+  return (dispatch, getState) => {
+    const url = 'https://gremlin.hearsay81.hasura-app.io/deliveryAgent/createDeliveryAgent';
+    const payload = getState().deliveryPersonState.attrs;
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(payload),
+    };
+    return dispatch(requestAction(url, options, DP_INSERTED, REQUEST_ERROR));
+  };
+};
+
 
 /* End of Action creators */
 
@@ -203,6 +224,7 @@ const defaultState = {
   cities: [],
   retailers: [],
   allRetailers: [],
+  attrs: {},
   organisations: []
 };
 
@@ -214,8 +236,28 @@ const deliveryPersonReducer = ( state = defaultState, action) => {
       return { ...state, retailers: action.data};
     case FETCH_ALL_RETAILERS:
       return { ...state, allRetailers: action.data};
+    case STATE_INPUT_CHANGED:
+      const obj = {};
+      obj[action.data.key] = action.data.value;
+      return { ...state, attrs: {...state.attrs, ...obj}};
     case FETCH_ORGANISATION:
       return { ...state, organisations: action.data};
+    case LICENSE_COPY_UPLOADED:
+      const temp = {};
+      temp.driving_license_image = action.data[0];
+      return { ...state, image: Endpoints.file_get + action.data[0], attrs: {...state.attrs, ...temp}};
+    case LICENSE_COPY_CANCELLED:
+      const removeObj = {};
+      removeObj.driving_license_image = '';
+      return { ...state, image: '', attrs: {...state.attrs, ...removeObj}};
+    case PROOF_COPY_UPLOADED:
+      const tmp = {};
+      tmp.proof_image = action.data[0];
+      return { ...state, proofimage: Endpoints.file_get + action.data[0], attrs: {...state.attrs, ...tmp}};
+    case PROOF_COPY_CANCELLED:
+      const rmObj = {};
+      rmObj.driving_license_image = '';
+      return { ...state, image: '', attrs: {...state.attrs, ...rmObj}};
     case CLEAR_CITY:
       return { ...state, cities: {}};
     case RESET:
@@ -243,6 +285,12 @@ export {
   fetchOrganisations,
   fetchRetailer,
   fetchAllRetailer,
+  PROOF_COPY_UPLOADED,
+  PROOF_COPY_CANCELLED,
+  PROOF_COPY_ERROR,
+  LICENSE_COPY_UPLOADED,
+  LICENSE_COPY_CANCELLED,
+  LICENSE_COPY_ERROR,
   MAKE_REQUEST,
   REQUEST_COMPLETED
 };

@@ -4,32 +4,27 @@ import {
   updateStateText
 } from './DPActions';
 
-import { validation } from '../../Common/Actions/Validator';
+import ImageUpload from './ImageUpload';
 
 import {
   TOGGLE_CITY_COMPONENT,
   CITY_INPUT_CHANGED,
   STATE_INPUT_CHANGED,
-  STORE_CITY_LOCAL,
-  EDIT_CITY,
-  EDIT_SERVER_CITY,
-  UPDATE_CITY_LOCAL,
-  DELETE_CITY_LOCAL,
-  saveState,
   fetchCities,
   fetchOrganisations,
   fetchRetailer,
   fetchAllRetailer,
-  saveCity,
-  disableCity,
-  enableCityDelivery,
-  updateStateSaveCity,
+  createDeliveryPerson,
   RESET,
-  deleteCity,
   MAKE_REQUEST,
-  REQUEST_COMPLETED
+  REQUEST_COMPLETED,
+  LICENSE_COPY_UPLOADED,
+  LICENSE_COPY_CANCELLED,
+  LICENSE_COPY_ERROR,
+  PROOF_COPY_UPLOADED,
+  PROOF_COPY_CANCELLED,
+  PROOF_COPY_ERROR
 } from './DPActions';
-
 import commonDecorator from '../../Common/CommonDecorator';
 
 class ManageDP extends React.Component { // eslint-disable-line no-unused-vars
@@ -49,18 +44,10 @@ class ManageDP extends React.Component { // eslint-disable-line no-unused-vars
   componentWillUnmount() {
     this.props.dispatch({ type: RESET });
   }
-  onClickEdit() {
-    /*
-    const stateName = document.querySelectorAll('[data-field-name="state_name"]')[0].value;
-    const stateId = parseInt(e.target.getAttribute('data-state-id'), 10);
-    const stateObj = {};
-    stateObj.values = {};
-    stateObj.values.state_name = stateName;
-    stateObj.returning = ['id'];
-    */
+  onClickSave() {
     Promise.all([
       this.props.dispatch({ type: MAKE_REQUEST }),
-      this.props.dispatch(updateStateSaveCity())
+      this.props.dispatch(createDeliveryPerson())
     ])
     .then( () => {
       this.props.dispatch( { type: REQUEST_COMPLETED });
@@ -76,78 +63,28 @@ class ManageDP extends React.Component { // eslint-disable-line no-unused-vars
   }
   storeCityInput(e) {
     const inputVal = e.target.getAttribute('data-field-name');
-    console.log('!!!!!!!!!!!!!!!!!!!');
-    console.log(CITY_INPUT_CHANGED);
-    console.log(this.props);
     this.props.dispatch({ type: CITY_INPUT_CHANGED, data: { 'key': inputVal, 'value': e.target.value } });
   }
   storeStateInput(e) {
     const inputVal = e.target.getAttribute('data-field-name');
-    this.props.dispatch({ type: STATE_INPUT_CHANGED, data: { 'key': inputVal, 'value': e.target.value } });
-  }
-  saveCityToLocal() {
-    const listOfValidation = [];
-    listOfValidation.push(validation(this.props.cityInput, 'non_empty_text'));
-    listOfValidation.push(validation(this.props.cityGPS, 'gps'));
-    Promise.all(listOfValidation
-    ).then(() => {
-      this.props.dispatch({ type: STORE_CITY_LOCAL });
-    });
-  }
-  updateCityToLocal() {
-    this.props.dispatch({ type: UPDATE_CITY_LOCAL});
-  }
-  toggleCityToServer() {
-    this.props.dispatch(disableCity(this.props.cityId, !(this.props.isAvailable), this.props.fromDB[0].id));
-  }
-  toggleDeliveryToServer() {
-    this.props.dispatch(enableCityDelivery(this.props.cityId, !(this.props.isDeliverable), this.props.fromDB[0].id));
-  }
-  updateCityToServer() {
-    /* Check for no Data */
-    this.props.dispatch(saveCity(this.props.cityId, this.props.cityInput, this.props.cityGPS, this.props.fromDB[0].id));
-  }
-  deleteCityServer() {
-    this.props.dispatch(deleteCity(this.props.cityId, this.props.cityInput, this.props.fromDB[0].id));
-  }
-  deleteCityLocal() {
-    this.props.dispatch({ type: DELETE_CITY_LOCAL});
-  }
-  editCity(e) {
-    this.props.dispatch({ type: EDIT_CITY, data: {
-      'type': e.target.getAttribute('data-type'),
-      'id': e.target.getAttribute('data-city-id')
-    }});
-  }
-  editServerCity(e) {
-    console.log('AAAAH');
-    this.props.dispatch({ type: EDIT_SERVER_CITY, data: {
-      'type': e.target.getAttribute('data-type'),
-      'id': e.target.getAttribute('data-city-id'),
-      'isAvailable': (e.target.getAttribute('data-is-available') === 'true' ? true : false),
-      'isDeliverable': (e.target.getAttribute('data-is-deliverable') === 'true' ? true : false),
-      'name': e.target.getAttribute('data-city-name'),
-      'gps': e.target.getAttribute('data-city-gps')
-    }});
-  }
-  saveCurrentState() {
-    Promise.all([
-      this.props.dispatch({ type: MAKE_REQUEST }),
-      this.props.dispatch(saveState(this.props))
-    ])
-    .then( () => {
-      this.props.dispatch({ type: REQUEST_COMPLETED });
-    })
-    .catch( () => {
-      this.props.dispatch({ type: REQUEST_COMPLETED });
-    });
+    let value = e.target.value;
+    const type = e.target.getAttribute('data-field-type');
+    console.log(type);
+    if (type === 'boolean') {
+      value = Boolean(parseInt(value, 10));
+    }
+    if (type === 'int') {
+      value = parseInt(value, 10);
+    }
+    this.props.dispatch({ type: STATE_INPUT_CHANGED, data: { 'key': inputVal, 'value': value } });
   }
   render() {
     const styles = require('./DPManagement.scss');
 
     const { ongoingRequest
       , lastError
-      , stateInput
+      , image
+      , proofimage
       , cities
       , allRetailers
       , retailers
@@ -161,13 +98,13 @@ class ManageDP extends React.Component { // eslint-disable-line no-unused-vars
       return (<option value={city.id}> {city.name} </option>);
     });
     const retailersDropdownHtml = retailers.map((indiv) => {
-      return (<option value={indiv.id}> {indiv.org_name} </option>);
+      return (<option value={indiv.id}> {indiv.organisation_name} </option>);
     });
     const allRetailersDropdownHtml = allRetailers.map((indiv) => {
       return (<option value={indiv.id}> {indiv.org_name} </option>);
     });
     const organisationsDropdownHtml = organisations.map((indiv) => {
-      return (<option value={indiv.id}> {indiv.name} </option>);
+      return (<option value={indiv.id}> {indiv.organisation_name} </option>);
     });
     const htmlContent = () => {
       return (
@@ -180,69 +117,146 @@ class ManageDP extends React.Component { // eslint-disable-line no-unused-vars
               Create Delivery Person
             </p>
             <div className={styles.create_form}>
+            <p>
+              EMPLOYEE INFO:
+            </p>
               <div className={styles.indiv_form}>
-              	<label>Employee Id</label>
-              	<input type="integer" data-field-name="employee_id" onChange={ this.storeStateInput.bind(this) } value={ stateInput }/>
+              	<label>Employee Id:</label>
+              	<input type="number" data-field-name="employee_id" onChange={ this.storeStateInput.bind(this) } />
               </div>
               <div className={styles.indiv_form}>
               	<label>Employee Name</label>
-              	<input type="text" data-field-name="name" onChange={ this.storeStateInput.bind(this) } value={ stateInput }/>
+              	<input type="text" data-field-name="name" onChange={ this.storeStateInput.bind(this) } />
               </div>
               <div className={styles.indiv_form}>
               	<label>Contact Number</label>
-              	<input type="integer" data-field-name="contact_number" onChange={ this.storeStateInput.bind(this) } value={ stateInput }/>
+              	<input type="integer" data-field-name="contact_number" onChange={ this.storeStateInput.bind(this) } />
+              </div>
+              <div className={styles.indiv_form}>
+              	<label>Date Of Birth</label>
+              	<input type="date" data-field-name="dob" onChange={ this.storeStateInput.bind(this) } />
+              </div>
+              <div className={styles.indiv_form}>
+              	<label>Nationality</label>
+              	<input type="text" data-field-name="nationality" onChange={ this.storeStateInput.bind(this) } />
               </div>
               <div className={styles.indiv_form}>
               	<label>City</label>
-                <select data-field-name="city_id" data-field-type="city_id">
+                <select data-field-name="city_id" data-field-type="int" onChange={ this.storeStateInput.bind(this) }>
                   <option>Select</option>
                     {citiesDropdownHtml}
                 </select>
               </div>
               <div className={styles.indiv_form}>
-              	<label>Organisations</label>
-                <select data-field-name="city_id" data-field-type="city_id">
-                  <option>Select</option>
-                    {organisationsDropdownHtml}
-                </select>
-              </div>
-              <div className={styles.indiv_form}>
-              	<label>Retailers</label>
-                <select data-field-name="city_id" data-field-type="city_id">
-                  <option>Select</option>
-                    {retailersDropdownHtml}
-                </select>
-              </div>
-              <div className={styles.indiv_form}>
               	<label>All Retailer</label>
-                <select data-field-name="city_id" data-field-type="city_id">
+                <select data-field-name="retailer_id" data-field-type="int" onChange={ this.storeStateInput.bind(this) }>
                   <option>Select</option>
                     {allRetailersDropdownHtml}
                 </select>
               </div>
               <div className={styles.indiv_form}>
+              	<label>Organisations</label>
+                <select data-field-name="organization_id" data-field-type="organization_id">
+                  <option>Select</option>
+                    {organisationsDropdownHtml}
+                </select>
+              </div>
+              <div className={styles.indiv_form}>
+              	<label>Branch</label>
+                <select data-field-name="branch_id" data-field-type="int" onChange={ this.storeStateInput.bind(this) }>
+                  <option>Select</option>
+                    {retailersDropdownHtml}
+                </select>
+              </div>
+              <div className={styles.indiv_form}>
               	<label>Device Number</label>
-              	<input type="integer" data-field-name="device_number" onChange={ this.storeStateInput.bind(this) } value={ stateInput }/>
+              	<input type="Text" data-field-name="device_num" onChange={ this.storeStateInput.bind(this) } />
               </div>
               <div className={styles.indiv_form}>
               	<label>ReEnter Device Number</label>
-              	<input type="integer" data-field-name="contact_number" onChange={ this.storeStateInput.bind(this) } value={ stateInput }/>
+              	<input type="Text" onChange={ this.storeStateInput.bind(this) } />
               </div>
               <div className={styles.indiv_form}>
               	<label>Mobile Number</label>
-              	<input type="integer" data-field-name="contact_number" onChange={ this.storeStateInput.bind(this) } value={ stateInput }/>
+              	<input type="integer" data-field-name="mobile_number" onChange={ this.storeStateInput.bind(this) } />
               </div>
               <div className={styles.indiv_form}>
               	<label>Device Operator</label>
-              	<input type="Text" data-field-name="contact_number" onChange={ this.storeStateInput.bind(this) } value={ stateInput }/>
+              	<input type="Text" data-field-name="operator" onChange={ this.storeStateInput.bind(this) } />
               </div>
-             <button className={styles.common_btn + ' ' + styles.create_btn } onClick={this.onClickEdit.bind(this)}>Create</button>
+              <div className={styles.indiv_form}>
+              	<label>Email ID</label>
+              	<input type="Text" data-field-name="email_id" onChange={ this.storeStateInput.bind(this) } />
+              </div>
+              <div className={styles.indiv_form}>
+              	<label>Is FreeLancer</label>
+                <select data-field-name="is_freelancer" data-field-type="boolean" onChange={ this.storeStateInput.bind(this) }>
+                  <option>Select</option>
+                  <option value="1"> True </option>
+                  <option value="0"> False </option>
+                </select>
+              </div>
+              <div className={styles.indiv_form}>
+              	<label>Is Active</label>
+                <select data-field-name="is_active" data-field-type="boolean" onChange={ this.storeStateInput.bind(this) }>
+                  <option>Select</option>
+                  <option value="1"> True </option>
+                  <option value="0"> False </option>
+                </select>
+              </div>
+            <p>
+              EMPLOYEE ID'S:
+            </p>
+              <div className={styles.indiv_form}>
+                <label>Proof Type</label>
+                <input type="Text" data-field-name="proof_type" onChange={ this.storeStateInput.bind(this) } />
+              </div>
+              <div className={styles.indiv_form}>
+                <label>Proof Text</label>
+                <input type="Text" data-field-name="proof_text" onChange={ this.storeStateInput.bind(this) } />
+              </div>
+              <div className={styles.indiv_form}>
+              	<label>Proof Image</label>
+              	<textarea className="hide" value={ proofimage } data-field-name="proof_image" data-field-type="text"></textarea>
+              </div>
+              <div className={ styles.image_container }>
+                  <ImageUpload imageUrl={proofimage ? proofimage : ''} elementId="proof_image" requestSuccess={PROOF_COPY_UPLOADED} requestError={ PROOF_COPY_ERROR } cancelImage={ PROOF_COPY_CANCELLED }/>
+              </div>
+            <p>
+
+            </p>
+            <p>
+              VEHICLE INFORMATION:
+            </p>
+              <div className={styles.indiv_form}>
+              	<label>Vehicle Number Registration</label>
+              	<input type="Text" data-field-name="vehicle_number_registration" onChange={ this.storeStateInput.bind(this) } />
+              </div>
+              <div className={styles.indiv_form}>
+              	<label>Vehicle Type</label>
+              	<input type="Text" data-field-name="vehicle_type" onChange={ this.storeStateInput.bind(this) } />
+              </div>
+              <div className={styles.indiv_form}>
+              	<label>Driving License Number</label>
+              	<input type="Text" data-field-name="driving_license_number" onChange={ this.storeStateInput.bind(this) } />
+              </div>
+              <div className={styles.indiv_form}>
+              	<label>Driver License Image</label>
+              	<textarea className="hide" value={ image } data-field-name="driving_license_image" data-field-type="text"></textarea>
+              </div>
+              <div className={ styles.image_container }>
+                  <ImageUpload imageUrl={image ? image : ''} elementId="license_image" requestSuccess={LICENSE_COPY_UPLOADED} requestError={ LICENSE_COPY_ERROR } cancelImage={ LICENSE_COPY_CANCELLED }/>
+              </div>
+             <button className={styles.common_btn + ' ' + styles.create_btn } onClick={this.onClickSave.bind(this)}>Create</button>
             </div>
           </div>
           <div className="clearfix"></div>
         </div>
       );
     }();
+    // Bool
+    // Drop Down
+    // Image
     // Check if there are any results, if yes show edit state page else show create state
     // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
     return (
@@ -263,8 +277,9 @@ ManageDP.propTypes = {
   allRetailers: PropTypes.object.isRequired,
   organisations: PropTypes.object.isRequired,
   cityInput: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
+  proofimage: PropTypes.string.isRequired,
   cityGPS: PropTypes.string.isRequired,
-  stateInput: PropTypes.string.isRequired,
   cityId: PropTypes.string.isRequired,
   isAvailable: PropTypes.string.isRequired,
   isDeliverable: PropTypes.string.isRequired,
