@@ -31,6 +31,8 @@ const deliveryConstraints = {
                 delivery_available: true,
                 dp_pool_length: 5,
                 max_est_del_time: 90,
+                max_allowed_volume: 9000,
+                min_cart_total: 0,
                 dp_waiting_time: 10
               }]
             }

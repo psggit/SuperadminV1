@@ -110,6 +110,14 @@ class DeliveryConstraintsManagement extends React.Component { // eslint-disable-
                 	<label>Delivery Person Waiting Time(Minutes) : </label>
                 	<input type="number" value={ constraints.dp_waiting_time } data-field-name="dp_waiting_time" data-field-type="int" onChange={ () => { return true; } } />
                 </div>
+                <div className={styles.indiv_form}>
+                	<label>Maximum Allowed Volume (ML) : </label>
+                	<input type="number" value={ constraints.max_allowed_volume} data-field-name="max_allowed_volume" data-field-type="int" onChange={ () => { return true; } } />
+                </div>
+                <div className={styles.indiv_form}>
+                	<label>Minimum Cart Value(Rs) : </label>
+                	<input type="number" value={ constraints.min_cart_total} data-field-name="min_cart_total" data-field-type="int" onChange={ () => { return true; } } />
+                </div>
                 <button className={styles.common_btn + ' ' + styles.create_btn } onClick={this.updateConstraints.bind(this)}>Update</button>
               </div>
             </div>
