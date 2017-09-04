@@ -316,6 +316,11 @@ const PageContainer = ({location, name, role, children, dispatch}) => { // eslin
                 </li>
                 <li className={styles.sidebar_list}>
                   <label>
+                    <Link to={'/hadmin/position_limits'}>Manage Position Limits</Link>
+                  </label>
+                </li>
+                <li className={styles.sidebar_list}>
+                  <label>
                     <Link to={'/hadmin/configure_delivery_constraints'}>Configure Constraints</Link>
                   </label>
                 </li>

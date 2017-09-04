@@ -292,6 +292,7 @@ const insertBrand = () => {
       brandObj.alcohol_per = currState.alcoholPer;
       brandObj.temperature = currState.temperature;
       brandObj.cal_per = currState.caloriesPer;
+      brandObj.type = currState.type;
       brandObj.cal_total = currState.caloriesTotal;
       brandObj.origin_name = currState.origin;
       brandObj.description = currState.description;
@@ -445,6 +446,7 @@ const updateBrand = () => {
       brandObj.alcohol_per = currState.alcoholPer;
       brandObj.temperature = currState.temperature;
       brandObj.cal_per = currState.caloriesPer;
+      brandObj.type = currState.type;
       brandObj.cal_total = currState.caloriesTotal;
       brandObj.origin_name = currState.origin;
       brandObj.description = currState.description;
