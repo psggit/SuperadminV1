@@ -53,6 +53,7 @@ import PromosOnPack from './components/BrandsOffersAndPromos/PromosOnPack/action
 import whatsNewReducer from './components/WhatsNewArticle/CreateArticle/CreateArticleAction';
 
 import brandListingReducer from './components/BrandListing/BrandListingActions';
+// import featuredListingReducer from './components/FeaturedListing/FeaturedListingActions';
 import adListingReducer from './components/AdListing/AdListingActions';
 // Ads
 import adsListReducer from './components/BrandsOffersAndPromos/AdsListing/AdsListActions';
@@ -96,6 +97,7 @@ const reducer = combineReducers({
   promosOnPackRedeemState: PromosOnPack,
   welcomeDrinksState: welcomeDrinksReducer,
   brandListingState: brandListingReducer,
+//  featuredListingState: featuredListingReducer,
   adListingState: adListingReducer,
   miscellaneousItemState: miscellaneousItemReducer,
   miscellaneousItemMapState: miscellaneousItemMapReducer,

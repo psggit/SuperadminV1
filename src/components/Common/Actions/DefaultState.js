@@ -41,6 +41,12 @@ const defaultbrandListingData = {
   allGenre: []
 };
 
+const defaultfeaturedListingData = {
+  allState: [],
+  allList: [],
+  updateIndex: []
+};
+
 const defaultadListingData = {
   adType: '',
   allCity: [],
@@ -462,6 +468,7 @@ export { defaultNotepadState
   , defaultCreateBrandManagerState
   , defaultwelcomeCreateData
   , defaultbrandListingData
+  , defaultfeaturedListingData
   , defaultadListingData
   , defaultmiscItem
   , defaultViewBrandManagerState

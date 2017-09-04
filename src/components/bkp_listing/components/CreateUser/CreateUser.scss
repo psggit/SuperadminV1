@@ -1,0 +1,118 @@
+.container
+{
+	width: 100%;
+	float: left;
+}
+.wd_100
+{
+	width: 100%;
+	float: left;
+}
+.update_user_btn
+{
+	width: 130px;
+    height: 30px;
+    color: rgba(255, 116, 0, 0.8);
+    border: 1px solid #FF7400;
+    border-radius: 4px;
+    background: #FFF;
+    cursor: pointer;
+    font-weight: 400;
+    margin: auto;
+    margin-top: 10px;
+    display: block;
+    text-align: center;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    &:focus
+    {
+    	outline: none;
+    }
+    &:hover
+    {
+    	color: rgba(255, 116, 0 , 1);
+    }
+}
+.edit_account_details_container
+{
+	width: 100%;
+	float: left;
+	padding: 20px 45px;
+}
+.account_details_form
+{
+	width: 350px;
+	background: #FFF;
+	padding: 15px 15px 25px 15px;
+	font-size: 13px;
+	float: left;
+	color: rgba(0,0,0,0.54);
+	.heading
+	{
+		color: rgba(0,0,0,0.54);
+		font-weight: 500;
+		margin-bottom: 20px;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+		font-size: 13px;
+	}
+	.indiv_form
+	{
+		margin-bottom: 15px;
+		label
+		{
+			width: 120px;
+			float: left;
+			font-weight: 400;
+			margin-bottom: 0;
+		}
+		input
+		{
+			display: inline-block;
+			width: 170px;
+			border: 1px solid #CCCCCC;
+			border-radius: 4px;
+			background: #FFF;
+			height: 30px;
+			padding: 0 10px;
+			color: #4c4c4c;
+			font-size: 12px;
+			font-weight: 400;
+			letter-spacing: 0.5px;
+			transition: all 0.2s linear;
+			&:focus
+			{
+				outline: none;
+				border: 1px solid #FF7400;
+			}
+		}
+		select
+		{
+			display: inline-block;
+			width: 100px;
+			border: 1px solid #CCCCCC;
+			border-radius: 4px;
+			background: #FFF;
+			height: 30px;
+			color: #4c4c4c; 
+			padding: 0 10px;
+			font-size: 12px;
+			font-weight: 400;
+			letter-spacing: 0.5px;
+			transition: all 0.2s linear;
+			&:focus
+			{
+				outline: none;
+				border: 1px solid #FF7400;
+			}
+			option
+			{
+				color: #4c4c4c; 
+			}	
+		}
+	}
+	.indiv_form:last-child
+	{
+		margin-bottom: 25px;
+	}
+}
