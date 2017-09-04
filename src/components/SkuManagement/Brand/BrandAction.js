@@ -16,6 +16,7 @@ import { routeActions } from 'redux-simple-router';
 // import commonReducer from '../Common/Actions/CommonReducer';
 
 const BRAND_CATEGORY_FETCH = 'BRAND/BRAND_CATEGORY_FETCH';
+const BRAND_TYPE_FETCH = 'BRAND/BRAND_TYPE_FETCH';
 const BRAND_GENRE_FETCH = 'BRAND/BRAND_GENRE_FETCH';
 const BRAND_COMPANY_FETCH = 'BRAND/BRAND_COMPANY_FETCH';
 const BRAND_STATE_FETCH = 'BRAND/BRAND_STATE_FETCH';
@@ -74,6 +75,25 @@ const fetchCategory = () => {
     };
     /* Make a MAKE_REQUEST action */
     dispatch(requestAction(url, options, BRAND_CATEGORY_FETCH, REQUEST_ERROR));
+  };
+};
+
+const fetchType = () => {
+  return (dispatch, getState) => {
+    /* Url */
+    const url = Endpoints.db + '/table/brand_type/select';
+    const queryObj = {};
+    queryObj.columns = [
+      '*'
+    ];
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(queryObj),
+    };
+    /* Make a MAKE_REQUEST action */
+    dispatch(requestAction(url, options, BRAND_TYPE_FETCH, REQUEST_ERROR));
   };
 };
 
@@ -1053,6 +1073,8 @@ const brandReducer = (state = defaultBrandState, action) => {
   switch (action.type) {
     case BRAND_CATEGORY_FETCH:
       return {...state, categoryList: action.data};
+    case BRAND_TYPE_FETCH:
+      return {...state, typeList: action.data};
     case BRAND_GENRE_FETCH:
       return {...state, genreList: action.data};
     case BRAND_ORIGIN_FETCH:
@@ -1195,7 +1217,7 @@ const brandReducer = (state = defaultBrandState, action) => {
         regionObj = {};
         regionCity = {};
       }
-      return { ...state, brandObj: brandObj, region: { ...regionObj }, regionCity: { ...regionCity }, image: brandObj.image, brandId: brandObj.id, brandName: brandObj.brand_name, companyId: brandObj.company_id, categoryId: brandObj.category_id, genreId: brandObj.genre_id, genreShort: brandObj.category.genre_short_name, alcoholPer: brandObj.alcohol_per, temperature: brandObj.temperature, caloriesPer: brandObj.cal_per, caloriesTotal: brandObj.cal_total, origin: brandObj.origin_name, description: brandObj.description };
+      return { ...state, brandObj: brandObj, region: { ...regionObj }, regionCity: { ...regionCity }, image: brandObj.image, brandId: brandObj.id, brandName: brandObj.brand_name, companyId: brandObj.company_id, categoryId: brandObj.category_id, typeId: brandObj.type, genreId: brandObj.genre_id, genreShort: brandObj.category.genre_short_name, alcoholPer: brandObj.alcohol_per, temperature: brandObj.temperature, caloriesPer: brandObj.cal_per, caloriesTotal: brandObj.cal_total, origin: brandObj.origin_name, description: brandObj.description };
     case CANCEL_REGION:
       /* TODO: If existing region is viewed and modified ?
        * clear all the modifications if cancel is pressed
@@ -1227,6 +1249,7 @@ const brandReducer = (state = defaultBrandState, action) => {
 
 export {
   fetchCategory,
+  fetchType,
   fetchGenre,
   fetchCompany,
   insertBrand,

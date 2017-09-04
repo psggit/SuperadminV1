@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchGenre,
   fetchCategory,
+  fetchType,
   fetchCompany,
 /*  insertBrand,*/
   fetchState,
@@ -68,6 +69,7 @@ class BrandEdit extends Component { // eslint-disable-line no-unused-vars
     Promise.all([
       this.props.dispatch(fetchCompany()),
       this.props.dispatch(fetchCategory()),
+      this.props.dispatch(fetchType()),
       this.props.dispatch(fetchGenre()),
       this.props.dispatch(fetchState()),
       this.props.dispatch(fetchOrigin()),
@@ -159,6 +161,7 @@ class BrandEdit extends Component { // eslint-disable-line no-unused-vars
     const { ongoingRequest,
       genreList,
       categoryList,
+      typeList,
       companyList,
       stateCityMapping,
       viewedState,
@@ -175,6 +178,7 @@ class BrandEdit extends Component { // eslint-disable-line no-unused-vars
       companyId,
       genreShort,
       categoryId,
+      typeId,
       alcoholPer,
       temperature,
       caloriesPer,
@@ -208,6 +212,12 @@ class BrandEdit extends Component { // eslint-disable-line no-unused-vars
     const categoryHtml = filteredCategoryList.map((category, index) => {
       return (
           <option key={index} value={category.id}>{category.name}</option>
+        );
+    });
+
+    const typeHtml = typeList.map((type, index) => {
+      return (
+          <option key={index} value={type.id}>{type.name}</option>
         );
     });
 
@@ -280,6 +290,13 @@ class BrandEdit extends Component { // eslint-disable-line no-unused-vars
               <li>
                 <label>Description</label>
                 <textarea data-field-name="description" data-field-type="text" value={ description } />
+              </li>
+              <li>
+                <label>Type</label>
+                <select data-field-name="type" data-field-type="int" value={ typeId } >
+                  <option>Select Type</option>
+                  { typeHtml }
+                </select>
               </li>
               {/*
               <li>
@@ -421,6 +438,7 @@ BrandEdit.propTypes = {
   ongoingRequest: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
   categoryList: PropTypes.array.isRequired,
+  typeList: PropTypes.array.isRequired,
   genreList: PropTypes.array.isRequired,
   companyList: PropTypes.array.isRequired,
   stateCityMapping: PropTypes.object.isRequired,
@@ -440,6 +458,7 @@ BrandEdit.propTypes = {
   companyId: PropTypes.number.isRequired,
   genreShort: PropTypes.string.isRequired,
   categoryId: PropTypes.number.isRequired,
+  typeId: PropTypes.number.isRequired,
   alcoholPer: PropTypes.string.isRequired,
   temperature: PropTypes.string.isRequired,
   caloriesPer: PropTypes.string.isRequired,

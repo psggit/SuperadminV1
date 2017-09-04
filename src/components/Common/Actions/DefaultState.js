@@ -41,6 +41,13 @@ const defaultbrandListingData = {
   allGenre: []
 };
 
+const defaultpositionListingData = {
+  allState: [],
+  allList: [],
+  allTypes: [],
+  updateIndex: []
+};
+
 const defaultfeaturedListingData = {
   allState: [],
   allList: [],
@@ -69,6 +76,7 @@ const defaultBrandState = {
   brandSlugMap: {},
   genreList: [],
   categoryList: [],
+  typeList: [],
   stateList: [],
   stateCityMapping: {},
   viewedState: {},
@@ -468,6 +476,7 @@ export { defaultNotepadState
   , defaultCreateBrandManagerState
   , defaultwelcomeCreateData
   , defaultbrandListingData
+  , defaultpositionListingData
   , defaultfeaturedListingData
   , defaultadListingData
   , defaultmiscItem
