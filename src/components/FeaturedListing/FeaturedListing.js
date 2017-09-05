@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchStates, fetchListing, fetchSKU, fetchProducts, fetchBrands, citiesViewHandler, finalUpdate, IMAGE_CANCEL, UPDATE_LIST, UPDATE_INDEX} from './FeaturedListingActions';
+import { fetchStates, fetchListing, ADD_TO_FEATURED, SEARCH_ITEMS, REMOVE_FROM_FEATURED, fetchSKU, fetchProducts, fetchBrands, citiesViewHandler, finalUpdate, IMAGE_CANCEL, UPDATE_LIST, UPDATE_INDEX} from './FeaturedListingActions';
 import { checkState, unCheckState, RESET } from './FeaturedListingActions';
 /*
   Decorator which adds couple of use ful features like
@@ -13,6 +13,7 @@ import BreadCrumb from '../Common/BreadCrumb';
 /* Components */
 import FeaturedInfo from './FeaturedInfo';
 import Order from './Order';
+import PriorityOrder from './PriorityOrder';
 
 class FeaturedListing extends Component { // eslint-disable-line no-unused-vars
   constructor() {
@@ -71,16 +72,28 @@ class FeaturedListing extends Component { // eslint-disable-line no-unused-vars
       this.props.dispatch(finalUpdate())
     ]);
   }
+  addToFeatured(e) {
+    const value = e.target.getAttribute('data-id');
+    this.props.dispatch({ type: ADD_TO_FEATURED, data: value});
+    this.props.dispatch({type: UPDATE_INDEX, data: e.target.getAttribute('data-brand-id')});
+  }
+  removeFromFeatured(e) {
+    const value = e.target.getAttribute('data-id');
+    this.props.dispatch({ type: REMOVE_FROM_FEATURED, data: value});
+    this.props.dispatch({type: UPDATE_INDEX, data: e.target.getAttribute('data-brand-id')});
+  }
+  searchBrands(e) {
+    const value = e.target.value;
+    this.props.dispatch({ type: SEARCH_ITEMS, data: value});
+  }
   // Update store updatedList with Passed Value (id, display_order)
   orderChange(e) {
     const id = e.target.id;
     const displayOrder = e.target.value;
     const data = {};
     data[id] = displayOrder;
-    console.log('Enter Here');
-    const indexData = parseInt(e.target.dataset.value, 10);
-    this.props.dispatch({type: UPDATE_LIST, data});
-    this.props.dispatch({type: UPDATE_INDEX, indexData});
+    this.props.dispatch({type: UPDATE_LIST, data: {id: parseInt(id, 10), value: parseInt(displayOrder, 10)}});
+    this.props.dispatch({type: UPDATE_INDEX, data: e.target.getAttribute('data-brand-id')});
   }
   displayList() {
     const state = document.getElementById('state_short').value;
@@ -96,7 +109,8 @@ class FeaturedListing extends Component { // eslint-disable-line no-unused-vars
           <FeaturedInfo allState={this.props.allState} displayList={this.displayList.bind(this)} dispatch={this.props.dispatch} />
           <div className="clearfix"></div>
           <div className="clearfix"></div>
-          <Order orderChange={this.orderChange.bind(this)} allList={this.props.allList}/>
+          <Order orderChange={this.orderChange.bind(this)} searchList={this.searchBrands.bind(this)} addToFeatured={this.addToFeatured.bind(this)} allList={this.props.allList}/>
+          <PriorityOrder orderChange={this.orderChange.bind(this)} removeFromFeatured={this.removeFromFeatured.bind(this)} allList={this.props.featuredList}/>
         </div>
         <button className={styles.edit_brand_btn} displayList={this.displayList.bind(this)} onClick={this.onClickSave.bind(this)}>
           Save
@@ -109,11 +123,12 @@ class FeaturedListing extends Component { // eslint-disable-line no-unused-vars
 FeaturedListing.propTypes = {
   allState: PropTypes.array.isRequired,
   allList: PropTypes.array.isRequired,
+  featuredList: PropTypes.array.isRequired,
   dispatch: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => {
-  return {...state.page_data, ...state.brandListingState};
+  return {...state.page_data, ...state.featuredListingState};
 };
 
 const decoratedConnectedComponent = commonDecorator(FeaturedListing);// connect(mapStateToProps)(CommonDecorator);

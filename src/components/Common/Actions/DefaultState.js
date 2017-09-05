@@ -51,6 +51,7 @@ const defaultpositionListingData = {
 const defaultfeaturedListingData = {
   allState: [],
   allList: [],
+  featuredList: [],
   updateIndex: []
 };
 

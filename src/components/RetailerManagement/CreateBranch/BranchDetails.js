@@ -41,6 +41,11 @@ const BranchDetails = ( { currState, organisationData } ) => { // eslint-disable
       <option key={ index } value={ statusSelect.value }> { statusSelect.label } </option>
     );
   });
+  const deliveryStatusHtml = statusSelectObj.map( ( statusSelect, index ) => {
+    return (
+      <option key={ index } value={ statusSelect.value }> { statusSelect.label } </option>
+    );
+  });
 
   // Force re-rendering of children using key: http://stackoverflow.com/a/26242837
   let orgObj = [];
@@ -94,6 +99,13 @@ const BranchDetails = ( { currState, organisationData } ) => { // eslint-disable
           <input type="number" data-field-name="service_charge_percent" data-field-type="float" data-field-value={ currState.service_charge_percent } value={ currState.service_charge_percent } />
         </li>
         <li>
+          <div className={styles.wd_50}>
+            <label>Delivery Status*</label>
+            <select data-field-name="is_deliverable" data-field-type="text" data-field-value={ currState.is_deliverable} value={ currState.is_deliverable}>
+              <option value="">Select Branch Status</option>
+              { deliveryStatusHtml }
+            </select>
+          </div>
           <div className={styles.wd_50}>
             <label>KYC Verified*</label>
             <select data-field-name="kyc_status" data-field-type="text" data-field-value={ currState.kyc_status } value={ currState.kyc_status }>

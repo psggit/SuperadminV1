@@ -11,9 +11,12 @@ import {indexSku} from '../SkuManagement/Brand/BrandAction';
 const STATE_FETCH = 'FEATUREDLISTING/STATES_FETCH';
 const GENRE_FETCH = 'FEATUREDLISTING/GENRES_FETCH';
 const LISTING_FETCH = 'FEATUREDLISTING/LISTING_FETCH';
-const AD_INFO = 'FEATUREDLISTING/UPDATE';
+const FEATURED_INFO = 'FEATUREDLISTING/UPDATE';
+const ADD_TO_FEATURED = 'FEATUREDLISTING/ADDTOFEATURED';
+const REMOVE_FROM_FEATURED = 'FEATUREDLISTING/REMOVEFROMFEATURED';
 const UPDATE_LIST = 'FEATUREDLISTING/UPDATE_LIST';
 const UPDATE_INDEX = 'FEATUREDLISTING/UPDATE_INDEX';
+const SEARCH_ITEMS = 'FEATUREDLISTING/SEARCH_ITEMS';
 const RESET = 'FEATUREDLISTING/RESET';
 
 
@@ -77,17 +80,33 @@ const storeUpdatedList = (id, displayOrder) => {
 const finalUpdate = () => {
   return (dispatch, state) => {
     const lstate = state().featuredListingState;
-    const updateList = {...lstate.updateList};
+    const featuredList = lstate.featuredList;
+    const allList = lstate.allList;
     const bulkInsert = [];
-    Object.keys(updateList).forEach((key) => {
+    featuredList.forEach((indiv) => {
       bulkInsert.push({
         type: 'update',
         args: {
           table: 'brand_listing',
           returning: ['id'],
-          'where': {'id': parseInt(key, 10)},
+          'where': {'id': indiv.id},
           $set: {
-            all_display_order: parseInt(updateList[key], 10),
+            featured_order: indiv.featured_order,
+            is_featured: indiv.is_featured
+          }
+        },
+      });
+    });
+    allList.forEach((indiv) => {
+      bulkInsert.push({
+        type: 'update',
+        args: {
+          table: 'brand_listing',
+          returning: ['id'],
+          'where': {'id': indiv.id},
+          $set: {
+            featured_order: indiv.featured_order,
+            is_featured: indiv.is_featured
           }
         },
       });
@@ -118,6 +137,39 @@ const finalUpdate = () => {
   };
 };
 
+const findProduct = (list, attribute, value) => {
+  const finalProd = list.find((indiv) => {
+    if (indiv[attribute] === value) {
+      return indiv;
+    }
+  });
+  finalProd.is_featured = !(finalProd.is_featured);
+  return finalProd;
+};
+
+const searchProduct = (list, searchTerm, attribute) => {
+  const searchedProduct = list.map((indiv) => {
+    if (indiv[attribute].toLowerCase().search(searchTerm) === -1) {
+      indiv.is_invisible = true;
+    } else {
+      indiv.is_invisible = false;
+    }
+    return indiv;
+  });
+  return searchedProduct;
+};
+
+
+const updateProduct = (list, attribute, id, value) => {
+  const finalProd = list.map((indiv) => {
+    if (indiv[attribute] === id) {
+      indiv.featured_order = value;
+    }
+    return indiv;
+  });
+  return finalProd;
+};
+
 const featuredListingReducer = (state = defaultfeaturedListingData, action) => {
   switch (action.type) {
     case GENRE_FETCH:
@@ -125,16 +177,32 @@ const featuredListingReducer = (state = defaultfeaturedListingData, action) => {
     case STATE_FETCH:
       return {...state, allState: action.data};
     case LISTING_FETCH:
-      return {...state, allList: action.data };
-    case UPDATE_LIST:
-      return {...state, updateList: {...state.updateList, ...action.data}};
-    case UPDATE_INDEX:
-      state.updateIndex.push(action.indexData);
-      state.updateIndex = state.updateIndex.filter((item, pos) => {
-        return state.updateIndex.indexOf(item) === pos;
+      const featuredList = action.data.filter((indiv) => {
+        if (indiv.is_featured === true) {
+          return indiv;
+        }
       });
-      return {...state};
-    case AD_INFO:
+      const allList = action.data.filter((indiv) => {
+        if (indiv.is_featured === false) {
+          return indiv;
+        }
+      });
+      return {...state, featuredList: featuredList, allList: allList };
+    case ADD_TO_FEATURED:
+      const addedItem = findProduct(state.allList, 'id', parseInt(action.data, 10));
+      return {...state, featuredList: [...state.featuredList, addedItem]};
+    case SEARCH_ITEMS:
+      const searchedItem = searchProduct(state.allList, action.data, 'brand_name');
+      return {...state, featuredList: [...state.featuredList, searchedItem]};
+    case REMOVE_FROM_FEATURED:
+      const removedItem = findProduct(state.featuredList, 'id', parseInt(action.data, 10));
+      return {...state, allList: [...state.allList, removedItem]};
+    case UPDATE_LIST:
+      const list = updateProduct(state.featuredList, 'id', action.data.id, action.data.value );
+      return {...state, featuredList: [...list]};
+    case UPDATE_INDEX:
+      return {...state, updateIndex: [...state.updateIndex, action.value]};
+    case FEATURED_INFO:
       const camInfo = {};
       camInfo[action.data.key] = action.data.value;
       return { ...state, campaignDetails: { ...state.campaignDetails, ...camInfo}};
@@ -154,8 +222,11 @@ export {
   storeUpdatedList,
   UPDATE_LIST,
   UPDATE_INDEX,
+  ADD_TO_FEATURED,
+  REMOVE_FROM_FEATURED,
+  SEARCH_ITEMS,
   RESET,
-  AD_INFO
+  FEATURED_INFO
 //  finalSave,
 };
 
