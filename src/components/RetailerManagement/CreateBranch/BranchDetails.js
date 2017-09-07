@@ -96,9 +96,11 @@ const BranchDetails = ( { currState, organisationData } ) => { // eslint-disable
         </li>
         <li>
           <label>Service Charge Percent*</label>
-          <input type="number" data-field-name="service_charge_percent" data-field-type="float" data-field-value={ currState.service_charge_percent } value={ currState.service_charge_percent } />
+          <input type="number" max="100" data-field-name="service_charge_percent" data-field-type="float" data-field-value={ currState.service_charge_percent } value={ currState.service_charge_percent } />
         </li>
         <li>
+          <label>Delivery Discount Percent*</label>
+          <input type="number" max="100" data-field-name="delivery_discount_percent" data-field-type="float" data-field-value={ currState.delivery_discount_percent} value={ currState.delivery_discount_percent} />
           <div className={styles.wd_50}>
             <label>Delivery Status*</label>
             <select data-field-name="is_deliverable" data-field-type="text" data-field-value={ currState.is_deliverable} value={ currState.is_deliverable}>
@@ -106,6 +108,8 @@ const BranchDetails = ( { currState, organisationData } ) => { // eslint-disable
               { deliveryStatusHtml }
             </select>
           </div>
+        </li>
+        <li>
           <div className={styles.wd_50}>
             <label>KYC Verified*</label>
             <select data-field-name="kyc_status" data-field-type="text" data-field-value={ currState.kyc_status } value={ currState.kyc_status }>

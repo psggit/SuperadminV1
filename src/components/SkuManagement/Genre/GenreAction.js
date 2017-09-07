@@ -28,6 +28,24 @@ const CANCEL_IMAGE = '@genre/CANCEL_IMAGE';
 /* Gets a state object with keys as genre_name, created_at and updated_at and inserts it into genre table
 * Post insert loads the GenreManagement .js
 * */
+
+const indexGenre = (genreShort) => {
+  return ( dispatch, getState ) => {
+    const url = Endpoints.backendUrl + '/retailer/profile/updateGenre';
+    const insertObj = {'genreShort': genreShort};
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(insertObj)
+    };
+    return dispatch( requestAction( url, options ) );
+  };
+};
+
 const insertGenre = () => {
   return ( dispatch, getState ) => {
     const currState = getState().genre_data;
@@ -48,7 +66,7 @@ const insertGenre = () => {
       'image': currState.image,
       'short_name': currState.genreName.replace(' ', '-').toLowerCase()
     }];
-    payload.returning = ['id'];
+    payload.returning = ['id', 'short_name'];
 
     const url = Endpoints.db + '/table/' + 'genre' + '/insert';
     const options = {
@@ -59,10 +77,12 @@ const insertGenre = () => {
     };
 
     return dispatch(requestAction(url, options))
-      .then(( resp ) => {
-        if ( resp.returning.length > 0 ) {
-          return dispatch(routeActions.push('/hadmin/genre_management'));
-        }
+      .then( (resp) => {
+        alert('Indexing');
+        return dispatch(indexGenre(resp.returning[0].short_name));
+      })
+      .then(( ) => {
+        return dispatch(routeActions.push('/hadmin/genre_management'));
       })
       .catch(() => {
         alert('Sorry error occured while inserting');
@@ -115,7 +135,7 @@ const updateGenre = () => {
     payload.where = {
       'id': currState.genreId
     };
-    payload.returning = ['id'];
+    payload.returning = ['id', 'short_name'];
 
     const url = Endpoints.db + '/table/' + 'genre' + '/update';
     const options = {
@@ -125,10 +145,11 @@ const updateGenre = () => {
       body: JSON.stringify(payload),
     };
     return dispatch(requestAction(url, options))
-      .then( ( resp ) => {
-        if ( resp.returning.length > 0 ) {
-          return dispatch(routeActions.push('/hadmin/genre_management'));
-        }
+      .then( (resp) => {
+        return dispatch(indexGenre(resp.returning[0].short_name));
+      })
+      .then( ( ) => {
+        return dispatch(routeActions.push('/hadmin/genre_management'));
       })
       .catch( () => {
         alert('Sorry error occured while updating');

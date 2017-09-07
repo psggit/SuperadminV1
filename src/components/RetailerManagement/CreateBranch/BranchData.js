@@ -86,6 +86,7 @@ const saveBranch = () => {
       'kyc_status',
       'branch_status',
       'is_deliverable',
+      'delivery_discount_percent',
       'city_id',
       'excise_licence_number',
       'org_name',
@@ -159,6 +160,7 @@ const saveBranch = () => {
 
     /* Adding address for retailer */
     branchDataObj.org_address = branchState.branchContact.branch_address;
+    branchDataObj.is_deliverable = (branchDataObj.is_deliverable === 'true' ? true : false);
     console.log('Check this for once');
     branchDataObj.org_phone = branchState.branchContact.mobile_number;
     /* End of it */
@@ -375,6 +377,24 @@ const saveInventoryEdit = ( ) => {
   };
 };
 
+const indexRetailer = (id) => {
+  return ( dispatch, getState ) => {
+    const url = Endpoints.backendUrl + '/retailer/profile/updateRetailer';
+    const insertObj = {'retailer_id': id};
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(insertObj)
+    };
+    return dispatch( requestAction( url, options ) );
+  };
+};
+
+
 const saveBranchDetail = () => {
   return ( dispatch ) => {
     return dispatch(saveBranch())
@@ -389,11 +409,16 @@ const saveBranchDetail = () => {
       }
       return Promise.reject( { stage: 0 });
     })
+    .then( (resp) => {
+      alert('Indexing');
+      return dispatch(indexRetailer(resp[0].returning[0].id));
+    })
     .then( () => {
       alert('Branch Uploaded Successfully');
       return dispatch( routeActions.push('/hadmin/retailer_management/view_branches'));
     })
     .catch( ( resp ) => {
+      console.log(resp);
       if ( !resp.stage ) {
         alert('Error While Uploading');
         return Promise.reject();
@@ -607,6 +632,7 @@ const updateBranch = () => {
     const branchUrl = Endpoints.db + '/table/retailer/update';
 
     const branchState = getState().branch_data.branchData;
+    console.log('Check thhis');
     const branchDataObj = {
       ...branchState.branchDetail,
       gps_cordinates: branchState.branchContact.gps_cordinates,
@@ -620,6 +646,7 @@ const updateBranch = () => {
       'kyc_status',
       'branch_status',
       'is_deliverable',
+      'delivery_discount_percent',
       'city_id',
       'excise_licence_number',
       'org_name',
@@ -642,6 +669,7 @@ const updateBranch = () => {
     branchDataObj.org_address = branchState.branchContact.branch_address;
     console.log('Check this for once');
     branchDataObj.org_phone = branchState.branchContact.mobile_number;
+    branchDataObj.is_deliverable = (branchDataObj.is_deliverable === 'true' ? true : false);
     branchDataObj.updated_at = new Date().toISOString();
     /* End of it */
 
@@ -666,7 +694,6 @@ const updateBranch = () => {
     };
 
     return dispatch( requestAction( branchUrl, options ) );
-    // return Promise.resolve();
   };
 };
 
@@ -775,13 +802,18 @@ const updateBranchDetail = () => {
       }
       return Promise.reject( { stage: 0 });
     })
+    .then( (resp) => {
+      alert('Indexing');
+      return dispatch(indexRetailer(resp[0].returning[0].id));
+    })
     .then( () => {
       alert('Branch Uploaded Successfully');
       return dispatch( routeActions.push('/hadmin/retailer_management/view_branches'));
     })
     .catch( ( resp ) => {
       if ( !resp.stage ) {
-        alert('Error While Uploading');
+        alert('Error While Uploading!!');
+          // return dispatch( routeActions.push('/hadmin/retailer_management/edit_branch/' + id ));
         return Promise.reject();
       }
       alert('Branch inserted with errors, please edit it to correct the information');
@@ -848,6 +880,7 @@ const branchDataReducer = ( state = { organisationData: [], branchDetail: {}, br
         'kyc_status',
         'branch_status',
         'is_deliverable',
+        'delivery_discount_percent',
         'excise_licence_number',
         'org_name',
         'service_charge_percent',
@@ -877,6 +910,8 @@ const branchDataReducer = ( state = { organisationData: [], branchDetail: {}, br
           branchContact[detail] = action.data[0].addresses[0][detail];
         });
       }
+      branchDetail.is_deliverable = (action.data[0].is_deliverable ? 'true' : 'false');
+      action.data[0].is_deliverable = (action.data[0].is_deliverable ? 'true' : 'false');
 
       return { ...state, branchData: action.data[0], branchDetail: { ...branchDetail }, branchContact: { ...branchContact }, branchAccountRegistered: { ...branchAccountRegistered }, isBrEdit: true };
     default:

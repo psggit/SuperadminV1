@@ -59,10 +59,10 @@ class ConfigureWorkTimes extends React.Component { // eslint-disable-line no-unu
                   {dat.weekday.day}
                 </td>
                 <td>
-                	<input type="text" value={ dat.start_time } data-field-id={ dat.id } data-field-index={index} data-field-name="start_time" data-field-type="text" onChange={ this.inputOnChange.bind(this) } />
+                	<input type="time" value={ dat.start_time.split('+')[0] } data-field-id={ dat.id } data-field-index={index} data-field-name="start_time" data-field-type="text" onChange={ this.inputOnChange.bind(this) } />
                 </td>
                 <td>
-                	<input type="text" value={ dat.end_time } data-field-id={ dat.id } data-field-index={index} data-field-name="end_time" data-field-type="end_time" onChange={ this.inputOnChange.bind(this) } />
+                	<input type="time" value={ dat.end_time.split('+')[0] } data-field-id={ dat.id } data-field-index={index} data-field-name="end_time" data-field-type="end_time" onChange={ this.inputOnChange.bind(this) } />
                 </td>
                 <td>
                   {(dat.is_active ? 'Active' : 'InActive')}

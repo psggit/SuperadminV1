@@ -241,6 +241,22 @@ const viewState = (stateId) => {
 };
 
 /* Indexing Brand */
+const indexBrand = (brandId) => {
+  return ( dispatch, getState ) => {
+    const url = Endpoints.backendUrl + '/retailer/profile/updateBrand';
+    const insertObj = {'brand_id': brandId};
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(insertObj)
+    };
+    return dispatch( requestAction( url, options ) );
+  };
+};
 
 const indexSku = ( brandIds ) => {
   return (dispatch, getState) => {
@@ -399,6 +415,7 @@ const insertBrand = () => {
           alert('brand Created Successfully');
           return Promise.all([
             dispatch(routeActions.push('/hadmin/brand_management')),
+            dispatch(indexBrand(brandId)),
             dispatch(indexSku([brandId]))
           ]);
           // }
@@ -501,6 +518,7 @@ const updateBrand = () => {
               return Promise.all([
                 Promise.reject( { 'intended': true } ),
                 dispatch(indexSku([brandId])),
+                dispatch(indexBrand(brandId)),
                 dispatch(fetchBrand(brandId))
               ]);
             }
@@ -553,6 +571,7 @@ const updateBrand = () => {
             alert('brand Created Successfully');
             return Promise.all([
               dispatch(indexSku([brandId])),
+              dispatch(indexBrand(brandId)),
               dispatch(routeActions.push('/hadmin/brand_management'))
             ]);
           }

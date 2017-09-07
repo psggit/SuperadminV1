@@ -8,6 +8,7 @@ let reportUrl;
 let blogicUrl;
 let backendUrl;
 let downloadRepUrl;
+let gremlinUrl;
 let scheme;
 let baseHost = 'TEST';
 
@@ -20,6 +21,7 @@ if (window.location.href.split(':')[1] === '//localhost') {
   fileUrl = 'https://api2.' + appName + '.hasura-app.io';
   backendUrl = 'https://api1.' + appName + '.hasura-app.io';
   blogicUrl = 'https://api1.' + appName + '.hasura-app.io';
+  gremlinUrl = 'https://gremlin.' + appName + '.hasura-app.io';
   downloadRepUrl = 'https://downloadrep.' + appName + '.hasura-app.io';
 } else {
   console.log(window.location.href);
@@ -31,6 +33,7 @@ if (window.location.href.split(':')[1] === '//localhost') {
   fileUrl = scheme + '://api2' + baseHost;
   backendUrl = scheme + '://api1' + baseHost;
   blogicUrl = scheme + '://api1' + baseHost;
+  gremlinUrl = scheme + '://gremlin.' + baseHost;
   downloadRepUrl = scheme + '://downloadrep' + baseHost;
 }
 
@@ -48,6 +51,7 @@ const Endpoints = {
   integrations_dataUrl: 'http://localhost:5000',
   baseUrl: dataUrl,
   backendUrl: backendUrl,
+  gremlinUrl: gremlinUrl,
   reportUrl: reportUrl,
   authUrl: authUrl,
   blogicUrl: blogicUrl,

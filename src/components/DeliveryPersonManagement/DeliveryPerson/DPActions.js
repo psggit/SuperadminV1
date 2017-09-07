@@ -38,6 +38,7 @@ const RESET = '@dp_mgt/RESET';
 const DP_INSERTED = '@dp_mgt/DP_INSERTED';
 const COUNT_FETCHED = '@dp_mgt/COUNT';
 const FETCH_ORGANISATION = '@dp_mgt/FETCH_ORGANISATION';
+const FETCH_DP = '@dp_mgt/FETCH_DP';
 const FETCH_RETAILERS = '@dp_mgt/FETCH_RETAILERS';
 const FETCH_ALL_RETAILERS = '@dp_mgt/FETCH_ALL_RETAILERS';
 const LICENSE_COPY_UPLOADED = '@dp_mgt/LICENSE_UPLOADED';
@@ -67,7 +68,7 @@ const getDPData = ( page, filterObj, isSearched ) => {
       payload.where = { ...payload.where, ...filterObj };
     }
 
-    const url = Endpoints.db + '/table/' + 'complete_dp_details' + '/select';
+    const url = Endpoints.db + '/table/' + 'dp_details' + '/select';
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
@@ -87,7 +88,7 @@ const getDPCount = ( filterObj, isSearched ) => {
       payload.where = { ...payload.where, ...filterObj };
     }
 
-    const url = Endpoints.db + '/table/' + 'complete_dp_details' + '/count';
+    const url = Endpoints.db + '/table/' + 'dp_details' + '/count';
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
@@ -184,6 +185,25 @@ const fetchRetailer = (orgId) => {
   };
 };
 
+const fetchDP = (Id) => {
+  return (dispatch, getState) => {
+    const payload = {
+      'columns': ['*'],
+      'where': {'id': Id}
+    };
+
+    const url = Endpoints.db + '/table/' + 'dp_details_complete_info' + '/select';
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(payload),
+    };
+    return dispatch(requestAction(url, options, FETCH_DP, REQUEST_ERROR));
+  };
+};
+
+
 const fetchAllRetailer = () => {
   return (dispatch, getState) => {
     const payload = {
@@ -203,7 +223,31 @@ const fetchAllRetailer = () => {
 
 export const createDeliveryPerson = () => {
   return (dispatch, getState) => {
-    const url = 'https://gremlin.hearsay81.hasura-app.io/deliveryAgent/createDeliveryAgent';
+    const url = Endpoints.gremlinUrl + '/deliveryAgent/createDeliveryAgent';
+    const payload = getState().deliveryPersonState.attrs;
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(payload),
+    };
+    return Promise.all([
+      dispatch(requestAction(url, options, DP_INSERTED, REQUEST_ERROR)).then((response) => {
+        console.log(response);
+        return dispatch(routeActions.push('/hadmin/convenience_fee/list'));
+        // Reroute
+      }).catch((err) => {
+        console.log(err);
+        alert('Please Try Again.');
+      }),
+      dispatch({type: REQUEST_COMPLETED})
+    ]);
+  };
+};
+
+export const updateDeliveryPerson = () => {
+  return (dispatch, getState) => {
+    const url = Endpoints.gremlinUrl + '/deliveryAgent/updateDeliveryAgent';
     const payload = getState().deliveryPersonState.attrs;
     const options = {
       method: 'POST',
@@ -235,7 +279,8 @@ const defaultState = {
   retailers: [],
   allRetailers: [],
   attrs: {},
-  organisations: []
+  organisations: [],
+  lastSuccess: []
 };
 
 const deliveryPersonReducer = ( state = defaultState, action) => {
@@ -246,12 +291,18 @@ const deliveryPersonReducer = ( state = defaultState, action) => {
       return { ...state, retailers: action.data};
     case FETCH_ALL_RETAILERS:
       return { ...state, allRetailers: action.data};
+    case REQUEST_SUCCESS:
+      return { ...state, lastSuccess: action.data};
+    case COUNT_FETCHED:
+      return { ...state, count: action.data.count};
     case STATE_INPUT_CHANGED:
       const obj = {};
       obj[action.data.key] = action.data.value;
       return { ...state, attrs: {...state.attrs, ...obj}};
     case FETCH_ORGANISATION:
       return { ...state, organisations: action.data};
+    case FETCH_DP:
+      return { ...state, attrs: action.data[0], image: Endpoints.file_get + action.data[0].driving_license_image, proofimage: Endpoints.file_get + action.data[0].proof_image};
     case LICENSE_COPY_UPLOADED:
       const temp = {};
       temp.driving_license_image = action.data[0];
@@ -266,8 +317,8 @@ const deliveryPersonReducer = ( state = defaultState, action) => {
       return { ...state, proofimage: Endpoints.file_get + action.data[0], attrs: {...state.attrs, ...tmp}};
     case PROOF_COPY_CANCELLED:
       const rmObj = {};
-      rmObj.driving_license_image = '';
-      return { ...state, image: '', attrs: {...state.attrs, ...rmObj}};
+      rmObj.proof_image = '';
+      return { ...state, proofimage: '', attrs: {...state.attrs, ...rmObj}};
     case CLEAR_CITY:
       return { ...state, cities: {}};
     case RESET:
@@ -294,6 +345,7 @@ export {
   fetchCities,
   fetchOrganisations,
   fetchRetailer,
+  fetchDP,
   fetchAllRetailer,
   PROOF_COPY_UPLOADED,
   PROOF_COPY_CANCELLED,

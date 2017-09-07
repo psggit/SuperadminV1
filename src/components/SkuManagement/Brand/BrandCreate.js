@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { fetchGenre,
   fetchCategory,
   fetchCompany,
+  fetchType,
   insertBrand,
   fetchState,
   viewState,
@@ -58,6 +59,7 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
       this.props.dispatch(fetchCompany()),
       this.props.dispatch(fetchCategory()),
       this.props.dispatch(fetchGenre()),
+      this.props.dispatch(fetchType()),
       this.props.dispatch(fetchState()),
       this.props.dispatch(fetchOrigin())
     ]);
@@ -122,6 +124,7 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
     const { ongoingRequest,
       genreList,
       categoryList,
+      typeList,
       companyList,
       originList,
       stateCityMapping,
@@ -132,6 +135,7 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
       region,
       isEdit,
       brandName,
+      typeId,
       companyId,
       genreShort,
       categoryId,
@@ -167,6 +171,12 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
     const categoryHtml = filteredCategoryList.map((category, index) => {
       return (
           <option key={index} value={category.id}>{category.name}</option>
+        );
+    });
+
+    const typeHtml = typeList.map((type, index) => {
+      return (
+          <option key={index} value={type.id}>{type.name}</option>
         );
     });
 
@@ -242,6 +252,13 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
               <label>Description</label>
               <textarea data-field-name="description" data-field-type="text" value={ description } />
             </li>
+              <li>
+                <label>Type</label>
+                <select data-field-name="type" data-field-type="int" value={ typeId } >
+                  <option>Select Type</option>
+                  { typeHtml }
+                </select>
+              </li>
             {/*
             <li>
               <label>Brand Manager</label>
@@ -378,6 +395,7 @@ BrandCreate.propTypes = {
   ongoingRequest: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
   categoryList: PropTypes.array.isRequired,
+  typeList: PropTypes.array.isRequired,
   genreList: PropTypes.array.isRequired,
   companyList: PropTypes.array.isRequired,
   originList: PropTypes.array.isRequired,
@@ -398,6 +416,7 @@ BrandCreate.propTypes = {
   temperature: PropTypes.string.isRequired,
   caloriesPer: PropTypes.string.isRequired,
   caloriesTotal: PropTypes.string.isRequired,
+  typeId: PropTypes.number.isRequired,
   origin: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired

@@ -11,10 +11,12 @@ import {
   CITY_INPUT_CHANGED,
   STATE_INPUT_CHANGED,
   fetchCities,
+  fetchDP,
   fetchOrganisations,
   fetchRetailer,
   fetchAllRetailer,
   createDeliveryPerson,
+  updateDeliveryPerson,
   RESET,
   MAKE_REQUEST,
   REQUEST_COMPLETED,
@@ -38,6 +40,9 @@ class ManageDP extends React.Component { // eslint-disable-line no-unused-vars
       this.props.dispatch(fetchOrganisations()),
     ])
     .then( () => {
+      if (this.props.params.Id) {
+        this.props.dispatch(fetchDP(parseInt(this.props.params.Id, 10)));
+      }
       this.props.dispatch({ type: REQUEST_COMPLETED });
     });
   }
@@ -48,6 +53,15 @@ class ManageDP extends React.Component { // eslint-disable-line no-unused-vars
     Promise.all([
       this.props.dispatch({ type: MAKE_REQUEST }),
       this.props.dispatch(createDeliveryPerson())
+    ])
+    .then( () => {
+      this.props.dispatch( { type: REQUEST_COMPLETED });
+    });
+  }
+  onClickUpdate() {
+    Promise.all([
+      this.props.dispatch({ type: MAKE_REQUEST }),
+      this.props.dispatch(updateDeliveryPerson())
     ])
     .then( () => {
       this.props.dispatch( { type: REQUEST_COMPLETED });
@@ -86,6 +100,7 @@ class ManageDP extends React.Component { // eslint-disable-line no-unused-vars
       , image
       , proofimage
       , cities
+      , attrs
       , allRetailers
       , retailers
       , organisations
@@ -122,34 +137,34 @@ class ManageDP extends React.Component { // eslint-disable-line no-unused-vars
             </p>
               <div className={styles.indiv_form}>
               	<label>Employee Id:</label>
-              	<input type="number" data-field-name="employee_id" onChange={ this.storeStateInput.bind(this) } />
+              	<input type="number" value={attrs.employee_id} data-field-name="employee_id" onChange={ this.storeStateInput.bind(this) } />
               </div>
               <div className={styles.indiv_form}>
               	<label>Employee Name</label>
-              	<input type="text" data-field-name="name" onChange={ this.storeStateInput.bind(this) } />
+              	<input type="text" value={attrs.name} data-field-name="name" onChange={ this.storeStateInput.bind(this) } />
               </div>
               <div className={styles.indiv_form}>
               	<label>Contact Number</label>
-              	<input type="integer" data-field-name="contact_number" onChange={ this.storeStateInput.bind(this) } />
+              	<input type="integer" value={attrs.contact_number} data-field-name="contact_number" onChange={ this.storeStateInput.bind(this) } />
               </div>
               <div className={styles.indiv_form}>
               	<label>Date Of Birth</label>
-              	<input type="date" data-field-name="dob" onChange={ this.storeStateInput.bind(this) } />
+              	<input type="date" value={attrs.dob} data-field-name="dob" onChange={ this.storeStateInput.bind(this) } />
               </div>
               <div className={styles.indiv_form}>
               	<label>Nationality</label>
-              	<input type="text" data-field-name="nationality" onChange={ this.storeStateInput.bind(this) } />
+              	<input type="text" value={attrs.nationality} data-field-name="nationality" onChange={ this.storeStateInput.bind(this) } />
               </div>
               <div className={styles.indiv_form}>
               	<label>City</label>
-                <select data-field-name="city_id" data-field-type="int" onChange={ this.storeStateInput.bind(this) }>
+                <select value={(attrs.city_id ? attrs.city_id.toString() : '')} data-field-name="city_id" data-field-type="int" onChange={ this.storeStateInput.bind(this) }>
                   <option>Select</option>
                     {citiesDropdownHtml}
                 </select>
               </div>
               <div className={styles.indiv_form}>
               	<label>All Retailer</label>
-                <select data-field-name="retailer_id" data-field-type="int" onChange={ this.storeStateInput.bind(this) }>
+                <select value={(attrs.retailer ? attrs.retailer.toString() : '')} data-field-name="retailer_id" data-field-type="int" onChange={ this.storeStateInput.bind(this) }>
                   <option>Select</option>
                     {allRetailersDropdownHtml}
                 </select>
@@ -163,34 +178,30 @@ class ManageDP extends React.Component { // eslint-disable-line no-unused-vars
               </div>
               <div className={styles.indiv_form}>
               	<label>Branch</label>
-                <select data-field-name="branch_id" data-field-type="int" onChange={ this.storeStateInput.bind(this) }>
+                <select value={(attrs.branch ? attrs.branch.toString() : '')} data-field-name="branch_id" data-field-type="int" onChange={ this.storeStateInput.bind(this) }>
                   <option>Select</option>
                     {retailersDropdownHtml}
                 </select>
               </div>
               <div className={styles.indiv_form}>
               	<label>Device Number</label>
-              	<input type="Text" data-field-name="device_num" onChange={ this.storeStateInput.bind(this) } />
-              </div>
-              <div className={styles.indiv_form}>
-              	<label>ReEnter Device Number</label>
-              	<input type="Text" onChange={ this.storeStateInput.bind(this) } />
+              	<input value={attrs.device_num} type="Text" data-field-name="device_num" onChange={ this.storeStateInput.bind(this) } />
               </div>
               <div className={styles.indiv_form}>
               	<label>Mobile Number</label>
-              	<input type="integer" data-field-name="mobile_number" onChange={ this.storeStateInput.bind(this) } />
+              	<input value={attrs.contact_number} type="integer" data-field-name="mobile_number" onChange={ this.storeStateInput.bind(this) } />
               </div>
               <div className={styles.indiv_form}>
               	<label>Device Operator</label>
-              	<input type="Text" data-field-name="operator" onChange={ this.storeStateInput.bind(this) } />
+              	<input value={attrs.operator} type="Text" data-field-name="operator" onChange={ this.storeStateInput.bind(this) } />
               </div>
               <div className={styles.indiv_form}>
               	<label>Email ID</label>
-              	<input type="Text" data-field-name="email_id" onChange={ this.storeStateInput.bind(this) } />
+              	<input value={attrs.email_id} type="Text" data-field-name="email_id" onChange={ this.storeStateInput.bind(this) } />
               </div>
               <div className={styles.indiv_form}>
               	<label>Is FreeLancer</label>
-                <select data-field-name="is_freelancer" data-field-type="boolean" onChange={ this.storeStateInput.bind(this) }>
+                <select value={(attrs.is_freelancer ? '1' : '0')} data-field-name="is_freelancer" data-field-type="boolean" onChange={ this.storeStateInput.bind(this) }>
                   <option>Select</option>
                   <option value="1"> True </option>
                   <option value="0"> False </option>
@@ -198,7 +209,7 @@ class ManageDP extends React.Component { // eslint-disable-line no-unused-vars
               </div>
               <div className={styles.indiv_form}>
               	<label>Is Active</label>
-                <select data-field-name="is_active" data-field-type="boolean" onChange={ this.storeStateInput.bind(this) }>
+                <select value={(attrs.is_active ? '1' : '0')} data-field-name="is_active" data-field-type="boolean" onChange={ this.storeStateInput.bind(this) }>
                   <option>Select</option>
                   <option value="1"> True </option>
                   <option value="0"> False </option>
@@ -209,11 +220,11 @@ class ManageDP extends React.Component { // eslint-disable-line no-unused-vars
             </p>
               <div className={styles.indiv_form}>
                 <label>Proof Type</label>
-                <input type="Text" data-field-name="proof_type" onChange={ this.storeStateInput.bind(this) } />
+                <input value={attrs.proof_type} type="Text" data-field-name="proof_type" onChange={ this.storeStateInput.bind(this) } />
               </div>
               <div className={styles.indiv_form}>
                 <label>Proof Text</label>
-                <input type="Text" data-field-name="proof_text" onChange={ this.storeStateInput.bind(this) } />
+                <input value={attrs.proof_text} type="Text" data-field-name="proof_text" onChange={ this.storeStateInput.bind(this) } />
               </div>
               <div className={styles.indiv_form}>
               	<label>Proof Image</label>
@@ -230,15 +241,15 @@ class ManageDP extends React.Component { // eslint-disable-line no-unused-vars
             </p>
               <div className={styles.indiv_form}>
               	<label>Vehicle Number Registration</label>
-              	<input type="Text" data-field-name="vehicle_number_registration" onChange={ this.storeStateInput.bind(this) } />
+              	<input value={attrs.vehicle_number_registration} type="Text" data-field-name="vehicle_number_registration" onChange={ this.storeStateInput.bind(this) } />
               </div>
               <div className={styles.indiv_form}>
               	<label>Vehicle Type</label>
-              	<input type="Text" data-field-name="vehicle_type" onChange={ this.storeStateInput.bind(this) } />
+              	<input value={attrs.vehicle_type} type="Text" data-field-name="vehicle_type" onChange={ this.storeStateInput.bind(this) } />
               </div>
               <div className={styles.indiv_form}>
               	<label>Driving License Number</label>
-              	<input type="Text" data-field-name="driving_license_number" onChange={ this.storeStateInput.bind(this) } />
+              	<input value={attrs.driving_license_number} type="Text" data-field-name="driving_license_number" onChange={ this.storeStateInput.bind(this) } />
               </div>
               <div className={styles.indiv_form}>
               	<label>Driver License Image</label>
@@ -247,7 +258,8 @@ class ManageDP extends React.Component { // eslint-disable-line no-unused-vars
               <div className={ styles.image_container }>
                   <ImageUpload imageUrl={image ? image : ''} elementId="license_image" requestSuccess={LICENSE_COPY_UPLOADED} requestError={ LICENSE_COPY_ERROR } cancelImage={ LICENSE_COPY_CANCELLED }/>
               </div>
-             <button className={styles.common_btn + ' ' + styles.create_btn } onClick={this.onClickSave.bind(this)}>Create</button>
+             <button className={(this.props.params.Id ? 'hide ' : 'show ' ) + styles.common_btn + ' ' + styles.create_btn } onClick={this.onClickSave.bind(this)}>Create</button>
+             <button className={(this.props.params.Id ? 'show ' : 'hide ' ) + styles.common_btn + ' ' + styles.create_btn } onClick={this.onClickUpdate.bind(this)}>Update</button>
             </div>
           </div>
           <div className="clearfix"></div>
@@ -275,6 +287,7 @@ ManageDP.propTypes = {
   cities: PropTypes.object.isRequired,
   retailers: PropTypes.object.isRequired,
   allRetailers: PropTypes.object.isRequired,
+  attrs: PropTypes.object.isRequired,
   organisations: PropTypes.object.isRequired,
   cityInput: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,

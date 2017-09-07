@@ -269,6 +269,7 @@ const main = (
         <Route path="configure_delivery_constraints" component={DeliveryConstraints} />
         <Route path="delivery_persons_list" component={DeliveryPersonList} />
         <Route path="delivery_person/create" component={DeliveryPersonCreate} />
+        <Route path="delivery_person/update/:Id" component={DeliveryPersonCreate} />
         <Route path="work_times/edit/:Id" component={ConfigureWorkTimes} />
         <Route path="holidays/edit/:Id" component={AddHolidays} />
         <Route path="delivery_constraints/edit/:Id" component={DeliveryConstraintsManagement} />

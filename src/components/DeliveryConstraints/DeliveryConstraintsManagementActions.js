@@ -125,7 +125,7 @@ const updateOperationTimes = () => {
     return dispatch(requestAction(url, options))
       .then( ( resp ) => {
         alert('Updated');
-        if ( resp.returning.length > 0) {
+        if ( resp.length > 0) {
           return dispatch(routeActions.push('/hadmin/configure_delivery_constraints'));
         }
         return dispatch({type: REQUEST_COMPLETED});
@@ -158,7 +158,7 @@ const updateConstraints = () => {
     return dispatch(requestAction(url, options))
       .then( ( resp ) => {
         alert('Updated');
-        if ( resp.returning.length > 0) {
+        if ( resp.length > 0) {
           return dispatch(routeActions.push('/hadmin/configure_delivery_constraints'));
         }
         return dispatch({type: REQUEST_COMPLETED});
@@ -185,7 +185,7 @@ const deliveryConstraintsManagementReducer = (state = defaultState, action) => {
       return { ...state, constraints: {...state.constraints, ...cUnit}};
     case UPDATE_TIME:
       const temp = Object.assign(state.workTime);
-      temp[parseInt(action.data.index, 10)][action.data.type] = action.data.value;
+      temp[parseInt(action.data.index, 10)][action.data.type] = action.data.value + ':00+05:30';
       return { ...state, workTime: [...temp] };
     case CONSTRAINTS_FETCHED:
       return { ...state, constraints: action.data[0] };

@@ -2,15 +2,20 @@ import React from 'react';
 import { Link } from 'react-router';
 
 const SearchWrapper = ( {data} ) => {
-  const styles = require('./DPManagement.scss');
+  const styles = require('./SearchWrapper.scss');
   let tableBody;
   let objHtml;
 
   tableBody = data.map((dat, index) => {
+    let createdAt = dat.created_at;
+    let updatedAt = dat.updated_at;
+
+    createdAt = new Date(new Date(createdAt).getTime()).toLocaleString('en-GB');
+    updatedAt = new Date(new Date(updatedAt).getTime()).toLocaleString('en-GB');
     return (
           <tr key={index}>
             <td>
-              <Link to={'/hadmin/delivery_person/update/' + dat.id}>
+              <Link to={'/hadmin/state_management/edit/' + dat.id}>
                 <button className={styles.edit_btn} data-state-id={dat.id}>
                   Edit
                 </button>
@@ -18,20 +23,13 @@ const SearchWrapper = ( {data} ) => {
             </td>
             <td> { dat.id } </td>
             <td>
-                { dat.name}
+                { dat.state_name}
             </td>
             <td>
-                { dat.employee_id }
+                { dat.short_name }
             </td>
-            <td>
-                { dat.contact_number }
-            </td>
-            <td>
-                { dat.email_id }
-            </td>
-            <td>
-                { dat.city_id }
-            </td>
+            <td> { createdAt } </td>
+            <td> { updatedAt } </td>
           </tr>
         );
   });
@@ -40,7 +38,7 @@ const SearchWrapper = ( {data} ) => {
     objHtml = () => {
       return (
         <div className={styles.error_message}>
-          Sorry no Delivery Person
+          Sorry no recharges
         </div>
         );
     }();
@@ -52,11 +50,10 @@ const SearchWrapper = ( {data} ) => {
                 <tr>
                   <th> </th>
                   <th> ID </th>
-                  <th> Employee Name </th>
-                  <th> Employee ID </th>
-                  <th> Contact Number </th>
-                  <th> Email ID </th>
-                  <th> City </th>
+                  <th> State Name </th>
+                  <th> Short Name </th>
+                  <th> Created At </th>
+                  <th> Updated At </th>
                 </tr>
               </thead>
               <tbody>
@@ -70,7 +67,7 @@ const SearchWrapper = ( {data} ) => {
   return (
         <div className={styles.list_of_states_wrapper}>
           <label>
-            List of Delivery Person
+            List of States
           </label>
           <div className={styles.wd_80}>
             {objHtml}
