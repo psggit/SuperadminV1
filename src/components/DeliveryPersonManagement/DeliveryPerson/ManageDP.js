@@ -101,9 +101,7 @@ class ManageDP extends React.Component { // eslint-disable-line no-unused-vars
       , proofimage
       , cities
       , attrs
-      , allRetailers
       , retailers
-      , organisations
     } = this.props;
     /* Handle Error */
     console.log(ongoingRequest);
@@ -114,12 +112,6 @@ class ManageDP extends React.Component { // eslint-disable-line no-unused-vars
     });
     const retailersDropdownHtml = retailers.map((indiv) => {
       return (<option value={indiv.id}> {indiv.org_name} </option>);
-    });
-    const allRetailersDropdownHtml = allRetailers.map((indiv) => {
-      return (<option value={indiv.id}> {indiv.org_name} </option>);
-    });
-    const organisationsDropdownHtml = organisations.map((indiv) => {
-      return (<option value={indiv.id}> {indiv.organisation_name} </option>);
     });
     const htmlContent = () => {
       return (
@@ -163,22 +155,8 @@ class ManageDP extends React.Component { // eslint-disable-line no-unused-vars
                 </select>
               </div>
               <div className={styles.indiv_form}>
-              	<label>All Retailer</label>
-                <select value={(attrs.retailer ? attrs.retailer.toString() : '')} data-field-name="retailer_id" data-field-type="int" onChange={ this.storeStateInput.bind(this) }>
-                  <option>Select</option>
-                    {allRetailersDropdownHtml}
-                </select>
-              </div>
-              <div className={styles.indiv_form}>
-              	<label>Organisations</label>
-                <select data-field-name="organization_id" data-field-type="organization_id">
-                  <option>Select</option>
-                    {organisationsDropdownHtml}
-                </select>
-              </div>
-              <div className={styles.indiv_form}>
               	<label>Branch</label>
-                <select value={(attrs.branch ? attrs.branch.toString() : '')} data-field-name="branch_id" data-field-type="int" onChange={ this.storeStateInput.bind(this) }>
+                <select value={(attrs.branch ? attrs.branch.toString() : '')} data-field-name="branch" data-field-type="int" onChange={ this.storeStateInput.bind(this) }>
                   <option>Select</option>
                     {retailersDropdownHtml}
                 </select>
@@ -186,10 +164,6 @@ class ManageDP extends React.Component { // eslint-disable-line no-unused-vars
               <div className={styles.indiv_form}>
               	<label>Device Number</label>
               	<input value={attrs.device_num} type="Text" data-field-name="device_num" onChange={ this.storeStateInput.bind(this) } />
-              </div>
-              <div className={styles.indiv_form}>
-              	<label>Mobile Number</label>
-              	<input value={attrs.contact_number} type="integer" data-field-name="mobile_number" onChange={ this.storeStateInput.bind(this) } />
               </div>
               <div className={styles.indiv_form}>
               	<label>Device Operator</label>
@@ -286,9 +260,7 @@ ManageDP.propTypes = {
   hideCityComponent: PropTypes.bool.isRequired,
   cities: PropTypes.object.isRequired,
   retailers: PropTypes.object.isRequired,
-  allRetailers: PropTypes.object.isRequired,
   attrs: PropTypes.object.isRequired,
-  organisations: PropTypes.object.isRequired,
   cityInput: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
   proofimage: PropTypes.string.isRequired,

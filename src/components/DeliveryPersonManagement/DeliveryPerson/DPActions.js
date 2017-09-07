@@ -258,7 +258,7 @@ export const updateDeliveryPerson = () => {
     return Promise.all([
       dispatch(requestAction(url, options, DP_INSERTED, REQUEST_ERROR)).then((response) => {
         console.log(response);
-        return dispatch(routeActions.push('/hadmin/convenience_fee/list'));
+        return dispatch(routeActions.push('/hadmin/delivery_persons_list'));
         // Reroute
       }).catch((err) => {
         console.log(err);
