@@ -278,7 +278,7 @@ const defaultState = {
   cities: [],
   retailers: [],
   allRetailers: [],
-  attrs: {},
+  attrs: {is_active: false, is_freelancer: false},
   organisations: [],
   lastSuccess: []
 };
