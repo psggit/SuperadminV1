@@ -174,6 +174,7 @@ const updateConstraints = () => {
 /* ====== End of functions */
 const defaultState = {
   constraints: {},
+  workTime: [],
   city: {}
 };
 
