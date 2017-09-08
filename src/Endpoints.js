@@ -33,7 +33,7 @@ if (window.location.href.split(':')[1] === '//localhost') {
   fileUrl = scheme + '://api2' + baseHost;
   backendUrl = scheme + '://api1' + baseHost;
   blogicUrl = scheme + '://api1' + baseHost;
-  gremlinUrl = scheme + '://gremlin.' + baseHost;
+  gremlinUrl = scheme + '://gremlin' + baseHost;
   downloadRepUrl = scheme + '://downloadrep' + baseHost;
 }
 
