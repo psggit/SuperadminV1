@@ -10,7 +10,7 @@ const Order = ({allTypes, allList, orderChange}) => {
     });
     return (
       <li>
-        <label>{list.name}</label>
+        <label>{list.name} (ML)</label>
         <input type="number" value={value} data-value={value} id={id} data-type-id={list.id} onChange={orderChange}/>
       </li>
     );

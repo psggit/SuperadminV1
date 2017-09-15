@@ -57,25 +57,16 @@ class DeliveryConstraints extends Component {
                   {dat.name}
                 </td>
                 <td>
-                  <Link to={'/hadmin/delivery_constraints/view/' + dat.id }>
-                    <button> View </button>
-                  </Link>
                   <Link to={'/hadmin/delivery_constraints/edit/' + dat.id }>
                     <button> Edit </button>
                   </Link>
                 </td>
                 <td>
-                  <Link to={'/hadmin/work_times/view/' + dat.id }>
-                    <button> View </button>
-                  </Link>
                   <Link to={'/hadmin/work_times/edit/' + dat.id }>
                     <button> Edit </button>
                   </Link>
                 </td>
                 <td>
-                  <Link to={'/hadmin/holidays/view/' + dat.id }>
-                    <button> View </button>
-                  </Link>
                   <Link to={'/hadmin/holidays/edit/' + dat.id }>
                     <button> Add </button>
                   </Link>

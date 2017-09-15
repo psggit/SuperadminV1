@@ -73,8 +73,7 @@ const getConsumerTransactionsData = ( page, limit, consumerId, filterObj, isSear
       where: {
         'consumer_id': parseInt(consumerId, 10)
       },
-      offset: offset,
-      order_by: '-created_at'
+      offset: offset
     };
 
     if ( isSearched ) {

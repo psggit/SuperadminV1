@@ -64,12 +64,6 @@ class ConfigureWorkTimes extends React.Component { // eslint-disable-line no-unu
                 <td>
                 	<input type="time" value={ dat.end_time.split('+')[0] } data-field-id={ dat.id } data-field-index={index} data-field-name="end_time" data-field-type="end_time" onChange={ this.inputOnChange.bind(this) } />
                 </td>
-                <td>
-                  {(dat.is_active ? 'Active' : 'InActive')}
-                </td>
-                <td>
-                  {(dat.is_active ? <button> Deactivate </button> : <button> InActivate </button> )}
-                </td>
               </tr>
       );
     });
@@ -91,11 +85,6 @@ class ConfigureWorkTimes extends React.Component { // eslint-disable-line no-unu
                   </th>
                   <th>
                     End Time
-                  </th>
-                  <th>
-                    Status
-                  </th>
-                  <th>
                   </th>
                 </tr>
                 </thead>

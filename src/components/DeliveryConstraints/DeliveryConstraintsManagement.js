@@ -104,7 +104,7 @@ class DeliveryConstraintsManagement extends React.Component { // eslint-disable-
                 </div>
                 <div className={styles.indiv_form}>
                 	<label>Maximum Estimated Delivery Time (Minutes) : </label>
-                	<input type="number" value={ constraints.max_est_del_time } data-field-name="max_est_del_time" data-field-type="text" onChange={ () => { return true; } } />
+                	<input type="number" value={ constraints.max_est_del_time } data-field-name="max_est_del_time" data-field-type="int" onChange={ () => { return true; } } />
                 </div>
                 <div className={styles.indiv_form}>
                 	<label>Delivery Person Waiting Time(Minutes) : </label>
