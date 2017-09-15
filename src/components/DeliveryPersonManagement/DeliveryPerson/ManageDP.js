@@ -8,10 +8,15 @@ import ImageUpload from './ImageUpload';
 
 import {
   TOGGLE_CITY_COMPONENT,
+  ADD_RETAILER_MAPPING,
+  REMOVE_RETAILER_MAPPING,
+  DELETE_RETAILER_MAPPING,
+  REMOVE_RETAILER_MAPPING_DELETE,
   CITY_INPUT_CHANGED,
   STATE_INPUT_CHANGED,
   fetchCities,
   fetchDP,
+  fetchDPMap,
   fetchOrganisations,
   fetchRetailer,
   fetchAllRetailer,
@@ -41,7 +46,12 @@ class ManageDP extends React.Component { // eslint-disable-line no-unused-vars
     ])
     .then( () => {
       if (this.props.params.Id) {
-        this.props.dispatch(fetchDP(parseInt(this.props.params.Id, 10)));
+        Promise.all([
+          this.props.dispatch(fetchDP(parseInt(this.props.params.Id, 10))),
+        ])
+        .then( () => {
+          this.props.dispatch(fetchDPMap(parseInt(this.props.params.Id, 10)));
+        });
       }
       this.props.dispatch({ type: REQUEST_COMPLETED });
     });
@@ -66,6 +76,23 @@ class ManageDP extends React.Component { // eslint-disable-line no-unused-vars
     .then( () => {
       this.props.dispatch( { type: REQUEST_COMPLETED });
     });
+  }
+  onClickMap() {
+    const value = parseInt(document.getElementById('mapper').value, 10);
+    this.props.dispatch({ type: ADD_RETAILER_MAPPING, data: value });
+  }
+  onClickRemoveFromAdd(e) {
+    const value = e.target.getAttribute('data-value');
+    this.props.dispatch({ type: REMOVE_RETAILER_MAPPING, data: parseInt(value, 10) });
+  }
+  onClickDeleteFromList(e) {
+    const value = e.target.getAttribute('data-value');
+    console.log(value);
+    this.props.dispatch({ type: DELETE_RETAILER_MAPPING, data: parseInt(value, 10) });
+  }
+  onClickRemoveFromDelete(e) {
+    const value = e.target.getAttribute('data-value');
+    this.props.dispatch({ type: REMOVE_RETAILER_MAPPING_DELETE, data: parseInt(value, 10) });
   }
   /* Function to update the Fetched State of this component so that input field is editable */
   inputOnChange(e) {
@@ -112,6 +139,43 @@ class ManageDP extends React.Component { // eslint-disable-line no-unused-vars
     });
     const retailersDropdownHtml = retailers.map((indiv) => {
       return (<option value={indiv.id}> {indiv.org_name} </option>);
+    });
+    const mapRetailersDropdownHtml = retailers.map((indiv) => {
+      if (indiv.city_id === attrs.city_id) {
+        if ((!attrs.mapped_retailers.includes(indiv.id)) && (!attrs.deleted_retailers.includes(indiv.id))) {
+          return (<option value={indiv.id}> {indiv.org_name} </option>);
+        }
+      }
+    });
+    const retailerListHtml = attrs.mapped_retailers.map((indiv) => {
+      const ret = retailers.find((retailer) => {
+        if (retailer.id === indiv) {
+          return retailer;
+        }
+      });
+      return (<div value={indiv}> {ret.org_name} <span data-value={indiv} onClick={this.onClickDeleteFromList.bind(this)} className={styles.orange}>(Delete)</span> </div>);
+    });
+    const addedretailerListHtml = attrs.added_retailers.map((indiv) => {
+      const ret = retailers.find((retailer) => {
+        if (retailer.id === indiv) {
+          return retailer;
+        }
+      });
+      return (<div value={indiv}> {ret.org_name} <span data-value={indiv} onClick={this.onClickRemoveFromAdd.bind(this)} className={styles.orange}>(Remove)</span> </div>);
+    });
+    const deletedretailerListHtml = attrs.deleted_retailers.map((indiv) => {
+      const ret = retailers.find((retailer) => {
+        if (retailer.id === indiv) {
+          return retailer;
+        }
+      });
+      return (<div value={indiv}> {ret.org_name} <span data-value={indiv} onClick={this.onClickRemoveFromDelete.bind(this)} className={styles.orange}>(Remove)</span> </div>);
+    });
+    const cityName = cities.find((indiv) => {
+      console.log('check');
+      if (attrs.city_id === indiv.id) {
+        return indiv.name;
+      }
     });
     const htmlContent = () => {
       return (
@@ -234,6 +298,41 @@ class ManageDP extends React.Component { // eslint-disable-line no-unused-vars
               </div>
              <button className={(this.props.params.Id ? 'hide ' : 'show ' ) + styles.common_btn + ' ' + styles.create_btn } onClick={this.onClickSave.bind(this)}>Create</button>
              <button className={(this.props.params.Id ? 'show ' : 'hide ' ) + styles.common_btn + ' ' + styles.create_btn } onClick={this.onClickUpdate.bind(this)}>Update</button>
+            </div>
+          </div>
+          <div className={styles.create_state_wrapper}>
+            <p>
+              Map Retailers to {attrs.name}
+            </p>
+            <div className={styles.create_form}>
+              <div className={styles.block}>
+                <div className={styles.indiv_form}>
+                	<label>Retailers{( cityName !== undefined ? <span className={styles.orange}>({cityName.name})</span> : '')} </label>
+                  <select data-field-name="retailer" id="mapper" data-field-type="int">
+                    <option>Select</option>
+                      {mapRetailersDropdownHtml}
+                  </select>
+                </div>
+                <button className={styles.common_btn + ' ' + styles.create_btn } onClick={this.onClickMap.bind(this)}>Map this Retailer</button>
+              </div>
+              <div className={styles.list_retailer}>
+                <label>List Of Mapped Retailers</label>
+                <div>
+                  {(attrs.mapped_retailers.length !== 0 ? retailerListHtml : 'No retailers Mapped.')}
+                </div>
+              </div>
+              <div className={styles.list_retailer}>
+                <label className={styles.green}> + Newly added Retailers</label>
+                <div>
+                  {(attrs.added_retailers.length !== 0 ? addedretailerListHtml : 'No retailers Added.')}
+                </div>
+              </div>
+              <div className={styles.list_retailer}>
+                <label className={styles.red}> - Deleted Retailers</label>
+                <div>
+                  {(attrs.deleted_retailers.length !== 0 ? deletedretailerListHtml : 'No retailers Deleted.')}
+                </div>
+              </div>
             </div>
           </div>
           <div className="clearfix"></div>
