@@ -193,7 +193,7 @@ class ManageDP extends React.Component { // eslint-disable-line no-unused-vars
             </p>
               <div className={styles.indiv_form}>
               	<label>Employee Id:</label>
-              	<input type="number" value={attrs.employee_id} data-field-name="employee_id" onChange={ this.storeStateInput.bind(this) } />
+              	<input type="text" value={attrs.employee_id} data-field-name="employee_id" onChange={ this.storeStateInput.bind(this) } />
               </div>
               <div className={styles.indiv_form}>
               	<label>Employee Name</label>
