@@ -8,7 +8,7 @@ import requestAction from '../../Common/Actions/requestAction';
 
 import Endpoints, { globalCookiePolicy } from '../../../Endpoints';
 
-import { indexSku } from '../../SkuManagement/Brand/BrandAction';
+import { indexSkuInv } from '../../SkuManagement/Brand/BrandAction';
 
 /* Action Constant */
 
@@ -149,6 +149,7 @@ const disableSKUs = ( sku ) => {
   return ( dispatch, getState ) => {
     const skuId = sku.id;
     const brandId = sku.brand_id;
+    const invId = sku.inventory_id;
     const devUrl = Endpoints.db + '/table/inventory/update';
 
     const branchState = getState().branch_data.branchData;
@@ -181,7 +182,7 @@ const disableSKUs = ( sku ) => {
 
     return dispatch( requestAction( devUrl, options ) )
     .then( () => {
-      dispatch(indexSku([brandId]));
+      dispatch(indexSkuInv([brandId], invId));
       alert('Sku Deleted');
       return dispatch( fetchSKUs(brId) );
     });
@@ -191,6 +192,7 @@ const disableSKUs = ( sku ) => {
 const enableSKUs = ( sku ) => {
   return ( dispatch, getState ) => {
     const skuId = sku.id;
+    const invId = sku.inventory_id;
     const brandId = sku.brand_id;
     const devUrl = Endpoints.db + '/table/inventory/update';
 
@@ -224,7 +226,7 @@ const enableSKUs = ( sku ) => {
 
     return dispatch( requestAction( devUrl, options ) )
     .then( () => {
-      dispatch(indexSku([brandId]));
+      dispatch(indexSkuInv([brandId], invId));
       alert('Sku Activated');
       return dispatch( fetchSKUs(brId) );
     });
@@ -264,10 +266,12 @@ const retailerBrandReducer = ( state = { ...defaultRetBrandState }, action ) => 
         if ( dat.is_active ) {
           serverSKUs[dat.sku_pricing.sku.id] = dat.sku_pricing.sku;
           serverSKUs[dat.sku_pricing.sku.id].brand_name = dat.sku_pricing.sku.brand.brand_name;
+          serverSKUs[dat.sku_pricing.sku.id].inventory_id = dat.id;
           serverSKUs[dat.sku_pricing.sku.id].inventory_status_name = dat.inventory_status_name;
         } else {
           inactiveSkus[dat.sku_pricing.sku.id] = dat.sku_pricing.sku;
           inactiveSkus[dat.sku_pricing.sku.id].brand_name = dat.sku_pricing.sku.brand.brand_name;
+          inactiveSkus[dat.sku_pricing.sku.id].inventory_id = dat.id;
           inactiveSkus[dat.sku_pricing.sku.id].inventory_status_name = dat.inventory_status_name;
         }
       });

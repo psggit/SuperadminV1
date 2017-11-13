@@ -282,6 +282,54 @@ const indexSku = ( brandIds ) => {
   };
 };
 
+const indexSkuInv = ( brandIds, inventoryId ) => {
+  return (dispatch, getState) => {
+    const brandSkuIndex = Endpoints.blogicUrl + '/admin/update_index/index/brand';
+
+    /* This will never happen */
+    // if ( brandIds.length === 0 ) {
+    //   return Promise.reject('Brand cannot be empty to index');
+    // }
+
+    const skuIndexObj = {
+      'ids': brandIds,
+      'inventory_id': inventoryId
+    };
+
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(skuIndexObj)
+    };
+
+    return dispatch(requestAction(brandSkuIndex, options));
+  };
+};
+const indexRetailer = ( retailerIds ) => {
+  return (dispatch, getState) => {
+    const brandSkuIndex = Endpoints.blogicUrl + '/admin/update_index/index/retailer';
+
+    /* This will never happen */
+    // if ( brandIds.length === 0 ) {
+    //   return Promise.reject('Brand cannot be empty to index');
+    // }
+
+    const skuIndexObj = {
+      'ids': retailerIds
+    };
+
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
+      credentials: globalCookiePolicy,
+      body: JSON.stringify(skuIndexObj)
+    };
+
+    return dispatch(requestAction(brandSkuIndex, options));
+  };
+};
+
 /* */
 
 const insertBrand = () => {
@@ -1296,6 +1344,8 @@ export {
   IMAGE_UPLOAD_SUCCESS,
   IMAGE_UPLOAD_ERROR,
   indexSku,
+  indexSkuInv,
+  indexRetailer,
   CANCEL_IMAGE
 };
 export default brandReducer;
