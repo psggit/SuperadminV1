@@ -280,6 +280,12 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
         <div className={ styles.image_container }>
             <ImageUpload imageUrl={image ? image : ''} requestSuccess={IMAGE_UPLOAD_SUCCESS} requestError={ IMAGE_UPLOAD_ERROR } cancelImage={ CANCEL_IMAGE }/>
         </div>
+        <div className={ styles.image_container }>
+            <ImageUpload imageUrl={image ? image : ''} requestSuccess={IMAGE_UPLOAD_SUCCESS} requestError={ IMAGE_UPLOAD_ERROR } cancelImage={ CANCEL_IMAGE }/>
+        </div>
+        <div className={ styles.image_container }>
+            <ImageUpload imageUrl={image ? image : ''} requestSuccess={IMAGE_UPLOAD_SUCCESS} requestError={ IMAGE_UPLOAD_ERROR } cancelImage={ CANCEL_IMAGE }/>
+        </div>
         {/*
         <div className={styles.states_container}>
           <div className={styles.heading + ' ' + styles.wd_100}>

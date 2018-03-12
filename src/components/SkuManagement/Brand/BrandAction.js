@@ -50,6 +50,14 @@ const IMAGE_UPLOAD_SUCCESS = '@category/IMAGE_UPLOAD_SUCCESS';
 const IMAGE_UPLOAD_ERROR = '@category/IMAGE_UPLOAD_ERROR';
 const CANCEL_IMAGE = '@category/CANCEL_IMAGE';
 
+const HIGH_RES_IMAGE_UPLOAD_SUCCESS = '@category/HIGHIMAGE_UPLOAD_SUCCESS';
+const HIGH_RES_IMAGE_UPLOAD_ERROR = '@category/HIGHIMAGE_UPLOAD_ERROR';
+const HIGH_RES_CANCEL_IMAGE = '@category/HIGHCANCEL_IMAGE';
+
+const LOW_RES_IMAGE_UPLOAD_SUCCESS = '@category/LOWIMAGE_UPLOAD_SUCCESS';
+const LOW_RES_IMAGE_UPLOAD_ERROR = '@category/LOWIMAGE_UPLOAD_ERROR';
+const LOW_RES_CANCEL_IMAGE = '@category/LOWCANCEL_IMAGE';
+
 import beginFilter from '../../Common/SearchComponentGen/GenerateFilter';
 
 /* End of it */
@@ -351,6 +359,8 @@ const insertBrand = () => {
       brandObj.company_id = parseInt(currState.companyId, 10);
       brandObj.category_id = parseInt(currState.categoryId, 10);
       brandObj.image = currState.image;
+      brandObj.high_res_image = currState.highresimage;
+      brandObj.low_res_image = currState.lowresimage;
       brandObj.short_name = currState.brandName.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, '').replace(/ /g, '-').toLowerCase();
       brandObj.is_active = true;
       brandObj.alcohol_per = currState.alcoholPer;
@@ -506,6 +516,8 @@ const updateBrand = () => {
       brandObj.company_id = parseInt(currState.companyId, 10);
       brandObj.category_id = parseInt(currState.categoryId, 10);
       brandObj.image = currState.image;
+      brandObj.high_res_image = currState.highresimage;
+      brandObj.low_res_image = currState.lowresimage;
       // brandObj.short_name = currState.brandName.replace(' ', '-').toLowerCase();
       brandObj.is_active = true;
       brandObj.alcohol_per = currState.alcoholPer;
@@ -1286,7 +1298,7 @@ const brandReducer = (state = defaultBrandState, action) => {
         regionObj = {};
         regionCity = {};
       }
-      return { ...state, brandObj: brandObj, region: { ...regionObj }, regionCity: { ...regionCity }, image: brandObj.image, brandId: brandObj.id, brandName: brandObj.brand_name, companyId: brandObj.company_id, categoryId: brandObj.category_id, typeId: brandObj.type, genreId: brandObj.genre_id, genreShort: brandObj.category.genre_short_name, alcoholPer: brandObj.alcohol_per, temperature: brandObj.temperature, caloriesPer: brandObj.cal_per, caloriesTotal: brandObj.cal_total, origin: brandObj.origin_name, description: brandObj.description };
+      return { ...state, brandObj: brandObj, region: { ...regionObj }, regionCity: { ...regionCity }, lowresimage: brandObj.low_res_image, highresimage: brandObj.high_res_image, image: brandObj.image, brandId: brandObj.id, brandName: brandObj.brand_name, companyId: brandObj.company_id, categoryId: brandObj.category_id, typeId: brandObj.type, genreId: brandObj.genre_id, genreShort: brandObj.category.genre_short_name, alcoholPer: brandObj.alcohol_per, temperature: brandObj.temperature, caloriesPer: brandObj.cal_per, caloriesTotal: brandObj.cal_total, origin: brandObj.origin_name, description: brandObj.description };
     case CANCEL_REGION:
       /* TODO: If existing region is viewed and modified ?
        * clear all the modifications if cancel is pressed
@@ -1308,6 +1320,18 @@ const brandReducer = (state = defaultBrandState, action) => {
       return { ...state, image: ''};
     case CANCEL_IMAGE:
       return { ...state, image: ''};
+    case HIGH_RES_IMAGE_UPLOAD_SUCCESS:
+      return { ...state, highresimage: action.data[0]};
+    case HIGH_RES_IMAGE_UPLOAD_ERROR:
+      return { ...state, highresimage: ''};
+    case HIGH_RES_CANCEL_IMAGE:
+      return { ...state, highresimage: ''};
+    case LOW_RES_IMAGE_UPLOAD_SUCCESS:
+      return { ...state, lowresimage: action.data[0]};
+    case LOW_RES_IMAGE_UPLOAD_ERROR:
+      return { ...state, lowresimage: ''};
+    case LOW_RES_CANCEL_IMAGE:
+      return { ...state, lowresimage: ''};
     case RESET:
       return { ...defaultBrandState };
     default: return state;
@@ -1343,9 +1367,15 @@ export {
   INPUT_VALUE_CHANGED,
   IMAGE_UPLOAD_SUCCESS,
   IMAGE_UPLOAD_ERROR,
+  HIGH_RES_IMAGE_UPLOAD_SUCCESS,
+  HIGH_RES_IMAGE_UPLOAD_ERROR,
+  LOW_RES_IMAGE_UPLOAD_SUCCESS,
+  LOW_RES_IMAGE_UPLOAD_ERROR,
   indexSku,
   indexSkuInv,
   indexRetailer,
-  CANCEL_IMAGE
+  CANCEL_IMAGE,
+  HIGH_RES_CANCEL_IMAGE,
+  LOW_RES_CANCEL_IMAGE
 };
 export default brandReducer;

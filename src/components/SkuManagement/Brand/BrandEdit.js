@@ -24,7 +24,13 @@ import { fetchGenre,
   RESET,
   IMAGE_UPLOAD_SUCCESS,
   IMAGE_UPLOAD_ERROR,
-  CANCEL_IMAGE
+  CANCEL_IMAGE,
+  HIGH_RES_IMAGE_UPLOAD_SUCCESS,
+  HIGH_RES_IMAGE_UPLOAD_ERROR,
+  HIGH_RES_CANCEL_IMAGE,
+  LOW_RES_IMAGE_UPLOAD_SUCCESS,
+  LOW_RES_IMAGE_UPLOAD_ERROR,
+  LOW_RES_CANCEL_IMAGE
 } from './BrandAction.js';
 
 import ImageUpload from './ImageUpload';
@@ -186,7 +192,9 @@ class BrandEdit extends Component { // eslint-disable-line no-unused-vars
       origin,
       description,
       originList,
-      image
+      image,
+      highresimage,
+      lowresimage
     } = this.props;
 
     let regionHtml = Object.keys(region).map( (reg, index) => {
@@ -316,8 +324,21 @@ class BrandEdit extends Component { // eslint-disable-line no-unused-vars
               */}
             </ul>
         </div>
-        <div className={ styles.image_container }>
-            <ImageUpload imageUrl={image ? image : ''} requestSuccess={IMAGE_UPLOAD_SUCCESS} requestError={ IMAGE_UPLOAD_ERROR } cancelImage={ CANCEL_IMAGE }/>
+        <div className={styles.image_block}>
+          <div className={ styles.image_container }>
+              <div className={styles.image_lable}>IMAGE:</div>
+              <ImageUpload imageUrl={image ? image : ''} requestSuccess={IMAGE_UPLOAD_SUCCESS} requestError={ IMAGE_UPLOAD_ERROR } cancelImage={ CANCEL_IMAGE }/>
+          </div>
+          <div className="clearfix"></div>
+          <div className={ styles.image_container }>
+              <div className={styles.image_lable}>HIGH RES IMAGE:</div>
+              <ImageUpload imageUrl={highresimage ? highresimage : ''} requestSuccess={HIGH_RES_IMAGE_UPLOAD_SUCCESS} requestError={ HIGH_RES_IMAGE_UPLOAD_ERROR } cancelImage={ HIGH_RES_CANCEL_IMAGE }/>
+          </div>
+          <div className="clearfix"></div>
+          <div className={ styles.image_container }>
+              <div className={styles.image_lable}>LOW RES IMAGE:</div>
+              <ImageUpload imageUrl={lowresimage ? lowresimage : ''} requestSuccess={LOW_RES_IMAGE_UPLOAD_SUCCESS} requestError={ LOW_RES_IMAGE_UPLOAD_ERROR } cancelImage={ LOW_RES_CANCEL_IMAGE }/>
+          </div>
         </div>
         {/*
         <div className={styles.states_container}>
@@ -466,7 +487,9 @@ BrandEdit.propTypes = {
   origin: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   originList: PropTypes.array.isRequired,
-  image: PropTypes.string.isRequired
+  image: PropTypes.string.isRequired,
+  highresimage: PropTypes.string.isRequired,
+  lowresimage: PropTypes.string.isRequired
 };
 
 const mapStateToProps = (state) => {
