@@ -270,6 +270,14 @@ class ViewConsumerProfile extends Component {
           </div>
           <div className={styles.profile_information}>
             <div className={styles.wd_40}>
+              KYC updated
+            </div>
+            <div className={styles.wd_60} >
+              { profileInfo.kyc_updated ? 'Yes' : 'No' }
+            </div>
+          </div>
+          <div className={styles.profile_information}>
+            <div className={styles.wd_40}>
               Device ID:
             </div>
             <div className={styles.wd_60} >
