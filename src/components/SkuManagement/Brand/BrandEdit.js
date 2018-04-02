@@ -26,11 +26,11 @@ import { fetchGenre,
   IMAGE_UPLOAD_ERROR,
   CANCEL_IMAGE,
   HIGH_RES_IMAGE_UPLOAD_SUCCESS,
-  HIGH_RES_IMAGE_UPLOAD_ERROR,
-  HIGH_RES_CANCEL_IMAGE,
-  LOW_RES_IMAGE_UPLOAD_SUCCESS,
-  LOW_RES_IMAGE_UPLOAD_ERROR,
-  LOW_RES_CANCEL_IMAGE
+  // HIGH_RES_IMAGE_UPLOAD_ERROR,
+  // HIGH_RES_CANCEL_IMAGE,
+  LOW_RES_IMAGE_UPLOAD_SUCCESS
+  // LOW_RES_IMAGE_UPLOAD_ERROR,
+  // LOW_RES_CANCEL_IMAGE
 } from './BrandAction.js';
 
 import ImageUpload from './ImageUpload';
@@ -118,6 +118,12 @@ class BrandEdit extends Component { // eslint-disable-line no-unused-vars
   onRegionInput(e) {
     const regionId = parseInt(e.target.getAttribute('data-current-region'), 10);
     this.props.dispatch( { type: REGION_INPUT_CHANGED, data: { id: regionId, value: e.target.value }});
+  }
+  onLowResChange(e) {
+    this.props.dispatch( { type: LOW_RES_IMAGE_UPLOAD_SUCCESS, data: { value: e.target.value }});
+  }
+  onHighResChange(e) {
+    this.props.dispatch( { type: HIGH_RES_IMAGE_UPLOAD_SUCCESS, data: { value: e.target.value }});
   }
   toggleRegion(e) {
     /* Create a new Region data structure */
@@ -331,13 +337,19 @@ class BrandEdit extends Component { // eslint-disable-line no-unused-vars
           </div>
           <div className="clearfix"></div>
           <div className={ styles.image_container }>
-              <div className={styles.image_lable}>HIGH RES IMAGE:</div>
-              <ImageUpload imageUrl={highresimage ? highresimage : ''} requestSuccess={HIGH_RES_IMAGE_UPLOAD_SUCCESS} requestError={ HIGH_RES_IMAGE_UPLOAD_ERROR } cancelImage={ HIGH_RES_CANCEL_IMAGE }/>
+            <div>
+              <label>High Res Image</label>
+              <input onChange={this.onHighResChange.bind(this)} data-field-name="high_res_image" type="text" data-field-type="text" value={ highresimage } />
+            </div>
+              <img src={ highresimage } className={styles.cloud_img}/>
           </div>
           <div className="clearfix"></div>
           <div className={ styles.image_container }>
-              <div className={styles.image_lable}>LOW RES IMAGE:</div>
-              <ImageUpload imageUrl={lowresimage ? lowresimage : ''} requestSuccess={LOW_RES_IMAGE_UPLOAD_SUCCESS} requestError={ LOW_RES_IMAGE_UPLOAD_ERROR } cancelImage={ LOW_RES_CANCEL_IMAGE }/>
+            <div>
+              <label>Low Res Image</label>
+              <input onChange={this.onLowResChange.bind(this)} data-field-name="low_res_image" type="text" data-field-type="text" value={ lowresimage } />
+            </div>
+              <img src={ lowresimage } className={styles.cloud_img}/>
           </div>
         </div>
         {/*

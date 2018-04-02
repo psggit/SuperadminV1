@@ -1321,13 +1321,13 @@ const brandReducer = (state = defaultBrandState, action) => {
     case CANCEL_IMAGE:
       return { ...state, image: ''};
     case HIGH_RES_IMAGE_UPLOAD_SUCCESS:
-      return { ...state, highresimage: action.data[0]};
+      return { ...state, highresimage: action.data.value};
     case HIGH_RES_IMAGE_UPLOAD_ERROR:
       return { ...state, highresimage: ''};
     case HIGH_RES_CANCEL_IMAGE:
       return { ...state, highresimage: ''};
     case LOW_RES_IMAGE_UPLOAD_SUCCESS:
-      return { ...state, lowresimage: action.data[0]};
+      return { ...state, lowresimage: action.data.value};
     case LOW_RES_IMAGE_UPLOAD_ERROR:
       return { ...state, lowresimage: ''};
     case LOW_RES_CANCEL_IMAGE:

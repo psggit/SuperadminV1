@@ -11,6 +11,15 @@
 .image_container {
   float: left;
   margin-left: 30px;
+  text-align: center;
+ 	.cloud_img
+ 	{
+     width: 240px;
+ 		max-width: 100%;
+ 		max-height: 100%;
+     margin: auto;
+     padding: 10px;
+ 	}
   .upload_container
   {
   	float: left;
