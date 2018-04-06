@@ -16,6 +16,8 @@ import requestAction from '../Common/Actions/requestAction';
 
 // const GET_CONSUMER = 'ViewProfile/GET_CONSUMER';
 const REQUEST_SUCCESS = 'ViewProfile/REQUEST_SUCCESS';
+const UPGRADE_SUCCESS = 'ViewProfile/UPGRADE_SUCCESS';
+const DOWNGRADE_SUCCESS = 'ViewProfile/DOWNGRADE_SUCCESS';
 const REQUEST_ERROR = 'ViewProfile/REQUEST_ERROR';
 const SECONDARY_VIEW = 'ViewProfile/SECONDARY_VIEW';
 const FETCHED_USER_STATUS = 'ViewProfile/FETCHED_USER_STATUS';
@@ -31,6 +33,7 @@ const RESET = 'ViewProfile/RESET';
 // Reducer
 const defaultState = {ongoingRequest: false, lastError: {}, lastSuccess: [], credentials: null, secondaryData: null, balance: {}, userProfile: {}};
 const profileReducer = (state = defaultState, action) => {
+  let ls;
   switch (action.type) {
     case REQUEST_SUCCESS:
       return {...state, ongoingRequest: false, lastSuccess: action.data, lastError: {}, credentials: action.data, secondaryData: {}};
@@ -40,6 +43,14 @@ const profileReducer = (state = defaultState, action) => {
       return {...state, ongoingRequest: false, lastSuccess: [], secondaryData: action.data};
     case FETCHED_USER_STATUS:
       return { ...state, userProfile: { ...action.data }};
+    case UPGRADE_SUCCESS:
+      ls = state.lastSuccess.slice();
+      ls[0][0].level_id = action.data.level_id;
+      return { ...state, ongoingRequest: false, lastSuccess: ls};
+    case DOWNGRADE_SUCCESS:
+      ls = state.lastSuccess.slice();
+      ls[0][0].level_id = action.data.level_id;
+      return { ...state, ongoingRequest: false, lastSuccess: ls};
     case RESET:
       return {...defaultState};
     default: return state;
@@ -263,6 +274,130 @@ const getRechargeData = (f) => {
              });
   };
 };
+const downgradeK = (customerId) => {
+  return (dispatch, getState) => {
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
+    const updateValues = {};
+    updateValues.level_id = 1;
+    const url = Endpoints.db + '/table/' + 'consumer' + '/update';
+    const query = {
+      'where': {
+        'id': customerId
+      },
+      'returning': [
+        'level_id',
+        'email',
+        'device_id',
+        'gcm_token',
+        'full_name',
+        'referred_by',
+        'dob',
+        'mobile_number',
+        'gender',
+        'updated_at',
+        'salt',
+        'created_at',
+        'id',
+        'referral_code',
+        'encrypted_pin'
+      ],
+      'values': updateValues
+    };
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(query)
+    };
+    return fetch(url, options)
+      .then(
+             (response) => {
+               if (response.ok) {
+                 response.json().then(
+                    (resp) => {
+                      alert('Consumer Kyc Level Downgraded');
+                      console.log(resp);
+                      return dispatch({type: DOWNGRADE_SUCCESS, data: resp.returning[0] });
+                      // return dispatch({type: REQUEST_SUCCESS, data: resp.returning[0] });
+                    },
+                    () => {
+                      return dispatch(requestFailed('Error. Try again!'));
+                    }
+                  );
+               } else {
+                 return dispatch(requestFailed('Error. Try again!'));
+               }
+             },
+             (error) => {
+               return dispatch(requestFailed(error.text));
+             }
+           );
+  };
+};
+
+const upgradeK = (customerId) => {
+  return (dispatch, getState) => {
+    const genOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole},
+      credentials: globalCookiePolicy
+    };
+    const updateValues = {};
+    updateValues.level_id = 2;
+    const url = Endpoints.db + '/table/' + 'consumer' + '/update';
+    const query = {
+      'where': {
+        'id': customerId
+      },
+      'returning': [
+        'level_id',
+        'email',
+        'device_id',
+        'gcm_token',
+        'full_name',
+        'referred_by',
+        'dob',
+        'mobile_number',
+        'gender',
+        'updated_at',
+        'salt',
+        'created_at',
+        'id',
+        'referral_code',
+        'encrypted_pin'
+      ],
+      'values': updateValues
+    };
+    const options = {
+      ...genOptions,
+      body: JSON.stringify(query)
+    };
+    return fetch(url, options)
+      .then(
+             (response) => {
+               if (response.ok) {
+                 response.json().then(
+                    (resp) => {
+                      alert('Consumer Kyc Level Upgraded');
+                      console.log(resp);
+                      return dispatch({type: UPGRADE_SUCCESS, data: resp.returning[0] });
+                    },
+                    () => {
+                      return dispatch(requestFailed('Error. Try again!'));
+                    }
+                  );
+               } else {
+                 return dispatch(requestFailed('Error. Try again!'));
+               }
+             },
+             (error) => {
+               return dispatch(requestFailed(error.text));
+             }
+           );
+  };
+};
 
 const resetPin = (customerId) => {
   return (dispatch, getState) => {
@@ -375,4 +510,4 @@ const resetPassword = (email, dob) => {
 
 
 export default profileReducer;
-export {getUserData, requestSuccess, requestFailed, RESET, getSecondaryData, resetPin, resetPassword, getCartData, getDeviceData, getRechargeData, getUserStatus};
+export {getUserData, requestSuccess, requestFailed, RESET, upgradeK, downgradeK, getSecondaryData, resetPin, resetPassword, getCartData, getDeviceData, getRechargeData, getUserStatus};

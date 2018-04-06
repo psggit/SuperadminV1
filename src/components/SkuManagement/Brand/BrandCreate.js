@@ -16,6 +16,8 @@ import { fetchGenre,
   DELETE_REGION,
   INPUT_VALUE_CHANGED,
   fetchOrigin,
+  HIGH_RES_IMAGE_UPLOAD_SUCCESS,
+  LOW_RES_IMAGE_UPLOAD_SUCCESS,
   IMAGE_UPLOAD_SUCCESS,
   IMAGE_UPLOAD_ERROR,
   CANCEL_IMAGE
@@ -89,6 +91,12 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
     this.props.dispatch( viewState(parseInt(stateId, 10)));
     console.log(stateId);
   }
+  onLowResChange(e) {
+    this.props.dispatch( { type: LOW_RES_IMAGE_UPLOAD_SUCCESS, data: { value: e.target.value }});
+  }
+  onHighResChange(e) {
+    this.props.dispatch( { type: HIGH_RES_IMAGE_UPLOAD_SUCCESS, data: { value: e.target.value }});
+  }
   onCityCheck(e) {
     const cityId = parseInt(e.target.getAttribute('data-city-id'), 10);
     const regionId = parseInt(e.target.getAttribute('data-viewed-region'), 10);
@@ -145,6 +153,8 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
       caloriesTotal,
       origin,
       description,
+      highresimage,
+      lowresimage,
       image
     } = this.props;
 
@@ -280,11 +290,21 @@ class BrandCreate extends Component { // eslint-disable-line no-unused-vars
         <div className={ styles.image_container }>
             <ImageUpload imageUrl={image ? image : ''} requestSuccess={IMAGE_UPLOAD_SUCCESS} requestError={ IMAGE_UPLOAD_ERROR } cancelImage={ CANCEL_IMAGE }/>
         </div>
+        <div className="clearfix"></div>
         <div className={ styles.image_container }>
-            <ImageUpload imageUrl={image ? image : ''} requestSuccess={IMAGE_UPLOAD_SUCCESS} requestError={ IMAGE_UPLOAD_ERROR } cancelImage={ CANCEL_IMAGE }/>
+          <div>
+            <label>High Res Image</label>
+            <input onChange={this.onHighResChange.bind(this)} data-field-name="high_res_image" type="text" data-field-type="text" value={ highresimage } />
+          </div>
+            <img src={ highresimage } className={styles.cloud_img}/>
         </div>
+        <div className="clearfix"></div>
         <div className={ styles.image_container }>
-            <ImageUpload imageUrl={image ? image : ''} requestSuccess={IMAGE_UPLOAD_SUCCESS} requestError={ IMAGE_UPLOAD_ERROR } cancelImage={ CANCEL_IMAGE }/>
+          <div>
+            <label>Low Res Image</label>
+            <input onChange={this.onLowResChange.bind(this)} data-field-name="low_res_image" type="text" data-field-type="text" value={ lowresimage } />
+          </div>
+            <img src={ lowresimage } className={styles.cloud_img}/>
         </div>
         {/*
         <div className={styles.states_container}>
@@ -425,7 +445,9 @@ BrandCreate.propTypes = {
   typeId: PropTypes.number.isRequired,
   origin: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired
+  image: PropTypes.string.isRequired,
+  highresimage: PropTypes.string.isRequired,
+  lowresimage: PropTypes.string.isRequired
 };
 
 const mapStateToProps = (state) => {

@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import { Link } from 'react-router';
 
 import {connect} from 'react-redux';
-import {RESET, getUserData, resetPin, resetPassword} from './ProfileActions';
+import {RESET, getUserData, upgradeK, downgradeK, resetPin, resetPassword} from './ProfileActions';
 
 /* Common Decorator for taking care of loading and shit */
 // import commonDecorator from '../../Common/CommonDecorator';
@@ -55,6 +55,12 @@ class ViewConsumerProfile extends Component {
     // Dispatch the event here
     this.props.dispatch(resetPin(parseInt(this.props.params.Id, 10)));
   }
+  upgradeKyc() {
+    this.props.dispatch(upgradeK(parseInt(this.props.params.Id, 10)));
+  }
+  downgradeKyc() {
+    this.props.dispatch(downgradeK(parseInt(this.props.params.Id, 10)));
+  }
   resetHandler() {
     // Dispatch the event here
     this.props.dispatch(resetPassword(this.props.lastSuccess[0].email, this.props.lastSuccess[0].dob));
@@ -81,6 +87,27 @@ class ViewConsumerProfile extends Component {
       const transactionHistory = lastSuccess[2];
       const credits = lastSuccess[3];
       const notepad = lastSuccess[4];
+      const kycLevelHTML = ( profileInfo.level_id === 1 ) ?
+        (
+          <div className={styles.wd_60_notepad}>
+            <div className={styles.notepad_items}>
+              { profileInfo.level_id }
+            </div>
+              <button onClick={this.upgradeKyc.bind(this)} className={ 'form-control ' + styles.add_btn}>
+                  Ugrade To level 2
+              </button>
+          </div>
+        ) :
+        (
+          <div className={styles.wd_60_notepad}>
+            <div className={styles.notepad_items}>
+              { profileInfo.level_id }
+            </div>
+              <button onClick={this.downgradeKyc.bind(this)} className={ 'form-control ' + styles.add_btn}>
+                  Downgrade To level 1
+              </button>
+          </div>
+        );
 
       const notepadHTML = ( notepad.length === 0 ) ?
         (
@@ -230,6 +257,14 @@ class ViewConsumerProfile extends Component {
           </div>
           <div className={styles.profile_information}>
             <div className={styles.wd_40}>
+              Email Verified:
+            </div>
+            <div className={styles.wd_60} >
+              { profileInfo.is_mail_verified ? 'True' : 'False' }
+            </div>
+          </div>
+          <div className={styles.profile_information}>
+            <div className={styles.wd_40}>
               Gender:
             </div>
             <div className={styles.wd_60} >
@@ -265,7 +300,7 @@ class ViewConsumerProfile extends Component {
               Current KYC Level
             </div>
             <div className={styles.wd_60} >
-              { profileInfo.level_id }
+              { kycLevelHTML }
             </div>
           </div>
           <div className={styles.profile_information}>
