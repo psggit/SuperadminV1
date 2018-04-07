@@ -190,7 +190,7 @@ class BrandEdit extends Component { // eslint-disable-line no-unused-vars
       companyId,
       genreShort,
       categoryId,
-      typeId,
+      type,
       alcoholPer,
       temperature,
       caloriesPer,
@@ -229,9 +229,10 @@ class BrandEdit extends Component { // eslint-disable-line no-unused-vars
         );
     });
 
-    const typeHtml = typeList.map((type, index) => {
+    const typeHtml = typeList.map((t, index) => {
+      console.log('CHECK');
       return (
-          <option key={index} value={type.id}>{type.name}</option>
+          <option key={index} value={t.id}>{t.name}</option>
         );
     });
 
@@ -307,7 +308,7 @@ class BrandEdit extends Component { // eslint-disable-line no-unused-vars
               </li>
               <li>
                 <label>Type</label>
-                <select data-field-name="type" data-field-type="int" value={ typeId } >
+                <select data-field-name="type" data-field-type="int" value={ type } >
                   <option>Select Type</option>
                   { typeHtml }
                 </select>
@@ -491,7 +492,7 @@ BrandEdit.propTypes = {
   companyId: PropTypes.number.isRequired,
   genreShort: PropTypes.string.isRequired,
   categoryId: PropTypes.number.isRequired,
-  typeId: PropTypes.number.isRequired,
+  type: PropTypes.number.isRequired,
   alcoholPer: PropTypes.string.isRequired,
   temperature: PropTypes.string.isRequired,
   caloriesPer: PropTypes.string.isRequired,
