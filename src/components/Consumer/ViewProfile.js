@@ -297,7 +297,7 @@ class ViewConsumerProfile extends Component {
           </div>
           <div className={styles.profile_information}>
             <div className={styles.wd_40}>
-              Basic kyc updatedc date:
+              Basic kyc updated date:
             </div>
             <div className={styles.wd_60} >
               { credits[0].basic_kyc_updated_date }
