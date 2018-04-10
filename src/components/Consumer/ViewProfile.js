@@ -93,7 +93,7 @@ class ViewConsumerProfile extends Component {
             <div className={styles.notepad_items}>
               { profileInfo.level_id }
             </div>
-              <button onClick={this.upgradeKyc.bind(this)} className={ 'form-control ' + styles.add_btn}>
+              <button onClick={this.upgradeKyc.bind(this)} className={'hide ' + 'form-control ' + styles.add_btn}>
                   Ugrade To level 2
               </button>
           </div>
@@ -103,7 +103,7 @@ class ViewConsumerProfile extends Component {
             <div className={styles.notepad_items}>
               { profileInfo.level_id }
             </div>
-              <button onClick={this.downgradeKyc.bind(this)} className={ 'form-control ' + styles.add_btn}>
+              <button onClick={this.downgradeKyc.bind(this)} className={ 'hide ' + 'form-control ' + styles.add_btn}>
                   Downgrade To level 1
               </button>
           </div>
