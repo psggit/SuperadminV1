@@ -65,11 +65,7 @@ const getConsumerData = ( page, limit, filterObj, isSearched ) => {
     offset = (page - 1) * limit;
 
     const payload = {
-      columns: ['*',
-        {
-          'name': 'device',
-          'columns': ['*']
-        }
+      columns: ['*'
       ],
       limit: limit,
       offset: offset,

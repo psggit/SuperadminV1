@@ -321,14 +321,6 @@ class ViewConsumerProfile extends Component {
           </div>
           <div className={styles.profile_information}>
             <div className={styles.wd_40}>
-              Device ID:
-            </div>
-            <div className={styles.wd_60} >
-              { profileInfo.device.device_num }
-            </div>
-          </div>
-          <div className={styles.profile_information}>
-            <div className={styles.wd_40}>
               Device History
             </div>
             <div className={styles.wd_60} >

@@ -86,12 +86,13 @@ class ViewConsumer extends Component {
 
     /* Search Parameters */
 
-    const fields = [ 'full_name', 'id', 'email', 'mobile_number', 'device.device_num', 'level_id' ];
+    const fields = [ 'full_name', 'id', 'email', 'mobile_number', 'level_id' ];
+    // const fields = [ 'full_name', 'id', 'email', 'mobile_number', 'device.device_num', 'level_id' ];
     // const operator = ['$eq'];
     const fieldOperatorMap = {
       'full_name': ['$eq', '$like', '$ilike'],
       'mobile_number': ['$eq', '$like', '$ilike'],
-      'device.device_num': ['$eq', '$like', '$ilike'],
+      // 'device.device_num': ['$eq', '$like', '$ilike'],
       'level_id': ['$eq', '$gt', '$lt'],
       'email': ['$eq', '$like', '$ilike'],
       'id': ['$eq', '$gt', '$lt']
@@ -101,8 +102,8 @@ class ViewConsumer extends Component {
       'email': 'text',
       'id': 'number',
       'level_id': 'number',
-      'mobile_number': 'text',
-      'device.device_num': 'text'
+      'mobile_number': 'text'
+      // 'device.device_num': 'text'
     };
 
     /* End of it */
