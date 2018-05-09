@@ -83,13 +83,11 @@ const getUserData = ( f ) => {
           'type': 'select',
           'args': {
             'table': 'consumer',
-            'columns': ['*', {
-              'name': 'device',
-              'columns': ['*']
-            }, {
-              'name': 'old_devices',
-              'columns': ['id']
-            }],
+            'columns': ['*',
+              {
+                'name': 'old_devices',
+                'columns': ['id']
+              }],
             'where': {
               'id': f
             }

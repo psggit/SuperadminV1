@@ -359,8 +359,6 @@ const insertBrand = () => {
       brandObj.company_id = parseInt(currState.companyId, 10);
       brandObj.category_id = parseInt(currState.categoryId, 10);
       brandObj.image = currState.image;
-      brandObj.high_res_image = currState.highresimage;
-      brandObj.low_res_image = currState.lowresimage;
       brandObj.short_name = currState.brandName.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, '').replace(/ /g, '-').toLowerCase();
       brandObj.is_active = true;
       brandObj.alcohol_per = currState.alcoholPer;
@@ -377,6 +375,9 @@ const insertBrand = () => {
         alert('All the entries are important for brand creation');
         return dispatch({ type: NOTHING_CHANGED });
       }
+
+      brandObj.high_res_image = currState.highresimage === '' ? null : currState.high_res_image;
+      brandObj.low_res_image = currState.lowresimage === '' ? null : currState.low_res_image;
 
 
       insertObj.objects = [brandObj];
