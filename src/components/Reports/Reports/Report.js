@@ -71,7 +71,6 @@ const Report = ({stateData}) => { // eslint-disable-line no-unused-vars
                       <option value = "consumer_manual_credits_and_debits_view">Consumer Manual Credit and Debit View</option>
                       <option value = "bars_redeem_and_cancellation_report">Bars Redeem and Cancellation Report</option>
                       <option value = "loading_cash_into_wallet">Loading Cash Into Wallet</option>
-                      <option value = "consumer_list">Consumer List</option>
                       <option value = "customer_outstanding_in_ppi">Consumer Outstanding In PPI</option>
                       <option value = "delivery_boy_report">Delivery Person Report</option>
                   </select>
