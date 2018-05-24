@@ -15,7 +15,8 @@ let baseHost = 'TEST';
 if (window.location.href.split(':')[1] === '//localhost') {
   const appName = 'amebae21';
   // const appName = 'hipbar-stg';
-  dataUrl = 'https://data.' + appName + '.hasura-app.io';
+  // dataUrl = 'https://data.' + appName + '.hasura-app.io';
+  dataUrl = 'https://data.hipbar-dev.com';
   authUrl = 'https://auth.' + appName + '.hasura-app.io';
   reportUrl = 'https://reports.' + appName + '.hasura-app.io';
   fileUrl = 'https://api2.' + appName + '.hasura-app.io';
