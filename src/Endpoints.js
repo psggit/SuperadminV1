@@ -15,8 +15,8 @@ let baseHost = 'TEST';
 if (window.location.href.split(':')[1] === '//localhost') {
   const appName = 'amebae21';
   // const appName = 'hipbar-stg';
-  // dataUrl = 'https://data.' + appName + '.hasura-app.io';
-  dataUrl = 'https://data.hipbar-dev.com';
+  dataUrl = 'https://data.' + appName + '.hasura-app.io';
+  // dataUrl = 'https://data.hipbar-dev.com';
   authUrl = 'https://auth.' + appName + '.hasura-app.io';
   reportUrl = 'https://reports.' + appName + '.hasura-app.io';
   fileUrl = 'https://api2.' + appName + '.hasura-app.io';
@@ -28,8 +28,8 @@ if (window.location.href.split(':')[1] === '//localhost') {
   console.log(window.location.href);
   scheme = window.location.href.split(':')[0];
   baseHost = window.location.hostname.match(/.*?(\..*)/)[1];
-  // dataUrl = scheme + '://data' + baseHost;
-  dataUrl = scheme + '://data.hipbar-dev.com';
+  dataUrl = scheme + '://data' + baseHost;
+  // dataUrl = scheme + '://data.hipbar-dev.com';
   reportUrl = scheme + '://reports' + baseHost;
   authUrl = scheme + '://auth' + baseHost;
   fileUrl = scheme + '://api2' + baseHost;
