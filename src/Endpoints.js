@@ -28,7 +28,8 @@ if (window.location.href.split(':')[1] === '//localhost') {
   console.log(window.location.href);
   scheme = window.location.href.split(':')[0];
   baseHost = window.location.hostname.match(/.*?(\..*)/)[1];
-  dataUrl = scheme + '://data' + baseHost;
+  // dataUrl = scheme + '://data' + baseHost;
+  dataUrl = scheme + '://data.hipbar-dev.com';
   reportUrl = scheme + '://reports' + baseHost;
   authUrl = scheme + '://auth' + baseHost;
   fileUrl = scheme + '://api2' + baseHost;
