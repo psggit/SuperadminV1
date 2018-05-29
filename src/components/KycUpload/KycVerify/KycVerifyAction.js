@@ -4,13 +4,12 @@
 
 // import { defaultNotepadState } from '../Common/Actions/DefaultState';
 import requestAction from '../../Common/Actions/requestAction';
-import Endpoints from '../../../Endpoints';
 import { MAKE_REQUEST,
   REQUEST_SUCCESS,
   COUNT_FETCHED,
   REQUEST_ERROR } from '../../Common/Actions/Actions';
 
-import { genOptions } from '../../Common/Actions/commonFunctions';
+import Endpoints from '../../../Endpoints';
 
 // import { routeActions } from 'redux-simple-router';
 // import commonReducer from '../Common/Actions/CommonReducer';
@@ -20,7 +19,7 @@ import { genOptions } from '../../Common/Actions/commonFunctions';
 /* ****** Action Creators ******** */
 
 const fetchConsumerCount = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: MAKE_REQUEST});
     //
     /* const payload = {'where': {'id': f}, 'columns': ['*']};*/
@@ -35,7 +34,9 @@ const fetchConsumerCount = () => {
     };
     const url = Endpoints.db + '/table/' + 'kyc_request' + '/count';
     const options = {
-      ...genOptions,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
+      credentials: 'include',
       body: JSON.stringify(payload)
     };
     // return dispatch(requestAction(url, options, V_REQUEST_SUCCESS, V_REQUEST_ERROR));
@@ -64,7 +65,7 @@ const fetchConsumerCount = () => {
 };
 
 const fetchConsumer = (page) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     /* Url */
     const url = Endpoints.db + '/table/kyc_request/select';
     const queryObj = {};
@@ -93,7 +94,9 @@ const fetchConsumer = (page) => {
     queryObj.offset = offset;
     queryObj.order_by = '-created_at';
     const options = {
-      ...genOptions,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-hasura-role': getState().loginState.highestRole },
+      credentials: 'include',
       body: JSON.stringify(queryObj)
     };
     /* Make a MAKE_REQUEST action */
