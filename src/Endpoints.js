@@ -28,15 +28,21 @@ if (window.location.href.split(':')[1] === '//localhost') {
   console.log(window.location.href);
   scheme = window.location.href.split(':')[0];
   baseHost = window.location.hostname.match(/.*?(\..*)/)[1];
-  dataUrl = scheme + '://data' + baseHost;
-  // dataUrl = scheme + '://data.hipbar-dev.com';
-  reportUrl = scheme + '://reports' + baseHost;
-  authUrl = scheme + '://auth' + baseHost;
-  fileUrl = scheme + '://api2' + baseHost;
-  backendUrl = scheme + '://api1' + baseHost;
-  blogicUrl = scheme + '://api1' + baseHost;
-  gremlinUrl = scheme + '://gremlin' + baseHost;
-  downloadRepUrl = scheme + '://downloadrep' + baseHost;
+  // dataUrl = scheme + '://data' + baseHost;
+  dataUrl = scheme + '://data.hipbar-dev.com';
+  // reportUrl = scheme + '://reports' + baseHost;
+  reportUrl = scheme + '://reports.hipbar-dev.com';
+  authUrl = scheme + '://auth.hipbar-dev.com';
+  fileUrl = scheme + '://api2.hipbar-dev.com';
+  backendUrl = scheme + '://api1.hipbar-dev.com';
+  blogicUrl = scheme + '://api1.hipbar-dev.com';
+  gremlinUrl = scheme + '://gremlin.hipbar-dev.com';
+  // authUrl = scheme + '://auth' + baseHost;
+  // fileUrl = scheme + '://api2' + baseHost;
+  //  backendUrl = scheme + '://api1' + baseHost;
+  //  blogicUrl = scheme + '://api1' + baseHost;
+  //  gremlinUrl = scheme + '://gremlin' + baseHost;
+  //  downloadRepUrl = scheme + '://downloadrep' + baseHost;
 }
 
 // const base = '';
