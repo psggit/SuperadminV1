@@ -162,7 +162,7 @@ const hydrateStateObj = () => {
   };
 };
 
-const indexSku = ( dispatch, brandIds ) => {
+const indexSku = ( dispatch, brandIds, role ) => {
   const skuIndexUrl = Endpoints.blogicUrl + '/admin/update_index/index/brand';
 
   /*
@@ -176,7 +176,7 @@ const indexSku = ( dispatch, brandIds ) => {
   };
   const genOptions = {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-hasura-role': 'admin'},
+    headers: { 'Content-Type': 'application/json', 'x-hasura-role': role},
     credentials: globalCookiePolicy
   };
 
@@ -227,7 +227,7 @@ const toggleSkuStatus = ( id, status ) => {
 
     return dispatch( requestAction( devUrl, options ) )
     .then( () => {
-      dispatch(indexSku(dispatch, skuState.brandSlug[skuState.skuReqObj.brand_id]));
+      dispatch(indexSku(dispatch, skuState.brandSlug[skuState.skuReqObj.brand_id], getState().loginState.highestRole));
       alert('Sku Toggled');
       return dispatch( hydrateStateObj() );
     });
@@ -627,7 +627,7 @@ const onSave = () => {
         return dispatch(requestAction(brandListingUrl, options));
       })
       .then(() => {
-        return indexSku(dispatch, skuReqObj.brand_id);
+        return indexSku(dispatch, skuReqObj.brand_id, getState().loginState.highestRole);
       })
       .then( () => {
         alert('SKU Updated Successfully');
@@ -972,7 +972,7 @@ const onUpdate = () => {
         return Promise.resolve();
       })
       .then( ( ) => {
-        return indexSku(dispatch, skuReqObj.brand_id);
+        return indexSku(dispatch, skuReqObj.brand_id, getState().loginState.highestRole);
       })
       .then( () => {
         alert('SKU Updated Successfully');
@@ -1013,7 +1013,7 @@ const toggleState = (stateId, currentState) => {
     .then( ( response ) => {
       console.log(response);
       const brandId = getState().create_sku_data.brandSlug[getState().create_sku_data.skuReqObj.brand_id];
-      dispatch(indexSku(dispatch, brandId));
+      dispatch(indexSku(dispatch, brandId, getState().loginState.highestRole));
     });
     // return Promise.resolve();
   };

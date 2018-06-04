@@ -29,7 +29,7 @@ const loginReducer = (state = defaultState, action) => {
     case MAKE_REQUEST:
       return {...state, ongoingRequest: true, lastSuccess: null, lastError: null};
     case REQUEST_SUCCESS:
-      const priority = {'admin': 15, 'opadmin': 6, 'opdataadmin': 7, 'opdataentry': 8, 'customer_support': 9, 'product_team': 10, 'qa_team': 11, 'support_read_only': 3, 'user': 1, 'dataentry': 4, 'support_person': 12, 'support_admin': 13, 'support_master': 14, 'dataadmin': 5, 'support_person': 2 };
+      const priority = {'admin': 15, 'opadmin': 6, 'opdataadmin': 7, 'opdataentry': 8, 'customer_support': 9, 'product_team': 10, 'qa_team': 11, 'support_read_only': 3, 'user': 1, 'dataentry': 4, 'support_admin': 13, 'support_master': 14, 'dataadmin': 5, 'support_person': 2 };
       let highestRole = 'user';
       if ( action.data.hasOwnProperty('hasura_roles')) {
         action.data.hasura_roles.forEach((indiv) => { highestRole = (priority[highestRole] <= priority[indiv]) ? indiv : highestRole; });
