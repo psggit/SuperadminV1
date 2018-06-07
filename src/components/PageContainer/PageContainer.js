@@ -55,7 +55,7 @@ const PageContainer = ({location, name, role, children, dispatch}) => { // eslin
       <div className={styles.flexRow}>
         <div className={styles.sidebar + ' col-md-3'}>
           <div className={styles.account}>
-            Logged in: <b>{name} ({role})</b> <br><span onClick={logout}> Logout </span> </br>
+            Logged in: <b>{name} ({role})</b> <br><span onClick={logout}><Link to={'/hadmin/login'}> Logout </Link> </span> </br>
           </div>
           <hr/>
           <br/><br/>
