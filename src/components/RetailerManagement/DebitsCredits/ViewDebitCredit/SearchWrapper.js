@@ -15,11 +15,6 @@ const SearchWrapper = ( {data} ) => {
     return (
           <tr key={index}>
             <td>
-              <Link to={'/hadmin/retailer_management/debit_credit_transactions/' + dat.id}>
-                <button className={styles.edit_btn} data-genre-id={dat.id}>
-                  Edit
-                </button>
-              </Link>
             </td>
             <td> { dat.id } </td>
             <td>
