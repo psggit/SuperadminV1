@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router';
 
 const SearchWrapper = ( {data} ) => {
   const styles = require('./SearchWrapper.scss');
