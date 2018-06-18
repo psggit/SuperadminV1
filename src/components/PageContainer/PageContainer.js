@@ -57,6 +57,7 @@ const PageContainer = ({location, name, role, children, dispatch}) => { // eslin
           <div className={styles.account}>
             Logged in: <b>{name} ({role})</b> <br><span onClick={logout}><Link to={'/hadmin/login'}> Logout </Link> </span> </br>
           </div>
+          <div className ="hide" value={role} id = "roletap"></div>
           <hr/>
           <br/><br/>
             <UserManagement role = {role} styles={styles} lastPathname={lastPathname}/>

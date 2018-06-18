@@ -27,6 +27,50 @@ const sendRequest = (e) => {
   requestAction(url, insertObj, REQUEST_SUCCESS, REQUEST_ERROR);
 };
 
+const sendRequest1 = (e) => {
+  // Json Creator
+  e.preventDefault();
+  let url = Endpoints.reportUrl + '/reports/admin_reports/';
+  const a = document.getElementById('roletap');
+  const role = a.getAttribute('value');
+  const option = document.getElementById('option');
+  const data = option.options[option.selectedIndex].value;
+  url += data;
+  const xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = () => {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      const disposition = xhr.getResponseHeader('content-disposition');
+      const matches = /"([^"]*)"/.exec(disposition);
+      const filename = (matches !== null && matches[1] ? matches[1] : 'export.csv');
+
+      const blob = new Blob([xhr.response], { type: 'text/csv' });
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = filename;
+
+      document.body.appendChild(link);
+
+      link.click();
+
+      document.body.removeChild(link);
+    }
+  };
+
+  // const formData = new FormData();
+
+  const sIn = new Date(document.getElementById('sstart_date').value).getTime();
+  const eIn = new Date(document.getElementById('eend_date').value).getTime();
+  // formData.append('start_date', sIn);
+  // formData.append('start_date', sIn);
+  // formData.append('end_date', eIn);
+  const dat = 'start_date=' + sIn + '&end_date=' + eIn;
+  xhr.open('POST', url);
+  xhr.withCredentials = true;
+  xhr.setRequestHeader('X-HASURA-ROLE', role);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send(dat);
+};
+
 const changeUrl = () => {
   let url = Endpoints.reportUrl + '/reports/admin_reports/';
   const option = document.getElementById('option');
@@ -79,9 +123,10 @@ const Report = ({stateData}) => { // eslint-disable-line no-unused-vars
                   <form id = "download_form" action= {url} content-type="application/json" method="post">
                     <input className = "hide" name = "start_date" id = "start_date" type="int"></input>
                     <input className = "hide" name = "end_date" id = "end_date" type="int"></input>
-                    <input type = "submit"></input>
+                    <input className = "hide" type = "submit"></input>
                   </form>
                   <button className = "hide" onClick={sendRequest}>Download</button>
+                  <button onClick={sendRequest1}>Download</button>
                 </div>
             </div>
             <div>
