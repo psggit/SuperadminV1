@@ -226,7 +226,7 @@ const insertAdData = (bmId, imgUrl, adInfo) => {
     // I will return Ad Id, if success.
     // I will return Error message, if error.
     const adUrl = Endpoints.db + '/table/ad_image/insert';
-    adInfo.image_url = imgUrl;
+    adInfo.image_url = Endpoints.file_get + imgUrl;
     adInfo.created_at = new Date().toISOString();
     adInfo.updated_at = new Date().toISOString();
     adInfo.brand_manager_id = parseInt(bmId, 10);
