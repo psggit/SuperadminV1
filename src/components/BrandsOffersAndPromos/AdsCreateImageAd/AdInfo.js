@@ -79,6 +79,14 @@ const AdInfo = ({dispatch, brands, sb, bms}) => {
               <input data-field-name="active_to" data-field-type="time" type="datetime-local"/>
             </li>
             <li>
+              <label>High Res Image</label>
+              <input data-field-name="high_res_image" data-field-type="string" type="text" />
+            </li>
+            <li>
+              <label>Low Res Image</label>
+              <input data-field-name="low_res_image" data-field-type="string" type="text" />
+            </li>
+            <li>
               <label>Ad Status</label>
               <select data-field-name="status" data-field-type="string">
                 <option>Select</option>

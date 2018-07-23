@@ -79,6 +79,10 @@ const BranchDetails = ( { currState, organisationData } ) => { // eslint-disable
           <input data-field-name="name" type="text" data-field-name="application_number" data-field-type="text" data-field-value={ currState.application_number } value={ currState.application_number } />
         </li>
         <li>
+          <label>State Store Id</label>
+          <input data-field-name="name" type="text" data-field-name="state_store_id" data-field-type="text" data-field-value={ currState.state_store_id } value={ currState.state_store_id } />
+        </li>
+        <li>
           <label>Branch Name*</label>
           <input data-field-name="name" type="text" data-field-name="org_name" data-field-type="text" data-field-value={ currState.org_name } value={ currState.org_name } />
         </li>

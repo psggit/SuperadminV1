@@ -875,6 +875,7 @@ const branchDataReducer = ( state = { organisationData: [], branchDetail: {}, br
     case BRANCH_FETCHED:
       const branchDetailKeys = [
         'organisation_id',
+        'state_store_id',
         'application_number',
         'cst_number',
         'kyc_status',
